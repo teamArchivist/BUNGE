@@ -21,7 +21,8 @@ public class SecurityConfig {
 		http.csrf((csrf) -> csrf.disable());
 		
 		//내가 만든 로그인 페이지로 이동한다.
-		http.formLogin((formLogin) -> formLogin.loginPage("/member/login"));
+		http.formLogin((formLogin) -> formLogin.loginPage("/templates/member/login"));
+		//.loginProgressingUrl("/templates/member/loignProcess");
 		
 		return http.build();
 	}
