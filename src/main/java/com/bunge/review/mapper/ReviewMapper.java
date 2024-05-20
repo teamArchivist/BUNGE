@@ -1,8 +1,10 @@
 package com.bunge.review.mapper;
 
+import com.bunge.review.domain.Review;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.HashMap;
+import java.util.List;
 
 @Mapper
 public interface ReviewMapper {
@@ -12,6 +14,5 @@ public interface ReviewMapper {
 
     //글 목록
     public List<Review> getReviewList(HashMap<String, Integer> map);
-
 
 }
