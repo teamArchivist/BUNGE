@@ -1,0 +1,40 @@
+.form-control.dropdown.form-select {
+  align-items: center;
+  cursor: text;
+  display: flex;
+  min-height: calc(1.1rem + 2px + var(--bs-body-font-size) * var(--bs-body-line-height));
+  padding-block: 0;
+  padding-inline: 0.5em;
+}
+.form-control.dropdown.form-select input[type=text]::placeholder {
+  color: var(--bs-secondary-color);
+}
+.form-control.dropdown.form-select input[type=text]:first-child {
+  padding-inline-start: 0.5em !important;
+}
+
+.tags-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3em 0.5em;
+  margin: 0.325rem 0.325rem 0.325rem 0 !important;
+  font-size: var(--bs-body-font-size);
+  font-weight: normal;
+  line-height: var(--bs-body-line-height);
+}
+.tags-badge.bg-tags {
+  background-color: var(--bs-tertiary-bg);
+  color: var(--bs-emphasis-color);
+}
+.tags-badge .btn-close {
+  padding: 0 !important;
+  font-size: 1em !important;
+}
+[data-bs-theme=auto] .tags-badge .btn-close, [data-bs-theme=light] .tags-badge .btn-close {
+  filter: none !important;
+}
+
+.tags-menu {
+  padding: 0.5rem !important;
+}
+/*# sourceMappingURL=bootstrap5-tags.css.map */
