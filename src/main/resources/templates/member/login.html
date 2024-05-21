@@ -1,10 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="en" data-bs-theme="light" data-scheme="navy">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
-    <title>로그인</title>
+    <title>Login Page | Nifty - Admin Template</title>
 
 
     <!-- STYLESHEETS -->
@@ -17,23 +19,23 @@
 
 
     <!-- Bootstrap CSS [ REQUIRED ] -->
-    <link rel="stylesheet" href="./assets/css/bootstrap.css">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
 
     <!-- Nifty CSS [ REQUIRED ] -->
-    <link rel="stylesheet" href="./assets/css/nifty.css">
+    <link rel="stylesheet" th:href="@{/css/nifty.css}">
 
     <!-- Premium line icons [ OPTIONAL ] -->
-    <link rel="stylesheet" href="./assets/premium/icon-sets/line-icons/premium-line-icons.min.css">
+    <link rel="stylesheet" th:href="@{/premium/icon-sets/line-icons/premium-line-icons.min.css}">
 
     <!-- Premium solid icons [ OPTIONAL ] -->
-    <link rel="stylesheet" href="./assets/premium/icon-sets/solid-icons/premium-solid-icons.min.css">
+    <link rel="stylesheet" th:href="@{/premium/icon-sets/solid-icons/premium-solid-icons.min.css}">
 
 
     <!-- Favicons [ OPTIONAL ] -->
-    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
-    <link rel="manifest" href="./site.webmanifest">
+    <link rel="apple-touch-icon" sizes="180x180" th:href="@{./apple-touch-icon.png}">
+    <link rel="icon" type="image/png" sizes="32x32" th:href="@{./favicon-32x32.png}">
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{./favicon-16x16.png}">
+    <link rel="manifest" th:href="@{./site.webmanifest}">
 
 
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -83,31 +85,31 @@
                             <p>Sign In to your account</p>
                         </div>
 
-                        <form class="mt-4" action="index.html">
+                        <form class="mt-4" name="loginform" th:action="@{/member/loginProcess}" method="post">
 
                             <div class="mb-3">
-                                <input type="text" class="form-control" placeholder="Username" autofocus>
+                                <input type="text" name="id" class="form-control" placeholder="Username" autofocus>
                             </div>
 
                             <div class="mb-3">
-                                <input type="password" class="form-control" placeholder="Password">
+                                <input type="password" name="pwd" class="form-control" placeholder="Password">
                             </div>
 
                             <div class="form-check">
-                                <input id="_dm-loginCheck" class="form-check-input" type="checkbox">
+                                <input id="_dm-loginCheck" name="remember-me" class="form-check-input" type="checkbox">
                                 <label for="_dm-loginCheck" class="form-check-label">
-                                    Remember me
+                                   아이디 기억하기
                                 </label>
                             </div>
 
                             <div class="d-grid mt-5">
-                                <button class="btn btn-primary btn-lg" type="submit">Sign In</button>
+                                <button class="btn btn-primary btn-lg" type="submit">로그인</button>
                             </div>
                         </form>
 
                         <div class="d-flex justify-content-between gap-md-5 mt-4">
-                            <a href="#" class="btn-link text-decoration-none">Forgot password ?</a>
-                            <a href="#" class="btn-link text-decoration-none">Create a new account</a>
+                            <a href="#" class="btn-link text-decoration-none">비밀번호를 잊으셨나요 ?</a>
+                            <a href="join.html" class="btn-link text-decoration-none">새계정 생성</a>
                         </div>
 
                         <div class="d-flex align-items-center justify-content-between border-top pt-3 mt-3">
