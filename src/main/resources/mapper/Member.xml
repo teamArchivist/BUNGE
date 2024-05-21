@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bunge.member.mapper.MemberMapper">
+    <select id="isId" resultType="member">
+        select * from member where id = #{id}
+    </select>
+    <insert id="insert">
+        insert into member
+        valuse(#{id} , #{pwd}, #{name} , #{nick}, #{gender}, #{zipcode}, #{addr1}, #{addr2}, #{phone}, #{email}, #{birthdate} , #{role})
+    </insert>
+
+</mapper>
