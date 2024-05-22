@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en" data-bs-theme="light" data-scheme="navy">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+    <meta name="description" content="Nifty is a responsive admin dashboard template based on Bootstrap 5 framework. There are a lot of useful components.">
+    <meta charset="utf-8">
+
+    <title>나의 기록</title>
+
+    <!-- Bootstrap CSS [ REQUIRED ] -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+
+    <!-- Nifty CSS [ REQUIRED ] -->
+    <link rel="stylesheet" th:href="@{/css/nifty.min.css}">
+
+    <!-- Nifty Demo Icons [ OPTIONAL ] -->
+    <link rel="stylesheet" th:href="@{/css/demo-purpose/demo-icons.min.css}">
+
+    <!-- Demo purpose CSS [ DEMO ] -->
+    <link rel="stylesheet" th:href="@{/css/demo-purpose/demo-settings.min.css}">
+
+</head>
+
+<body>
+<div id="root" class="root mn--max sb--stuck tm--expanded-hd">
+    <th:block th:replace="~{review/header_sidenav :: headerFragment}"/>
+
+    "이 부분에 view 페이지 관련 코드를 입력합니다!!"
+
+</div>
+
+<!-- JAVASCRIPTS -->
+<!-- ~~~~~~~~~~ -->
+
+
+<!-- Popper JS [ OPTIONAL ] -->
+<script th:src="@{/vendors/popperjs/popper.min.js}"></script>
+
+
+<!-- Bootstrap JS [ OPTIONAL ] -->
+<script th:src="@{/vendors/bootstrap/bootstrap.min.js}"></script>
+
+
+<!-- Nifty JS [ OPTIONAL ] -->
+<script th:src="@{/js/nifty.js}"></script>
+
+
+<!-- Nifty Settings [ DEMO ] -->
+<script th:src="@{/js/demo-purpose-only.js}"></script>
+
+
+</body>
+
+</html>
