@@ -7,20 +7,20 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Controller
-@RequestMapping(value = "/member")
-public class memberController {
-    private  static  final Logger logger = LoggerFactory.getLogger((memberController.class));
-
-    private MemberService memberservice;
-    private PasswordEncoder passwordEncoder;
-
-
-    @Autowired
-    public memberController(MemberService memberservice, PasswordEncoder passwordEncoder) {
-        this.memberservice=memberservice;
-        this.passwordEncoder=passwordEncoder;
-
-    }
-
-}
+//@Controller
+//@RequestMapping(value = "/member")
+//public class memberController {
+//    private  static  final Logger logger = LoggerFactory.getLogger((memberController.class));
+//
+//    private MemberService memberservice;
+//    private PasswordEncoder passwordEncoder;
+//
+//
+//    @Autowired
+//    public memberController(MemberService memberservice, PasswordEncoder passwordEncoder) {
+//        this.memberservice=memberservice;
+//        this.passwordEncoder=passwordEncoder;
+//
+//    }
+//
+//}

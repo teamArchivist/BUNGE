@@ -3,8 +3,8 @@ package com.bunge.member;
 
 
 
-public interface MemberMapper {
-    public Member isId(String id);
-
-
-}
+//public interface MemberMapper {
+//    public Member isId(String id);
+//
+//
+//}
