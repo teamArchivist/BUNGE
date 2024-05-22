@@ -19,7 +19,7 @@ jasypt:
 
 #mybatis
 mybatis:
-  type-aliases-package: com.bunge.member.domain
+  type-aliases-package: com.bunge.member.domain, com.bunge.inquiry.domain
   config-location: classpath:/config/mybatis-config.xml
   mapper-locations: classpath:/mapper/*.xml
 
@@ -27,3 +27,4 @@ mybatis:
 logging:
   level:
     com.bunge.member.mapper.MemberMapper: TRACE
+    com.bunge.inquiry.mapper.InquiryMapper: TRACE

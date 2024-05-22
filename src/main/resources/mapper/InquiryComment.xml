@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bunge.inquiry.mapper.InquiryCommentMapper">
+
+    <!-- 댓글 삽입 -->
+    <insert id="insertComment">
+        INSERT INTO inquiry_comment (inquiry_id, author_id, is_admin, content)
+        VALUES (#{inquiryId}, #{authorId}, #{isAdmin}, #{content})
+    </insert>
+
+    <!-- 댓글 조회 -->
+    <select id="selectCommentsByInquiryId" resultType="com.example.model.InquiryComment">
+        SELECT
+            comment_id AS commentId,
+            inquiry_id AS inquiryId,
+            author_id AS authorId,
+            is_admin AS isAdmin,
+            content,
+            created_at AS createdAt
+        FROM inquiry_comment
+        WHERE inquiry_id = #{inquiryId}
+    </select>
+
+    <!-- 댓글 삭제 -->
+    <delete id="deleteComment">
+        DELETE FROM inquiry_comment WHERE comment_id = #{commentId} AND author_id = #{authorId}
+    </delete>
+
+    <!-- 댓글 수정 -->
+    <update id="updateComment">
+        UPDATE inquiry_comment
+        SET content = #{content}
+        WHERE comment_id = #{commentId} AND author_id = #{authorId}
+    </update>
+
+</mapper>
