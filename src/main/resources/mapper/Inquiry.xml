@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bunge.member.mapper.InquiryMapper">
+    <!-- 문의글 작성 -->
+    <insert id="insertInquiry">
+        INSERT INTO inquiry (member_id, type_id, title, content)
+        VALUES (#{memberId}, #{typeId}, #{title}, #{content})
+    </insert>
+
+    <!-- 문의글 수정 -->
+    <update id="updateInquiry">
+        UPDATE inquiry
+        SET type_id = #{typeId},
+            title = #{title},
+            content = #{content},
+            updated_at = CURRENT_TIMESTAMP
+        WHERE inquiry_id = #{inquiryId}
+    </update>
+
+    <!-- 문의글 삭제 -->
+    <delete id="deleteInquiry">
+        DELETE FROM inquiry WHERE inquiry_id = #{id}
+    </delete>
+
+    <!-- 특정 문의글 조회 -->
+    <select id="selectInquiryById" resultType="com.bunge.inquiry.domain.Inquiry">
+        SELECT * FROM inquiry WHERE inquiry_id = #{id}
+    </select>
+
+    <!-- 문의글 목록 조회 -->
+    <select id="selectInquiries" resultType="com.bunge.inquiry.domain.Inquiry">
+        SELECT i.*, t.name AS type_name
+        FROM inquiry i
+        JOIN inquiry_type t ON i.type_id = t.type_id
+        <where>
+            <if test="typeId != null">
+                AND i.type_id = #{typeId}
+            </if>
+        </where>
+        ORDER BY i.created_at DESC
+    </select>
+
+</mapper>
