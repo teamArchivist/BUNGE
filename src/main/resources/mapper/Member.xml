@@ -8,7 +8,7 @@
     </select>
     <insert id="insert">
         insert into member
-        valuse(#{id} , #{pwd}, #{name} , #{nick}, #{gender}, #{zipcode}, #{addr1}, #{addr2}, #{phone}, #{email}, #{birthdate} , #{role})
+        (#{id}, #{pwd}, #{name}, #{nick}, #{gender}, #{zipcode}, #{addr1}, #{addr2}, #{phone}, #{email}, #{birthdate}, #{role})
     </insert>
 
 </mapper>

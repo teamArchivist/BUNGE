@@ -22,18 +22,38 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    // web
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
+    // security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+
+    // db
+    implementation group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: '3.0.0'
     implementation group: 'com.mysql', name: 'mysql-connector-j'
-    compileOnly 'org.projectlombok:lombok'
+
+    // devtools
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    // lombok
+    compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+
+    // test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    implementation group: 'org.mybatis.spring.boot', name: 'mybatis-spring-boot-starter', version: '3.0.0'
+
+    // websocket
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
+    // validation
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // encrypt
+    implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4'
 }
 
 tasks.named('bootBuildImage') {
@@ -42,4 +62,8 @@ tasks.named('bootBuildImage') {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+test {
+    systemProperty "jasypt.encryptor.password", project.getProperties().get("jasypt.encryptor.password")
 }
