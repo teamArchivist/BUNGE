@@ -33,6 +33,16 @@ public class ReviewController {
 
     }
 
+    @RequestMapping(value="/test", method= RequestMethod.GET)
+    public ModelAndView headerTest(@RequestParam(value="page", defaultValue="1") int page,
+                                   ModelAndView mv) {
+
+        mv.setViewName("review/headertest");
+
+        return mv;
+
+    }
+
 
 
 
