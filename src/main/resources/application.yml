@@ -9,7 +9,6 @@ spring:
     username: ENC(z2ZTll4++Fd3NI6qurr/+g==)
     password: ENC(Vw2XZ103MqOMv7kcXFt/Evp9k1EG34Ii)
 
-
 ##aws path
 review:
   savefolder: /home/ubuntu/download/review-upload
