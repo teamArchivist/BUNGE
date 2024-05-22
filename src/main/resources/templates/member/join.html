@@ -94,10 +94,10 @@
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                             <div class="w-md-400px d-inline-flex row g-3 mb-4">
                                 <div class="col-12">
-                                    <input type="text" name="id" class="form-control" placeholder="아이디 입력(5~15자)"  autofocus>
+                                    <input type="text" name="id" class="form-control" placeholder="아이디 입력(5~15자)" >
                                 </div>
                                 <div class="col-12">
-                                    <input type="text" name="pwd" class="form-control" placeholder="비밀번호 입력">
+                                    <input type="password" name="pwd" class="form-control" placeholder="비밀번호 입력">
                                 </div>
                                 <div class="col-12">
                                     <input type="text" name="name" class="form-control" placeholder="이름을 입력">
@@ -112,9 +112,6 @@
                                 <input type="checkbox" name="gender" class="btn-check" id="btncheck2" th:value="여">
                                 <label class="btn btn-outline-primary" for="btncheck2">여</label>
                                 </div>
-                                <div class="col-12">
-                                    <input type="date" class="form-control" placeholder="생년월일" min="1900-01-01" required>
-                                </div>
                                 <div class="col-sm-6">
                                     <input type="text" name="zipcode" placeholder="우편번호" class="form-control" required readonly>
                                 </div>
@@ -124,12 +121,14 @@
                                 <div class="col-12">
                                     <input type="text" name="addr1" class="form-control" placeholder="주소를 입력해주세요" required readonly >
                                 </div>
-
                                 <div class="col-12">
                                     <input type="text" name="addr2" class="form-control" placeholder="상세주소를 입력해주세요" required>
                                 </div>
                                 <div class="col-12">
-                                    <input type="email" class="form-control" placeholder="Email" aria-label="Email">
+                                    <input type="email" name="email" class="form-control" placeholder="Email" aria-label="Email">
+                                </div>
+                                <div class="col-12">
+                                    <input type="date" name="birthdate" class="form-control" placeholder="생년월일" min="1900-01-01" required>
                                 </div>
 
                             </div>
@@ -170,7 +169,6 @@
                                 </a>
                             </div>
                             <!-- END : Social media buttons -->
-
                         </div>
 
 
