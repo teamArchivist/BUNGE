@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.bunge.member.domain.Member;
 import com.bunge.member.mapper.MemberMapper;
 @Service
-class MemberServiceimpl implements MemberService{
+public class MemberServiceimpl implements MemberService{
 
     private MemberMapper    dao;
     private PasswordEncoder passwordEncoder;
@@ -26,5 +26,8 @@ class MemberServiceimpl implements MemberService{
     public int insert(Member m) {
         return dao.insert(m);
     }
-
+    @Override
+    public Member member_info(String id) {
+        return dao.isId(id);
+    }
 }

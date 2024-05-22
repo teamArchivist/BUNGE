@@ -1,73 +1,35 @@
 <!DOCTYPE html>
-
-<html lang="en" data-bs-theme="light" data-scheme="navy">
-<html xmlns:th="http://www.thymeleaf.org">
-
+<html xmlns:th="http://www.thymeleaf.org/" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en" data-bs-theme="light" data-scheme="navy">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
-    <title>Login Page | Nifty - Admin Template</title>
+    <meta name="description" content="Nifty is a responsive admin dashboard template based on Bootstrap 5 framework. There are a lot of useful components.">
+    <meta charset="utf-8">
 
-
-    <!-- STYLESHEETS -->
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
-    <!-- Fonts [ OPTIONAL ] -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&family=Ubuntu:wght@400;500;700&display=swap" rel="stylesheet">
-
+    <title>로그인</title>
 
     <!-- Bootstrap CSS [ REQUIRED ] -->
-    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
 
     <!-- Nifty CSS [ REQUIRED ] -->
-    <link rel="stylesheet" th:href="@{/css/nifty.css}">
+    <link rel="stylesheet" th:href="@{/css/nifty.min.css}">
 
-    <!-- Premium line icons [ OPTIONAL ] -->
-    <link rel="stylesheet" th:href="@{/premium/icon-sets/line-icons/premium-line-icons.min.css}">
+    <!-- Nifty Demo Icons [ OPTIONAL ] -->
+    <link rel="stylesheet" th:href="@{/css/demo-purpose/demo-icons.min.css}">
 
-    <!-- Premium solid icons [ OPTIONAL ] -->
-    <link rel="stylesheet" th:href="@{/premium/icon-sets/solid-icons/premium-solid-icons.min.css}">
+    <!-- Demo purpose CSS [ DEMO ] -->
+    <link rel="stylesheet" th:href="@{/css/demo-purpose/demo-settings.min.css}">
 
-
-    <!-- Favicons [ OPTIONAL ] -->
-    <link rel="apple-touch-icon" sizes="180x180" th:href="@{./apple-touch-icon.png}">
-    <link rel="icon" type="image/png" sizes="32x32" th:href="@{./favicon-32x32.png}">
-    <link rel="icon" type="image/png" sizes="16x16" th:href="@{./favicon-16x16.png}">
-    <link rel="manifest" th:href="@{./site.webmanifest}">
-
-
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    [ REQUIRED ]
-    You must include this category in your project.
-
-
-    [ OPTIONAL ]
-    This is an optional plugin. You may choose to include it in your project.
-
-
-    [ DEMO ]
-    Used for demonstration purposes only. This category should NOT be included in your project.
-
-
-    [ SAMPLE ]
-    Here's a sample script that explains how to initialize plugins and/or components: This category should NOT be included in your project.
-
-
-    Detailed information and more samples can be found in the documentation.
-
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <!--"각 페이지에 필요한 CSS / JS 를 입력합니다"-->
 
 </head>
 
-<body class="">
+<body>
 
 
 <!-- PAGE CONTAINER -->
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<div id="root" class="root front-container">
 
     <!-- CONTENTS -->
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -81,8 +43,8 @@
 
 
                         <div class="text-center">
-                            <h1 class="h3">Account Login</h1>
-                            <p>Sign In to your account</p>
+                            <h1 class="h3">계정 로그인</h1>
+                            <p>귀하의 계정에 로그인하세요</p>
                         </div>
 
                         <form class="mt-4" name="loginform" th:action="@{/member/loginProcess}" method="post">
@@ -98,24 +60,24 @@
                             <div class="form-check">
                                 <input id="_dm-loginCheck" name="remember-me" class="form-check-input" type="checkbox">
                                 <label for="_dm-loginCheck" class="form-check-label">
-                                   아이디 기억하기
+                                   아이디 저장하기
                                 </label>
                             </div>
-
-                            <div class="d-grid mt-5">
+                            <div class="d-grid mt-3">
                                 <button class="btn btn-primary btn-lg" type="submit">로그인</button>
                             </div>
                         </form>
 
                         <div class="d-flex justify-content-between gap-md-5 mt-4">
-                            <a href="#" class="btn-link text-decoration-none">비밀번호를 잊으셨나요 ?</a>
+                            <a href="#" class="btn-link text-decoration-none">아이디 찾기</a>
+                            <a href="#" class="btn-link text-decoration-none">비밀번호찾기</a>
                             <a href="join" class="btn-link text-decoration-none">새계정 생성</a>
                         </div>
+                        <!--
+                            <div class="d-flex align-items-center justify-content-between border-top pt-3 mt-3">
+                                <h5 class="m-0">Login with</h5>
 
-                        <div class="d-flex align-items-center justify-content-between border-top pt-3 mt-3">
-                            <h5 class="m-0">Login with</h5>
-
-                            <!-- Social media buttons -->
+                               Social media buttons
                             <div class="ms-3">
                                 <a href="#" class="btn btn-sm btn-icon btn-hover btn-primary text-inherit">
                                     <i class="psi-facebook fs-5"></i>
@@ -130,10 +92,10 @@
                                     <i class="psi-instagram fs-5"></i>
                                 </a>
                             </div>
-                            <!-- END : Social media buttons -->
+                             END : Social media buttons
 
                         </div>
-
+                    -->
 
                     </div>
                 </div>
@@ -146,13 +108,15 @@
                     <button type="button" onclick="window.history.back()" class="btn btn-light hstack gap-2">
                         <i class="psi-left-4 fs-5 opacity-30"></i>
                         <span class="vr"></span>
-                        Go back
+                        뒤로가기
                     </button>
+                    <!--
                     <a href="./" class="btn btn-primary hstack gap-2">
                         <i class="psi-home fs-5"></i>
                         <span class="vr"></span>
                         Return home
                     </a>
+                    -->
                 </div>
                 <!-- END : Action buttons -->
 
@@ -166,8 +130,10 @@
     <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <!-- END - CONTENTS -->
 </div>
-<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-<!-- END - PAGE CONTAINER -->
+
+
+
+    <!--"이 부분에 view 페이지 관련 별도로 필요한 플러그인 / js 등을 추가합니다"-->
 
 
 </body>
