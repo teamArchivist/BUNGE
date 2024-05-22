@@ -28,7 +28,7 @@ public class SecurityConfig {
 	@Autowired
 	public SecurityConfig(LoginFailHandeler loginFailHandeler,
 						  LoginSuccessHandler loginSuccessHandler,
-						  //CustomUserDatilsService customUserDatilsService,
+						  CustomUserDatilsService customUserDatilsService,
 						  DataSource dataSource,
 						  CustomAccessDeniedHandler customAccessDeniedHandler) {
 		this.loginFailHandeler=loginFailHandeler;
