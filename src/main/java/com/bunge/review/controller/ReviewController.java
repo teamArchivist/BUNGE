@@ -23,16 +23,18 @@ public class ReviewController {
         this.reviewservice = reviewservice;
     }
 
-    @RequestMapping(value="/main", method= RequestMethod.GET)
+    @RequestMapping(value="/main")
     public ModelAndView reviewList(@RequestParam(value="page", defaultValue="1") int page,
                                    ModelAndView mv) {
 
-        mv.setViewName("review/header_sidenav");
+        mv.setViewName("review/review_main");
 
         return mv;
 
     }
 
+
+/*
     @RequestMapping(value="/test", method= RequestMethod.GET)
     public ModelAndView headerTest(@RequestParam(value="page", defaultValue="1") int page,
                                    ModelAndView mv) {
@@ -40,13 +42,7 @@ public class ReviewController {
         mv.setViewName("review/headertest");
 
         return mv;
-
     }
-
-
-
-
-
-
+*/
 
 }

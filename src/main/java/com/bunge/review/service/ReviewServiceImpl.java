@@ -16,6 +16,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public int getListCount() {
+
         return 0;
     }
 }
