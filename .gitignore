@@ -38,3 +38,6 @@ out/
 
 ### application.properties ###
 *.sec
+
+### Test ###
+JasyptConfigTest.java
