@@ -8,4 +8,6 @@ public interface MemberService {
     public int isId(String id);
 
     public int insert(Member m);
+
+    Member member_info(String id);
 }

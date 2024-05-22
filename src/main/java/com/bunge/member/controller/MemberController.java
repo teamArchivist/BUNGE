@@ -1,4 +1,4 @@
-package com.bunge.member;
+package com.bunge.member.controller;
 
 import com.bunge.member.domain.Member;
 import com.bunge.member.service.MemberService;
@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.lang.reflect.Method;
 import java.security.Principal;
 
 @Controller
@@ -73,7 +72,23 @@ public class MemberController {
         }else {
             model.addAttribute("message", "회원 가입 실패");
             model.addAttribute("url", request.getRequestURL());
-            return "error/403";
+            return "error/erorr";
         }
+    }
+    //회원정보 수정
+    @RequestMapping(value = "/update" , method = RequestMethod.GET)
+    public ModelAndView index(ModelAndView mav , Principal principal){
+
+        String id = principal.getName();
+
+        if(id == null) {
+            mav.setViewName("redirect:login");
+            logger.info("id is null");
+        }else {
+            Member m = memberservice.member_info(id);
+            mav.setViewName("member/update");
+            mav.addObject("memberinfo", m);
+        }
+        return mav;
     }
 }
