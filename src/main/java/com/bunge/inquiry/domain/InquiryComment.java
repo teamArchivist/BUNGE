@@ -9,7 +9,6 @@ public class InquiryComment {
     private String content;
     private Timestamp createdAt;
 
-    // Getters and Setters
     public int getCommentId() {
         return commentId;
     }
