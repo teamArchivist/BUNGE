@@ -73,7 +73,7 @@ public class MemberController {
         }else {
             model.addAttribute("message", "회원 가입 실패");
             model.addAttribute("url", request.getRequestURL());
-            return "error.error";
+            return "error/403";
         }
     }
 }
