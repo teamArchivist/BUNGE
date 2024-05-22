@@ -20,5 +20,4 @@ public class Member {
     private Date   joindate;
     private Date   birthdate;
     private String role;
-
 }
