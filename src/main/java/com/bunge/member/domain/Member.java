@@ -17,7 +17,5 @@ public class Member {
     private String addr2;
     private String phone;
     private String email;
-    private Date   joindate;
     private Date   birthdate;
-    private String role;
 }
