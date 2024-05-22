@@ -23,7 +23,7 @@ public class ReviewController {
         this.reviewservice = reviewservice;
     }
 
-    @RequestMapping(value="/main", method= RequestMethod.GET)
+    @RequestMapping(value="/main")
     public ModelAndView reviewList(@RequestParam(value="page", defaultValue="1") int page,
                                    ModelAndView mv) {
 
