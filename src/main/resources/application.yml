@@ -5,7 +5,7 @@ spring:
 ##db connection(MySQL)
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ENC(BiouDVkWy0mTZp+tYT4buEA6yKH1+w9Nmy83Gb7Uq7ww36o5997Y45R3EUzc71cL9bFRWJaZV6it/iVPtYFNXS6ZeOgqSQIZKi6RPLl1pYMv4Yb4i/0o6rzuu0hN+kEGvDfFr5XtyLuM/ihjKupdXA==)
+    url: ENC(OJwYjj9ZefFyQmDHDoHH3PbGgG16MEPb8btmytEsqHHBmzdijnHyJvM79/5ikxz4MYrHCqAtXONA9Chzipru1HKU8ecwXHeELMEdhjNHsAW/ZYE7TuhPBsl6LWGXdtXrNqsBdnuVTftkdIuVbwB71A==)
     username: ENC(z2ZTll4++Fd3NI6qurr/+g==)
     password: ENC(Vw2XZ103MqOMv7kcXFt/Evp9k1EG34Ii)
 
