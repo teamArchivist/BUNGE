@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -34,27 +31,51 @@ public class MemberController {
         this.memberservice=memberservice;
         this.passwordEncoder=passwordEncoder;
     }
+    //임시페이지
+    @GetMapping(value = "/index")
+    public String index(){
+        return "member/index";
+    }
     //로그인페이지
-    @GetMapping(value="/login")
+    @GetMapping (value ="/login")
     public ModelAndView login(ModelAndView mav,
-                              @CookieValue(value = "remember-me", required = false) Cookie readCookie,
-                              HttpSession session,
-                              Principal userPrincipal) {
+                        @CookieValue(value = "remember-me", required = false) Cookie readCookie,
+                        HttpSession session,
+                        Principal userPrincipal)  {
         if (readCookie != null) {
             mav.setViewName("readirect:/member/index");
         } else {
             mav.setViewName("member/login");
 
-        mav.addObject("loginfail", session.getAttribute("loginfail"));
-        session.removeAttribute("loginfail");
+            mav.addObject("loginfail", session.getAttribute("loginfail"));
+            session.removeAttribute("loginfail");
         }
         return mav;
+    }
+    //아이디 검사
+    @ResponseBody
+    @RequestMapping(value = "/idcheck", method = RequestMethod.POST)
+    public int idcheck(@RequestParam("id") String id) {
+        return memberservice.idcheck(id);
+    }
+    //닉네임 검사
+    @ResponseBody
+    @RequestMapping(value = "/nickcheck" , method = RequestMethod.POST)
+    public int nickcheck(@RequestParam("nick") String nick){
+        return memberservice.nickcheck(nick);
+    }
+    //이메일 검사
+    @ResponseBody
+    @RequestMapping(value ="/emailcheck", method = RequestMethod.POST)
+    public int emailcheck(@RequestParam("email") String email){
+        return memberservice.emailcheck(email);
     }
     //회원가입
     @RequestMapping(value="/join" , method = RequestMethod.GET)
     public String join() {
         return "member/join";
     }
+    //회원가입
     @RequestMapping(value = "/joinProcess", method = RequestMethod.POST)
     public String joinProcess (Member member, RedirectAttributes rattr,
                                Model model, HttpServletRequest request) {
@@ -75,6 +96,11 @@ public class MemberController {
             return "error/erorr";
         }
     }
+    //아이디 찾기 폼 접속
+    @GetMapping(value = "/findid")
+    public String fiendid(){
+        return "member/findid";
+    };
     //회원정보 수정
     @RequestMapping(value = "/update" , method = RequestMethod.GET)
     public ModelAndView index(ModelAndView mav , Principal principal){
@@ -85,7 +111,7 @@ public class MemberController {
             mav.setViewName("redirect:login");
             logger.info("id is null");
         }else {
-            Member m = memberservice.member_info(id);
+            Member m = memberservice.memberinfo(id);
             mav.setViewName("member/update");
             mav.addObject("memberinfo", m);
         }

@@ -27,7 +27,25 @@ public class MemberServiceimpl implements MemberService{
         return dao.insert(m);
     }
     @Override
-    public Member member_info(String id) {
+    public Member memberinfo(String id) {
         return dao.isId(id);
+    }
+
+    @Override
+    public int idcheck(String id) {
+        Member m = dao.idcheck(id);
+        return (m==null) ? -1 : 1;
+    }
+
+    @Override
+    public int nickcheck(String nick) {
+        Member m = dao.nickcheck(nick);
+        return (m==null) ? -1 : 1;
+    }
+
+    @Override
+    public int emailcheck(String email) {
+        Member m = dao.emailcheck(email);
+        return (m==null) ? -1 : 1;
     }
 }
