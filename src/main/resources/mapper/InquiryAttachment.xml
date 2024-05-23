@@ -11,7 +11,7 @@
     </insert>
 
     <!-- 첨부 파일 조회 -->
-    <select id="selectAttachmentsByInquiryId" resultType="com.example.model.InquiryAttachment">
+    <select id="selectAttachmentsByInquiryId" resultType="com.bunge.inquiry.domain.InquiryAttachment">
         SELECT
             attach_id AS attachId,
             inquiry_id AS inquiryId,
