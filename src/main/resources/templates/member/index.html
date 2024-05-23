@@ -1,10 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html th:replace="~{layout/layoutLogin :: layout (~{::title}, ~{::links}, ~{::section})}"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>메인페이지</title>
+    <title>임시페이지</title>
+    <links>
+        <!--/* link, script 태그 영역 */-->
+        <script th:src="@{/js/jquery-3.7.1.js}"></script>
+    </links>
+    <script>
+        $(function () {
+            $("#logout").click(function(event) {
+                event.preventDefault();
+                $("form[name=logout]").submit();
+            })
+        })
+    </script>
 </head>
 <body>
-    로그인 완료
+<section id="content" class="content">
+    <!-- 현재 사용자가 인증된 경우에만 참(true)을 반환합니다. -->
+        <!--/* 본문 content 영역 */-->
+            <div>로그인 완료</div>
+            <form th:action="@{/member/logout}" method="post" name="logout">
+                <a class="nav-link" href="#" id="logout">
+                    로그아웃</a>
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            </form>
+</section>
 </body>
 </html>

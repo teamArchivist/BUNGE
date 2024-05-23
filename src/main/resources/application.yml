@@ -28,3 +28,5 @@ logging:
   level:
     com.bunge.member.mapper.MemberMapper: TRACE
     com.bunge.inquiry.mapper.InquiryMapper: TRACE
+
+
