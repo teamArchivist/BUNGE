@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+   <title>Title</title>
+   <links>
+      <style>
+         .banner-container {
+            height: 350px; /* 컨테이너의 높이를 300px로 설정 */
+            overflow: hidden; /* 넘치는 부분을 숨김 */
+            position: relative;
+            width: 100%;
+         }
+
+         .banner-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* 이미지의 비율을 유지하며 크기 조절 */
+         }
+
+         .banner-text {
+            font-family: Arial, sans-serif;
+            color: white;
+         }
+
+
+      </style>
+
+   </links>
+
+
+</head>
+<body>
+<section>
+      <div>
+         <div class="position-relative banner-container">
+            <img th:src="@{/img/trade/banner.jpg}" alt="Banner" class="img-fluid banner-image">
+            <div class="position-absolute top-50 start-50 translate-middle text-center banner-text">
+               <h1 class="text-white">다양한 사람들과 함께 지식을 공유해 보아요!</h1>
+               <br><br>
+
+               <div class="col-md-8 offset-md-2 mb-3">
+
+                  <form class="searchbox input-group">
+                     <input class="searchbox__input form-control form-control-lg" type="search" placeholder="검색어를 입력하세요..." aria-label="Search">
+                     <div class="searchbox__btn-group">
+                        <button class="searchbox__btn btn btn-icon bg-transparent shadow-none border-0 btn-sm" type="submit">
+                           <i class="demo-pli-magnifi-glass"></i>
+                        </button>
+                     </div>
+                  </form>
+               </div>
+
+               <div class="d-flex flex-wrap align-items-end justify-content-center gap-2 mb-3 pb-3">
+                  <div class="d-md-flex flex-wrap align-items-center gap-2 mb-3 mb-sm-0">
+                     <div class="text-center mb-2 mb-md-0">검색 조건</div>
+                     <select class="form-select w-auto" aria-label="Categories">
+                        <option value="musics">책 제목</option>
+                        <option value="photos">작성자</option>
+                        <option value="internet">내용</option>
+                     </select>
+                  </div>
+
+               </div>
+            </div>
+         </div>
+         <h1>IT</h1>
+
+         <h1>경제</h1>
+      </div>
+
+
+</section>
+</body>
+</html>
