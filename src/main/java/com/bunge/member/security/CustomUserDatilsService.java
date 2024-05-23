@@ -1,6 +1,7 @@
 package com.bunge.member.security;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 import com.bunge.member.domain.Member;
 import com.bunge.member.mapper.MemberMapper;
@@ -35,7 +36,7 @@ public class CustomUserDatilsService implements UserDetailsService{
 		Member users = dao.isId(username);
 		if(users==null) {
 
-			throw new UsernameNotFoundException("username" + username + " not found");
+			throw new UsernameNotFoundException("User not found with username: " + username);
 		}
 		//GrantedAuthority : 인증 갸채애 부여된 권한을 나타내기 위한 인터페이스로 이를 구현한 구현체는 
 		//					 권한을 문자열로 넣어주면 됩니다.
@@ -43,10 +44,15 @@ public class CustomUserDatilsService implements UserDetailsService{
 		Collection<SimpleGrantedAuthority> roles = new ArrayList<SimpleGrantedAuthority>();
 		
 		//roles.add(new SimpleGrantedAuthority(users.getAuth()));
-		
-		UserDetails user = new User(username, users.getPwd(), roles);
-	
-		return user;
+
+		return User.withUsername(username)
+				.password(users.getPwd())
+				.authorities(Collections.emptyList()) // Set authorities if needed
+				.accountExpired(false)
+				.accountLocked(false)
+				.credentialsExpired(false)
+				.disabled(false)
+				.build();
 	}
 
 }
