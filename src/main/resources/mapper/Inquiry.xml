@@ -23,6 +23,20 @@
         DELETE FROM inquiry WHERE inquiry_id = #{inquiryId}
     </delete>
 
+    <!-- 모든 문의글 조회 (페이징 적용) -->
+    <select id="selectAllInquiries" resultType="com.bunge.inquiry.domain.Inquiry">
+        SELECT inquiry_id AS inquiryId,
+               member_id AS memberId,
+               type_id AS typeId,
+               title,
+               content,
+               created_at AS createdAt,
+               updated_at AS updatedAt
+        FROM inquiry
+        ORDER BY inquiry_id DESC
+            LIMIT #{limit} OFFSET #{offset}
+    </select>
+
     <!-- 문의글 조회 -->
     <select id="selectInquiry" resultType="com.bunge.inquiry.domain.Inquiry">
         SELECT
@@ -35,21 +49,28 @@
             updated_at AS updatedAt
         FROM inquiry
         WHERE inquiry_id = #{inquiryId}
+        ORDER BY inquiry_id DESC
+            LIMIT #{limit} OFFSET #{offset}
     </select>
 
-    <!-- 문의글 목록 조회 (유형 필터) -->
+    <!-- 문의글 목록 조회 (유형 필터 및 페이징 적용) -->
     <select id="selectInquiriesByType" resultType="com.bunge.inquiry.domain.Inquiry">
-        SELECT
-            inquiry_id AS inquiryId,
-            member_id AS memberId,
-            type_id AS typeId,
-            title,
-            content,
-            created_at AS createdAt,
-            updated_at AS updatedAt
+        SELECT inquiry_id AS inquiryId,
+               member_id AS memberId,
+               type_id AS typeId,
+               title,
+               content,
+               created_at AS createdAt,
+               updated_at AS updatedAt
         FROM inquiry
         WHERE type_id = #{typeId}
+        ORDER BY inquiry_id DESC
+            LIMIT #{limit} OFFSET #{offset}
     </select>
 
+    <!-- 리스트 카운트 조회 -->
+    <select id="selectListCount" resultType="int">
+        SELECT COUNT(*) FROM inquiry
+    </select>
 
 </mapper>
