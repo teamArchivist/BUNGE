@@ -5,6 +5,7 @@ import com.bunge.inquiry.mapper.InquiryMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -24,8 +25,8 @@ public class InquiryServiceImpl implements InquiryService {
     }
 
     @Override
-    public void deleteInquiry(int inquiryId, String memberId) {
-        inquiryMapper.deleteInquiry(inquiryId, memberId);
+    public void deleteInquiry(int inquiryId) {
+        inquiryMapper.deleteInquiry(inquiryId);
     }
 
     @Override
@@ -34,7 +35,19 @@ public class InquiryServiceImpl implements InquiryService {
     }
 
     @Override
-    public List<Inquiry> getInquiriesByType(int typeId) {
-        return inquiryMapper.selectInquiriesByType(typeId);
+    public List<Inquiry> getInquiriesByType(int typeId, int page, int limit) {
+        int offset = (page - 1) * limit;
+        return inquiryMapper.selectInquiriesByType(typeId, limit, offset);
+    }
+
+    @Override
+    public List<Inquiry> getAllInquiries(int page, int limit) {
+        int offset = (page - 1) * limit;
+        return inquiryMapper.selectAllInquiries(limit, offset);
+    }
+
+    @Override
+    public int getListCount() {
+        return inquiryMapper.selectListCount();
     }
 }
