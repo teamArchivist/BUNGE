@@ -24,7 +24,7 @@
     </delete>
 
     <!-- 문의글 조회 -->
-    <select id="selectInquiry" resultType="com.example.model.Inquiry">
+    <select id="selectInquiry" resultType="com.bunge.inquiry.domain.Inquiry">
         SELECT
             inquiry_id AS inquiryId,
             member_id AS memberId,
@@ -38,7 +38,7 @@
     </select>
 
     <!-- 문의글 목록 조회 (유형 필터) -->
-    <select id="selectInquiriesByType" resultType="com.example.model.Inquiry">
+    <select id="selectInquiriesByType" resultType="com.bunge.inquiry.domain.Inquiry">
         SELECT
             inquiry_id AS inquiryId,
             member_id AS memberId,
