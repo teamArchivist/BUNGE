@@ -1,56 +1,303 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org/" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      lang="en" data-bs-theme="light" data-scheme="navy">
+<html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
-    <meta name="description" content="Nifty is a responsive admin dashboard template based on Bootstrap 5 framework. There are a lot of useful components.">
-    <meta charset="utf-8">
-
     <title>나의 기록</title>
-
-    <!-- Bootstrap CSS [ REQUIRED ] -->
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-
-    <!-- Nifty CSS [ REQUIRED ] -->
-    <link rel="stylesheet" th:href="@{/css/nifty.min.css}">
-
-    <!-- Nifty Demo Icons [ OPTIONAL ] -->
-    <link rel="stylesheet" th:href="@{/css/demo-purpose/demo-icons.min.css}">
-
-    <!-- Demo purpose CSS [ DEMO ] -->
-    <link rel="stylesheet" th:href="@{/css/demo-purpose/demo-settings.min.css}">
-
+    <links>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script th:src="@{/pages/chart.js}"></script>
+        <script th:src="@{/vendors/fullcalendar/index.global.min.js}"></script>
+        <script th:src="@{/pages/fullcalendar.js}"></script>
+    </links>
 </head>
+<body class="out-quart">
+<!--/* 본문 content 영역 */-->
+<div id="root" class="root mn--max tm--expanded-hd">
+    <section id="content" class="content">
 
-<body>
-<div id="root" class="root mn--max sb--stuck tm--expanded-hd">
-    <th:block th:replace="~{review/header_sidenav :: headerFragment}"/>
+        <div class="content__header content__boxed rounded-0">
+            <div class="content__wrap">
 
-    "이 부분에 view 페이지 관련 코드를 입력합니다!!"
 
+                <!-- Breadcrumb -->
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="../../">Home</a></li>
+                        <li class="breadcrumb-item"><a href="../../miscellaneous/">기록 · 리뷰</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">나의 기록</li>
+                    </ol>
+                </nav>
+                <!-- END : Breadcrumb -->
+
+
+                <h1 class="page-title mb-0 mt-2">나의 기록</h1>
+
+                <p class="lead">
+                    내가 작성한 기록을 보여줍니다
+                </p>
+            </div>
+        </div>
+
+        <div class="content__boxed">
+            <div class="content__wrap">
+                <div class="row mb-3">
+
+                    <div class="col-md-6">
+                        <div class="tab-base">
+
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="nav-item active" role="presentation">
+                                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#_dm-tabsSummary" type="button" role="tab" aria-controls="summary" aria-selected="true" tabindex="-1">기록달력</button>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content">
+                                <div class="flex-fill">
+                                    <div id="_dm-calendar" class="mb-3"></div>
+                                    <button type="button" class="btn btn-primary rounded-pill mb-3">일정추가</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">월별 기록 / 완독</h5>
+                                <!-- Bar Chart -->
+                                <canvas id="_dm-barChart"></canvas>
+                                <!-- END : Bar Chart -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-7">
+                        <div class="tab-base">
+
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="nav-item active" role="presentation">
+                                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#_dm-tabsComplete" type="button" role="tab" aria-controls="complete" aria-selected="true">완독</button>
+                                </li>
+
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#_dm-tabsProgress" type="button" role="tab" aria-controls="progress" aria-selected="false" tabindex="-1">진행중</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#_dm-tabsTarget" type="button" role="tab" aria-controls="target" aria-selected="false" tabindex="-1">목표</button>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content">
+                                <div id="_dm-tabsComplete" class="tab-pane fade active show" role="tabpanel" aria-labelledby="complete-tab">
+                                    <div class="row text-center mb-4">
+                                        <div class="col-md-3">
+                                            <img class="img-fluid" th:src="@{/img/sample-img/bookcover6.jpg}">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <img class="img-fluid" th:src="@{/img/sample-img/bookcover6.jpg}">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <img class="img-fluid" th:src="@{/img/sample-img/bookcover6.jpg}">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <img class="img-fluid" th:src="@{/img/sample-img/bookcover6.jpg}">
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-3">
+                                        <nav class="text-center" aria-label="Page navigation">
+                                            <ul class="pagination justify-content-center">
+                                                <li class="page-item disabled">
+                                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                                                </li>
+                                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                                <li class="page-item active" aria-current="page">
+                                                    <a class="page-link" href="#">2</a>
+                                                </li>
+                                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                                <li class="page-item">
+                                                    <a class="page-link" href="#">Next</a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+                                </div>
+
+                                <div id="_dm-tabsProgress" class="tab-pane fade" role="tabpanel" aria-labelledby="progress-tab">
+                                    <div class="row text-center mb-4">
+                                        <div class="col-md-3">
+                                            <img class="img-fluid" th:src="@{/img/sample-img/bookcover6.jpg}">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <img class="img-fluid" th:src="@{/img/sample-img/bookcover6.jpg}">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <img class="img-fluid" th:src="@{/img/sample-img/bookcover6.jpg}">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <img class="img-fluid" th:src="@{/img/sample-img/bookcover6.jpg}">
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-3">
+                                        <nav class="text-center" aria-label="Page navigation">
+                                            <ul class="pagination justify-content-center">
+                                                <li class="page-item disabled">
+                                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                                                </li>
+                                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                                <li class="page-item active" aria-current="page">
+                                                    <a class="page-link" href="#">2</a>
+                                                </li>
+                                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                                <li class="page-item">
+                                                    <a class="page-link" href="#">Next</a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+
+                                </div>
+
+                                <div id="_dm-tabsTarget" class="tab-pane fade" role="tabpanel" aria-labelledby="target-tab">
+                                    <div class="row text-center mb-4">
+                                        <div class="col-md-3">
+                                            <img class="img-fluid" th:src="@{/img/sample-img/bookcover6.jpg}">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <img class="img-fluid" th:src="@{/img/sample-img/bookcover6.jpg}">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <img class="img-fluid" th:src="@{/img/sample-img/bookcover6.jpg}">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <img class="img-fluid" th:src="@{/img/sample-img/bookcover6.jpg}">
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-3">
+                                        <nav class="text-center" aria-label="Page navigation">
+                                            <ul class="pagination justify-content-center">
+                                                <li class="page-item disabled">
+                                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                                                </li>
+                                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                                <li class="page-item active" aria-current="page">
+                                                    <a class="page-link" href="#">2</a>
+                                                </li>
+                                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                                <li class="page-item">
+                                                    <a class="page-link" href="#">Next</a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-5">
+                        <div class="tab-base mb-4">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="nav-item active" role="presentation">
+                                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#_dm-tabsKeyword" type="button" role="tab" aria-controls="keyword" aria-selected="true">키워드</button>
+                                </li>
+                            </ul>
+
+                            <!-- Tabs content -->
+                            <div class="tab-content">
+                                <div id="_dm-tabsKeyword" class="tab-pan fade active show" role="tabpanel" aria-labelledby="keyword-tab">
+                                    <div class="row text-center mb-4">
+                                        <div class="col-md-3">
+                                            <button class="btn btn-warning rounded-pill">키워드2</button>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="btn btn-warning rounded-pill">키워드1</button>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="btn btn-warning rounded-pill">키워드3</button>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="btn btn-warning rounded-pill">키워드3</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="row text-center">
+                                        <div class="col-md-3">
+                                            <button class="btn btn-warning rounded-pill">키워드4</button>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="btn btn-warning rounded-pill">키워드5</button>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="btn btn-warning rounded-pill">키워드6</button>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button class="btn btn-warning rounded-pill">키워드6</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="tab-base">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="nav-item active" role="presentation">
+                                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#_dm-tabsMemo" type="button" role="tab" aria-controls="memo" aria-selected="true">최근 기록</button>
+                                </li>
+                            </ul>
+
+                            <div id="_dm-tabsMemo" class="tab-pane fade active show" role="tabpane1" aria-labelledy="memo-tab">
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <img class="img-thumbnail" th:src="@{/img/sample-img/bookcover1.jpg}">
+                                            </div>
+                                            <div class="col-md-8">
+                                                <dl class="row mb-0">
+                                                    <dt class="col-sm-4">제목</dt>
+                                                    <dd class="col-sm-8">"다 된 밥에 재뿌리기"의 사회학적 정의</dd>
+
+                                                    <dt class="col-sm-4">저자</dt>
+                                                    <dd class="col-sm-8">코레오 오르날도</dd>
+
+                                                    <dt class="col-sm-4">읽은페이지(목표)</dt>
+                                                    <dd class="col-sm-8">20(420)</dd>
+
+                                                    <dt class="col-sm-4">남은 페이지(목표)</dt>
+                                                    <dd class="col-sm-8">400(420)</dd>
+
+                                                    <dt class="col-sm-4">기록내용</dt>
+                                                    <dd class="col-sm-8">
+                                                        기록 내용이 들어간다. 어쩌구 저쩌구 어디까지 글이 기록되나요 쭉 입력하면?
+                                                        아 여기 보니까 영역을 넘어가면 알아서 줄바꿈이 되는 구나 신기하네 ㅋㅋ
+                                                    </dd>
+
+                                                </dl>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
 </div>
-
-<!-- JAVASCRIPTS -->
-<!-- ~~~~~~~~~~ -->
-
-
-<!-- Popper JS [ OPTIONAL ] -->
-<script th:src="@{/vendors/popperjs/popper.min.js}"></script>
-
-
-<!-- Bootstrap JS [ OPTIONAL ] -->
-<script th:src="@{/vendors/bootstrap/bootstrap.min.js}"></script>
-
-
-<!-- Nifty JS [ OPTIONAL ] -->
-<script th:src="@{/js/nifty.js}"></script>
-
-
-<!-- Nifty Settings [ DEMO ] -->
-<script th:src="@{/js/demo-purpose-only.js}"></script>
-
-
 </body>
-
 </html>

@@ -14,4 +14,7 @@ public interface MemoMapper {
 
     //메모 목록
     public List<Memo> getMemoList(HashMap<String, Integer> map);
+
+    //메모 삽입
+    public void insertMemo(Memo memo);
 }
