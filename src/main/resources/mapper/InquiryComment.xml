@@ -11,7 +11,7 @@
     </insert>
 
     <!-- 댓글 조회 -->
-    <select id="selectCommentsByInquiryId" resultType="com.example.model.InquiryComment">
+    <select id="selectCommentsByInquiryId" resultType="com.bunge.inquiry.domain.InquiryComment">
         SELECT
             comment_id AS commentId,
             inquiry_id AS inquiryId,
