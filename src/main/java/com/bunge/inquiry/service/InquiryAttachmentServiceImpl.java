@@ -27,4 +27,5 @@ public class InquiryAttachmentServiceImpl implements InquiryAttachmentService {
     public void deleteAttachmentsByInquiryId(int inquiryId) {
         inquiryAttachmentMapper.deleteAttachmentsByInquiryId(inquiryId);
     }
+
 }
