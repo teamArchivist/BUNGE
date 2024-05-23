@@ -37,7 +37,10 @@ out/
 .vscode/
 
 ### application.properties ###
-*.sec
+application.properties.sec
+application.properties
+application.yaml
+application.yml
 
 ### Test ###
 JasyptConfigTest.java
