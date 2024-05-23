@@ -1,5 +1,6 @@
 package com.bunge.memo.service;
 
+import com.bunge.memo.domain.Memo;
 import com.bunge.memo.mapper.MemoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,4 +18,5 @@ public class MemoServiceImpl implements MemoService {
 
         return 0;
     }
+
 }

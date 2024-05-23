@@ -10,4 +10,9 @@ public interface MemberMapper {
 
     public int insert(Member m);
 
+    public Member idcheck(String id);
+
+    public Member nickcheck(String nick);
+
+    public Member emailcheck(String email);
 }
