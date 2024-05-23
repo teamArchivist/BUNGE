@@ -1,141 +1,107 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org/" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      lang="en" data-bs-theme="light" data-scheme="navy">
+<html th:replace="~{layout/layoutLogin :: layout (~{::title}, ~{::links}, ~{::section})}"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
-    <meta name="description" content="Nifty is a responsive admin dashboard template based on Bootstrap 5 framework. There are a lot of useful components.">
-    <meta charset="utf-8">
-
     <title>로그인</title>
-
-    <!-- Bootstrap CSS [ REQUIRED ] -->
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
-
-    <!-- Nifty CSS [ REQUIRED ] -->
-    <link rel="stylesheet" th:href="@{/css/nifty.min.css}">
-
-    <!-- Nifty Demo Icons [ OPTIONAL ] -->
-    <link rel="stylesheet" th:href="@{/css/demo-purpose/demo-icons.min.css}">
-
-    <!-- Demo purpose CSS [ DEMO ] -->
-    <link rel="stylesheet" th:href="@{/css/demo-purpose/demo-settings.min.css}">
-
-    <!--"각 페이지에 필요한 CSS / JS 를 입력합니다"-->
-
+    <links>
+        <!--/* link, script 태그 영역 */-->
+    </links>
 </head>
-
 <body>
 
-
-<!-- PAGE CONTAINER -->
-<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
-    <!-- CONTENTS -->
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
     <section id="content" class="content">
-        <div class="content__boxed w-100 min-vh-100 d-flex flex-column align-items-center justify-content-center">
-            <div class="content__wrap">
+        <!--/* 본문 content 영역 */-->
+            <div class="content__boxed w-100 min-vh-100 d-flex flex-column align-items-center justify-content-center">
+                <div class="content__wrap">
 
-                <!-- Login card -->
-                <div class="card shadow-none">
-                    <div class="card-body p-4">
+                    <!-- Login card -->
+                    <div class="card shadow-none">
+                        <div class="card-body p-4">
 
 
-                        <div class="text-center">
-                            <h1 class="h3">계정 로그인</h1>
-                            <p>귀하의 계정에 로그인하세요</p>
+                            <div class="text-center">
+                                <h1 class="h3">계정 로그인</h1>
+                                <p>귀하의 계정에 로그인하세요</p>
+                            </div>
+
+                            <form class="mt-4" name="loginform" th:action="@{/member/loginProcess}" method="post">
+
+                                <div class="mb-3">
+                                    <input type="text" name="id" class="form-control" placeholder="Username" autofocus>
+                                </div>
+
+                                <div class="mb-3">
+                                    <input type="password" name="pwd" class="form-control" placeholder="Password">
+                                </div>
+
+                                <div class="form-check">
+                                    <input id="_dm-loginCheck" name="remember-me" class="form-check-input" type="checkbox">
+                                    <label for="_dm-loginCheck" class="form-check-label">
+                                        아이디 저장하기
+                                    </label>
+                                </div>
+                                <div class="d-grid mt-3">
+                                    <button class="btn btn-primary btn-lg" type="submit">로그인</button>
+                                </div>
+                            </form>
+
+                            <div class="d-flex justify-content-between gap-md-5 mt-4">
+                                <a href="#" class="btn-link text-decoration-none">아이디 찾기</a>
+                                <a href="#" class="btn-link text-decoration-none">비밀번호찾기</a>
+                                <a href="join" class="btn-link text-decoration-none">새계정 생성</a>
+                            </div>
+                            <!--
+                                <div class="d-flex align-items-center justify-content-between border-top pt-3 mt-3">
+                                    <h5 class="m-0">Login with</h5>
+
+                                   Social media buttons
+                                <div class="ms-3">
+                                    <a href="#" class="btn btn-sm btn-icon btn-hover btn-primary text-inherit">
+                                        <i class="psi-facebook fs-5"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-sm btn-icon btn-hover btn-info text-inherit">
+                                        <i class="psi-twitter fs-5"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-sm btn-icon btn-hover btn-danger text-inherit">
+                                        <i class="psi-google-plus fs-5"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-sm btn-icon btn-hover btn-warning text-inherit">
+                                        <i class="psi-instagram fs-5"></i>
+                                    </a>
+                                </div>
+                                 END : Social media buttons
+
+                            </div>
+                        -->
+
                         </div>
-
-                        <form class="mt-4" name="loginform" th:action="@{/member/loginProcess}" method="post">
-
-                            <div class="mb-3">
-                                <input type="text" name="id" class="form-control" placeholder="Username" autofocus>
-                            </div>
-
-                            <div class="mb-3">
-                                <input type="password" name="pwd" class="form-control" placeholder="Password">
-                            </div>
-
-                            <div class="form-check">
-                                <input id="_dm-loginCheck" name="remember-me" class="form-check-input" type="checkbox">
-                                <label for="_dm-loginCheck" class="form-check-label">
-                                   아이디 저장하기
-                                </label>
-                            </div>
-                            <div class="d-grid mt-3">
-                                <button class="btn btn-primary btn-lg" type="submit">로그인</button>
-                            </div>
-                        </form>
-
-                        <div class="d-flex justify-content-between gap-md-5 mt-4">
-                            <a href="#" class="btn-link text-decoration-none">아이디 찾기</a>
-                            <a href="#" class="btn-link text-decoration-none">비밀번호찾기</a>
-                            <a href="join" class="btn-link text-decoration-none">새계정 생성</a>
-                        </div>
-                        <!--
-                            <div class="d-flex align-items-center justify-content-between border-top pt-3 mt-3">
-                                <h5 class="m-0">Login with</h5>
-
-                               Social media buttons
-                            <div class="ms-3">
-                                <a href="#" class="btn btn-sm btn-icon btn-hover btn-primary text-inherit">
-                                    <i class="psi-facebook fs-5"></i>
-                                </a>
-                                <a href="#" class="btn btn-sm btn-icon btn-hover btn-info text-inherit">
-                                    <i class="psi-twitter fs-5"></i>
-                                </a>
-                                <a href="#" class="btn btn-sm btn-icon btn-hover btn-danger text-inherit">
-                                    <i class="psi-google-plus fs-5"></i>
-                                </a>
-                                <a href="#" class="btn btn-sm btn-icon btn-hover btn-warning text-inherit">
-                                    <i class="psi-instagram fs-5"></i>
-                                </a>
-                            </div>
-                             END : Social media buttons
-
-                        </div>
-                    -->
-
                     </div>
+
+                    <!-- END : Login card -->
+
+
+                    <!-- Action buttons -->
+                    <div class="d-flex justify-content-center gap-3 mt-5">
+                        <button type="button" onclick="window.history.back()" class="btn btn-light hstack gap-2">
+                            <i class="psi-left-4 fs-5 opacity-30"></i>
+                            <span class="vr"></span>
+                            뒤로가기
+                        </button>
+                        <!--
+                        <a href="./" class="btn btn-primary hstack gap-2">
+                            <i class="psi-home fs-5"></i>
+                            <span class="vr"></span>
+                            Return home
+                        </a>
+                        -->
+                    </div>
+                    <!-- END : Action buttons -->
+
+
                 </div>
-
-                <!-- END : Login card -->
-
-
-                <!-- Action buttons -->
-                <div class="d-flex justify-content-center gap-3 mt-5">
-                    <button type="button" onclick="window.history.back()" class="btn btn-light hstack gap-2">
-                        <i class="psi-left-4 fs-5 opacity-30"></i>
-                        <span class="vr"></span>
-                        뒤로가기
-                    </button>
-                    <!--
-                    <a href="./" class="btn btn-primary hstack gap-2">
-                        <i class="psi-home fs-5"></i>
-                        <span class="vr"></span>
-                        Return home
-                    </a>
-                    -->
-                </div>
-                <!-- END : Action buttons -->
-
-
             </div>
-        </div>
-
 
     </section>
 
-    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-    <!-- END - CONTENTS -->
-</div>
-
-
-
-    <!--"이 부분에 view 페이지 관련 별도로 필요한 플러그인 / js 등을 추가합니다"-->
-
-
 </body>
-
 </html>

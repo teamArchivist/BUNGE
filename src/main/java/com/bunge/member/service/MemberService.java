@@ -9,5 +9,11 @@ public interface MemberService {
 
     public int insert(Member m);
 
-    Member member_info(String id);
+    public  Member memberinfo(String id);
+
+    public int idcheck(String id);
+
+    public int nickcheck(String nick);
+
+    public int emailcheck(String email);
 }
