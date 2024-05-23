@@ -33,12 +33,20 @@
    <title th:replace="${title}">레이아웃 타이틀</title>
 
    <links th:replace="${links}">레이아웃 링크</links>
+
+   <script>
+      $(function () {
+         $("#logout").click(function(event) {
+            event.preventDefault();
+            $("form[name=logout]").submit();
+         })
+      })
+   </script>
 </head>
 
    <!-- PAGE CONTAINER -->
    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
    <div id="root" class="root mn--max sb--stuck tm--expanded-hd">
-
       <!-- HEADER -->
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <header class="header">
