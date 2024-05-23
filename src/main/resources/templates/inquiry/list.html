@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+   <title>Inquiry List</title>
+   <links>
+      <!-- JAVASCRIPTS -->
+      <script th:src="@{/js/list.js}"></script>
+
+      <!-- Tabulator Scripts [ OPTIONAL ] -->
+      <script th:src="@{/vendors/tabulator/tabulator.min.js}"></script>
+
+      <!-- Initialize [ SAMPLE ] -->
+      <script th:src="@{/pages/tabulator.js}"></script>
+
+   </links>
+</head>
+
+<body>
+<section>
+   <section id="content" class="content">
+      <div class="content__boxed">
+         <div class="content__wrap">
+
+            <div class="card">
+               <div class="card-header">
+                  <h3 class="h4 card-title">Q&A</h3>
+
+                  <!-- Toolbar -->
+                  <div class="d-flex gap-2 py-3" style="max-width:800px">
+                     <select id="_dm-filterField" class="form-select">
+                        <option value="none">Select field</option>
+                        <option value="name">Name</option>
+                        <option value="gender">Gender</option>
+                        <option value="rating">Rating</option>
+                        <option value="col">Favourite Colour</option>
+                        <option value="dob">Date Of Birth</option>
+                        <option value="car">Drives</option>
+                        <option value="function">Drives & Rating < 3</option>
+                     </select>
+
+                     <select id="_dm-filterType" class="form-select">
+                        <option value="like">Like</option>
+                        <option value="=">=</option>
+                        <option value="<">
+                           << /option>
+                        <option value="<=">
+                           <=< /option>
+                        <option value=">">></option>
+                        <option value=">=">>=</option>
+                        <option value="!=">!=</option>
+                     </select>
+
+                     <input id="_dm-filterValue" class="form-control" type="text" placeholder="value to filter">
+                     <button id="_dm-filterClear" class="btn btn-primary text-nowrap">Clear Filter</button>
+                     <button class="btn btn-primary text-nowrap" id="inquiry_add">
+                        <i class="demo-psi-add fs-5"></i>
+                        <span class="vr"></span>
+                        Add New
+                     </button>
+                  </div>
+                  <!-- END : Toolbar -->
+
+               </div>
+               <div class="card-body">
+                  <!-- Filter Data -->
+                  <div class="container" >
+                     <th:block th:if="${listcount > 0}">
+                     <table class="table">
+                        <tr>
+                           <td>번호</td>
+                           <td>분류</td>
+                           <td>제목</td>
+                           <td>답변여부</td>
+                           <td>작성자</td>
+                           <td>등록일</td>
+                        </tr>
+                        <tr>
+                           <td>1</td>
+                           <td>반품문의</td>
+                           <td>반품관련 문의 합니다</td>
+                           <td>답변완료</td>
+                           <td>김대영</td>
+                           <td>24.05.11</td>
+                        </tr>
+                        <tr>
+                           <td>2</td>
+                           <td>반품문의</td>
+                           <td>RE: 답변드립니다.</td>
+                           <td></td>
+                           <td>관리자</td>
+                           <td>24.05.11</td>
+                        </tr>
+                        <tr>
+                           <td>3</td>
+                           <td>탈퇴문의</td>
+                           <td>탈퇴관련 문의 합니다</td>
+                           <td>답변 중</td>
+                           <td>엄희원</td>
+                           <td>24.05.11</td>
+                        </tr>
+                     </table>
+                     <!-- END : Filter Data -->
+                     </th:block>
+                     <h3 th:if="${listcount == 0}" style="text-align:center">등록된 글이 없습니다.</h3>
+                  </div>
+
+                  <nav class="text-align-center mt-5" aria-label="Table navigation">
+                     <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                           <a class="page-link">Previous</a>
+                        </li>
+                        <li class="page-item active" aria-current="page">
+                           <span class="page-link">1</span>
+                        </li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+                        <li class="page-item"><a class="page-link" href="#">5</a></li>
+                        <li class="page-item">
+                           <a class="page-link" href="#">Next</a>
+                        </li>
+                     </ul>
+                  </nav>
+               </div>
+
+
+            </div>
+         </div>
+         <!-- FOOTER -->inquiry_comment
+
+         <footer class="mt-auto">
+            <div class="content__boxed">
+               <div class="content__wrap py-3 py-md-1 d-flex flex-column flex-md-row align-items-md-center">
+                  <div class="text-nowrap mb-4 mb-md-0">Copyright &copy; 2024 <a href="#" class="ms-1 btn-link fw-bold">My Company</a></div>
+                  <nav class="nav flex-column gap-1 flex-md-row gap-md-3 ms-md-auto">
+                     <a class="nav-link link-offset-3 link-underline-hover px-0" href="#">Policy Privacy</a>
+                     <a class="nav-link link-offset-3 link-underline-hover px-0" href="#">Terms and conditions</a>
+                     <a class="nav-link link-offset-3 link-underline-hover px-0" href="#">Contact Us</a>
+                  </nav>
+               </div>
+            </div>
+         </footer>
+
+         <!-- END - FOOTER -->
+      </div>
+   </section>
+</section>
+</body>
+</html>
+
+
