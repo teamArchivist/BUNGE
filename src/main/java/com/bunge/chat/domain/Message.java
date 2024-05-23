@@ -11,7 +11,7 @@ public class Message {
     private String type;
     @Setter
     private String sender;
-    private String receiver;
+    private String channelId;
     private Object data;
 
     public void newConnect() {
