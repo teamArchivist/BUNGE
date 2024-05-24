@@ -6,6 +6,10 @@
    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
    <meta name="description" content="Nifty is a responsive admin dashboard template based on Bootstrap 5 framework. There are a lot of useful components.">
+   <th:block sec:authorize="isAuthenticated()">
+   <meta th:name ="_csrf" th:content = "${_csrf.token}">
+   <meta th:name ="_csrf_header" th:content = "${_csrf.headerName}">
+   </th:block>
 
    <!-- STYLESHEETS -->
    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -34,11 +38,17 @@
 
    <links th:replace="${links}">레이아웃 링크</links>
 
-   <script>
+   <script th:inline="javascript">
       $(function () {
          $("#logout").click(function(event) {
             event.preventDefault();
             $("form[name=logout]").submit();
+         })
+      })
+      $(function () {
+         $("#login").click(function(event) {
+            event.preventDefault();
+            $("form[name=login]").submit();
          })
       })
    </script>
@@ -46,9 +56,11 @@
 
    <!-- PAGE CONTAINER -->
    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-   <div id="root" class="root mn--max sb--stuck tm--expanded-hd">
+   <!--< id="root" class="root mn--max sb--stuck tm--expanded-hd"> -->
       <!-- HEADER -->
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+
+
       <header class="header">
          <div class="header__inner">
 
@@ -72,12 +84,12 @@
                <!-- Content Header - Left Side: -->
                <div class="header__content-start">
 
-
                   <!-- Navigation Toggler -->
+                  <!--
                   <button type="button" class="nav-toggler header__btn btn btn-icon btn-sm" aria-label="Nav Toggler">
                      <i class="demo-psi-list-view"></i>
                   </button>
-
+                  -->
                   <div class="vr mx-1 d-none d-md-block"></div>
 
                </div>
@@ -162,55 +174,70 @@
                      <button class="header__btn btn btn-icon btn-sm" type="button" data-bs-toggle="dropdown" aria-label="User dropdown" aria-expanded="false">
                         <i class="demo-psi-male"></i>
                      </button>
-
-
-                     <!-- User dropdown menu -->
+                     <th:block sec:authorize="isAnonymous()">
                      <div class="dropdown-menu dropdown-menu-end w-md-450px">
-
-                        <!-- User dropdown header -->
-                        <div class="d-flex align-items-center border-bottom px-3 py-2">
-                           <div class="flex-shrink-0">
-                              <img class="img-sm rounded-circle" th:src="@{/img/profile-photos/4.png}" alt="Profile Picture" loading="lazy">
-                           </div>
-                           <div class="flex-grow-1 ms-3">
-                              <h5 class="mb-0">admin</h5>
-                              <span class="text-body-secondary fst-italic">admin@google.com</span>
-                           </div>
-                        </div>
-
-                        <div class="row">
-                           <div class="col-md-7">
-
-                              <!-- Simple widget and reports -->
-                              <div class="list-group list-group-borderless">
-                                 <div class="list-group-item text-center mb-3">
-                                    <p class="h1 display-1 text-primary fw-semibold">3,555</p>
-                                    <p class="h6 mb-0"><i class="demo-pli-basket-coins fs-3 me-2"></i>활동점수</p>
-                                    <small class="text-body-secondary">활발한 책마니</small>
-                                 </div>
-                              </div>
-
-
-                           </div>
-
-                           <div class="col-md-5">
-
                               <!-- User menu link -->
                               <div class="list-group list-group-borderless h-100 py-3">
-                                 <a href="#" class="list-group-item list-group-item-action">
-                                    <i class="demo-pli-male fs-5 me-2"></i> 마이페이지
-                                 </a>
-                                 <a href="#" class="list-group-item list-group-item-action">
-                                    <i class="demo-pli-unlock fs-5 me-2"></i> Logout
-                                 </a>
+                                 <form th:action="@{/member/login}" method="post" style="margin-bottom:0px" name="logout">
+                                    <a th:href="@{login}" id="login" class="list-group-item list-group-item-action">
+                                       <i class="demo-pli-unlock fs-5 me-2"></i> login
+                                    </a>
+                                 </form>
+                              </div>
+                     </div>
+                     </th:block>
+
+                     <th:block sec:authorize="isAuthenticated()">
+                        <!-- User dropdown menu -->
+                        <div class="dropdown-menu dropdown-menu-end w-md-450px">
+
+                           <!-- User dropdown header -->
+                           <div class="d-flex align-items-center border-bottom px-3 py-2">
+                              <div class="flex-shrink-0">
+                                 <img class="img-sm rounded-circle" th:src="@{/img/profile-photos/4.png}" alt="Profile Picture" loading="lazy">
+                              </div>
+                              <div class="flex-grow-1 ms-3">
+                                 <h5 class="mb-0" sec:authentication="name"></h5>
+                                 <!--<span class="text-body-secondary fst-italic">admin@google.com</span> -->
+                              </div>
+                           </div>
+
+                           <div class="row">
+                              <div class="col-md-7">
+
+                                 <!-- Simple widget and reports -->
+                                 <div class="list-group list-group-borderless">
+                                    <div class="list-group-item text-center mb-3">
+                                       <p class="h1 display-1 text-primary fw-semibold">3,555</p>
+                                       <p class="h6 mb-0"><i class="demo-pli-basket-coins fs-3 me-2"></i>활동점수</p>
+                                       <small class="text-body-secondary">활발한 책마니</small>
+                                    </div>
+                                 </div>
+
+
                               </div>
 
-                           </div>
-                        </div>
+                              <div class="col-md-5">
 
-                     </div>
-                  </div>
-                  <!-- End - User dropdown -->
+                                 <!-- User menu link -->
+                                 <div class="list-group list-group-borderless h-100 py-3">
+                                    <a th:href="@{member/update}" class="list-group-item list-group-item-action">
+                                       <i class="demo-pli-male fs-5 me-2"></i> 마이페이지
+                                    </a>
+                                    <form th:action="@{/member/logout}" method="post" style="margin-bottom:0px" name="logout">
+                                    <a th:href="@{logout}" id="logout" class="list-group-item list-group-item-action">
+                                       <i class="demo-pli-unlock fs-5 me-2"></i> Logout
+                                    </a>
+                                    </form>
+                                 </div>
+
+                              </div>
+                           </div>
+
+                        </div>
+                        </div>
+                     </th:block>
+                        <!-- End - User dropdown -->
 
 
                   <div class="vr mx-1 d-none d-md-block"></div>
@@ -233,8 +260,8 @@
 
                </div>
             </div>
-         </div>
       </header>
+
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- END - HEADER -->
 
@@ -251,6 +278,7 @@
    <div class="scroll-container">
       <a href="#root" class="scroll-page ratio ratio-1x1" aria-label="Scroll button"></a>
    </div>
+
    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
    <!-- END - SCROLL TO TOP BUTTON -->
 

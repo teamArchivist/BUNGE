@@ -49,7 +49,7 @@ public class SecurityConfig {
 				(au) -> au
 						.requestMatchers("/admin/memberlist" ,"/admin/info", "/admin/delete")
 							.hasAuthority("superadmin")
-						.requestMatchers("memer/update")
+						.requestMatchers("member/update")
 							.hasAnyAuthority("member", "admin" ,"superadmin")
 						.requestMatchers("/board/**")
 							.hasAnyAuthority("admin", "superadmin")
@@ -57,7 +57,6 @@ public class SecurityConfig {
 		);
 
 		//로그인
-		http.csrf((csrf) -> csrf.disable());
 		//내가 만든 로그인 페이지로 이동한다.
 		http.formLogin((formLogin) -> formLogin.loginPage("/templates/member/login")
 				.loginProcessingUrl("/member/loginProcess")
@@ -78,6 +77,7 @@ public class SecurityConfig {
 				.tokenRepository(tokenRepository()));
 
 		http.exceptionHandling((ex) -> ex.accessDeniedHandler(customAccessDeniedHandler));
+
 		return http.build();
 	}
 

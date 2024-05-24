@@ -1,31 +1,28 @@
 <!DOCTYPE html>
-<html th:replace="~{layout/layoutLogin :: layout (~{::title}, ~{::links}, ~{::section})}"
-      xmlns:th="http://www.thymeleaf.org">
-<head>
+<html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}"
+      xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <title>임시페이지</title>
     <links>
         <!--/* link, script 태그 영역 */-->
-        <script th:src="@{/js/jquery-3.7.1.js}"></script>
+
     </links>
-    <script>
-        $(function () {
-            $("#logout").click(function(event) {
-                event.preventDefault();
-                $("form[name=logout]").submit();
-            })
-        })
-    </script>
 </head>
 <body>
+<th:block sec:authorize="isAnonymous()">
 <section id="content" class="content">
+    <div th:if="${welcomemsg != null}">
+        <h1 th:text="${welcomemsg}"></h1>
+    </div>
+    <div th:if="${welcomemsg == null}">
+        <h1>Welcome to the Member Page</h1>
+    </div>
     <!-- 현재 사용자가 인증된 경우에만 참(true)을 반환합니다. -->
         <!--/* 본문 content 영역 */-->
-            <div>로그인 완료</div>
-            <form th:action="@{/member/logout}" method="post" name="logout">
-                <a class="nav-link" href="#" id="logout">
-                    로그아웃</a>
-                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
-            </form>
+    <div>로그인 완료</div>
+    <form th:action="@{/member/logout}" method="post" name="logout">
+        <button type="submit" class="nav-link" href="#" id="logout">로그아웃</button>
+    </form>
 </section>
 </body>
+</th:block>
 </html>
