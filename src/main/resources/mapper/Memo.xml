@@ -4,4 +4,8 @@
 
 <mapper namespace="com.bunge.memo.mapper.MemoMapper">
 
+    <insert id="addMemo">
+        insert into memo
+    </insert>
+
 </mapper>

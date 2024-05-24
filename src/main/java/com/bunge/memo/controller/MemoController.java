@@ -26,13 +26,20 @@ public class MemoController {
     public MemoController(MemoService memoservice) { this.memoservice = memoservice; }
 
     //기록·리뷰 -> 나의 기록 눌렀을 때 처음 페이지
-    @GetMapping(value="/mine")
-    public ModelAndView memoList(@RequestParam(value="page", defaultValue="1") int page,
-                                 ModelAndView mv) {
+    @GetMapping("/mine")
+    public ModelAndView memoMain(@RequestParam(value="page", defaultValue="1") int page, ModelAndView mv) {
 
         mv.setViewName("memo/memo_mine");
 
         return mv;
+    }
+
+    @PostMapping("/add")
+    public String addMemo(Memo memo, HttpServletRequest request) {
+
+        memoservice.addMemo(memo);
+        logger.info(memo.toString());
+        return "redirect:/mine";
     }
 
 

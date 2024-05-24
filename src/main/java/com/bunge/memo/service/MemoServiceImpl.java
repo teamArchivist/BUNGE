@@ -8,15 +8,17 @@ import org.springframework.stereotype.Service;
 @Service
 public class MemoServiceImpl implements MemoService {
 
-    private MemoMapper dao;
+    private MemoMapper memoMapper;
 
     @Autowired
-    public MemoServiceImpl(MemoMapper dao) { this.dao = dao;}
+    public MemoServiceImpl(MemoMapper memoMapper) {
+        this.memoMapper = memoMapper;
+    }
 
     @Override
-    public int getListcount() {
-
-        return 0;
+    public void addMemo(Memo memo) {
+        memoMapper.addMemo(memo);
     }
+
 
 }
