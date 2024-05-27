@@ -37,16 +37,7 @@ public class CustomUserDatilsService implements UserDetailsService{
 
 			throw new UsernameNotFoundException("User not found with username: " + username);
 		}
-		//GrantedAuthority : 인증 갸채애 부여된 권한을 나타내기 위한 인터페이스로 이를 구현한 구현체는 
-		//					 권한을 문자열로 넣어주면 됩니다.
-		//SimpleGrantedAuthority : GrantedAuthority의 구현체입니다,
-		Collection<SimpleGrantedAuthority> role = new ArrayList<SimpleGrantedAuthority>();
-		
-		role.add(new SimpleGrantedAuthority(member.getRole()));
-
-		UserDetails user = new User(username, member.getPwd(), role);
-
-		return user;
+		return member;
 	}
 
 }

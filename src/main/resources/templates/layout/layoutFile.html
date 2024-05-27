@@ -184,11 +184,11 @@
                         <!-- User dropdown header -->
                         <div class="d-flex align-items-center border-bottom px-3 py-2">
                            <div class="flex-shrink-0">
-                              <img class="img-sm rounded-circle" th:src="@{/img/profile-photos/4.png}" alt="Profile Picture" loading="lazy">
+                              <img class="img-sm rounded-circle" sec:authentication="principal.profile" alt="Profile Picture" loading="lazy">
                            </div>
                            <div class="flex-grow-1 ms-3">
                               <h5 class="mb-0" sec:authentication="name"></h5>
-                              <!--<span class="text-body-secondary fst-italic">admin@google.com</span> -->
+                              <span class="text-body-secondary fst-italic" sec:authentication="principal.email"></span>
                            </div>
                         </div>
 
@@ -198,12 +198,10 @@
                               <!-- Simple widget and reports -->
                               <div class="list-group list-group-borderless">
                                  <div class="list-group-item text-center mb-3">
-                                    <p class="h1 display-1 text-primary fw-semibold">3,555</p>
-                                    <p class="h6 mb-0"><i class="demo-pli-basket-coins fs-3 me-2"></i>활동점수</p>
+                                    <p class="h1 display-1 text-primary fw-semibold" sec:authentication="principal.readpoint"></p>
                                     <small class="text-body-secondary">활발한 책마니</small>
                                  </div>
                               </div>
-
 
                            </div>
 
@@ -274,7 +272,7 @@
 
                   <!-- Profile picture  -->
                   <div class="mininav-toggle text-center py-2">
-                     <img class="mainnav__avatar img-md rounded-circle hv-oc" th:src="@{/img/profile-photos/1.png}" alt="Profile Picture">
+                     <img class="mainnav__avatar img-md rounded-circle hv-oc" sec:authentication="principal.profile" alt="Profile Picture">
                   </div>
 
 
@@ -285,11 +283,10 @@
                         <!-- User name and position -->
                         <button class="mainnav-widget-toggle d-block btn border-0 p-2" data-bs-toggle="collapse" data-bs-target="#usernav" aria-expanded="false" aria-controls="usernav">
                            <span class="dropdown-toggle d-flex justify-content-center align-items-center">
-                              <h5 class="mb-0 me-3" sec:authentication="name"></h5>
+                              <h5 class="mb-0 me-3" sec:authentication="principal.id"></h5>
                            </span>
-                           <small class="text-body-secondary">닉네임</small>
+                           <small class="text-body-secondary" sec:authentication="principal.nick"></small>
                         </button>
-
 
                         <!-- Collapsed user menu -->
                         <div id="usernav" class="nav flex-column collapse">
@@ -314,38 +311,8 @@
                <div class="mainnav__categoriy py-3">
                   <ul class="mainnav__menu nav flex-column">
 
-
-
                      <!-- Link with submenu -->
-                     <li class="nav-item has-sub">
-
-
-                        <a href="#" class="mininav-toggle nav-link active"><i class="demo-pli-home fs-5 me-2"></i>
-                           <span class="nav-label ms-1">dashboard</span>
-                        </a>
-
-                        <!-- Dashboard submenu list -->
-                        <ul class="mininav-content nav collapse">
-                           <li data-popper-arrow class="arrow"></li>
-                           <li class="nav-item">
-                              <a href="#" class="nav-link">회원통계</a>
-                           </li>
-                           <li class="nav-item">
-                              <a href="#" class="nav-link">사이트통계</a>
-                           </li>
-                           <li class="nav-item">
-                              <a href="#" class="nav-link">게시글통계</a>
-                           </li>
-                           
-
-                        </ul>
-                        <!-- END : Dashboard submenu list -->
-
-                     </li>
-                     <!-- END : Link with submenu -->
-
-                     <!-- Link with submenu -->
-                     <li class="nav-item has-sub" sec:authorize="hasAnyAuthority('admin','superadmin')">>
+                     <li class="nav-item has-sub" sec:authorize="hasAnyAuthority('admin','superadmin')">
 
                         <a href="#" class="mininav-toggle nav-link collapsed"><i class="demo-pli-split-vertical-2 fs-5 me-2"></i>
                            <span class="nav-label ms-1">관리자 기능</span>
@@ -358,10 +325,10 @@
                               <a href="#" class="nav-link">게시글</a>
                            </li>
                            <li class="nav-item">
-                              <a href="#" class="nav-link">회원</a>
+                              <a href="#" class="nav-link">회원관리</a>
                            </li>
                            <li class="nav-item">
-                              <a href="#" class="nav-link">신고</a>
+                              <a href="#" class="nav-link">신고관리</a>
                            </li>
                            <li class="nav-item">
                               <a href="#" class="nav-link">임시 정지 목록</a>
@@ -391,7 +358,7 @@
                               <a href="#" class="nav-link">리뷰 둘러보기</a>
                            </li>
                            <li class="nav-item">
-                              <a href="#" class="nav-link">나의 기록</a>
+                              <a th:href="@{/memo/mine}" class="nav-link">나의 기록</a>
                            </li>
                         </ul>
                         <!-- END : Layouts submenu list -->
@@ -437,7 +404,6 @@
 
                      </li>
                      <!-- END : Link with submenu -->
-
 
 
                      <!-- Link with submenu -->
