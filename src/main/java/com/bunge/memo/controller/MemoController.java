@@ -44,6 +44,14 @@ public class MemoController {
         return "redirect:mine";
     }
 
+    @GetMapping("/search")
+    public ModelAndView search(@RequestParam(value="page", defaultValue="1") int page, ModelAndView mv) {
+
+        mv.setViewName("memo/book_search");
+
+        return mv;
+    }
+
 
 
 
