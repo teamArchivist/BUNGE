@@ -34,12 +34,14 @@ public class MemoController {
         return mv;
     }
 
-    @PostMapping("/add")
+    @PostMapping("/addmemo")
     public String addMemo(Memo memo, HttpServletRequest request) {
 
         memoservice.addMemo(memo);
+
         logger.info(memo.toString());
-        return "redirect:/mine";
+
+        return "redirect:mine";
     }
 
 

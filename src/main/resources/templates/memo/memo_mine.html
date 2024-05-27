@@ -51,13 +51,9 @@
                                 </li>
                             </ul>
 
-                            <div class="tab-content">
-                                <div id="_dm-tabsChart" class="tab-pane fade active show" role="tabpanel" aria-labelledby="chart-tab">
                                     <!-- Bar Chart -->
                                     <canvas id="_dm-barChart"></canvas>
                                     <!-- END : Bar Chart -->
-                                </div>
-                            </div>
 
                         </div>
 
@@ -363,11 +359,32 @@
                                                         </div>
 
                                                         <!-- Block styled form -->
-                                                        <form class="row">
+                                                        <form th:action="addmemo" method="post" class="row">
+
+                                                            <div class="col-md-12 mb-3">
+                                                                <label for="_dm-inputNames" class="form-label">작성자</label>
+                                                                <input name="id" id="_dm-inputNames" type="text" class="form-control" value="admin" readonly>
+                                                            </div>
 
                                                             <div class="col-md-12 mb-3">
                                                                 <label for="_dm-inputPages" class="form-label">읽은 페이지</label>
-                                                                <input id="_dm-inputPages" type="text" class="form-control" placeholder="읽은 페이지 수를 입력해주세요. 숫자만 가능합니다 (1, 6, 15 ...)">
+                                                                <input name="readpages" id="_dm-inputPages" type="text" class="form-control" placeholder="읽은 페이지 수를 입력해주세요. 숫자만 가능합니다 (1, 6, 15 ...)" required>
+                                                            </div>
+
+                                                            <div class="col-md-12 mb-3">
+                                                                <label class="form-label">공개 · 비공개</label>
+                                                                <div class="form-floating mb-3">
+                                                                    <select class="form-select" id="floatingSelect" aria-label="Floating label select example" name="ispublic">
+                                                                        <option value="Y" selected>공개</option>
+                                                                        <option value="N">비공개</option>
+                                                                    </select>
+                                                                    <label for="floatingSelect">공개 또는 비공개 여부를 정할 수 있습니다</label>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-12 mb-3">
+                                                                <label for="_dm-Title" class="form-label">제목</label>
+                                                                <input name="title" id="_dm-Title" type="text" class="form-control" placeholder="제목을 입력해주세요 (최대 100자)" required>
                                                             </div>
 
                                                             <div class="col-md-12 mb-3">
@@ -375,7 +392,7 @@
 
                                                                 <div>
                                                                     <!-- Custom colors -->
-                                                                    <select class="form-select form-tags" id="validationTagsShow" name="tags_show[]" multiple data-show-all-suggestions="true">
+                                                                    <select class="form-select form-tags" id="validationTagsShow" name="keyword" multiple data-show-all-suggestions="true">
                                                                         <option selected disabled hidden value="">키워드를 고를 수 있습니다</option>
                                                                         <option value="1">행복</option>
                                                                         <option value="2" data-badge-style="primary">강력추천</option>
@@ -383,8 +400,8 @@
                                                                         <option value="4" data-badge-style="info">필독</option>
                                                                         <option value="5" data-badge-style="success">프로파일러</option>
                                                                         <option value="6" data-badge-style="warning">책마니인기지수TOP100</option>
-                                                                        <option value="6" data-badge-style="danger">책마니인기지수TOP50</option>
-                                                                        <option value="6" data-badge-class="bg-light text-warning">책마니인기지수TOP10</option>
+                                                                        <option value="7" data-badge-style="danger">책마니인기지수TOP50</option>
+                                                                        <option value="8" data-badge-class="bg-light text-warning">책마니인기지수TOP10</option>
                                                                     </select>
                                                                     <div class="invalid-feedback">Please select a valid tag.</div>
                                                                     <!-- END : Custom colors -->
@@ -395,7 +412,12 @@
 
                                                             <div class="col-md-12">
                                                                 <label class="form-label">내용</label>
-                                                                <textarea class="form-control" placeholder="내용을 입력해주세요 (최대 500자)" rows="14"></textarea>
+                                                                <textarea name="content" class="form-control" placeholder="내용을 입력해주세요 (최대 500자)" rows="14" required></textarea>
+                                                            </div>
+
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                                                                <button type="submit" class="btn btn-primary">등록</button>
                                                             </div>
 
                                                         </form>
@@ -403,10 +425,6 @@
 
                                                     </div>
 
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                                                        <button type="submit" class="btn btn-primary">등록</button>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
