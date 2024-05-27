@@ -4,4 +4,14 @@
 
 <mapper namespace="com.bunge.memo.mapper.MemoMapper">
 
+    <insert id="addMemo">
+        <selectKey resultType="int" order="BEFORE" keyProperty="no">
+            select coalesce(max(no), 0)+1 from memo
+        </selectKey>
+        insert into memo
+        (no, id, ispublic, readpages, title, keyword, content, created, lastmodified)
+        values
+        (#{no}, #{id}, #{ispublic}, #{readpages}, #{title}, #{keyword}, #{content}, now(), now())
+    </insert>
+
 </mapper>
