@@ -51,7 +51,7 @@ public class SecurityConfig {
 							.hasAuthority("superadmin")
 						.requestMatchers("member/update")
 							.hasAnyAuthority("member", "admin" ,"superadmin")
-						.requestMatchers("/board/**")
+						.requestMatchers("/admin/**")
 							.hasAnyAuthority("admin", "superadmin")
 						.requestMatchers("/**").permitAll()
 		);

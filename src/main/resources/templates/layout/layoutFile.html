@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html th:fragment="layout (title, links, content)" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://thymeleaf.org/extras/spring-security"
+<html th:fragment="layout (title, links, content)"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       lang="en" data-bs-theme="light" data-scheme="navy">
 
 <head>
@@ -42,7 +44,7 @@
    </style>
    <script th:inline="javascript">
       $(function () {
-         $("#logout").click(function(event) {
+         $(".logout").click(function(event) {
             event.preventDefault();
             $("form[name=logout]").submit();
          })
@@ -72,7 +74,7 @@
 
                   <!-- Brand title -->
                   <div class="brand-title">
-                     <a th:href="@{#}">BUNGE</a>
+                     <a th:href="@{/main}">BUNGE</a>
                   </div>
 
                </div>
@@ -175,18 +177,6 @@
                      <button class="header__btn btn btn-icon btn-sm" type="button" data-bs-toggle="dropdown" aria-label="User dropdown" aria-expanded="false">
                         <i class="demo-psi-male"></i>
                      </button>
-                     <th:block sec:authorize="isAnonymous()">
-                        <div class="dropdown-menu dropdown-menu-end w-md-450px">
-                           <!-- User menu link -->
-                           <div class="list-group list-group-borderless h-100 py-3">
-                              <form th:action="@{/member/login}" method="post" style="margin-bottom:0px" name="logout">
-                                 <a th:href="@{login}" id="login" class="list-group-item list-group-item-action">
-                                    <i class="demo-pli-unlock fs-5 me-2"></i> login
-                                 </a>
-                              </form>
-                           </div>
-                        </div>
-                     </th:block>
 
                      <!-- User dropdown menu -->
                      <div class="dropdown-menu dropdown-menu-end w-md-450px" sec:authorize="isAuthenticated()">
@@ -225,7 +215,7 @@
                                     <i class="demo-pli-male fs-5 me-2"></i> 마이페이지
                                  </a>
                                  <form th:action="@{/member/logout}" method="post" style="margin-bottom:0px" name="logout">
-                                    <a th:href="@{logout}" id="logout" class="list-group-item list-group-item-action">
+                                    <a th:href="@{logout}" class="list-group-item list-group-item-action logout">
                                        <i class="demo-pli-unlock fs-5 me-2"></i> Logout
                                     </a>
                                  </form>
@@ -297,7 +287,7 @@
                            <span class="dropdown-toggle d-flex justify-content-center align-items-center">
                               <h5 class="mb-0 me-3" sec:authentication="name"></h5>
                            </span>
-                           <small class="text-body-secondary">관리자</small>
+                           <small class="text-body-secondary">닉네임</small>
                         </button>
 
 
@@ -308,13 +298,10 @@
                               <span class="ms-1">마이페이지</span>
                            </a>
                            <form th:action="@{/member/logout}" method="post" style="margin-bottom:0px" name="logout">
-                           <a th:href="@{#}" class="nav-link">
-                              <i class="demo-pli-unlock fs-5 me-2"></i>
-                              <span class="ms-1">Logout</span>
-                           </a>
+                              <a th:href="@{logout}" class="list-group-item list-group-item-action logout">
+                                 <i class="demo-pli-unlock fs-5 me-2"></i> Logout</a>
                            </form>
                         </div>
-
 
                      </div>
                   </div>
@@ -358,8 +345,7 @@
                      <!-- END : Link with submenu -->
 
                      <!-- Link with submenu -->
-                     <li class="nav-item has-sub">
-
+                     <li class="nav-item has-sub" sec:authorize="hasAnyAuthority('admin','superadmin')">>
 
                         <a href="#" class="mininav-toggle nav-link collapsed"><i class="demo-pli-split-vertical-2 fs-5 me-2"></i>
                            <span class="nav-label ms-1">관리자 기능</span>
@@ -412,6 +398,12 @@
 
                      </li>
                      <!-- END : Link with submenu -->
+
+                     <li class="nav-item has-sub">
+                        <a href="/trade/main" class="mininav-toggle nav-link collapsed"><i class="demo-pli-split-vertical-2 fs-5 me-2"></i>
+                           <span class="nav-label ms-1">중고 책 거래</span>
+                        </a>
+                     </li>
 
                      <!-- Link with submenu -->
                      <li class="nav-item has-sub">
