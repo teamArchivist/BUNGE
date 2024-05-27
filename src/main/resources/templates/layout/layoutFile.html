@@ -427,13 +427,13 @@
 
 
             <!-- Bottom navigation menu -->
-            <div class="mainnav__bottom-content border-top pb-2">
+            <div class="mainnav__bottom-content border-top pb-2"  sec:authorize="isAuthenticated()">
                <ul id="mainnav" class="mainnav__menu nav flex-column">
                   <li class="nav-item has-sub">
-                     <a href="#" class="nav-link mininav-toggle collapsed" aria-expanded="false">
-                        <i class="demo-pli-unlock fs-5 me-2"></i>
-                        <span class="nav-label ms-1">Logout</span>
-                     </a>
+                      <form th:action="@{/member/logout}" method="post" style="margin-bottom:0px" name="logout">
+                        <a th:href="@{logout}" class="list-group-item list-group-item-action logout">
+                           <i class="demo-pli-unlock fs-5 me-2"></i> Logout</a>
+                     </form>
                      <ul class="mininav-content nav flex-column collapse">
                         <li data-popper-arrow class="arrow"></li>
                         <li class="nav-item">
