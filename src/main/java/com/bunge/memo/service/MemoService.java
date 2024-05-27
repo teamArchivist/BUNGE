@@ -6,7 +6,8 @@ import org.springframework.stereotype.Service;
 
 public interface MemoService {
 
-    //메모 갯수
-    public int getListcount();
+    //메모 등록
+    public void addMemo(Memo memo);
+
 
 }
