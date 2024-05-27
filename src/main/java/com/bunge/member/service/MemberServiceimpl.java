@@ -9,43 +9,47 @@ import com.bunge.member.mapper.MemberMapper;
 @Service
 public class MemberServiceimpl implements MemberService{
 
-    private MemberMapper    dao;
+    private MemberMapper    memberMapper;
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public MemberServiceimpl(MemberMapper dao, PasswordEncoder passwordEncoder) {
-        this.dao = dao;
+    public MemberServiceimpl(MemberMapper memberMapper, PasswordEncoder passwordEncoder) {
+        this.memberMapper = memberMapper;
         this.passwordEncoder = passwordEncoder;
     }
     @Override
-    public int isId (String id) {
-        Member rmember = dao.isId(id);
-        return (rmember==null) ? -1 : 1; //-1은 아이디가 존재하지 않는 경우
-    }									 // 1은 아이디가 존재하는 경우
-    @Override
     public int insert(Member m) {
-        return dao.insert(m);
+        return memberMapper.insert(m);
     }
     @Override
     public Member memberinfo(String id) {
-        return dao.isId(id);
+        return memberMapper.idcheck(id);
     }
 
     @Override
-    public int idcheck(String id) {
-        Member m = dao.idcheck(id);
-        return (m==null) ? -1 : 1;
+    public boolean idcheck(String id) {
+        Member member = memberMapper.idcheck(id);
+        if(member != null){
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public int nickcheck(String nick) {
-        Member m = dao.nickcheck(nick);
-        return (m==null) ? -1 : 1;
+    public boolean nickcheck(String nick) {
+        Member member = memberMapper.nickcheck(nick);
+        if(member != null){
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public int emailcheck(String email) {
-        Member m = dao.emailcheck(email);
-        return (m==null) ? -1 : 1;
+    public boolean emailcheck(String email) {
+        Member member = memberMapper.emailcheck(email);
+        if(member != null){
+            return true;
+        }
+        return false;
     }
 }

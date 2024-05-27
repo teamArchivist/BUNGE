@@ -1,12 +1,17 @@
 <!DOCTYPE html>
-<html th:fragment="layout (title, links, content)" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://thymeleaf.org/extras/spring-security"
+<html th:fragment="layout (title, links, content)"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       lang="en" data-bs-theme="light" data-scheme="navy">
 
 <head>
    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
    <meta name="description" content="Nifty is a responsive admin dashboard template based on Bootstrap 5 framework. There are a lot of useful components.">
-
+   <th:block sec:authorize="isAuthenticated()">
+      <meta th:name ="_csrf" th:content = "${_csrf.token}">
+      <meta th:name ="_csrf_header" th:content = "${_csrf.headerName}">
+   </th:block>
    <!-- STYLESHEETS -->
    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
@@ -33,6 +38,24 @@
    <title th:replace="${title}">레이아웃 타이틀</title>
 
    <links th:replace="${links}">레이아웃 링크</links>
+   <style>
+      .navigationlogin {padding-top: 20px;}
+
+   </style>
+   <script th:inline="javascript">
+      $(function () {
+         $(".logout").click(function(event) {
+            event.preventDefault();
+            $("form[name=logout]").submit();
+         })
+      })
+      $(function () {
+         $("#login").click(function(event) {
+            event.preventDefault();
+            $("form[name=login]").submit();
+         })
+      })
+   </script>
 </head>
 
    <!-- PAGE CONTAINER -->
@@ -95,7 +118,7 @@
 
 
                      <!-- Notification dropdown menu -->
-                     <div class="dropdown-menu dropdown-menu-end w-md-300px">
+                     <div class="dropdown-menu dropdown-menu-end w-md-300px" sec:authorize="isAuthenticated()">
                         <div class="border-bottom px-3 py-2 mb-3">
                            <h5>알림</h5>
                         </div>
@@ -155,9 +178,8 @@
                         <i class="demo-psi-male"></i>
                      </button>
 
-
                      <!-- User dropdown menu -->
-                     <div class="dropdown-menu dropdown-menu-end w-md-450px">
+                     <div class="dropdown-menu dropdown-menu-end w-md-450px" sec:authorize="isAuthenticated()">
 
                         <!-- User dropdown header -->
                         <div class="d-flex align-items-center border-bottom px-3 py-2">
@@ -165,8 +187,8 @@
                               <img class="img-sm rounded-circle" th:src="@{/img/profile-photos/4.png}" alt="Profile Picture" loading="lazy">
                            </div>
                            <div class="flex-grow-1 ms-3">
-                              <h5 class="mb-0">admin</h5>
-                              <span class="text-body-secondary fst-italic">admin@google.com</span>
+                              <h5 class="mb-0" sec:authentication="name"></h5>
+                              <!--<span class="text-body-secondary fst-italic">admin@google.com</span> -->
                            </div>
                         </div>
 
@@ -192,9 +214,11 @@
                                  <a href="#" class="list-group-item list-group-item-action">
                                     <i class="demo-pli-male fs-5 me-2"></i> 마이페이지
                                  </a>
-                                 <a href="#" class="list-group-item list-group-item-action">
-                                    <i class="demo-pli-unlock fs-5 me-2"></i> Logout
-                                 </a>
+                                 <form th:action="@{/member/logout}" method="post" style="margin-bottom:0px" name="logout">
+                                    <a th:href="@{logout}" class="list-group-item list-group-item-action logout">
+                                       <i class="demo-pli-unlock fs-5 me-2"></i> Logout
+                                    </a>
+                                 </form>
                               </div>
 
                            </div>
@@ -218,7 +242,7 @@
                   <div class="vr mx-1 d-none d-md-block"></div>
 
                   <!-- Sidebar Toggler -->
-                  <button class="sidebar-toggler header__btn btn btn-icon btn-sm" type="button" aria-label="Sidebar button">
+                  <button class="sidebar-toggler header__btn btn btn-icon btn-sm" type="button" aria-label="Sidebar button" sec:authorize="isAuthenticated()">
                      <i class="demo-psi-dot-vertical"></i>
                   </button>
 
@@ -238,10 +262,15 @@
 
             <!-- Navigation menu -->
             <div class="mainnav__top-content scrollable-content pb-5">
-
-
+               <th:block sec:authorize="isAnonymous()">
+                  <form th:action="@{/member/login}" method="post" style="margin-bottom:0px" name="logout" class="navigationlogin">
+                     <a th:href="@{login}" id="login" class="list-group-item list-group-item-action">
+                        <i class="demo-pli-unlock fs-5 me-2"></i> 로그인
+                     </a>
+                  </form>
+               </th:block>
                <!-- Profile Widget -->
-               <div id="_dm-mainnavProfile" class="mainnav__widget my-3 hv-outline-parent">
+               <div id="_dm-mainnavProfile" class="mainnav__widget my-3 hv-outline-parent" sec:authorize="isAuthenticated()">
 
                   <!-- Profile picture  -->
                   <div class="mininav-toggle text-center py-2">
@@ -256,24 +285,23 @@
                         <!-- User name and position -->
                         <button class="mainnav-widget-toggle d-block btn border-0 p-2" data-bs-toggle="collapse" data-bs-target="#usernav" aria-expanded="false" aria-controls="usernav">
                            <span class="dropdown-toggle d-flex justify-content-center align-items-center">
-                              <h5 class="mb-0 me-3">admin</h5>
+                              <h5 class="mb-0 me-3" sec:authentication="name"></h5>
                            </span>
-                           <small class="text-body-secondary">관리자</small>
+                           <small class="text-body-secondary">닉네임</small>
                         </button>
 
 
                         <!-- Collapsed user menu -->
                         <div id="usernav" class="nav flex-column collapse">
-                           <a th:href="@{#}" class="nav-link">
+                           <a th:href="@{member/update}" class="nav-link">
                               <i class="demo-pli-male fs-5 me-2"></i>
                               <span class="ms-1">마이페이지</span>
                            </a>
-                           <a th:href="@{#}" class="nav-link">
-                              <i class="demo-pli-unlock fs-5 me-2"></i>
-                              <span class="ms-1">Logout</span>
-                           </a>
+                           <form th:action="@{/member/logout}" method="post" style="margin-bottom:0px" name="logout">
+                              <a th:href="@{logout}" class="list-group-item list-group-item-action logout">
+                                 <i class="demo-pli-unlock fs-5 me-2"></i> Logout</a>
+                           </form>
                         </div>
-
 
                      </div>
                   </div>
@@ -317,8 +345,7 @@
                      <!-- END : Link with submenu -->
 
                      <!-- Link with submenu -->
-                     <li class="nav-item has-sub">
-
+                     <li class="nav-item has-sub" sec:authorize="hasAnyAuthority('admin','superadmin')">>
 
                         <a href="#" class="mininav-toggle nav-link collapsed"><i class="demo-pli-split-vertical-2 fs-5 me-2"></i>
                            <span class="nav-label ms-1">관리자 기능</span>

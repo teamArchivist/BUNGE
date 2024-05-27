@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html th:replace="~{layout/layoutLogin :: layout (~{::title}, ~{::links}, ~{::section})}"
-      xmlns:th="http://www.thymeleaf.org">
+<html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}"
+      xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>로그인</title>
     <links>
@@ -8,7 +8,7 @@
     </links>
 </head>
 <body>
-
+<th:block sec:authorize="isAnonymous()">
     <section id="content" class="content">
         <!--/* 본문 content 영역 */-->
             <div class="content__boxed w-100 min-vh-100 d-flex flex-column align-items-center justify-content-center">
@@ -25,7 +25,6 @@
                             </div>
 
                             <form class="mt-4" name="loginform" th:action="@{/member/loginProcess}" method="post">
-
                                 <div class="mb-3">
                                     <input type="text" name="id" class="form-control" placeholder="Username" autofocus>
                                 </div>
@@ -46,9 +45,9 @@
                             </form>
 
                             <div class="d-flex justify-content-between gap-md-5 mt-4">
-                                <a href="#" class="btn-link text-decoration-none">아이디 찾기</a>
-                                <a href="#" class="btn-link text-decoration-none">비밀번호찾기</a>
-                                <a href="join" class="btn-link text-decoration-none">새계정 생성</a>
+                                <a th:href="@{#}" class="btn-link text-decoration-none">아이디 찾기</a>
+                                <a th:href="@{#}" class="btn-link text-decoration-none">비밀번호찾기</a>
+                                <a th:href="@{join}" class="btn-link text-decoration-none">새계정 생성</a>
                             </div>
                             <!--
                                 <div class="d-flex align-items-center justify-content-between border-top pt-3 mt-3">
@@ -102,6 +101,9 @@
             </div>
 
     </section>
-
+</th:block>
+<div sec:authorize="isAuthenticated()">
+    <p>You are already logged in.</p>
+</div>
 </body>
 </html>

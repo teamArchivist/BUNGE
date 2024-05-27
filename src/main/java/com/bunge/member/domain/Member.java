@@ -18,4 +18,5 @@ public class Member {
     private String phone;
     private String email;
     private Date   birthdate;
+    private String role="member";
 }

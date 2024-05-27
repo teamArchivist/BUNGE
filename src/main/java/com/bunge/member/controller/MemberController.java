@@ -25,7 +25,6 @@ public class MemberController {
     private MemberService   memberservice;
     private PasswordEncoder passwordEncoder;
 
-
     @Autowired
     public MemberController(MemberService memberservice, PasswordEncoder passwordEncoder) {
         this.memberservice=memberservice;
@@ -33,7 +32,9 @@ public class MemberController {
     }
     //임시페이지
     @GetMapping(value = "/index")
-    public String index(){
+    public String index(Model mv, HttpServletRequest request){
+        String welcomemsg = (String) request.getSession().getAttribute("welcomemsg");
+        mv.addAttribute("welcomemsg" , welcomemsg);
         return "member/index";
     }
     //로그인페이지
@@ -55,19 +56,19 @@ public class MemberController {
     //아이디 검사
     @ResponseBody
     @RequestMapping(value = "/idcheck", method = RequestMethod.POST)
-    public int idcheck(@RequestParam("id") String id) {
+    public boolean idcheck(@RequestParam("id") String id) {
         return memberservice.idcheck(id);
     }
     //닉네임 검사
     @ResponseBody
     @RequestMapping(value = "/nickcheck" , method = RequestMethod.POST)
-    public int nickcheck(@RequestParam("nick") String nick){
+    public boolean nickcheck(@RequestParam("nick") String nick){
         return memberservice.nickcheck(nick);
     }
     //이메일 검사
     @ResponseBody
     @RequestMapping(value ="/emailcheck", method = RequestMethod.POST)
-    public int emailcheck(@RequestParam("email") String email){
+    public boolean emailcheck(@RequestParam("email") String email){
         return memberservice.emailcheck(email);
     }
     //회원가입
