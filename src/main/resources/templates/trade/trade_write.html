@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>내 물건 올리기</title>
+    <links>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f9;
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            .wrap-contact100 {
+                width: 100%;
+                max-width: 600px;
+                background: #fff;
+                border-radius: 10px;
+                overflow: hidden;
+                padding: 50px 55px 50px 55px;
+                box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+                margin: 50px auto;
+            }
+
+            .contact100-form {
+                width: 100%;
+            }
+
+            .contact100-form-title {
+                display: block;
+                font-family: Poppins-Bold;
+                font-size: 24px;
+                color: #333;
+                line-height: 1.2;
+                text-align: center;
+                margin-bottom: 30px;
+            }
+
+            .wrap-input100 {
+                width: 100%;
+                position: relative;
+                border-bottom: 2px solid #d9d9d9;
+                margin-bottom: 30px;
+            }
+
+            .input100 {
+                font-family: Poppins-Regular;
+                font-size: 15px;
+                color: #333;
+                line-height: 1.2;
+                display: block;
+                width: 100%;
+                background: transparent;
+                padding: 10px 5px;
+                border: none;
+                outline: none;
+            }
+
+            .input100:focus + .focus-input100::after {
+                width: 100%;
+            }
+
+            .focus-input100::after {
+                content: '';
+                display: block;
+                position: absolute;
+                bottom: -2px;
+                left: 0;
+                width: 0;
+                height: 2px;
+                background: #6c7ae0;
+                transition: width 0.4s;
+            }
+
+            select {
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 30px;
+                border: 2px solid #d9d9d9;
+                border-radius: 5px;
+                font-size: 15px;
+                color: #333;
+                outline: none;
+                transition: border-color 0.4s;
+            }
+
+            select:focus {
+                border-color: #6c7ae0;
+            }
+
+            .insert {
+                margin-bottom: 30px;
+            }
+
+            .insert label {
+                display: block;
+                margin-bottom: 10px;
+                font-size: 15px;
+                color: #333;
+            }
+
+            .insert input[type="file"] {
+                display: block;
+                width: 100%;
+                padding: 10px;
+                border: 2px solid #d9d9d9;
+                border-radius: 5px;
+                font-size: 15px;
+                outline: none;
+                transition: border-color 0.4s;
+            }
+
+            .insert input[type="file"]:focus {
+                border-color: #6c7ae0;
+            }
+
+            .file-list {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .file-list img {
+                max-width: 100px;
+                max-height: 100px;
+                object-fit: cover;
+                border: 2px solid #d9d9d9;
+                border-radius: 5px;
+            }
+
+            .container-contact100-form-btn {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .contact100-form-btn {
+                font-family: Poppins-Medium;
+                font-size: 16px;
+                color: #fff;
+                background-color: #6c7ae0;
+                border: none;
+                border-radius: 5px;
+                padding: 10px 20px;
+                cursor: pointer;
+                transition: background-color 0.4s;
+            }
+
+            .contact100-form-btn:hover {
+                background-color: #5a68d0;
+            }
+        </style>
+    </links>
+</head>
+<body>
+<section>
+    <div class="wrap-contact100">
+        <form class="contact100-form" action="/write" method="post" enctype="multipart/form-data">
+            <span class="contact100-form-title">
+                내 물건 올리기<br>
+            </span>
+
+            <div class="wrap-input100">
+                <label>사진 첨부 (최대 5장)</label>
+                <input id="file" type="file" name="images" accept="image/*" multiple required onchange="previewFiles()">
+                <div id="fileList" class="file-list"></div>
+            </div>
+
+            <div class="wrap-input100">
+                <input class="input100" type="text" name="title" placeholder="제목을 입력해 주세요" required>
+            </div>
+
+            카테고리
+            <select name="categoryID" class="input100" required>
+                <option value="문학/소설">문학/소설</option>
+                <option value="논픽션">논픽션</option>
+                <option value="아동/청소년">아동/청소년</option>
+                <option value="학습/참고서">학습/참고서</option>
+                <option value="과학/기술">과학/기술</option>
+                <option value="자기계발">자기계발</option>
+                <option value="경제/경영">경제/경영</option>
+                <option value="예술/대중문화">예술/대중문화</option>
+                <option value="취미/여행">취미/여행</option>
+                <option value="건강/운동">건강/운동</option>
+                <option value="종교/영성">종교/영성</option>
+                <option value="만화/그래픽노블">만화/그래픽노블</option>
+                <option value="잡지">잡지</option>
+            </select>
+
+            <div class="wrap-input100">
+                <input class="input100" type="number" name="price" placeholder="가격을 입력해 주세요" required>
+            </div>
+
+            <div class="wrap-input100">
+                <textarea class="input100" name="description" placeholder="물건 설명을 입력해 주세요" required></textarea>
+            </div>
+
+            <div class="wrap-input100">
+                <select class="input100" name="selling" required>
+                    <option value="판매">판매</option>
+                    <option value="구매">구매</option>
+                </select>
+            </div>
+
+            <div class="wrap-input100">
+                <select class="input100" name="status" required>
+                    <option value="판매 중">판매 중</option>
+                    <option value="예약 중">예약 중</option>
+                    <option value="판매 완료">판매 완료</option>
+                </select>
+            </div>
+
+            <div class="wrap-input100">
+                <select class="input100" name="conditions" required>
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                </select>
+            </div>
+
+            <div class="wrap-input100">
+                <select class="input100" name="tradeMethod" id="tradeMethod" onchange="toggleLocationField()" required>
+                    <option value="택배거래">택배거래</option>
+                    <option value="직거래">직거래</option>
+                </select>
+            </div>
+
+            <div class="wrap-input100" id="locationField" style="display:none;">
+                <input class="input100" type="text" name="locations" placeholder="거래 장소를 입력해 주세요">
+            </div>
+
+            <div class="container-contact100-form-btn">
+                <button class="contact100-form-btn" type="submit">
+                    물건 올리기
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function previewFiles() {
+            const fileList = document.getElementById("fileList");
+            const input = document.getElementById("file");
+            const files = input.files;
+
+            // Clear previous previews
+            fileList.innerHTML = "";
+
+            if (files.length > 5) {
+                alert("최대 5장까지 업로드할 수 있습니다.");
+                input.value = ""; // Clear the input
+                return;
+            }
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    const img = document.createElement("img");
+                    img.src = e.target.result;
+                    fileList.appendChild(img);
+                };
+
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+    <script>
+        function toggleLocationField() {
+            const tradeMethod = document.getElementById('tradeMethod').value;
+            const locationField = document.getElementById('locationField');
+
+            if (tradeMethod === '직거래') {
+                locationField.style.display = 'block';
+            } else {
+                locationField.style.display = 'none';
+            }
+        }
+
+        // 초기 로드 시에도 tradeMethod의 값을 확인하여 locationField의 표시 여부를 설정
+        document.addEventListener('DOMContentLoaded', function() {
+            toggleLocationField();
+        });
+    </script>
+</section>
+</body>
+</html>
+
+
+<!--<!DOCTYPE html>-->
+<!--<html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}"-->
+<!--      xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <title>내 물건 올리기</title>-->
+<!--    <links>-->
+<!--        <style>-->
+<!--            body {-->
+<!--                font-family: Arial, sans-serif;-->
+<!--                background-color: #f4f4f9;-->
+<!--                margin: 0;-->
+<!--                padding: 0;-->
+<!--                box-sizing: border-box;-->
+<!--            }-->
+
+<!--            .wrap-contact100 {-->
+<!--                width: 100%;-->
+<!--                max-width: 600px;-->
+<!--                background: #fff;-->
+<!--                border-radius: 10px;-->
+<!--                overflow: hidden;-->
+<!--                padding: 50px 55px 50px 55px;-->
+<!--                box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);-->
+<!--                margin: 50px auto;-->
+<!--            }-->
+
+<!--            .contact100-form {-->
+<!--                width: 100%;-->
+<!--            }-->
+
+<!--            .contact100-form-title {-->
+<!--                display: block;-->
+<!--                font-family: Poppins-Bold;-->
+<!--                font-size: 24px;-->
+<!--                color: #333;-->
+<!--                line-height: 1.2;-->
+<!--                text-align: center;-->
+<!--                margin-bottom: 30px;-->
+<!--            }-->
+
+<!--            .wrap-input100 {-->
+<!--                width: 100%;-->
+<!--                position: relative;-->
+<!--                border-bottom: 2px solid #d9d9d9;-->
+<!--                margin-bottom: 30px;-->
+<!--            }-->
+
+<!--            .input100 {-->
+<!--                font-family: Poppins-Regular;-->
+<!--                font-size: 15px;-->
+<!--                color: #333;-->
+<!--                line-height: 1.2;-->
+<!--                display: block;-->
+<!--                width: 100%;-->
+<!--                background: transparent;-->
+<!--                padding: 10px 5px;-->
+<!--                border: none;-->
+<!--                outline: none;-->
+<!--            }-->
+
+<!--            .input100:focus + .focus-input100::after {-->
+<!--                width: 100%;-->
+<!--            }-->
+
+<!--            .focus-input100::after {-->
+<!--                content: '';-->
+<!--                display: block;-->
+<!--                position: absolute;-->
+<!--                bottom: -2px;-->
+<!--                left: 0;-->
+<!--                width: 0;-->
+<!--                height: 2px;-->
+<!--                background: #6c7ae0;-->
+<!--                transition: width 0.4s;-->
+<!--            }-->
+
+<!--            select {-->
+<!--                width: 100%;-->
+<!--                padding: 10px;-->
+<!--                margin-bottom: 30px;-->
+<!--                border: 2px solid #d9d9d9;-->
+<!--                border-radius: 5px;-->
+<!--                font-size: 15px;-->
+<!--                color: #333;-->
+<!--                outline: none;-->
+<!--                transition: border-color 0.4s;-->
+<!--            }-->
+
+<!--            select:focus {-->
+<!--                border-color: #6c7ae0;-->
+<!--            }-->
+
+<!--            .insert {-->
+<!--                margin-bottom: 30px;-->
+<!--            }-->
+
+<!--            .insert label {-->
+<!--                display: block;-->
+<!--                margin-bottom: 10px;-->
+<!--                font-size: 15px;-->
+<!--                color: #333;-->
+<!--            }-->
+
+<!--            .insert input[type="file"] {-->
+<!--                display: block;-->
+<!--                width: 100%;-->
+<!--                padding: 10px;-->
+<!--                border: 2px solid #d9d9d9;-->
+<!--                border-radius: 5px;-->
+<!--                font-size: 15px;-->
+<!--                outline: none;-->
+<!--                transition: border-color 0.4s;-->
+<!--            }-->
+
+<!--            .insert input[type="file"]:focus {-->
+<!--                border-color: #6c7ae0;-->
+<!--            }-->
+
+<!--            .container-contact100-form-btn {-->
+<!--                display: flex;-->
+<!--                justify-content: center;-->
+<!--                align-items: center;-->
+<!--            }-->
+
+<!--            .contact100-form-btn {-->
+<!--                font-family: Poppins-Medium;-->
+<!--                font-size: 16px;-->
+<!--                color: #fff;-->
+<!--                background-color: #6c7ae0;-->
+<!--                border: none;-->
+<!--                border-radius: 5px;-->
+<!--                padding: 10px 20px;-->
+<!--                cursor: pointer;-->
+<!--                transition: background-color 0.4s;-->
+<!--            }-->
+
+<!--            .contact100-form-btn:hover {-->
+<!--                background-color: #5a68d0;-->
+<!--            }-->
+<!--        </style>-->
+<!--    </links>-->
+<!--</head>-->
+<!--<body>-->
+<!--<section>-->
+<!--    <div class="wrap-contact100">-->
+<!--        <form class="contact100-form" action="/products/new" method="post" enctype="multipart/form-data">-->
+<!--            <span class="contact100-form-title">-->
+<!--                내 물건 올리기<br>-->
+<!--            </span>-->
+
+<!--            <div class="wrap-input100">-->
+<!--                <input class="input100" type="text" name="title" placeholder="제목을 입력해 주세요" required>-->
+<!--                <span class="focus-input100"></span>-->
+<!--            </div>-->
+
+<!--            <label for="category">카테고리</label>-->
+<!--            <select name="category" id="category" required>-->
+<!--                <option value="철학">철학</option>-->
+<!--                <option value="종교">종교</option>-->
+<!--                <option value="사회과학">사회과학</option>-->
+<!--                <option value="자연과학">자연과학</option>-->
+<!--                <option value="기술과학">기술과학</option>-->
+<!--                <option value="예술">예술</option>-->
+<!--                <option value="언어">언어</option>-->
+<!--                <option value="문학">문학</option>-->
+<!--                <option value="역사">역사</option>-->
+<!--                <option value="IT">IT</option>-->
+<!--                &lt;!&ndash; 나머지 항목 추가 &ndash;&gt;-->
+<!--            </select>-->
+
+
+<!--            <div class="wrap-input100">-->
+<!--                <input class="input100" type="number" name="price" placeholder="가격을 입력해 주세요" required>-->
+<!--                <span class="focus-input100"></span>-->
+<!--            </div>-->
+
+<!--            <div class="wrap-input100">-->
+<!--                <textarea class="input100" name="description" placeholder="물건 설명을 입력해 주세요" required></textarea>-->
+<!--                <span class="focus-input100"></span>-->
+<!--            </div>-->
+
+<!--            <div class="insert">-->
+<!--                <label for="file">사진 첨부</label>-->
+<!--                <input type="file" id="file" name="file" multiple>-->
+<!--                <div class="file-list"></div>-->
+<!--            </div>-->
+
+<!--            <div class="container-contact100-form-btn">-->
+<!--                <button class="contact100-form-btn" type="submit">-->
+<!--                    물건 올리기-->
+<!--                </button>-->
+<!--            </div>-->
+<!--        </form>-->
+<!--    </div>-->
+<!--</section>-->
+<!--</body>-->
+<!--</html>-->

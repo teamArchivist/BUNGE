@@ -34,6 +34,146 @@ public class TradeController {
 
     }
 
+    @RequestMapping(value="/write")
+    public ModelAndView tradeWrite(@RequestParam(value="page", defaultValue="1") int page,
+                                   ModelAndView mv) {
+        mv.setViewName("trade/trade_write");
+
+        return mv;
+    }
+
+    @RequestMapping(value="/literature_fiction")
+    public ModelAndView literatureList(@RequestParam(value="page", defaultValue="1") int page,
+                                  ModelAndView mv) {
+
+        mv.setViewName("trade/trade_literature_fiction");
+
+        return mv;
+
+    }
+
+    @RequestMapping(value="/non-fiction")
+    public ModelAndView nonfictionList(@RequestParam(value="page", defaultValue="1") int page,
+                                       ModelAndView mv) {
+
+        mv.setViewName("trade/trade_non-fiction");
+
+        return mv;
+
+    }
+
+    @RequestMapping(value="/children_youngadult")
+    public ModelAndView childrenList(@RequestParam(value="page", defaultValue="1") int page,
+                                       ModelAndView mv) {
+
+        mv.setViewName("trade/trade_children_youngadult");
+
+        return mv;
+
+    }
+
+    @RequestMapping(value="/education_reference")
+    public ModelAndView educationList(@RequestParam(value="page", defaultValue="1") int page,
+                                       ModelAndView mv) {
+
+        mv.setViewName("trade/trade_education_reference");
+
+        return mv;
+
+    }
+
+    @RequestMapping(value="/science_technology")
+    public ModelAndView scienceList(@RequestParam(value="page", defaultValue="1") int page,
+                                      ModelAndView mv) {
+
+        mv.setViewName("trade/trade_science_technology");
+
+        return mv;
+
+    }
+
+    @RequestMapping(value="/self-development")
+    public ModelAndView selfdevelopmentList(@RequestParam(value="page", defaultValue="1") int page,
+                                    ModelAndView mv) {
+
+        mv.setViewName("trade/trade_self-development");
+
+        return mv;
+
+    }
+
+    @RequestMapping(value="/business_economics")
+    public ModelAndView businessList(@RequestParam(value="page", defaultValue="1") int page,
+                                            ModelAndView mv) {
+
+        mv.setViewName("trade/trade_business_economics");
+
+        return mv;
+
+    }
+
+    @RequestMapping(value="/arts_popular-culture")
+    public ModelAndView artsList(@RequestParam(value="page", defaultValue="1") int page,
+                                     ModelAndView mv) {
+
+        mv.setViewName("trade/trade_arts_popular-culture");
+
+        return mv;
+
+    }
+
+    @RequestMapping(value="/hobbies_travel")
+    public ModelAndView hobbiesList(@RequestParam(value="page", defaultValue="1") int page,
+                                 ModelAndView mv) {
+
+        mv.setViewName("trade/trade_hobbies_travel");
+
+        return mv;
+
+    }
+
+    @RequestMapping(value="/health_fitness")
+    public ModelAndView healthList(@RequestParam(value="page", defaultValue="1") int page,
+                                    ModelAndView mv) {
+
+        mv.setViewName("trade/trade_health_fitness");
+
+        return mv;
+
+    }
+
+    @RequestMapping(value="/religion_spirituality")
+    public ModelAndView religionList(@RequestParam(value="page", defaultValue="1") int page,
+                                   ModelAndView mv) {
+
+        mv.setViewName("trade/trade_religion_spirituality");
+
+        return mv;
+
+    }
+
+    @RequestMapping(value="/comics_graphic-novels")
+    public ModelAndView comicsList(@RequestParam(value="page", defaultValue="1") int page,
+                                     ModelAndView mv) {
+
+        mv.setViewName("trade/trade_comics_graphic-novels");
+
+        return mv;
+
+    }
+
+    @RequestMapping(value="/magazines")
+    public ModelAndView magazinesList(@RequestParam(value="page", defaultValue="1") int page,
+                                   ModelAndView mv) {
+
+        mv.setViewName("trade/trade_magazines");
+
+        return mv;
+
+    }
+
+
+
     @RequestMapping(value="/detail")
     public ModelAndView tradeDetail(@RequestParam(value="page", defaultValue="1") int page,
                                   ModelAndView mv) {
