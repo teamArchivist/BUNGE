@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Title</title>
+    <links>
+
+    </links>
+
+
+</head>
+<body>
+<section>
+        <div class="position-relative banner-container">
+            <img th:src="@{/img/main.png}" alt="Banner" class="img-fluid banner-image" height="100px">
+            <div class="position-absolute top-50 start-50 translate-middle text-center banner-text">
+            </div>
+        </div>
+</section>
+</body>
+</html>
