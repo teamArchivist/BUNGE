@@ -49,7 +49,7 @@
                         <div class="text-center mb-2 mb-md-0">검색 조건</div>
                         <select class="form-select w-auto" aria-label="Categories">
                             <option value="title">제목</option>
-                            <option value="writer">저자</option>
+                            <option value="author">저자</option>
                             <option value="category">카테고리</option>
                             <option value="score">별점</option>
                         </select>
@@ -60,33 +60,22 @@
                 </div>
                 <!-- END : Sort and categories filter -->
 
+                <!-- 검색 결과를 동적으로 생성하는 부분 -->
                 <div class="row" id="searchresult">
-                    <div class="col-sm-6 col-xl-2">
-
-                        <!-- User widget with image at the top -->
-                        <div class="card mb-3 hv-grow-parent">
-                            <img class="card-img-top" src="" alt="coffee" loading="lazy">
-                            <div class="position-relative p-4">
-                            </div>
-
+                    <!-- 예시로 한 권의 책 카드 구조, 반복문으로 동적으로 생성 -->
+                    <div class="col-sm-6 col-xl-2 mb-3">
+                        <div class="card mb-3 hv-grow-parent h-100">
+                            <img class="card-img-top book-img" src="cover" data-title="title" data-author="author" data-pubDate="pubDate" data-category="category" data-description="description" loading="lazy" height="430px">
                             <div class="text-center mt-4">
-                                <a href="#" class="h5 btn-link">Brenda Fuller</a>
-                                <p class="text-opacity-75 mb-0">Art Designer</p>
+                                <a href="#" class="h5 mb-3">BOOK_TITLE</a>
+                                <p class="text-justify text-opacity-75 mb-0">title</p>
+                                <p class="text-justify text-opacity-75 mb-0">pubdate</p>
                             </div>
-
                             <div class="card-body">
-                                <p class="text-justify mb-0">I am so happy, my dear friend, so absorbed in the exquisite sense of mere tranquil existence, that I neglect my talents.</p>
-                            </div>
-                            <div class="list-group list-group-borderless p-1">
-                                <p class="list-group-item list-group-item-action"><i class="demo-pli-information fs-4 me-2"></i> User Details</p>
-                                <p class="list-group-item list-group-item-action"><i class="demo-pli-mine fs-4 me-2"></i> Usage Profile</p>
-                                <p class="list-group-item list-group-item-action"><i class="demo-pli-credit-card-2 fs-4 me-2"></i> Payment Options</p>
-                                <p class="list-group-item list-group-item-action"><i class="demo-pli-gear fs-4 me-2"></i> Settings</p>
-                                <p class="list-group-item list-group-item-action"><i class="demo-pli-mail fs-4 me-2"></i> Messages</p>
+                                <p class="text-justify mb-3">category</p>
+                                <p class="text-justify mb-0">description</p>
                             </div>
                         </div>
-                        <!-- END : User widget with image at the top -->
-
                     </div>
                 </div>
 

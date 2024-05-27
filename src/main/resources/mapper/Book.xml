@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bunge.memo.mapper.BookMapper">
+
+    <insert id="addBook">
+        <selectKey resultType="int" order="BEFORE" keyProperty="no">
+            select coalesce(max(no), 0)+1 from book
+        </selectKey>
+        insert into book
+        (no, title, author, pubdate, category, description, score, cover)
+        values
+        (#{no}, #{title}, #{author}, #{pubdate}, #{category}, #{description}, 0, #{cover})
+    </insert>
+
+</mapper>
