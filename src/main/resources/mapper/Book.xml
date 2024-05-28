@@ -30,7 +30,8 @@
         <if test="score != null">
             AND score >= #{score}
         </if>
-        order by regitdate
+        ORDER BY no desc
+        LIMIT #{page}, #{pageSize}
     </select>
 
     <select id="getBookListCount" resultType="int">

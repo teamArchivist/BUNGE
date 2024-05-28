@@ -22,12 +22,13 @@ $(function () {
             dataType: "json",
             cache: false,
             success: function(rdata) {
-                $("#searchresult").empty();
+                $("#searchresult").empty()
+                $("#bookpagenation").empty()
 
                 $(rdata.item).each(function(index, subject) {
                     let output = "<div class='col-sm-6 col-xl-2 mb-3'>" +
                         "<div class='card mb-3 hv-grow-parent h-100'>" +
-                        "  <img class='card-img-top book-img' src='" + subject.cover + "' data-title='" + subject.title + "' data-author='" + subject.author + "' data-pubDate='" + subject.pubDate + "' data-category='" + subject.categoryName + "' data-description='" + subject.description + "' loading='lazy' height='430px'>" +
+                        "  <img class='card-img-top book-img' src='" + subject.cover + "' data-title='" + subject.title + "' data-author='" + subject.author + "' data-pubDate='" + subject.pubDate + "' data-category='" + subject.categoryName + "' data-description='" + subject.description + "' loading='lazy' height='350px'>" +
                         "  <div class='card-body mt-4'>" +
                         "       <a class='card-text link-success h5'>" + subject.title + "</a>" +
                         "       <p class='card-text text-opacity-75'>" + subject.author + "</p>" +
