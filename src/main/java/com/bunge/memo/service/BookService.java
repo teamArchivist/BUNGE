@@ -11,7 +11,7 @@ public interface BookService {
     public void addBook(Book book);
 
     //책 개수
-    public int getBookListCount();
+    public int getBookListCount(BookFilter filter);
 
     //책 목록
     public List<Book> getBookList(BookFilter filter);

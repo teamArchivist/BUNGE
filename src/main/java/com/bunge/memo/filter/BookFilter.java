@@ -6,7 +6,8 @@ public class BookFilter {
     private String category;
     private Integer score;
     private Integer page;
-    private Integer pageSize;
+    private int offset;
+    private int limit;
 
     // Getters and Setters
     public String getTitle() {
@@ -49,11 +50,32 @@ public class BookFilter {
         this.page = page;
     }
 
-    public Integer getPageSize() {
-        return pageSize;
+    public void setOffset(int offset) {
+        this.offset = offset;
     }
 
-    public void setPageSize(Integer pageSize) {
-        this.pageSize = pageSize;
+    public int getOffset() {
+        return offset;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
+    public int getLimit() {
+        return limit;
+    }
+
+    @Override
+    public String toString() {
+        return "BookFilter{" +
+                "title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", category='" + category + '\'' +
+                ", score=" + score +
+                ", page=" + page +
+                ", offset=" + offset +
+                ", limit=" + limit +
+                '}';
     }
 }

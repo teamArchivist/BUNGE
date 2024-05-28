@@ -80,4 +80,19 @@ public class Book {
     public String getRegitdate() { return regitdate; }
 
     public void setRegitdate(String regitdate) { this.regitdate = regitdate; }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "no=" + no +
+                ", title='" + title + '\'' +
+                ", author='" + author + '\'' +
+                ", pubdate='" + pubdate + '\'' +
+                ", category='" + category + '\'' +
+                ", description='" + description + '\'' +
+                ", score=" + score +
+                ", cover='" + cover + '\'' +
+                ", regitdate='" + regitdate + '\'' +
+                '}';
+    }
 }

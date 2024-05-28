@@ -11,7 +11,7 @@
 <div id="root" class="root mn--max tm--expanded-hd">
 
     <section id="content" class="content">
-        <div class="content__header content__boxed overlapping">
+        <div class="content__header content__boxed">
             <div class="content__wrap">
 
                 <!-- Breadcrumb -->
@@ -32,10 +32,10 @@
 
                 <!-- Search form -->
                 <div class="col-md-8 offset-md-2 mb-3">
-                    <form class="searchbox input-group">
-                        <input id="searchKeyword" class="searchbox__input form-control form-control-lg" type="search" placeholder="검색어를 입력하세요. . ." aria-label="Search">
+                    <form th:action="@{/searchresult}" id="searchForm" class="searchbox input-group">
+                        <input id="searchKeyword" name="keyword" class="searchbox__input form-control form-control-lg" type="search" placeholder="검색어를 입력하세요. . ." aria-label="Search">
                         <div class="searchbox__btn-group">
-                            <button class="searchbox__btn btn btn-icon bg-transparent shadow-none border-0 btn-sm" type="button">
+                            <button id="searchBtn" class="searchbox__btn btn btn-icon bg-transparent shadow-none border-0 btn-sm" type="submit">
                                 <i class="demo-pli-magnifi-glass"></i>
                             </button>
                         </div>
@@ -55,19 +55,18 @@
                         </select>
                     </div>
 
-                    <button id="searchBtn" class="btn btn-light mb-3 mb-sm-0">검색</button>
                     <button class="btn btn-success mb-3 mb-sm-0" id="bookadd">등록하기</button>
                 </div>
                 <!-- END : Sort and categories filter -->
 
                 <!-- 검색 결과를 동적으로 생성하는 부분, "등록하기" 하지 않으면, DB에 저장된 책 정보가 보인다-->
                 <div class="row" id="searchresult">
-                    <div th:if="${listcount == 0}">
+                    <div th:if="${books.size()} == 0">
                         <h3>등록된 책이 없습니다</h3>
                     </div>
                     <div th:each="book : ${books}" class="col-sm-6 col-xl-2 mb-3">
                         <div class="card mb-3 hv-grow-parent h-100">
-                            <img th:src="${book.cover}" class="card-img-top" alt="..." height="430px">
+                            <img th:src="${book.cover}" class="card-img-top" alt="..." height="350px">
                             <div class="card-body">
                                 <a class="card-text link-success h5" th:text="${book.title}">책 제목</a>
                                 <p class="card-text mt-3" th:text="${book.author}">저자</p>
@@ -81,6 +80,33 @@
 
             </div>
         </div>
+
+        <nav class="text-align-center mt-5" aria-label="Page navigation" id="bookpagenation">
+            <ul class="pagination justify-content-center">
+
+                <li th:if="${currentPage <= 1}" class="page-item">
+                    <a class="page-link disabled">이전</a>
+                </li>
+
+                <li th:if="${currentPage > 1}" class="page-item">
+                    <a th:href="@{'/memo/searchmain?page=' + ${currentPage - 1}}" class="page-link">이전</a>
+                </li>
+
+                <li th:each="pageNum : ${#numbers.sequence(1, maxPage)}" th:classappend="${pageNum == currentPage} ? 'active'">
+                    <a th:href="@{'/memo/searchmain?page=' + ${pageNum}}" class="page-link" th:text="${pageNum}">1</a>
+                </li>
+
+                <li th:if="${currentPage < maxPage}" class="page-item">
+                    <a th:href="@{'/memo/searchmain?page=' + ${currentPage + 1}}" class="page-link">다음</a>
+                </li>
+
+                <li th:if="${currentPage >= maxPage}" class="page-item">
+                    <a class="page-link disabled">다음</a>
+                </li>
+
+            </ul>
+        </nav>
+
     </section>
 </div>
 
