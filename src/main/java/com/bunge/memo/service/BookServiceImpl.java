@@ -22,8 +22,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public int getBookListCount() {
-        return bookMapper.getBookListCount();
+    public int getBookListCount(BookFilter filter) {
+        return bookMapper.getBookListCount(filter);
     }
 
     @Override

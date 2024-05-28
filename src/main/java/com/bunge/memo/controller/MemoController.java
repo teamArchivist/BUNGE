@@ -48,80 +48,95 @@ public class MemoController {
         return "redirect:mine";
     }
 
-    @GetMapping("/search")
-    public String searchBooks(@RequestParam(value = "title", required = false) String title,
-                              @RequestParam(value = "author", required = false) String author,
-                              @RequestParam(value = "category", required = false) String category,
-                              @RequestParam(value = "score", required = false) Integer score,
-                              @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
-                              @RequestParam(value = "pageSize", required = false, defaultValue = "12") Integer pageSize,
-                              Model model) {
-
-        BookFilter filter = new BookFilter();
-        filter.setTitle(title);
-        filter.setAuthor(author);
-        filter.setCategory(category);
-        filter.setScore(score);
-        filter.setPage((page - 1) * pageSize);
-        filter.setPageSize(pageSize);
-
-        List<Book> books = bookService.getBookList(filter);
-        int totalBooks = bookService.getBookListCount();
-        int maxPage = (int) Math.ceil((double) totalBooks / pageSize);
-
-        model.addAttribute("books", books);
-        model.addAttribute("currentPage", page);
-        model.addAttribute("maxPage", maxPage);
-
-        return "memo/book_search";
-    }
-
-    @ResponseBody
-    @PostMapping("/search_result")
-    public Map<String, Object> getBooks(@RequestParam(value = "page", defaultValue = "1") Integer page,
-                                        @RequestParam(value = "title", required = false) String title,
-                                        @RequestParam(value = "author", required = false) String author,
-                                        @RequestParam(value = "category", required = false) String category,
-                                        @RequestParam(value = "score", defaultValue = "0") Integer score) {
-
-        BookFilter filter = new BookFilter();
-
-        int limit = 10;
-        int listcount = bookService.getBookListCount();
-        int maxpage = (listcount + limit - 1) / limit;
-        int startpage = ((page - 1) / 10) * 10 + 1;
-        int endpage = startpage + 10 - 1;
-
-        if (endpage > maxpage)
-            endpage = maxpage;
-
-        int offset = (page - 1) * limit;
-        filter.setPage(offset);
-        filter.setPageSize(limit);
-        filter.setTitle(title);
-        filter.setAuthor(author);
-        filter.setCategory(category);
-        filter.setScore(score);
-
-        List<Book> books = bookService.getBookList(filter);
-
-        Map<String, Object> result = new HashMap<>();
-        result.put("books", books);
-        result.put("currentPage", page);
-        result.put("maxPage", maxpage);
-        result.put("startPage", startpage);
-        result.put("endPage", endpage);
-        result.put("totalBooks", listcount);
-
-        return result;
-
-    }
-
     @ResponseBody
     @PostMapping("/addbook")
     public ResponseEntity<String> addBook(@RequestBody Book book) {
         bookService.addBook(book);
         logger.info(book.toString());
-        return ResponseEntity.status(HttpStatus.OK).body("{\"message\":\"search\"}");
+        return ResponseEntity.status(HttpStatus.OK).body("{\"message\":\"searchmain\"}");
     }
+
+    @GetMapping("/searchmain")
+    public String SearchBooks(@RequestParam(value = "title", required = false) String title,
+                              @RequestParam(value = "author", required = false) String author,
+                              @RequestParam(value = "category", required = false) String category,
+                              @RequestParam(value = "score", required = false) Integer score,
+                              @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+                              Model model) {
+
+        int pageSize = 12;
+        int offset = (page - 1) * pageSize;
+
+        BookFilter filter = new BookFilter();
+        filter.setTitle(title);
+        filter.setAuthor(author);
+        filter.setCategory(category);
+        filter.setScore(score);
+        filter.setOffset(offset);
+        filter.setLimit(pageSize);
+
+        List<Book> books = bookService.getBookList(filter);
+        //logger.info("books : " + books.toString());
+
+        int totalBooks = bookService.getBookListCount(filter);
+
+        int maxPage = (int) Math.ceil((double) totalBooks / pageSize);
+
+        int startPage = Math.max(1, page - 5);
+        int endPage = Math.min(maxPage, page + 4);
+
+        model.addAttribute("books", books);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("maxPage", maxPage);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+
+        return "memo/book_search";
+    }
+
+    @GetMapping("/searchresult")
+    @ResponseBody
+    public Map<String, Object> searchBooks(@RequestParam(value = "title", required = false) String title,
+                                           @RequestParam(value = "author", required = false) String author,
+                                           @RequestParam(value = "category", required = false) String category,
+                                           @RequestParam(value = "score", required = false) Integer score,
+                                           @RequestParam(value = "page", required = false) Integer page) {
+
+        int pageSize = 12;
+        int offset = (page - 1) * pageSize;
+
+        BookFilter filter = new BookFilter();
+        filter.setTitle(title);
+        filter.setAuthor(author);
+        filter.setCategory(category);
+        filter.setScore(score);
+        filter.setOffset(offset);
+        filter.setLimit(pageSize);
+
+        //logger.info("offset : " + offset);
+
+        List<Book> books = bookService.getBookList(filter);
+        //logger.info("filter : " + filter.toString());
+        //logger.info("books : " + books.toString());
+
+        int totalBooks = bookService.getBookListCount(filter);
+
+        int maxPage = (int) Math.ceil((double) totalBooks / pageSize);
+        int startPage = Math.max(1, page - 5);
+        int endPage = Math.min(maxPage, page + 4);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("books", books);
+        response.put("currentPage", page);
+        response.put("maxPage", maxPage);
+        response.put("startPage", startPage);
+        response.put("endPage", endPage);
+
+        return response;
+
+    }
+
+
+
+
 }
