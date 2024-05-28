@@ -9,9 +9,33 @@
             select coalesce(max(no), 0)+1 from book
         </selectKey>
         insert into book
-        (no, title, author, pubdate, category, description, score, cover)
+        (no, title, author, pubdate, category, description, score, cover, regitdate)
         values
-        (#{no}, #{title}, #{author}, #{pubdate}, #{category}, #{description}, 0, #{cover})
+        (#{no}, #{title}, #{author}, #{pubdate}, #{category}, #{description}, 0, #{cover}, now())
     </insert>
+
+    <select id="getBookList" parameterType="com.bunge.memo.filter.BookFilter" resultType="com.bunge.memo.domain.Book">
+        SELECT *
+        FROM book
+        WHERE 1=1
+        <if test="title != null">
+            AND title LIKE CONCAT('%', #{title}, '%')
+        </if>
+        <if test="author != null">
+            AND author LIKE CONCAT('%', #{author}, '%')
+        </if>
+        <if test="category != null">
+            AND category = #{category}
+        </if>
+        <if test="score != null">
+            AND score >= #{score}
+        </if>
+        order by regitdate
+    </select>
+
+    <select id="getBookListCount" resultType="int">
+        select count(*) from book
+    </select>
+
 
 </mapper>

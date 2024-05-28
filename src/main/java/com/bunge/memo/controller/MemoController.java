@@ -2,6 +2,7 @@ package com.bunge.memo.controller;
 
 import com.bunge.memo.domain.Book;
 import com.bunge.memo.domain.Memo;
+import com.bunge.memo.filter.BookFilter;
 import com.bunge.memo.service.BookService;
 import com.bunge.memo.service.MemoService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,8 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @Controller
 @RequestMapping(value="/memo")
@@ -44,9 +48,44 @@ public class MemoController {
     }
 
     @GetMapping("/search")
-    public ModelAndView search(@RequestParam(value="page", defaultValue="1") int page, ModelAndView mv) {
-        mv.setViewName("memo/book_search");
-        return mv;
+    public String searchBooks(@RequestParam(value = "title", required = false) String title,
+                              @RequestParam(value = "author", required = false) String author,
+                              @RequestParam(value = "category", required = false) String category,
+                              @RequestParam(value = "score", required = false, defaultValue = "0") Integer score,
+                              @RequestParam(value = "page", required = false, defaultValue = "1") Integer page,
+                              @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize,
+                              Model model) {
+        BookFilter filter = new BookFilter();
+        filter.setTitle(title);
+        filter.setAuthor(author);
+        filter.setCategory(category);
+        filter.setScore(score);
+        filter.setPage(page);
+        filter.setPageSize(pageSize);
+
+        List<Book> books = bookService.getBookList(filter);
+        int listcount = bookService.getBookListCount();
+        model.addAttribute("books", books);
+        model.addAttribute("listcount", listcount);
+        return "memo/book_search";
+    }
+
+    @ResponseBody
+    @PostMapping("/search_result")
+    public List<Book> getBooks(@RequestParam(value = "page", required = false) Integer page,
+                               @RequestParam(value = "pageSize", required = false) Integer pageSize,
+                               @RequestParam(value = "title", required = false) String title,
+                               @RequestParam(value = "author", required = false) String author,
+                               @RequestParam(value = "category", required = false) String category,
+                               @RequestParam(value = "score", required = false, defaultValue = "0") Integer score) {
+        BookFilter filter = new BookFilter();
+        filter.setPage(page);
+        filter.setPageSize(pageSize);
+        filter.setTitle(title);
+        filter.setAuthor(author);
+        filter.setCategory(category);
+        filter.setScore(score);
+        return bookService.getBookList(filter);
     }
 
     @ResponseBody

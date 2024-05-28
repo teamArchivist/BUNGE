@@ -10,6 +10,7 @@ public class Book {
     private String description;
     private int score;
     private String cover;
+    private String regitdate;
 
 
     public int getNo() {
@@ -75,4 +76,8 @@ public class Book {
     public void setCover(String cover) {
         this.cover = cover;
     }
+
+    public String getRegitdate() { return regitdate; }
+
+    public void setRegitdate(String regitdate) { this.regitdate = regitdate; }
 }
