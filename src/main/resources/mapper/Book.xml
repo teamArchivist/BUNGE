@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bunge.memo.mapper.BookMapper">
+
+    <insert id="addBook">
+        <selectKey resultType="int" order="BEFORE" keyProperty="no">
+            select coalesce(max(no), 0)+1 from book
+        </selectKey>
+        insert into book
+        (no, title, author, pubdate, category, description, score, cover, regitdate)
+        values
+        (#{no}, #{title}, #{author}, #{pubdate}, #{category}, #{description}, 0, #{cover}, now())
+    </insert>
+
+    <select id="getBookList" parameterType="com.bunge.memo.filter.BookFilter" resultType="com.bunge.memo.domain.Book">
+        SELECT *
+        FROM book
+        WHERE 1=1
+        <if test="title != null">
+            AND title LIKE CONCAT('%', #{title}, '%')
+        </if>
+        <if test="author != null">
+            AND author LIKE CONCAT('%', #{author}, '%')
+        </if>
+        <if test="category != null">
+            AND category = #{category}
+        </if>
+        <if test="score != null">
+            AND score >= #{score}
+        </if>
+        order by regitdate
+    </select>
+
+    <select id="getBookListCount" resultType="int">
+        select count(*) from book
+    </select>
+
+
+</mapper>
