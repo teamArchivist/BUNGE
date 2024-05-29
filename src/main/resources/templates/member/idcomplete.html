@@ -1,13 +1,38 @@
-findid.html<!DOCTYPE html>
-<html th:replace="~{layout/layoutLogin :: layout (~{::title}, ~{::links}, ~{::section})}"
-      xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}"
+      xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <title>Title</title>
+    <title>아이디찾기 결과</title>
     <links>
         <!--/* link, script 태그 영역 */-->
     </links>
 </head>
 <body>
+<section id="content" class="content">
+    <!--/* 본문 content 영역 */-->
+    <div class="content__boxed w-100 min-vh-100 d-flex flex-column align-items-center justify-content-center">
+        <div class="content__wrap">
+            <!-- Login card -->
+            <div class="card shadow-none">
+                <div class="card-body p-4">
 
+                    <div class="text-center">
+                        <form class="mt-4" th:action="@{member/login}">
+                            <div class="d-grid mt-2" th:if="${sendid == null}">
+                                <p>해당하는 아이디 정보가 존재하지 않습니다.</p>
+                            </div>
+                            <div class="d-grid mt-2" th:if="${sendid != null}">
+                                <p>회원가입시 사용하신 아이디는 <span th:text="${sendid}"></span> 입니다.</p>
+                            </div>
+                        </form>
+                        <div class="text-center mt-3">
+                            <a th:href="@{/member/login}" class="btn-link text-decoration-none">로그인으로 돌아가기</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 </body>
 </html>

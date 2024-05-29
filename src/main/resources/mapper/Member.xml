@@ -16,4 +16,10 @@
     <select id="emailcheck" resultType="member">
         select * from member where email = #{email}
     </select>
+    <select id="findid" resultType="member">
+        select id from member where name = #{name} AND email = #{email}
+    </select>
+    <select id="findpwd" resultType="member">
+        select count(*) as count from member where id = #{id} and name = #{name} and email = #{email}
+    </select>
 </mapper>

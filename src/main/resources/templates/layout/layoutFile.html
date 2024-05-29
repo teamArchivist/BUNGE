@@ -49,12 +49,6 @@
             $("form[name=logout]").submit();
          })
       })
-      $(function () {
-         $("#login").click(function(event) {
-            event.preventDefault();
-            $("form[name=login]").submit();
-         })
-      })
    </script>
 </head>
 
@@ -260,13 +254,11 @@
 
             <!-- Navigation menu -->
             <div class="mainnav__top-content scrollable-content pb-5">
-               <th:block sec:authorize="isAnonymous()">
-                  <form th:action="@{/member/login}" method="post" style="margin-bottom:0px" name="logout" class="navigationlogin">
-                     <a th:href="@{login}" id="login" class="list-group-item list-group-item-action">
+                  <div class="navigationlogin" sec:authorize="isAnonymous()">
+                     <a th:href="@{/member/login}" id="login" class="list-group-item list-group-item-action">
                         <i class="demo-pli-unlock fs-5 me-2"></i> 로그인
                      </a>
-                  </form>
-               </th:block>
+                  </div>
                <!-- Profile Widget -->
                <div id="_dm-mainnavProfile" class="mainnav__widget my-3 hv-outline-parent" sec:authorize="isAuthenticated()">
 

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html th:replace="~{layout/layoutLogin :: layout (~{::title}, ~{::links}, ~{::section})}"
-      xmlns:th="http://www.thymeleaf.org">
+<html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}"
+      xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>아이디찾기</title>
     <links>
@@ -19,25 +19,19 @@
                         <h1 class="h3">아이디를 잊으셨나요</h1>
                         <p>아이디를 찾으시려면 이름과 이메일을 입력해주세요.</p>
                     </div>
-                    <form class="mt-4" th:action="@{member/idcomplete}">
+                    <form class="mt-4" th:action="@{/member/findidProcess}" method="post">
                         <div class="d-grid mt-2">
-                            <input type="text" name="name" class="form-control" placeholder="이름을 입력">
+                            <input type="text" name="name" class="form-control" placeholder="이름을 입력" aria-label="name">
                         </div>
                         <div class="d-grid mt-2">
-                            <span id="name_message"></span>
+                            <input type="email" name="email" class="form-control" placeholder="이메일을 입력" aria-label="Email">
                         </div>
-                        <div class="d-grid mt-2">
-                            <input type="email" name="email" class="form-control" placeholder="Email" aria-label="Email">
-                        </div>
-                        <div class="d-grid mt-2">
-                            <span id="email_message"></span>
-                        </div>
-                        <div class="d-grid mt-5">
+                        <div class="d-grid mt-4">
                             <button class="btn btn-warning btn-lg" type="submit">아이디 찾기</button>
                         </div>
                     </form>
                     <div class="text-center mt-3">
-                        <a th:href="@{member/login}" class="btn-link text-decoration-none">로그인으로 돌아가기</a>
+                        <a th:href="@{/member/login}" class="btn-link text-decoration-none">로그인으로 돌아가기</a>
                     </div>
 
 

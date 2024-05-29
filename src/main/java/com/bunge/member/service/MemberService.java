@@ -14,4 +14,8 @@ public interface MemberService {
     public boolean nickcheck(String nick);
 
     public boolean emailcheck(String email);
+
+    String findid(String name, String email);
+
+    boolean findpwd(String id, String name, String email);
 }
