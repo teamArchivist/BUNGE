@@ -6,15 +6,15 @@
 
     <!-- 문의글 삽입 -->
     <insert id="insertInquiry">
-        INSERT INTO inquiry (member_id, type_id, title, content)
-        VALUES (#{memberId}, #{typeId}, #{title}, #{content})
+        INSERT INTO inquiry (member_id, type_id, title, content, is_public, is_answered, created_at, updated_at)
+        VALUES (#{memberId}, #{typeId}, #{title}, #{content}, #{isPublic}, #{isAnswered}, NOW(), NOW())
     </insert>
 
     <!-- 문의글 수정 -->
     <update id="updateInquiry">
         UPDATE inquiry
         SET title = #{title}, content = #{content}, type_id = #{typeId},
-            updated_at = CURRENT_TIMESTAMP
+            updated_at = CURRENT_TIMESTAMP, is_public = #{isPublic}, is_answered = #{isAnswered}
         WHERE inquiry_id = #{inquiryId}
     </update>
 
@@ -25,46 +25,55 @@
 
     <!-- 모든 문의글 조회 (페이징 적용) -->
     <select id="selectAllInquiries" resultType="com.bunge.inquiry.domain.Inquiry">
-        SELECT inquiry_id AS inquiryId,
-               member_id AS memberId,
-               type_id AS typeId,
-               title,
-               content,
-               created_at AS createdAt,
-               updated_at AS updatedAt
-        FROM inquiry
-        ORDER BY inquiry_id DESC
+        SELECT i.inquiry_id AS inquiryId,
+               i.member_id AS memberId,
+               i.type_id AS typeId,
+               t.type_name AS typeName,
+               i.title,
+               i.content,
+               i.is_public AS isPublic,
+               i.is_answered AS isAnswered,
+               i.created_at AS createdAt,
+               i.updated_at AS updatedAt
+        FROM inquiry i
+                 JOIN inquiry_type t ON i.type_id = t.type_id
+        ORDER BY i.inquiry_id DESC
             LIMIT #{limit} OFFSET #{offset}
     </select>
 
     <!-- 문의글 조회 -->
     <select id="selectInquiry" resultType="com.bunge.inquiry.domain.Inquiry">
-        SELECT
-            inquiry_id AS inquiryId,
-            member_id AS memberId,
-            type_id AS typeId,
-            title,
-            content,
-            created_at AS createdAt,
-            updated_at AS updatedAt
-        FROM inquiry
-        WHERE inquiry_id = #{inquiryId}
-        ORDER BY inquiry_id DESC
-            LIMIT #{limit} OFFSET #{offset}
+        SELECT i.inquiry_id AS inquiryId,
+               i.member_id AS memberId,
+               i.type_id AS typeId,
+               t.type_name AS typeName,
+               i.title,
+               i.content,
+               i.is_public AS isPublic,
+               i.is_answered AS isAnswered,
+               i.created_at AS createdAt,
+               i.updated_at AS updatedAt
+        FROM inquiry i
+                 JOIN inquiry_type t ON i.type_id = t.type_id
+        WHERE i.inquiry_id = #{inquiryId}
     </select>
 
     <!-- 문의글 목록 조회 (유형 필터 및 페이징 적용) -->
     <select id="selectInquiriesByType" resultType="com.bunge.inquiry.domain.Inquiry">
-        SELECT inquiry_id AS inquiryId,
-               member_id AS memberId,
-               type_id AS typeId,
-               title,
-               content,
-               created_at AS createdAt,
-               updated_at AS updatedAt
-        FROM inquiry
-        WHERE type_id = #{typeId}
-        ORDER BY inquiry_id DESC
+        SELECT i.inquiry_id AS inquiryId,
+               i.member_id AS memberId,
+               i.type_id AS typeId,
+               t.type_name AS typeName,
+               i.title,
+               i.content,
+               i.is_public AS isPublic,
+               i.is_answered AS isAnswered,
+               i.created_at AS createdAt,
+               i.updated_at AS updatedAt
+        FROM inquiry i
+                 JOIN inquiry_type t ON i.type_id = t.type_id
+        WHERE i.type_id = #{typeId}
+        ORDER BY i.inquiry_id DESC
             LIMIT #{limit} OFFSET #{offset}
     </select>
 

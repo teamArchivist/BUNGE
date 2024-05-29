@@ -1,15 +1,17 @@
 package com.bunge.inquiry.service;
 
-import com.bunge.inquiry.domain.Inquiry;
-
 import java.util.List;
 
+import com.bunge.inquiry.domain.Inquiry;
+import org.springframework.web.multipart.MultipartFile;
+
 public interface InquiryService {
-    void createInquiry(Inquiry inquiry);
-    void updateInquiry(Inquiry inquiry);
-    void deleteInquiry(int inquiryId);
-    Inquiry getInquiryById(int inquiryId);
-    List<Inquiry> getInquiriesByType(int typeId, int page, int limit);
-    List<Inquiry> getAllInquiries(int page, int limit);
-    int getListCount();
+    void addInquiry(Inquiry inquiry, List<MultipartFile> files);
+    void updateInquiry(Inquiry inquiry, List<MultipartFile> files);
+    void deleteInquiry(Long inquiryId);
+    Inquiry getInquiry(Long inquiryId);
+    List<Inquiry> getAllInquiries(int limit, int offset);
+    List<Inquiry> getInquiriesByType(int typeId, int limit, int offset);
+    int getInquiryCount();
 }
+
