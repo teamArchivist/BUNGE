@@ -67,6 +67,7 @@
                   <div class="container" >
                      <th:block th:if="${listcount > 0}">
                      <table class="table">
+                        <thead>
                         <tr>
                            <td>번호</td>
                            <td>분류</td>
@@ -74,51 +75,40 @@
                            <td>답변여부</td>
                            <td>작성자</td>
                            <td>등록일</td>
+                           <td>공개상태</td>
                         </tr>
-                        <tr>
-                           <td>1</td>
-                           <td>반품문의</td>
-                           <td>반품관련 문의 합니다</td>
-                           <td>답변완료</td>
-                           <td>김대영</td>
-                           <td>24.05.11</td>
+                        </thead>
+                        <tbody>
+                        <tr th:each="inquiry : ${inquiryList}">
+                           <td th:text="${inquiry.inquiryId}"></td>
+                           <td th:text="${inquiry.typeName}"></td>
+                           <td th:text="${inquiry.title}"></td>
+                           <td th:text="${inquiry.isAnswered ? '답변완료' : '답변 중'}"></td>
+                           <td th:text="${inquiry.memberId}"></td>
+                           <td th:text="${#dates.format(inquiry.createdAt, 'yyyy-MM-dd')}"></td>
+                           <td th:text="${inquiry.isPublic ? '공개' : '비공개'}"></td>
                         </tr>
-                        <tr>
-                           <td>2</td>
-                           <td>반품문의</td>
-                           <td>RE: 답변드립니다.</td>
-                           <td></td>
-                           <td>관리자</td>
-                           <td>24.05.11</td>
-                        </tr>
-                        <tr>
-                           <td>3</td>
-                           <td>탈퇴문의</td>
-                           <td>탈퇴관련 문의 합니다</td>
-                           <td>답변 중</td>
-                           <td>엄희원</td>
-                           <td>24.05.11</td>
-                        </tr>
+                        </tbody>
                      </table>
                      <!-- END : Filter Data -->
+                        </th:block>
                      </th:block>
                      <h3 th:if="${listcount == 0}" style="text-align:center">등록된 글이 없습니다.</h3>
                   </div>
 
                   <nav class="text-align-center mt-5" aria-label="Table navigation">
                      <ul class="pagination justify-content-center">
-                        <li class="page-item disabled">
-                           <a class="page-link">Previous</a>
+                        <li class="page-item" th:classappend="${page <= 1} ? ' disabled' : ''">
+                           <a class="page-link" th:href="${page > 1} ? '/inquiry/list?page=' + ${previousPage} : ''" th:if="${page > 1}">Previous</a>
+                           <a class="page-link" th:if="${page <= 1}">Previous</a>
                         </li>
-                        <li class="page-item active" aria-current="page">
-                           <span class="page-link">1</span>
+                        <li th:each="a : ${#numbers.sequence(startpage, endpage)}"
+                            th:classappend="${a == page} ? ' active' : ''">
+                           <a class="page-link" th:href="'/inquiry/list?page=' + ${a}" th:text="${a}"></a>
                         </li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
-                        <li class="page-item"><a class="page-link" href="#">5</a></li>
-                        <li class="page-item">
-                           <a class="page-link" href="#">Next</a>
+                        <li class="page-item" th:classappend="${page >= maxpage} ? ' disabled' : ''">
+                           <a class="page-link" th:href="${page < maxpage} ? '/inquiry/list?page=' + ${nextPage} : ''" th:if="${page < maxpage}">Next</a>
+                           <a class="page-link" th:if="${page >= maxpage}">Next</a>
                         </li>
                      </ul>
                   </nav>
