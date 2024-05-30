@@ -18,15 +18,15 @@
                     <div class="text-center">
                         <h1 class="h3">비밀번호를 재설정하세요</h1>
                     </div>
-                    <form class="mt-4" th:action="@{/member/login}" method="post">
+                    <form class="mt-4" th:action="@{/member/pwdsetProcess}" method="post">
                         <div class="d-grid mt-2">
-                            <input type="text" name="pwd" class="form-control" placeholder="비밀번호 입력" aria-label="id">
+                            <input type="text" name="pwd" class="form-control" placeholder="비밀번호 입력" aria-label="pwd">
                         </div>
                         <div class="d-grid mt-2">
                             <span id="pwd_message"></span>
                         </div>
                         <div class="d-grid mt-2">
-                            <input type="text" name="pwd" class="form-control" placeholder="비밀번호 재입력" aria-label="id">
+                            <input type="text" name="pwd" class="form-control" placeholder="비밀번호 재입력" aria-label="pwd">
                         </div>
                         <div class="d-grid mt-2">
                             <span id="pwd_check_message"></span>

@@ -1,7 +1,4 @@
 $(function(){
-	$(".cancelbtn").click(function () {
-		location.href="index.jsp";
-	});
 	//id keyup 시작
 	$("input[name=id]").on('keyup',
 		function(){

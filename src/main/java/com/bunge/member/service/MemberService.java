@@ -5,7 +5,7 @@ import com.bunge.member.domain.Member;
 
 public interface MemberService {
 
-    public int insert(Member m);
+    public int insert(Member member);
 
     public  Member memberinfo(String id);
 
@@ -18,4 +18,6 @@ public interface MemberService {
     String findid(String name, String email);
 
     boolean findpwd(String id, String name, String email);
+
+    boolean pwdset(Member member);
 }

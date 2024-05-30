@@ -8,7 +8,6 @@ import com.bunge.member.domain.Member;
 import com.bunge.member.mapper.MemberMapper;
 
 import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class MemberServiceimpl implements MemberService{
@@ -22,8 +21,8 @@ public class MemberServiceimpl implements MemberService{
         this.passwordEncoder = passwordEncoder;
     }
     @Override
-    public int insert(Member m) {
-        return memberMapper.insert(m);
+    public int insert(Member member) {
+        return memberMapper.insert(member);
     }
     @Override
     public Member memberinfo(String id) {
@@ -33,27 +32,21 @@ public class MemberServiceimpl implements MemberService{
     @Override
     public boolean idcheck(String id) {
         Member member = memberMapper.idcheck(id);
-        if(member != null){
-            return true;
-        }
+        if(member != null) return true;
         return false;
     }
 
     @Override
     public boolean nickcheck(String nick) {
         Member member = memberMapper.nickcheck(nick);
-        if(member != null){
-            return true;
-        }
+        if(member != null) return true;
         return false;
     }
 
     @Override
     public boolean emailcheck(String email) {
         Member member = memberMapper.emailcheck(email);
-        if(member != null){
-            return true;
-        }
+        if(member != null) return true;
         return false;
     }
 
@@ -82,10 +75,16 @@ public class MemberServiceimpl implements MemberService{
         map.put("id", id);
         map.put("name", name);
         map.put("email", email);
-        Member member = memberMapper.findpwd(map);
-        if(member != null) {
+        int count = memberMapper.findpwd(map);
+        if (count == 1) {
             return true;
+        }else{
+            return false;
         }
+    }
+    @Override
+    public boolean pwdset(Member member) {
+        int result = memberMapper.pwdset(member);
         return false;
     }
 }

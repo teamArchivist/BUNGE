@@ -5,7 +5,14 @@
     <title>아이디찾기</title>
     <links>
         <!--/* link, script 태그 영역 */-->
+        <script th:src="@{/js/message.js}"></script>
     </links>
+    <script th:inline="javascript">
+        $(function() {
+            showMessage();
+        });
+    </script>
+
 </head>
 <body>
 <section id="content" class="content">
@@ -19,7 +26,7 @@
                         <h1 class="h3">아이디를 잊으셨나요</h1>
                         <p>아이디를 찾으시려면 이름과 이메일을 입력해주세요.</p>
                     </div>
-                    <form class="mt-4" th:action="@{/member/findidProcess}" method="post">
+                    <form class="mt-4" name="findid" th:action="@{/member/findidProcess}" method="post">
                         <div class="d-grid mt-2">
                             <input type="text" name="name" class="form-control" placeholder="이름을 입력" aria-label="name">
                         </div>
