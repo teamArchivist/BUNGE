@@ -1,11 +1,19 @@
 <!DOCTYPE html>
-<html th:replace="~{layout/layoutLogin :: layout (~{::title}, ~{::links}, ~{::section})}"
-      xmlns:th="http://www.thymeleaf.org">
+<html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}"
+      xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>비밀번호 찾기</title>
     <links>
         <!--/* link, script 태그 영역 */-->
     </links>
+    <script th:inline="javascript">
+        function showMessage() {
+            const message = [[${message}]];
+            if (message) {
+                alert(message);
+            }
+        }
+    </script>
 </head>
 <body>
 <section id="content" class="content">
@@ -16,26 +24,26 @@
             <div class="card shadow-lg">
                 <div class="card-body">
                     <div class="text-center">
-                        <h1 class="h3">Forgot password</h1>
-                        <p>Enter your email address to recover your password.</p>
+                        <h1 class="h3">비밀번호를 잊으셨나요</h1>
+                        <p>비밀번호를 재설정하시려면 아이디, 이름, 이메일을 입력해주세요.</p>
                     </div>
-
-                    <form class="mt-4" action="index.html">
-
-                        <div class="mb-3">
-                            <input type="email" class="form-control" placeholder="Email" autofocus>
+                    <form class="mt-4" th:action="@{/member/findpwdProcess}" method="post">
+                        <div class="d-grid mt-2">
+                            <input type="text" name="id" class="form-control" placeholder="아이디를 입력" aria-label="id">
                         </div>
-
-                        <div class="d-grid mt-5">
-                            <button class="btn btn-warning btn-lg" type="submit">Reset Password</button>
+                        <div class="d-grid mt-2">
+                            <input type="text" name="name" class="form-control" placeholder="이름을 입력" aria-label="name">
+                        </div>
+                        <div class="d-grid mt-2">
+                            <input type="email" name="email" class="form-control" placeholder="이메일을 입력" aria-label="Email">
+                        </div>
+                        <div class="d-grid mt-4">
+                            <button class="btn btn-warning btn-lg" type="submit">비밀번호 재설정</button>
                         </div>
                     </form>
-
-
                     <div class="text-center mt-3">
-                        <a href="./front-pages-login.html" class="btn-link text-decoration-none">Back to login</a>
+                        <a th:href="@{/member/login}" class="btn-link text-decoration-none">로그인으로 돌아가기</a>
                     </div>
-
 
                 </div>
             </div>
@@ -45,19 +53,12 @@
 
             <!-- Show the background images container -->
             <div class="d-flex align-items-center justify-content-center gap-3 mt-4">
-                <button class="btn btn-danger hstack gap-2" data-bs-toggle="offcanvas" data-bs-target="#_dm-boxedBgContent">
-                    <i class=" demo-psi-photos fs-4"></i>
-                    <span class="vr"></span>
-                    Background image
-                </button>
-                <button class="btn btn-light" onclick="window.history.back()">Back</button>
+                <button class="btn btn-light" onclick="window.history.back()">뒤로가기</button>
             </div>
             <!-- END : Show the background images container -->
 
-
         </div>
     </div>
-
 </section>
 </body>
 </html>
