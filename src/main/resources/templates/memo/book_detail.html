@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>책 상세정보 페이지</title>
+    <links>
+        <script th:src="@{/js/bookdetail.js}"></script>
+    </links>
+</head>
+<body>
+
+<div id="root" class="root mn--max tm--expanded-hd">
+    <section id="content" class="content">
+        <div class="content__header content__boxed">
+            <div class="content__wrap">
+
+                <!-- Breadcrumb -->
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{main}">Home</a></li>
+                        <li class="breadcrumb-item"><a th:href="@{mine}">기록 · 리뷰</a></li>
+                        <li class="breadcrumb-item"><a th:href="@{searcgnaub}">책 검색</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">책 상세정보</li>
+                    </ol>
+                </nav>
+                <!-- END : Breadcrumb -->
+
+                <h1 class="page-title mb-2 mt-2">책 상세정보</h1>
+                <p class="lead">
+                    등록된 책들의 상세정보를 조회할 수 있습니다
+                </p>
+
+            </div>
+
+            <div class="content__boxed">
+                <div class="content__wrap">
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+
+                            <div class="tab-base">
+
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li class="nav-item active" role="presentation">
+                                        <button class="nav-link active" data-bs-toggle="tab"
+                                                data-bs-target="#_dm-tabsBookDetail" type="button" role="tab"
+                                                aria-controls="bookDetail" aria-selected="true">상세정보
+                                        </button>
+                                    </li>
+                                </ul>
+
+                                <!-- Tabs content -->
+                                <div class="tab-content" style="color:black">
+                                    <div id="_dm-tabsBookDetail" class="tab-pane fade active show" role="tabpanel" aria-labelledby="bookDetail-tab">
+                                        <!-- Card blog with image -->
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <img th:src="${book.cover}" alt="..." loading="lazy">
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="row mb-3 border-bottom">
+                                                    <div class="col-md-2 text-center align-content-center text-bg-success">
+                                                        제목
+                                                    </div>
+                                                    <div class="col-md-10" th:text="${book.title.length() > 40 ? #strings.substring(book.title, 0, 40) + '...' : book.title}"></div>
+                                                </div>
+                                                <div class="row mb-3 border-bottom">
+                                                    <div class="col-md-2 text-center align-content-center text-bg-success">
+                                                        저자
+                                                    </div>
+                                                    <div class="col-md-10">
+                                                        [[${book.author}]]
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3 border-bottom">
+                                                    <div class="col-md-2 text-center align-content-center text-bg-success">
+                                                        별점
+                                                    </div>
+                                                    <div class="col-md-10">
+                                                        [[${book.score}]]점
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3 border-bottom">
+                                                    <div class="col-md-2 text-center align-content-center text-bg-success">
+                                                        페이지
+                                                    </div>
+                                                    <div class="col-md-10" id="itemPage">
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3 border-bottom">
+                                                    <div class="col-md-2 text-center align-content-center text-bg-success">
+                                                        도전 중
+                                                    </div>
+                                                    <div class="col-md-2" id="challengeCount">
+                                                        5명
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3 border-bottom">
+                                                    <div class="col-md-2 text-center align-content-center text-bg-success">
+                                                        목표 설정
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        6명
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3 border-bottom">
+                                                    <div class="col-md-2 text-center align-content-center text-bg-success">
+                                                        완독
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        11명
+                                                    </div>
+                                                </div>
+                                                <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                                                    <button class="btn btn-success" type="button" id="addGoal">목표추가</button>
+                                                    <button class="btn btn-danger" type="button" id="addChallenge">도전하기</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- END : Card blog with image -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>
