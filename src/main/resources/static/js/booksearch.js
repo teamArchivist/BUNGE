@@ -6,9 +6,7 @@ $(function () {
     $("#searchForm").submit(function(event) {
         event.preventDefault();
         let keyword = $("#searchKeyword").val();
-        //console.log(keyword)
         let type = $("#searchType").val();
-        //console.log(type)
         searchBooks(keyword, type, 1); // 초기 페이지는 1
     });
 
@@ -49,7 +47,7 @@ $(function () {
                             </div>`;
                         $('#searchresult').append(output);
                     })
-               }
+                }
 
                 // 페이징 처리
                 $(".pagination").empty();
@@ -84,7 +82,7 @@ $(function () {
         });
     }
 
-    $("#bookadd").click(function() {
+    $("#addbook").click(function() {
         let searchword = prompt("책 제목을 입력하세요");
 
         if (searchword) {
@@ -97,7 +95,7 @@ $(function () {
                     "QueryType": "Title",
                     "SearchTarget": "Book",
                     "start": "1",
-                    "MaxResults": "18",
+                    "MaxResults": "50",
                     "Sort": "Accuracy",
                     "Cover": "Big",
                     "output": "JS",
@@ -106,67 +104,99 @@ $(function () {
                 dataType: "json",
                 cache: false,
                 success: function (rdata) {
-                    $("#searchresult").empty()
-                    $("#bookpagenation").empty()
+                    //console.log(rdata.item);
 
-                    $(rdata.item).each(function (index, subject) {
-                        let output = "<div class='col-sm-6 col-xl-2 mb-3'>" +
-                            "<div class='card mb-3 hv-grow-parent h-100'>" +
-                            "  <img class='card-img-top book-img' src='" + subject.cover + "' data-title='" + subject.title + "' data-author='" + subject.author + "' data-pubDate='" + subject.pubDate + "' data-category='" + subject.categoryName + "' data-description='" + subject.description + "' loading='lazy' height='350px'>" +
-                            "  <div class='card-body mt-4'>" +
-                            "       <a class='card-text link-success h5'>" + subject.title + "</a>" +
-                            "       <p class='card-text text-opacity-75'>" + subject.author + "</p>" +
-                            "       <p class='card-text text-opacity-75'>" + subject.pubDate + "</p>" +
-                            "       <p class='card-text'>" + subject.categoryName + "</p>" +
-                            "       <p class='card-text'>" + subject.description + "</p>" +
-                            "  </div>" +
-                            "</div>";
+                    $.ajax({
+                        url: "checkbook",
+                        method: "POST",
+                        beforeSend: function(xhr) {
+                            if (header && token) {
+                                xhr.setRequestHeader(header, token);
+                            }
+                        },
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(rdata.item),
+                        cache: false,
+                        success: function (response) {
+                            console.log("보내는 데이터 : " + this.data);
+                           // console.log("response: " + response);
+                            $("#searchresult").empty();
+                            $("#bookpagenation").empty();
 
-                        $('#searchresult').append(output);
+                            if (response.length == 0) {
+                                alert("검색된 모든 책이 이미 등록되어 있습니다.")
+                            } else {
+                                response.forEach(subject => {
+                                    console.log(subject); // 데이터 확인을 위해 추가
+                                    let output = "<div class='col-sm-6 col-xl-2 mb-3'>" +
+                                        "<div class='card mb-3 hv-grow-parent h-100'>" +
+                                        "  <img class='card-img-top book-img' src='" + subject.cover +
+                                        "' data-title='" + subject.title + "' data-author='" + subject.author +
+                                        "' data-pubdate='" + subject.pubDate + "' data-category='" + subject.categoryName +
+                                        "' data-description='" + subject.description + "' data-isbn13='" + subject.isbn13 +
+                                        "' loading='lazy' height='350px'>" +
+                                        "  <div class='card-body mt-4'>" +
+                                        "       <a class='card-text link-success h5'>" + subject.title + "</a>" +
+                                        "       <p class='card-text text-opacity-75'>" + subject.author + "</p>" +
+                                        "       <p class='card-text text-opacity-75'>" + subject.pubDate + "</p>" +
+                                        "       <p class='card-text'>" + subject.categoryName + "</p>" +
+                                        "       <p class='card-text'>" + subject.description + "</p>" +
+                                        "  </div>" +
+                                        "</div>";
+                                    $('#searchresult').append(output);
+                                });
+                            }
+                        },
+                        error: function(error) {
+                            console.error("Error comparing books:", error);
+                        }
                     });
 
-                    // 이미지 클릭 이벤트 리스너 추가
-                    $(".book-img").click(function () {
+                } //success end
+            }); //검색 ajax end
+        } //if(searchword) end
+    }); //$("#addbook").click end
 
-                        let answer = confirm("해당 책을 등록하시겠습니까?")
+    // 이미지 클릭 이벤트 리스너 추가
+    $("body").on("click", ".book-img", function () {
 
-                        if (answer) {
+        let answer = confirm("해당 책을 등록하시겠습니까?")
 
-                            let bookData = {
-                                title: $(this).data('title'),
-                                author: $(this).data('author'),
-                                pubdate: $(this).data('pubdate'),
-                                category: $(this).data('category'),
-                                description: $(this).data('description'),
-                                cover: $(this).attr('src')
-                            };
+        if (answer) {
 
-                            $.ajax({
-                                url: "addbook",  // 서버에 책 정보를 저장하는 엔드포인트
-                                type: "POST",
-                                contentType: "application/json; charset=utf-8",
-                                dataType: "json",
-                                cache: "false",
-                                beforeSend: function (xhr) {
-                                    if (header && token) {
-                                        xhr.setRequestHeader(header, token);
-                                    }
-                                },
-                                data: JSON.stringify(bookData),
-                                success: function (response) {
-                                    alert("책 정보가 저장되었습니다.");
-                                    window.location.href = response.message;
-                                },
-                                error: function (error) {
-                                    alert("책 정보 저장에 실패했습니다.")
-                                    console.error("저장 중 오류 발생:", error);
-                                }
-                            });
-                        } //if (answer)
+            let bookData = {
+                isbn13: $(this).data('isbn13'),
+                title: $(this).data('title'),
+                author: $(this).data('author'),
+                pubDate: $(this).data('pubdate'),
+                categoryName: $(this).data('category'),
+                description: $(this).data('description'),
+                cover: $(this).attr('src'),
+            };
 
-                    }); //이미지 클릭 이벤트
+            $.ajax({
+                url: "addbook",  // 서버에 책 정보를 저장하는 엔드포인트
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                cache: false,
+                beforeSend: function (xhr) {
+                    if (header && token) {
+                        xhr.setRequestHeader(header, token);
+                    }
+                },
+                data: JSON.stringify(bookData),
+                success: function (response) {
+                    alert("책 정보가 저장되었습니다.");
+                    window.location.href = response.message;
+                },
+                error: function (error) {
+                    alert("책 정보 저장에 실패했습니다.")
+                    console.error("저장 중 오류 발생:", error);
                 }
             });
-        }
-    });
+        } //if (answer)
+
+    }); //이미지 클릭 이벤트
+
 });

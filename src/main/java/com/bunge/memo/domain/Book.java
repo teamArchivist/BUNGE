@@ -1,24 +1,25 @@
 package com.bunge.memo.domain;
 
+import java.util.Date;
+
 public class Book {
 
-    private int no;
+    private String isbn13;
     private String title;
     private String author;
-    private String pubdate;
-    private String category;
+    private String pubDate;
+    private String categoryName;
     private String description;
-    private int score;
     private String cover;
     private String regitdate;
+    private int score;
 
-
-    public int getNo() {
-        return no;
+    public String getIsbn13() {
+        return isbn13;
     }
 
-    public void setNo(int no) {
-        this.no = no;
+    public void setIsbn13(String isbn13) {
+        this.isbn13 = isbn13;
     }
 
     public String getTitle() {
@@ -37,20 +38,20 @@ public class Book {
         this.author = author;
     }
 
-    public String getPubdate() {
-        return pubdate;
+    public String getPubDate() {
+        return pubDate;
     }
 
-    public void setPubdate(String pubdate) {
-        this.pubdate = pubdate;
+    public void setPubDate(String pubDate) {
+        this.pubDate = pubDate;
     }
 
-    public String getCategory() {
-        return category;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public String getDescription() {
@@ -61,14 +62,6 @@ public class Book {
         this.description = description;
     }
 
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
     public String getCover() {
         return cover;
     }
@@ -77,22 +70,34 @@ public class Book {
         this.cover = cover;
     }
 
-    public String getRegitdate() { return regitdate; }
+    public String getRegitdate() {
+        return regitdate;
+    }
 
-    public void setRegitdate(String regitdate) { this.regitdate = regitdate; }
+    public void setRegitdate(String regitdate) {
+        this.regitdate = regitdate;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
 
     @Override
     public String toString() {
         return "Book{" +
-                "no=" + no +
+                "isbn13='" + isbn13 + '\'' +
                 ", title='" + title + '\'' +
                 ", author='" + author + '\'' +
-                ", pubdate='" + pubdate + '\'' +
-                ", category='" + category + '\'' +
+                ", pubDate='" + pubDate + '\'' +
+                ", categoryName='" + categoryName + '\'' +
                 ", description='" + description + '\'' +
-                ", score=" + score +
                 ", cover='" + cover + '\'' +
                 ", regitdate='" + regitdate + '\'' +
+                ", score=" + score +
                 '}';
     }
 }

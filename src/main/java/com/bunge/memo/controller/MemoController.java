@@ -2,9 +2,11 @@ package com.bunge.memo.controller;
 
 import com.bunge.memo.domain.Book;
 import com.bunge.memo.domain.Memo;
+import com.bunge.memo.domain.ReadState;
 import com.bunge.memo.filter.BookFilter;
 import com.bunge.memo.service.BookService;
 import com.bunge.memo.service.MemoService;
+import com.bunge.memo.service.ReadStateService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,11 +30,13 @@ public class MemoController {
 
     private final MemoService memoService;
     private final BookService bookService;
+    private final ReadStateService readStateService;
 
     @Autowired
-    public MemoController(MemoService memoService, BookService bookService) {
+    public MemoController(MemoService memoService, BookService bookService, ReadStateService readStateService) {
         this.memoService = memoService;
         this.bookService = bookService;
+        this.readStateService = readStateService;
     }
 
     //기록·리뷰 -> 나의 기록 눌렀을 때 처음 페이지
@@ -52,7 +56,7 @@ public class MemoController {
     @PostMapping("/addbook")
     public ResponseEntity<String> addBook(@RequestBody Book book) {
         bookService.addBook(book);
-        logger.info(book.toString());
+        //logger.info(book.toString());
         return ResponseEntity.status(HttpStatus.OK).body("{\"message\":\"searchmain\"}");
     }
 
@@ -94,8 +98,8 @@ public class MemoController {
         return "memo/book_search";
     }
 
-    @GetMapping("/searchresult")
     @ResponseBody
+    @GetMapping("/searchresult")
     public Map<String, Object> searchBooks(@RequestParam(value = "title", required = false) String title,
                                            @RequestParam(value = "author", required = false) String author,
                                            @RequestParam(value = "category", required = false) String category,
@@ -135,6 +139,52 @@ public class MemoController {
         return response;
 
     }
+
+    @GetMapping("/bookdetail")
+    public String bookDetail(String isbn13,
+                             Model model) {
+
+        BookFilter filter = new BookFilter();
+        filter.setIsbn13(isbn13);
+
+        Book book = bookService.getBookDetail(filter);
+        //logger.info("book : " + book);
+        model.addAttribute("book", book);
+        model.addAttribute("isbn13", isbn13);
+
+        return "memo/book_detail";
+    }
+
+    @ResponseBody
+    @PostMapping("/checkbook")
+    public List<Book> checkBook(@RequestBody List<Book> books) {
+        logger.info(books.toString());
+        return bookService.filterNewBooks(books);
+    }
+
+    @PostMapping("/readstate")
+    public ResponseEntity<String> addGoal(@RequestBody ReadState readState) {
+
+        //logger.info("state" + readState.getState());
+
+        if (readState.getState().equals("목표")) {
+            try {
+                readStateService.addGoal(readState);
+                return ResponseEntity.status(HttpStatus.OK).body("{\"message\":\"success\"}");
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"message\":\"failed\"}");
+            }
+        } else {
+            return null;
+        }
+
+        //else if (readState.getState().equals("도전")) {
+        //
+        //}
+
+    }
+
+
 
 
 
