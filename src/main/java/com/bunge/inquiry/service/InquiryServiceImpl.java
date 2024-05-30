@@ -17,27 +17,22 @@ public class InquiryServiceImpl implements InquiryService {
     @Autowired
     private InquiryMapper inquiryMapper;
 
-    @Autowired
-    private InquiryAttachmentService inquiryAttachmentService;
 
     @Transactional
     @Override
-    public void addInquiry(Inquiry inquiry, List<MultipartFile> files) {
+    public void addInquiry(Inquiry inquiry) {
         inquiryMapper.insertInquiry(inquiry);
-        inquiryAttachmentService.addAttachments(inquiry.getInquiryId(), files);
     }
 
     @Transactional
     @Override
-    public void updateInquiry(Inquiry inquiry, List<MultipartFile> files) {
+    public void updateInquiry(Inquiry inquiry) {
         inquiryMapper.updateInquiry(inquiry);
-        inquiryAttachmentService.addAttachments(inquiry.getInquiryId(), files);
     }
 
     @Transactional
     @Override
     public void deleteInquiry(Long inquiryId) {
-        inquiryAttachmentService.deleteAttachments(inquiryId);
         inquiryMapper.deleteInquiry(inquiryId);
     }
 
@@ -59,6 +54,10 @@ public class InquiryServiceImpl implements InquiryService {
     @Override
     public int getInquiryCount() {
         return inquiryMapper.selectListCount();
+    }
+
+    public Inquiry getView(Long inquiryId) {
+        return inquiryMapper.getView(inquiryId);
     }
 }
 
