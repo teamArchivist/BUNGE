@@ -29,4 +29,13 @@ public class ReadState {
     public void setState(String state) {
         this.state = state;
     }
+
+    @Override
+    public String toString() {
+        return "ReadState{" +
+                "isbn13='" + isbn13 + '\'' +
+                ", id='" + id + '\'' +
+                ", state='" + state + '\'' +
+                '}';
+    }
 }

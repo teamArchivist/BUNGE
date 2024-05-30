@@ -4,7 +4,7 @@
 
 <mapper namespace="com.bunge.memo.mapper.ReadStateMapper">
 
-    <insert id="addGoal">
+    <insert id="addReadState" parameterType="com.bunge.memo.domain.ReadState">
         insert into readstate
         (isbn13, id, state)
         values

@@ -16,8 +16,8 @@ public class ReadStateServiceImpl implements ReadStateService {
     }
 
     @Override
-    public void addGoal(ReadState readState) {
-        readStateMapper.addGoal(readState);
+    public void addReadState(ReadState readState) {
+        readStateMapper.addReadState(readState);
     }
 
     @Override

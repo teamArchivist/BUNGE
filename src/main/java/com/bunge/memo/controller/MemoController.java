@@ -176,25 +176,29 @@ public class MemoController {
         return bookService.filterNewBooks(books);
     }
 
-    @PostMapping("/addgoal")
-    public ResponseEntity<String> addGoal(@RequestBody ReadState readState) {
+    @PostMapping("/addreadstate")
+    public ResponseEntity<String> addReadState(@RequestBody ReadState readState) {
 
         //logger.info("state" + readState.getState());
 
         if (readState.getState().equals("목표")) {
             try {
-                readStateService.addGoal(readState);
-                return ResponseEntity.status(HttpStatus.OK).body("{\"message\":\"success\"}");
+                readStateService.addReadState(readState);
+                return ResponseEntity.status(HttpStatus.OK).body("{\"message\":\"goal success\"}");
             } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"message\":\"failed\"}");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"message\":\"goal failed\"}");
+            }
+        } else if (readState.getState().equals("도전")) {
+            try {
+                //logger.info(readState.toString());
+                readStateService.addReadState(readState);
+                return ResponseEntity.status(HttpStatus.OK).body("{\"message\":\"challenge success\"}");
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"message\":\"challenge failed\"}");
             }
         } else {
-            return null;
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"message\":\"state error\"}");
         }
-
-        //else if (readState.getState().equals("도전")) {
-        //
-        //}
 
     }
 
