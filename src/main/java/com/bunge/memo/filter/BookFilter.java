@@ -1,6 +1,7 @@
 package com.bunge.memo.filter;
 
 public class BookFilter {
+    private String isbn13;
     private String title;
     private String author;
     private String category;
@@ -10,6 +11,12 @@ public class BookFilter {
     private int limit;
 
     // Getters and Setters
+
+
+    public String getIsbn13() { return isbn13; }
+
+    public void setIsbn13(String isbn13) { this.isbn13 = isbn13; }
+
     public String getTitle() {
         return title;
     }

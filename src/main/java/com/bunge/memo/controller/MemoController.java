@@ -146,8 +146,22 @@ public class MemoController {
 
         BookFilter filter = new BookFilter();
         filter.setIsbn13(isbn13);
-
         Book book = bookService.getBookDetail(filter);
+
+        ReadState readState = new ReadState();
+        readState.setIsbn13(isbn13);
+        readState.setState("도전");
+        int challenge = readStateService.countReadState(readState);
+        model.addAttribute("challenge", challenge);
+
+        readState.setState("목표");
+        int goal = readStateService.countReadState(readState);
+        model.addAttribute("goal", goal);
+
+        readState.setState("완독");
+        int complete = readStateService.countReadState(readState);
+        model.addAttribute("complete", complete);
+
         //logger.info("book : " + book);
         model.addAttribute("book", book);
         model.addAttribute("isbn13", isbn13);
@@ -158,29 +172,33 @@ public class MemoController {
     @ResponseBody
     @PostMapping("/checkbook")
     public List<Book> checkBook(@RequestBody List<Book> books) {
-        logger.info(books.toString());
+        //logger.info(books.toString());
         return bookService.filterNewBooks(books);
     }
 
-    @PostMapping("/readstate")
-    public ResponseEntity<String> addGoal(@RequestBody ReadState readState) {
+    @PostMapping("/addreadstate")
+    public ResponseEntity<String> addReadState(@RequestBody ReadState readState) {
 
         //logger.info("state" + readState.getState());
 
         if (readState.getState().equals("목표")) {
             try {
-                readStateService.addGoal(readState);
-                return ResponseEntity.status(HttpStatus.OK).body("{\"message\":\"success\"}");
+                readStateService.addReadState(readState);
+                return ResponseEntity.status(HttpStatus.OK).body("{\"message\":\"goal success\"}");
             } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"message\":\"failed\"}");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"message\":\"goal failed\"}");
+            }
+        } else if (readState.getState().equals("도전")) {
+            try {
+                //logger.info(readState.toString());
+                readStateService.addReadState(readState);
+                return ResponseEntity.status(HttpStatus.OK).body("{\"message\":\"challenge success\"}");
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"message\":\"challenge failed\"}");
             }
         } else {
-            return null;
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"message\":\"state error\"}");
         }
-
-        //else if (readState.getState().equals("도전")) {
-        //
-        //}
 
     }
 

@@ -275,7 +275,7 @@
                         <!-- User name and position -->
                         <button class="mainnav-widget-toggle d-block btn border-0 p-2" data-bs-toggle="collapse" data-bs-target="#usernav" aria-expanded="false" aria-controls="usernav">
                            <span class="dropdown-toggle d-flex justify-content-center align-items-center">
-                              <h5 class="mb-0 me-3" sec:authentication="principal.id"></h5>
+                              <h5 id="loginId" class="mb-0 me-3" sec:authentication="principal.id"></h5>
                            </span>
                            <small class="text-body-secondary" sec:authentication="principal.nick"></small>
                         </button>

@@ -44,7 +44,7 @@ $(function() {
 
         if (answer) {
             $.ajax({
-                url : "readstate",
+                url : "addreadstate",
                 method : "POST",
                 contentType: "application/json; charset=utf-8",
                 data : JSON.stringify(goalData),
@@ -59,15 +59,62 @@ $(function() {
 
                     //console.log("response : " + response.message)
 
-                    if (response.message == "success") {
+                    if (response.message == "goal success") {
                         alert("해당 도서가 '목표'로 추가되었습니다.");
-                    } else {
+                        location.href = "bookdetail?isbn13=" + isbn13
+                    } else if (response.message == "goal failed") {
                         alert("'목표' 추가에 실패하였습니다.");
+                    } else {
+                        alert("부적절한 요청입니다.");
                     }
                 },
                 error : function(error) {
-                    alert("이미 목표 도서에 추가되어 있습니다.");
+                    alert("부적절한 요청입니다. 목표 목록을 확인해주세요.");
                     console.error("목표 추가 중 오류 발생:", error);
+                }
+            }) //ajax end
+        } //if (answer) end
+    }) // $("#addGoal").click
+
+    $("#addChallenge").click(function() {
+
+        const challengeData = {
+            isbn13 : isbn13,
+            id : loginId,
+            state : "도전"
+        };
+
+        let answer = confirm("도전으로 추가하시겠습니까?")
+
+        if (answer) {
+            $.ajax({
+                url : "addreadstate",
+                method : "POST",
+                contentType: "application/json; charset=utf-8",
+                data : JSON.stringify(challengeData),
+                dataType : "json",
+                cache : false,
+                beforeSend : function (xhr) {
+                    if (header && token) {
+                        xhr.setRequestHeader(header, token);
+                    }
+                },
+                success : function(response) {
+
+                    //console.log("response : " + response.message)
+
+                    if (response.message == "challenge success") {
+                        alert("해당 도서가 '도전'으로 추가되었습니다.");
+                        location.href = "bookdetail?isbn13=" + isbn13
+                    } else if (response.message == "challenge failed") {
+                        alert("'도전' 추가에 실패하였습니다.");
+                    } else {
+                        alert("부적절한 요청입니다.");
+                    }
+                },
+                error : function(error) {
+                    alert("부적절한 요청입니다. 도전 목록을 확인해주세요.");
+                    console.error("도전 추가 중 오류 발생:", error);
                 }
             }) //ajax end
         } //if (answer) end
