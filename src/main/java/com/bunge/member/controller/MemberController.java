@@ -119,19 +119,19 @@ public class MemberController {
     //아이디 찾기 결과
     @PreAuthorize("isAnonymous()")
     @PostMapping(value = "/findidProcess")
-    public ModelAndView findidProcess(@RequestParam("name") String name,
-                                      @RequestParam("email") String email, ModelAndView mav, HttpServletResponse response) {
+    public String findidProcess(@RequestParam("name") String name,
+                                      @RequestParam("email") String email, Model model, HttpServletResponse response) {
         String sendid = memberservice.findid(name, email);
         if (sendid != null) {
-            mav.addObject("message", "아이디 찾기에 성공하셨습니다.");
-            mav.addObject("sendid", sendid);
-            mav.setViewName("redirect:/member/idcomplete");
+            String message = "아이디 찾기에 성공하셨습니다.";
+            model.addAttribute("message",message);
+            model.addAttribute("sendid", sendid);
+            return "/member/idcomplete";
         } else {
             String message = "이름과 이메일 정보가 일치하지 않습니다.";
-            mav.addObject("message", message);
-            mav.setViewName("redirect:/member/findid");
+            model.addAttribute("message", message);
+            return "/member/findid";
         }
-        return mav;
     }
     //비밀번호 폼 이동
     @PreAuthorize("isAnonymous()")
@@ -141,29 +141,25 @@ public class MemberController {
     //비밀번호 찾기
     @PreAuthorize("isAnonymous()")
     @PostMapping(value = "/findpwdProcess")
-    public ModelAndView findpwdProcess(@RequestParam("id") String id ,
+    public String findpwdProcess(@RequestParam("id") String id ,
                                        @RequestParam("name") String name ,
-                                       @RequestParam("email") String email, ModelAndView mav,
+                                       @RequestParam("email") String email, Model model,
                                        HttpServletResponse response) {
        boolean pwdset = memberservice.findpwd(id, name , email);
         if (!pwdset) {
             String message = "아이디, 이름, 이메일 정보 중 일치하지 않습니다.";
-            mav.addObject("message", message);
-            mav.setViewName("redirect:/member/findpwd");
+            model.addAttribute("message", message);
+           return "/member/findpwd";
         } else {
             String message = "비밀번호 찾기에 성공하셨습니다.";
-            mav.addObject("message", message);
-            mav.addObject("pwdset", pwdset);
-            mav.setViewName("redirect:/member/pwdset");
+            model.addAttribute("message", message);
+            model.addAttribute("pwdset", pwdset);
+            return "/member/pwdset";
         }
-        return mav;
     }
-    //비밀번호 재설정 폼 이동
-    @GetMapping("/pwdset")
-    public String pwdset () {return "member/pwdset";}
     //비밀번호 재설정
     @PostMapping(value = "/pwdsetProcess")
-    public ModelAndView pwdset(Member member,ModelAndView mav, HttpServletRequest request, HttpSession session) {
+    public String pwdset(Member member,Model model, HttpServletRequest request, HttpSession session) {
 
         String findid = (String) session.getAttribute("findid");
         //비밀번호 암호화 추가
@@ -172,16 +168,15 @@ public class MemberController {
 
         boolean result = memberservice.pwdset(member);
         if(result) {
-            mav.addObject("message" , "비밀번호가 정상적으로 변경되었습니다.");
-            mav.setViewName("redirect:/member/login");
+            String message ="비밀번호가 정상적으로 변경되었습니다.";
+            model.addAttribute("message" , message);
+            return "/member/login";
         } else {
             String message ="비밀번호 변경에 실패하였습니다.";
-            mav.addObject("message" ,message);
-            mav.setViewName("redirect:/member/pwdset");
+            model.addAttribute("message" ,message);
+            return "/member/pwdset";
         }
-        return mav;
     }
-
     //회원정보 수정
     @GetMapping(value = "/update")
     public ModelAndView index(ModelAndView mav , Principal principal){
