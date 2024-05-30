@@ -15,4 +15,10 @@ public interface BookService {
 
     //책 목록
     public List<Book> getBookList(BookFilter filter);
+
+    //책 상세보기
+    public Book getBookDetail(BookFilter filter);
+
+    //검색결과 DB 비교
+    public List<Book> filterNewBooks(List<Book> books);
 }

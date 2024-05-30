@@ -17,4 +17,7 @@ public interface BookMapper {
 
     //책 개수
     public int getBookListCount(BookFilter filter);
+
+    //책 상세보기
+    public Book getBookDetail(BookFilter filter);
 }
