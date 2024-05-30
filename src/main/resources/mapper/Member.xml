@@ -23,6 +23,6 @@
         select count(*) as count from member where id = #{id} and name = #{name} and email = #{email}
     </select>
     <update id="pwdset">
-        update member set pwd = #{pwd} where id = #{id};
+        update member set pwd = #{pwd} where id = #{findid};
     </update>
 </mapper>

@@ -22,5 +22,5 @@ public interface MemberMapper {
 
     int findpwd(HashMap<String, String> map);
 
-    int pwdset(Member member);
+    int pwdset(HashMap<String, String> map);
 }

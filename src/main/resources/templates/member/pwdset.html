@@ -10,7 +10,7 @@
 <body>
 <section id="content" class="content">
     <div class="content__boxed w-100 min-vh-100 d-flex flex-column align-items-center justify-content-center">
-        <div class="content__wrap">
+        <div class="content__wrap" style="width: 460px; height: 420px;">
 
             <!-- Login card -->
             <div class="card shadow-lg">
@@ -19,19 +19,19 @@
                         <h1 class="h3">비밀번호를 재설정하세요</h1>
                     </div>
                     <form class="mt-4" th:action="@{/member/pwdsetProcess}" method="post">
-                        <div class="d-grid mt-2">
-                            <input type="text" name="pwd" class="form-control" placeholder="비밀번호 입력" aria-label="pwd">
+                        <div class="mt-3">
+                            <input type="password" name="pwd" class="form-control" placeholder="비밀번호 입력" aria-label="pwd">
                         </div>
-                        <div class="d-grid mt-2">
+                        <div class="d-grid mt-1">
                             <span id="pwd_message"></span>
                         </div>
-                        <div class="d-grid mt-2">
-                            <input type="text" name="pwd" class="form-control" placeholder="비밀번호 재입력" aria-label="pwd">
+                        <div class="mt-1">
+                            <input type="password" name="pwdcheck" class="form-control" placeholder="비밀번호 재입력" aria-label="pwd">
                         </div>
-                        <div class="d-grid mt-2">
-                            <span id="pwd_check_message"></span>
+                        <div class="d-grid mt-1">
+                            <span id="pwdcheckmessage"></span>
                         </div>
-                        <div class="d-grid mt-4">
+                        <div class="d-grid mt-3">
                             <button class="btn btn-warning btn-lg" type="submit">비밀번호 재설정</button>
                         </div>
                     </form>
