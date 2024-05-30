@@ -15,6 +15,7 @@ public interface InquiryMapper {
     void insertInquiry(Inquiry inquiry);
     void updateInquiry(Inquiry inquiry);
     void deleteInquiry(@Param("inquiryId") Long inquiryId);
+    Inquiry getView(Long inquiryId);
 }
 
 

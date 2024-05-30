@@ -12,7 +12,6 @@
 
       <!-- Initialize [ SAMPLE ] -->
       <script th:src="@{/pages/tabulator.js}"></script>
-
    </links>
 </head>
 
@@ -66,32 +65,33 @@
                   <!-- Filter Data -->
                   <div class="container" >
                      <th:block th:if="${listcount > 0}">
-                     <table class="table">
-                        <thead>
-                        <tr>
-                           <td>번호</td>
-                           <td>분류</td>
-                           <td>제목</td>
-                           <td>답변여부</td>
-                           <td>작성자</td>
-                           <td>등록일</td>
-                           <td>공개상태</td>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="inquiry : ${inquiryList}">
-                           <td th:text="${inquiry.inquiryId}"></td>
-                           <td th:text="${inquiry.typeName}"></td>
-                           <td th:text="${inquiry.title}"></td>
-                           <td th:text="${inquiry.isAnswered ? '답변완료' : '답변 중'}"></td>
-                           <td th:text="${inquiry.memberId}"></td>
-                           <td th:text="${#dates.format(inquiry.createdAt, 'yyyy-MM-dd')}"></td>
-                           <td th:text="${inquiry.isPublic ? '공개' : '비공개'}"></td>
-                        </tr>
-                        </tbody>
-                     </table>
-                     <!-- END : Filter Data -->
-                        </th:block>
+                        <table class="table">
+                           <thead>
+                           <tr>
+                              <td>번호</td>
+                              <td>분류</td>
+                              <td>제목</td>
+                              <td>답변여부</td>
+                              <td>작성자</td>
+                              <td>등록일</td>
+                           </tr>
+                           </thead>
+                           <tbody>
+                           <tr th:each="inquiry : ${inquiryList}">
+                              <td th:text="${inquiry.inquiryId}"></td>
+                              <td th:text="${inquiry.typeName}"></td>
+                              <td>
+                                 <img th:if="${!inquiry.isPublic}" th:src="@{/img/inquiry/private.png}" alt="Private" style="width: 16px; height: 16px;"/>
+                                 <a th:href="@{/inquiry/view(inquiryId=${inquiry.inquiryId})}" th:text="${inquiry.title}"></a>
+                              </td>
+                              <td th:text="${inquiry.isAnswered ? '답변완료' : '답변 중'}"></td>
+                              <td th:text="${inquiry.memberId}"></td>
+                              <td th:text="${#dates.format(inquiry.createdAt, 'yyyy-MM-dd')}"></td>
+                           </tr>
+                           </tbody>
+                        </table>
+                        <!-- END : Filter Data -->
+                     </th:block>
                      </th:block>
                      <h3 th:if="${listcount == 0}" style="text-align:center">등록된 글이 없습니다.</h3>
                   </div>
@@ -138,5 +138,3 @@
 </section>
 </body>
 </html>
-
-
