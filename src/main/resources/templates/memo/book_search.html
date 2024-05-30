@@ -55,7 +55,7 @@
                         </select>
                     </div>
 
-                    <button class="btn btn-success mb-3 mb-sm-0" id="bookadd">등록하기</button>
+                    <button class="btn btn-success mb-3 mb-sm-0" id="addbook">등록하기</button>
                 </div>
                 <!-- END : Sort and categories filter -->
 
@@ -68,9 +68,9 @@
                         <div class="card mb-3 hv-grow-parent h-100">
                             <img th:src="${book.cover}" class="card-img-top" alt="..." height="350px">
                             <div class="card-body">
-                                <a class="card-text link-success h5" th:text="${book.title}">책 제목</a>
+                                <a th:href="@{'bookdetail?isbn13=' + ${book.isbn13}}" class="card-text link-success h5" th:text="${book.title}">책 제목</a>
                                 <p class="card-text mt-3" th:text="${book.author}">저자</p>
-                                <p class="card-text" th:text="${book.category}">카테고리</p>
+                                <p class="card-text" th:text="${book.categoryName}">카테고리</p>
                                 <p class="card-text">평점 : [[${book.score}]]</p>
                                 <p class="card-text" th:text="${book.description}">설명</p>
                             </div>
@@ -81,7 +81,7 @@
             </div>
         </div>
 
-        <nav class="text-align-center mt-5" aria-label="Page navigation" id="bookpagenation">
+        <nav th:if="${books.size()} != 0" class="text-align-center mt-5" aria-label="Page navigation" id="bookpagenation">
             <ul class="pagination justify-content-center">
 
                 <li th:if="${currentPage <= 1}" class="page-item">

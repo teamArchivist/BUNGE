@@ -5,13 +5,10 @@
 <mapper namespace="com.bunge.memo.mapper.BookMapper">
 
     <insert id="addBook">
-        <selectKey resultType="int" order="BEFORE" keyProperty="no">
-            select coalesce(max(no), 0)+1 from book
-        </selectKey>
         insert into book
-        (no, title, author, pubdate, category, description, score, cover, regitdate)
+        (isbn13, title, author, pubDate, categoryName, description, cover, regitdate, score)
         values
-        (#{no}, #{title}, #{author}, #{pubdate}, #{category}, #{description}, 0, #{cover}, now())
+        (#{isbn13}, #{title}, #{author}, #{pubDate}, #{categoryName}, #{description}, #{cover}, now(), 0)
     </insert>
 
     <select id="getBookList" parameterType="com.bunge.memo.filter.BookFilter" resultType="com.bunge.memo.domain.Book">
@@ -30,7 +27,7 @@
         <if test="score != null">
             AND score >= #{score}
         </if>
-        ORDER BY no desc
+        ORDER BY regitdate desc
         LIMIT #{offset}, #{limit}
     </select>
 
@@ -50,5 +47,11 @@
         <if test="score != null">
             AND score >= #{score}
         </if>
+    </select>
+
+    <select id="getBookDetail" parameterType="com.bunge.memo.filter.BookFilter" resultType="com.bunge.memo.domain.Book">
+        SELECT *
+        FROM book
+        WHERE isbn13 = #{isbn13}
     </select>
 </mapper>
