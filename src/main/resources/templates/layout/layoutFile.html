@@ -283,7 +283,7 @@
                         <!-- User name and position -->
                         <button class="mainnav-widget-toggle d-block btn border-0 p-2" data-bs-toggle="collapse" data-bs-target="#usernav" aria-expanded="false" aria-controls="usernav">
                            <span class="dropdown-toggle d-flex justify-content-center align-items-center">
-                              <h5 class="mb-0 me-3" sec:authentication="principal.id"></h5>
+                              <h5 id="loginId" class="mb-0 me-3" sec:authentication="principal.id"></h5>
                            </span>
                            <small class="text-body-secondary" sec:authentication="principal.nick"></small>
                         </button>
@@ -447,7 +447,7 @@
                      <!-- Link with submenu -->
                      <li class="nav-item">
 
-                        <a href="#" class="mininav-toggle nav-link collapsed"><i class="demo-pli-split-vertical-2 fs-5 me-2"></i>
+                        <a th:href="@{/inquiry/list}" class="mininav-toggle nav-link collapsed"><i class="demo-pli-split-vertical-2 fs-5 me-2"></i>
                            <span class="nav-label ms-1">고객센터</span>
                         </a>
 

@@ -1,869 +1,113 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="light" data-scheme="navy">
-
+<html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}"
+	  xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<meta name="viewport"
-	content="width=device-width, height=device-height, initial-scale=1">
-<meta name="description"
-	content="Interactive Tables and Data Grids for JavaScript.">
-<title>Tabulator | Nifty - Admin Template</title>
-
-
-<!-- STYLESHEETS -->
-<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
-<!-- Fonts [ OPTIONAL ] -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link
-	href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;700&family=Ubuntu:wght@400;500;700&display=swap"
-	rel="stylesheet">
-
-
-<!-- Bootstrap CSS [ REQUIRED ] -->
-<link rel="stylesheet" href="./assets/css/bootstrap.min.css">
-
-<!-- Nifty CSS [ REQUIRED ] -->
-<link rel="stylesheet" href="./assets/css/nifty.min.css">
-
-<!-- Nifty Demo Icons [ OPTIONAL ] -->
-<link rel="stylesheet"
-	href="./assets/css/demo-purpose/demo-icons.min.css">
-
-<!-- Demo purpose CSS [ DEMO ] -->
-<link rel="stylesheet"
-	href="./assets/css/demo-purpose/demo-settings.min.css">
-
-
-<!-- Favicons [ OPTIONAL ] -->
-<link rel="apple-touch-icon" sizes="180x180"
-	href="./apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32"
-	href="./favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16"
-	href="./favicon-16x16.png">
-<link rel="manifest" href="./site.webmanifest">
-<!-- Tabulator Style [ OPTIONAL ] -->
-<link rel="stylesheet"
-	href="./assets/vendors/tabulator/tabulator.min.css">
-
-
-<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-   [ REQUIRED ]
-   You must include this category in your project.
-
-
-   [ OPTIONAL ]
-   This is an optional plugin. You may choose to include it in your project.
-
-
-   [ DEMO ]
-   Used for demonstration purposes only. This category should NOT be included in your project.
-
-
-   [ SAMPLE ]
-   Here's a sample script that explains how to initialize plugins and/or components: This category should NOT be included in your project.
-
-
-   Detailed information and more samples can be found in the documentation.
-
-   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
-
+	<title>Inquiry View</title>
+	<links>
+		<!-- Tabulator Scripts [ OPTIONAL ] -->
+		<script src="./assets/vendors/tabulator/tabulator.min.js"></script>
+		<!-- Initialize [ SAMPLE ] -->
+		<script src="./assets/pages/tabulator.js"></script>
+	</links>
 </head>
+<body>
+	<section>
+		<div class="content__boxed">
+			<div class="content__wrap">
 
-<body class="out-quart">
+				<div class="card">
+					<div class="card-header">
+						<h3 class="h4 card-title">문의글 상세보기</h3>
+					</div>
+					<div class="card-body">
 
-	<!-- PAGE CONTAINER -->
-	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<div id="root" class="root mn--max tm--expanded-hd">
+						<!-- Inquiry Detail -->
+						<div class="container">
+							<div class="form-group" hidden>
+								<label for="inquiryId">문의글 ID</label>
+								<input name="inquiryId" id="inquiryId" type="text" th:value="${inquirydata.inquiryId}"
+									   class="form-control" readonly>
+							</div>
+							<div class="form-group">
+								<label for="memberId">글쓴이</label>
+								<input name="memberId" id="memberId" type="text" th:value="${inquirydata.memberId}" class="form-control" readonly>
+							</div>
+							<div class="form-group">
+								<label for="typeName">문의 유형</label>
+								<input name="typeName" id="typeName" type="text" th:value="${inquirydata.typeName}" class="form-control" readonly>
+							</div>
+							<div class="form-group">
+								<label for="title">제목</label>
+								<textarea name="title" id="title" rows="1" maxlength="100" class="form-control" readonly th:text="${inquirydata.title}"></textarea>
+							</div>
+							<div class="form-group">
+								<label for="content">내용</label>
+								<textarea name="content" id="content" rows="10" class="form-control" readonly th:text="${inquirydata.content}"></textarea>
+							</div>
+							<div class="form-group">
+								<label for="isPublic">공개 상태</label>
+								<input name="isPublic" id="isPublic" type="text" th:value="${inquirydata.isPublic ? '공개' : '비공개'}" class="form-control" readonly>
+							</div>
+							<div class="form-group">
+								<label for="isAnswered">답변 여부</label>
+								<input name="isAnswered" id="isAnswered" type="text" th:value="${inquirydata.isAnswered ? '답변 완료' : '답변 중'}" class="form-control" readonly>
+							</div>
+							<div class="form-group" style="text-align:center;">
+								<button class="btn btn-light" data-toggle="modal" data-target="#deleteModal">삭제</button>
+								<button class="btn btn-light" onclick="window.location.href='/inquiry/list'">목록</button>
+								<button class="btn btn-light" onclick="window.location.href='/inquiry/answer'">답변</button>
+								<button class="btn btn-light" onclick="window.location.href='/inquiry/edit'">수정</button>
+							</div>
+						</div>
 
-		<!-- CONTENTS -->
-		<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-		<section id="content" class="content">
+						<!-- END : Inquiry Detail -->
+
+						<!-- Comments Section -->
+						<div class="container mt-5">
+							<h5>댓글</h5>
+							<div class="form-group">
+								<textarea name="comment" id="comment" rows="3" class="form-control" placeholder="댓글을 입력하세요..."></textarea>
+							</div>
+							<div class="form-group" style="text-align:center;">
+								<button class="btn btn-primary">댓글 달기</button>
+							</div>
+							<!-- Comments List -->
+							<div class="comments-list">
+								<div class="comment">
+									<div class="comment-header">
+										<strong>관리자</strong> <small class="text-muted">2024-05-30</small>
+									</div>
+									<div class="comment-body">
+										반품 요청이 접수되었습니다. 빠른 시일 내에 처리하겠습니다.
+									</div>
+								</div>
+								<!-- Add more comments here -->
+							</div>
+							<!-- END : Comments List -->
+						</div>
+						<!-- END : Comments Section -->
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- FOOTER -->
+		<footer class="mt-auto">
 			<div class="content__boxed">
-				<div class="content__wrap">
-
-					<div class="card">
-						<div class="card-header">
-							<h3 class="h4 card-title">Q&A</h3>
-
-
-
-						</div>
-						<div class="card-body">
-
-							<!-- Filter Data -->
-							<div class="container">
-									<div class="form-group">
-										<label for="m_id">글쓴이</label> <input name="m_id" id="m_id"
-											type="text" value="김대영" class="form-control" readonly>
-									</div>
-									
-									<div class="form-group">
-										<label for="inf_subject">제목</label>
-										<textarea name="inf_subject" id="inf_subject" rows="1"
-											maxlength="100" class="form-control" readonly>반품관련 문의합니다.</textarea>
-									</div>
-									
-									<div class="form-group">
-										<label for="inf_content">내용</label>
-										<textarea name="inf_content" id="inf_content" rows="10"
-											class="form-control">반품하고 싶어요</textarea><br>
-									</div>
-									
-									<div class="form-group" style="text-align:center;">
-									 <button class="btn btn-light" data-toggle="modal" data-target="#myModal">삭제</button>
-              						 <button class="btn btn-light">목록</button>
-                                     <button class="btn btn-light">답변</button>
-                                     <button class="btn btn-light">수정(작성자)</button>
-									</div>
-							</div>
-							<!-- END : Filter Data -->
-
-						</div>
-
-
+				<div class="content__wrap py-3 py-md-1 d-flex flex-column flex-md-row align-items-md-center">
+					<div class="text-nowrap mb-4 mb-md-0">
+						Copyright &copy; 2024 <a href="#" class="ms-1 btn-link fw-bold">My Company</a>
 					</div>
-
-
-				</div>
-			</div>
-			<!-- FOOTER -->
-
-			<footer class="mt-auto">
-				<div class="content__boxed">
-					<div
-						class="content__wrap py-3 py-md-1 d-flex flex-column flex-md-row align-items-md-center">
-						<div class="text-nowrap mb-4 mb-md-0">
-							Copyright &copy; 2024 <a href="#" class="ms-1 btn-link fw-bold">My
-								Company</a>
-						</div>
-						<nav class="nav flex-column gap-1 flex-md-row gap-md-3 ms-md-auto">
-							<a class="nav-link link-offset-3 link-underline-hover px-0"
-								href="#">Policy Privacy</a> <a
-								class="nav-link link-offset-3 link-underline-hover px-0"
-								href="#">Terms and conditions</a> <a
-								class="nav-link link-offset-3 link-underline-hover px-0"
-								href="#">Contact Us</a>
-						</nav>
-					</div>
-				</div>
-			</footer>
-
-			<!-- END - FOOTER -->
-
-		</section>
-		<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-		<!-- END - CONTENTS -->
-
-		<!-- HEADER -->
-		<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-		<header class="header">
-			<div class="header__inner">
-
-				<!-- Brand -->
-				<div class="header__brand">
-					<div class="brand-wrap">
-
-						<!-- Brand logo -->
-						<a href="index.html" class="brand-img stretched-link"> <img
-							src="" alt="Logo" class="Nifty logo" width="16" height="16">
-						</a>
-
-
-						<!-- Brand title -->
-						<div class="brand-title">BUNGE</div>
-
-
-						<!-- You can also use IMG or SVG instead of a text element. -->
-						<!--
-            <div class="brand-title">
-               <img src="./assets/img/brand-title.svg" alt="Brand Title">
-            </div>
-            -->
-
-					</div>
-				</div>
-				<!-- End - Brand -->
-
-
-				<div class="header__content">
-
-					<!-- Content Header - Left Side: -->
-					<div class="header__content-start">
-
-
-						<!-- Navigation Toggler -->
-						<button type="button"
-							class="nav-toggler header__btn btn btn-icon btn-sm"
-							aria-label="Nav Toggler">
-							<i class="demo-psi-list-view"></i>
-						</button>
-
-						<div class="vr mx-1 d-none d-md-block"></div>
-
-					</div>
-					<!-- End - Content Header - Left Side -->
-
-
-					<!-- Content Header - Right Side: -->
-					<div class="header__content-end">
-
-
-						<!-- Mega Dropdown -->
-						<div class="dropdown">
-
-							<!-- Toggler -->
-							<button class="header__btn btn btn-icon btn-sm" type="button"
-								data-bs-toggle="dropdown" data-bs-auto-close="outside"
-								aria-label="Megamenu dropdown" aria-expanded="false">
-								<i class="demo-psi-layout-grid"></i>
-							</button>
-
-							<!-- Mega Dropdown Menu -->
-							<div class="dropdown-menu dropdown-menu-end p-3 mega-dropdown">
-								<div class="row">
-									<div class="col-md-3">
-
-
-										<!-- Pages List Group -->
-										<div class="list-group list-group-borderless">
-											<div
-												class="list-group-item d-flex align-items-center border-bottom mb-2">
-												<div class="flex-shrink-0 me-2">
-													<i class="demo-pli-file fs-4"></i>
-												</div>
-												<h5 class="flex-grow-1 m-0">Pages</h5>
-											</div>
-											<a href="#" class="list-group-item list-group-item-action">프로필</a>
-											<a href="#" class="list-group-item list-group-item-action">독서기록</a>
-											<a href="#" class="list-group-item list-group-item-action">중고거래</a>
-											<a href="#" class="list-group-item list-group-item-action">스터디</a>
-											<a href="#" class="list-group-item list-group-item-action">고객센터</a>
-											<a href="#"
-												class="list-group-item list-group-item-action disabled"
-												tabindex="-1" aria-disabled="true">Disabled Item</a>
-										</div>
-
-
-									</div>
-									<div class="col-md-3">
-
-
-										<!-- Mailbox list group -->
-										<div class="list-group list-group-borderless mb-3">
-											<div
-												class="list-group-item d-flex align-items-center border-bottom mb-2">
-												<div class="flex-shrink-0 me-2">
-													<i class="demo-pli-mail fs-4"></i>
-												</div>
-												<h5 class="flex-grow-1 m-0">쪽지</h5>
-											</div>
-											<a href="#"
-												class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-												도착한 쪽지 <span class="badge bg-danger rounded-pill">14</span>
-											</a> <a href="#" class="list-group-item list-group-item-action">쪽지
-												보내기</a>
-										</div>
-
-									</div>
-
-									<div class="col-md-3">
-
-										<!-- Simple gallery -->
-										<div class="d-grid gap-2 pt-4 pt-md-0">
-											<div class="row g-1 rounded-3 overflow-hidden">
-												<div class="col-6 mt-0">
-													<img class="img-fluid"
-														src="./assets/img/megamenu/img-1.jpg" alt="thumbnails"
-														loading="lazy">
-												</div>
-												<div class="col-6 mt-0">
-													<img class="img-fluid"
-														src="./assets/img/megamenu/img-3.jpg" alt="thumbnails"
-														loading="lazy">
-												</div>
-												<div class="col-6">
-													<img class="img-fluid"
-														src="./assets/img/megamenu/img-2.jpg" alt="thumbnails"
-														loading="lazy">
-												</div>
-												<div class="col-6">
-													<img class="img-fluid"
-														src="./assets/img/megamenu/img-4.jpg" alt="thumbnails"
-														loading="lazy">
-												</div>
-											</div>
-											<a href="#" class="btn btn-primary">게시판 둘러보기</a>
-										</div>
-
-
-									</div>
-								</div>
-							</div>
-						</div>
-						<!-- End - Mega Dropdown -->
-
-
-						<!-- Notification Dropdown -->
-						<div class="dropdown">
-
-							<!-- Toggler -->
-							<button class="header__btn btn btn-icon btn-sm" type="button"
-								data-bs-toggle="dropdown" aria-label="Notification dropdown"
-								aria-expanded="false">
-								<span class="d-block position-relative"> <i
-									class="demo-psi-bell"></i> <span
-									class="badge badge-super rounded-pill bg-danger p-1"> <span
-										class="visually-hidden">unread messages</span>
-								</span> <!-- Set custom notification count --> <!--
-                     <span class="badge badge-super rounded-pill bg-danger p-1">
-                     	 19<span class="visually-hidden">unread messages</span>
-                     </span>
-                     -->
-
-								</span>
-							</button>
-
-
-							<!-- Notification dropdown menu -->
-							<div class="dropdown-menu dropdown-menu-end w-md-300px">
-								<div class="border-bottom px-3 py-2 mb-3">
-									<h5>알림</h5>
-								</div>
-
-
-								<div class="list-group list-group-borderless">
-
-
-									<!-- List item -->
-									<div
-										class="list-group-item list-group-item-action d-flex align-items-center mb-3">
-										<div class="flex-shrink-0 me-3">
-											<i class="demo-psi-data-settings text-danger fs-2"></i>
-										</div>
-										<div class="flex-grow-1">
-											<a href="#"
-												class="h6 fw-normal d-block mb-0 stretched-link text-decoration-none">게시글에
-												좋아요 +1</a> <small class="text-body-secondary">#12 게시글에
-												좋아요 1개 추가되었습니다</small>
-										</div>
-									</div>
-
-
-									<!-- List item -->
-									<div
-										class="list-group-item list-group-item-action d-flex align-items-center mb-3">
-										<div class="flex-shrink-0 me-3">
-											<i class="demo-psi-pen-5 text-info fs-2"></i>
-										</div>
-										<div class="flex-grow-1">
-											<a href="#"
-												class="h6 fw-normal d-block mb-0 stretched-link text-decoration-none">새로운
-												댓글 +3</a> <small class="text-body-secondary">#28 게시글에 댓글
-												3개가 달렸습니다</small>
-										</div>
-									</div>
-
-
-									<!-- List item -->
-									<div
-										class="list-group-item list-group-item-action d-flex align-items-start mb-3">
-										<div class="flex-shrink-0 me-3">
-											<i class="demo-psi-speech-bubble-3 text-success fs-2"></i>
-										</div>
-										<div class="flex-grow-1">
-											<div class="d-flex justify-content-between align-items-start">
-												<a href="#"
-													class="h6 fw-normal mb-0 stretched-link text-decoration-none">새로운
-													채팅 시작</a> <span class="badge bg-info rounded ms-auto">NEW</span>
-											</div>
-											<small class="text-body-secondary">거래 품목에 새로운 채팅이
-												연결되었습니다.</small>
-										</div>
-									</div>
-
-									<div class="text-center mb-2">
-										<a href="#"
-											class="btn-link text-primary icon-link icon-link-hover">
-											Show all Notifications <i class="bi demo-psi-arrow-out-right"></i>
-										</a>
-									</div>
-
-								</div>
-							</div>
-						</div>
-						<!-- End - Notification dropdown -->
-
-
-						<!-- User dropdown -->
-						<div class="dropdown">
-
-							<!-- Toggler -->
-							<button class="header__btn btn btn-icon btn-sm" type="button"
-								data-bs-toggle="dropdown" aria-label="User dropdown"
-								aria-expanded="false">
-								<i class="demo-psi-male"></i>
-							</button>
-
-
-							<!-- User dropdown menu -->
-							<div class="dropdown-menu dropdown-menu-end w-md-450px">
-
-								<!-- User dropdown header -->
-								<div class="d-flex align-items-center border-bottom px-3 py-2">
-									<div class="flex-shrink-0">
-										<img class="img-sm rounded-circle"
-											src="./assets/img/profile-photos/4.png" alt="Profile Picture"
-											loading="lazy">
-									</div>
-									<div class="flex-grow-1 ms-3">
-										<h5 class="mb-0">admin</h5>
-										<span class="text-body-secondary fst-italic">admin@google.com</span>
-									</div>
-								</div>
-
-								<div class="row">
-									<div class="col-md-7">
-
-										<!-- Simple widget and reports -->
-										<div class="list-group list-group-borderless mb-3">
-											<div class="list-group-item text-center border-bottom mb-3">
-												<p class="h1 display-1 text-primary fw-semibold">3,555</p>
-												<p class="h6 mb-0">
-													<i class="demo-pli-basket-coins fs-3 me-2"></i> 활동점수
-												</p>
-												<small class="text-body-secondary">활발한 책마니</small>
-											</div>
-											<div
-												class="list-group-item py-0 d-flex justify-content-between align-items-center">
-												follower <small class="fw-bolder">578</small>
-											</div>
-											<div
-												class="list-group-item py-0 d-flex justify-content-between align-items-center">
-												follow <small class="fw-bolder text-danger">28</small>
-											</div>
-											<div
-												class="list-group-item py-0 d-flex justify-content-between align-items-center">
-												like <span class="fw-bolder text-body-emphasis">6,578</span>
-											</div>
-										</div>
-
-
-									</div>
-									<div class="col-md-5">
-
-										<!-- User menu link -->
-										<div class="list-group list-group-borderless h-100 py-3">
-											<a href="#"
-												class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-												<span><i class="demo-pli-mail fs-5 me-2"></i> 채팅</span> <span
-												class="badge bg-danger rounded-pill">14</span>
-											</a> <a href="#" class="list-group-item list-group-item-action">
-												<i class="demo-pli-male fs-5 me-2"></i> 회원정보
-											</a> <a href="#" class="list-group-item list-group-item-action">
-												<i class="demo-pli-gear fs-5 me-2"></i> Settings
-											</a> <a href="#" class="list-group-item list-group-item-action">
-												<i class="demo-pli-unlock fs-5 me-2"></i> Logout
-											</a>
-										</div>
-
-
-									</div>
-								</div>
-
-							</div>
-						</div>
-						<!-- End - User dropdown -->
-
-
-						<div class="vr mx-1 d-none d-md-block"></div>
-
-						<div class="form-check form-check-alt form-switch mx-md-2">
-							<input id="headerThemeToggler"
-								class="form-check-input mode-switcher" type="checkbox"
-								role="switch"> <label
-								class="form-check-label ps-1 fw-bold d-none d-md-flex align-items-center "
-								for="headerThemeToggler"> <i
-								class="mode-switcher-icon icon-light demo-psi-sun fs-5"></i> <i
-								class="mode-switcher-icon icon-dark d-none demo-psi-half-moon"></i>
-							</label>
-						</div>
-
-						<div class="vr mx-1 d-none d-md-block"></div>
-
-						<!-- Sidebar Toggler -->
-						<button class="sidebar-toggler header__btn btn btn-icon btn-sm"
-							type="button" aria-label="Sidebar button">
-							<i class="demo-psi-dot-vertical"></i>
-						</button>
-
-
-					</div>
-				</div>
-			</div>
-		</header>
-		<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-		<!-- END - HEADER -->
-
-
-		<!-- MAIN NAVIGATION -->
-		<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-		<nav id="mainnav-container" class="mainnav">
-			<div class="mainnav__inner">
-
-				<!-- Navigation menu -->
-				<div class="mainnav__top-content scrollable-content pb-5">
-
-
-					<!-- Profile Widget -->
-					<div id="_dm-mainnavProfile"
-						class="mainnav__widget my-3 hv-outline-parent">
-
-						<!-- Profile picture  -->
-						<div class="mininav-toggle text-center py-2">
-							<img class="mainnav__avatar img-md rounded-circle hv-oc"
-								src="./assets/img/profile-photos/1.png" alt="Profile Picture">
-						</div>
-
-
-						<div class="mininav-content collapse d-mn-max">
-							<span data-popper-arrow class="arrow"></span>
-							<div class="d-grid">
-
-								<!-- User name and position -->
-								<button class="mainnav-widget-toggle d-block btn border-0 p-2"
-									data-bs-toggle="collapse" data-bs-target="#usernav"
-									aria-expanded="false" aria-controls="usernav">
-									<span
-										class="dropdown-toggle d-flex justify-content-center align-items-center">
-										<h5 class="mb-0 me-3">admin</h5>
-									</span> <small class="text-body-secondary">관리자</small>
-								</button>
-
-
-								<!-- Collapsed user menu -->
-								<div id="usernav" class="nav flex-column collapse">
-									<a href="#"
-										class="nav-link d-flex justify-content-between align-items-center">
-										<span><i class="demo-pli-mail fs-5 me-2"></i><span
-											class="ms-1">채팅</span></span> <span
-										class="badge bg-danger rounded-pill">14</span>
-									</a> <a href="#" class="nav-link"> <i
-										class="demo-pli-male fs-5 me-2"></i> <span class="ms-1">Profile</span>
-									</a> <a href="#" class="nav-link"> <i
-										class="demo-pli-unlock fs-5 me-2"></i> <span class="ms-1">Logout</span>
-									</a>
-								</div>
-
-
-							</div>
-						</div>
-
-					</div>
-					<!-- End - Profile widget -->
-
-
-					<!-- Navigation Category -->
-					<div class="mainnav__categoriy py-3">
-						<ul class="mainnav__menu nav flex-column">
-
-							<!-- Link with submenu -->
-							<li class="nav-item has-sub"><a href="#"
-								class="mininav-toggle nav-link active"><i
-									class="demo-pli-home fs-5 me-2"></i> <span
-									class="nav-label ms-1">dashboard</span> </a> <!-- Dashboard submenu list -->
-								<ul class="mininav-content nav collapse">
-									<li data-popper-arrow class="arrow"></li>
-									<li class="nav-item"><a href="./index.html"
-										class="nav-link active">회원통계</a></li>
-									<li class="nav-item"><a href="./index.html"
-										class="nav-link active">사이트통계</a></li>
-									<li class="nav-item"><a href="./index.html"
-										class="nav-link active">게시글통계</a></li>
-
-
-								</ul> <!-- END : Dashboard submenu list --></li>
-							<!-- END : Link with submenu -->
-
-							<!-- Link with submenu -->
-							<li class="nav-item has-sub"><a href="#"
-								class="mininav-toggle nav-link collapsed"><i
-									class="demo-pli-split-vertical-2 fs-5 me-2"></i> <span
-									class="nav-label ms-1">신고관리</span> </a> <!-- Layouts submenu list -->
-								<ul class="mininav-content nav collapse">
-									<li data-popper-arrow class="arrow"></li>
-									<li class="nav-item"><a href="#" class="nav-link">게시글</a>
-									</li>
-									<li class="nav-item"><a href="#" class="nav-link">회원</a></li>
-									<li class="nav-item"><a href="#" class="nav-link">임시
-											정지 목록</a></li>
-									<li class="nav-item"><a href="#" class="nav-link">영구
-											제명 목록</a></li>
-								</ul> <!-- END : Layouts submenu list --></li>
-							<!-- END : Link with submenu -->
-
-							<!-- Link with submenu -->
-							<li class="nav-item has-sub"><a href="#"
-								class="mininav-toggle nav-link collapsed"><i
-									class="demo-pli-split-vertical-2 fs-5 me-2"></i> <span
-									class="nav-label ms-1">기록 / 아고라</span> </a> <!-- Layouts submenu list -->
-								<ul class="mininav-content nav collapse">
-									<li data-popper-arrow class="arrow"></li>
-									<li class="nav-item"><a href="#" class="nav-link"></a></li>
-									<li class="nav-item"><a href="#" class="nav-link"></a></li>
-									<li class="nav-item"><a href="#" class="nav-link"></a></li>
-									<li class="nav-item"><a href="#" class="nav-link"></a></li>
-								</ul> <!-- END : Layouts submenu list --></li>
-							<!-- END : Link with submenu -->
-
-							<!-- Link with submenu -->
-							<li class="nav-item has-sub"><a href="#"
-								class="mininav-toggle nav-link collapsed"><i
-									class="demo-pli-split-vertical-2 fs-5 me-2"></i> <span
-									class="nav-label ms-1">스터디</span> </a> <!-- Layouts submenu list -->
-								<ul class="mininav-content nav collapse">
-									<li data-popper-arrow class="arrow"></li>
-									<li class="nav-item"><a href="#" class="nav-link"></a></li>
-									<li class="nav-item"><a href="#" class="nav-link"></a></li>
-									<li class="nav-item"><a href="#" class="nav-link"></a></li>
-									<li class="nav-item"><a href="#" class="nav-link"></a></li>
-								</ul> <!-- END : Layouts submenu list --></li>
-							<!-- END : Link with submenu -->
-
-							<!-- Link with submenu -->
-							<li class="nav-item has-sub"><a href="#"
-								class="mininav-toggle nav-link collapsed"><i
-									class="demo-pli-split-vertical-2 fs-5 me-2"></i> <span
-									class="nav-label ms-1">고객센터</span> </a> <!-- Layouts submenu list -->
-								<ul class="mininav-content nav collapse">
-									<li data-popper-arrow class="arrow"></li>
-									<li class="nav-item"><a href="#" class="nav-link"></a></li>
-									<li class="nav-item"><a href="#" class="nav-link"></a></li>
-									<li class="nav-item"><a href="#" class="nav-link"></a></li>
-									<li class="nav-item"><a href="#" class="nav-link"></a></li>
-								</ul> <!-- END : Layouts submenu list --></li>
-							<!-- END : Link with submenu -->
-
-						</ul>
-					</div>
-					<!-- END : Navigation Category -->
-
-				</div>
-				<!-- End - Navigation menu -->
-
-
-				<!-- Bottom navigation menu -->
-				<div class="mainnav__bottom-content border-top pb-2">
-					<ul id="mainnav" class="mainnav__menu nav flex-column">
-						<li class="nav-item has-sub"><a href="#"
-							class="nav-link mininav-toggle collapsed" aria-expanded="false">
-								<i class="demo-pli-unlock fs-5 me-2"></i> <span
-								class="nav-label ms-1">Logout</span>
-						</a>
-							<ul class="mininav-content nav flex-column collapse">
-								<li data-popper-arrow class="arrow"></li>
-								<li class="nav-item"><a href="#" class="nav-link">This
-										device only</a></li>
-								<li class="nav-item"><a href="#" class="nav-link">All
-										Devices</a></li>
-								<li class="nav-item"><a class="nav-link disabled" href="#"
-									tabindex="-1" aria-disabled="true">Lock screen</a></li>
-							</ul></li>
-					</ul>
-				</div>
-				<!-- End - Bottom navigation menu -->
-
-			</div>
-		</nav>
-		<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-		<!-- END - MAIN NAVIGATION -->
-
-		<!-- SIDEBAR -->
-		<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-		<aside class="sidebar">
-			<div class="sidebar__inner scrollable-content">
-
-
-				<!-- This element is only visible when sidebar Stick mode is active. -->
-				<div class="sidebar__stuck align-items-center mb-3 px-3">
-					<button type="button"
-						class="sidebar-toggler btn-close btn-lg rounded-circle"
-						aria-label="Close"></button>
-					<p class="m-0 text-danger fw-bold">&lt;= Close the sidebar</p>
-				</div>
-
-
-				<!-- Sidebar tabs nav -->
-				<div class="sidebar__wrap">
-					<nav>
-						<div
-							class="nav nav-underline nav-fill nav-component flex-nowrap border-bottom"
-							id="nav-tab" role="tablist">
-							<button class="nav-link active" data-bs-toggle="tab"
-								data-bs-target="#nav-chat" type="button" role="tab"
-								aria-controls="nav-chat" aria-selected="true">
-								<i class="d-block demo-pli-speech-bubble-5 fs-3 mb-2"></i> <span>채팅</span>
-							</button>
-
-						</div>
+					<nav class="nav flex-column gap-1 flex-md-row gap-md-3 ms-md-auto">
+						<a class="nav-link link-offset-3 link-underline-hover px-0" href="#">Policy Privacy</a>
+						<a class="nav-link link-offset-3 link-underline-hover px-0" href="#">Terms and conditions</a>
+						<a class="nav-link link-offset-3 link-underline-hover px-0" href="#">Contact Us</a>
 					</nav>
 				</div>
-				<!-- End - Sidebar tabs nav -->
-
-
-				<!-- Sideabar tabs content -->
-				<div class="tab-content sidebar__wrap" id="nav-tabContent">
-
-					<!-- Chat tab Content -->
-					<div id="nav-chat" class="tab-pane fade py-4 show active"
-						role="tabpanel" aria-labelledby="nav-chat-tab">
-
-						<!-- Family list group -->
-						<h5 class="px-3">최근 채팅</h5>
-						<div class="list-group list-group-borderless">
-
-							<div
-								class="list-group-item list-group-item-action d-flex align-items-start mb-2">
-								<div class="flex-shrink-0 me-3">
-									<img class="img-xs rounded-circle"
-										src="./assets/img/profile-photos/2.png" alt="Profile Picture"
-										loading="lazy">
-								</div>
-								<div class="flex-grow-1 ">
-									<a href="#"
-										class="h6 d-block mb-0 stretched-link text-decoration-none">고라니</a>
-									<small class="text-body-secondary">좀 비싸요</small>
-								</div>
-							</div>
-
-
-							<div
-								class="list-group-item list-group-item-action d-flex align-items-start mb-2">
-								<div class="flex-shrink-0 me-3">
-									<img class="img-xs rounded-circle"
-										src="./assets/img/profile-photos/8.png" alt="Profile Picture"
-										loading="lazy">
-								</div>
-								<div class="flex-grow-1 ">
-									<a href="#"
-										class="h6 d-block mb-0 stretched-link text-decoration-none">삼차선</a>
-									<small class="text-body-secondary">그 가격은 좀...</small>
-								</div>
-							</div>
-
-
-							<div
-								class="list-group-item list-group-item-action d-flex align-items-start mb-2">
-								<div class="flex-shrink-0 me-3">
-									<img class="img-xs rounded-circle"
-										src="./assets/img/profile-photos/7.png" alt="Profile Picture"
-										loading="lazy">
-								</div>
-								<div class="flex-grow-1 ">
-									<a href="#"
-										class="h6 d-block mb-0 stretched-link text-decoration-none">게슴츠레</a>
-									<small class="text-body-secondary">한글 이거 맞음?</small>
-								</div>
-							</div>
-
-
-							<div
-								class="list-group-item list-group-item-action d-flex align-items-start mb-2">
-								<div class="flex-shrink-0 me-3">
-									<img class="img-xs rounded-circle"
-										src="./assets/img/profile-photos/4.png" alt="Profile Picture"
-										loading="lazy">
-								</div>
-								<div class="flex-grow-1 ">
-									<a href="#"
-										class="h6 d-block mb-0 stretched-link text-decoration-none">산림청</a>
-									<small class="text-body-secondary">자연을 사랑하자</small>
-								</div>
-							</div>
-
-						</div>
-						<!-- End - Family list group -->
-
-
-						<!-- Friends Group -->
-						<h5 class="d-flex mt-5 px-3">
-							팔로워 <span class="badge bg-success ms-auto">36 +</span>
-						</h5>
-						<div class="list-group list-group-borderless">
-							<a href="#" class="list-group-item list-group-item-action"> <span
-								class="d-inline-block bg-success rounded-circle p-1 me-2"></span>
-								김레오
-							</a> <a href="#" class="list-group-item list-group-item-action">
-								<span class="d-inline-block bg-info rounded-circle p-1 me-2"></span>
-								박민턴
-							</a> <a href="#" class="list-group-item list-group-item-action">
-								<span class="d-inline-block bg-warning rounded-circle p-1 me-2"></span>
-								송농구
-							</a> <a href="#" class="list-group-item list-group-item-action">
-								<span
-								class="d-inline-block bg-secondary rounded-circle p-1 me-2"></span>
-								피조물
-							</a>
-						</div>
-						<!-- End - Friends Group -->
-
-					</div>
-					<!-- End - Chat tab content -->
-
-				</div>
-				<!-- End - Sidebar tabs content -->
-
 			</div>
-		</aside>
-		<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-		<!-- END - SIDEBAR -->
-
-
-	</div>
-	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<!-- END - PAGE CONTAINER -->
-
-
-	<!-- SCROLL TO TOP BUTTON -->
-	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<div class="scroll-container">
-		<a href="#root" class="scroll-page ratio ratio-1x1"
-			aria-label="Scroll button"></a>
-	</div>
-	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<!-- END - SCROLL TO TOP BUTTON -->
-
-	<!-- JAVASCRIPTS -->
-	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
-
-	<!-- Popper JS [ OPTIONAL ] -->
-	<script src="./assets/vendors/popperjs/popper.min.js"></script>
-
-
-	<!-- Bootstrap JS [ OPTIONAL ] -->
-	<script src="./assets/vendors/bootstrap/bootstrap.min.js"></script>
-
-
-	<!-- Nifty JS [ OPTIONAL ] -->
-	<script src="./assets/js/nifty.js"></script>
-
-
-	<!-- Nifty Settings [ DEMO ] -->
-	<script src="./assets/js/demo-purpose-only.js"></script>
-
-
-	<!-- Tabulator Scripts [ OPTIONAL ] -->
-	<script src="./assets/vendors/tabulator/tabulator.min.js"></script>
-
-
-	<!-- Initialize [ SAMPLE ] -->
-	<script src="./assets/pages/tabulator.js"></script>
-
+		</footer>
+		<!-- END - FOOTER -->
+	</section>
 </body>
-
 </html>
