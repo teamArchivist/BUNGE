@@ -11,10 +11,17 @@ public class ReadStateServiceImpl implements ReadStateService {
     private ReadStateMapper readStateMapper;
 
     @Autowired
-    public ReadStateServiceImpl(ReadStateMapper readStateMapper) {this.readStateMapper = readStateMapper;}
+    public ReadStateServiceImpl(ReadStateMapper readStateMapper) {
+        this.readStateMapper = readStateMapper;
+    }
 
     @Override
     public void addGoal(ReadState readState) {
         readStateMapper.addGoal(readState);
+    }
+
+    @Override
+    public int countReadState(ReadState readState) {
+        return readStateMapper.countReadState(readState);
     }
 }

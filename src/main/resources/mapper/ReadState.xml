@@ -11,4 +11,11 @@
         (#{isbn13}, #{id}, #{state})
     </insert>
 
+    <select id="countReadState" parameterType="com.bunge.memo.domain.ReadState" resultType="int">
+        select count(*)
+        from readstate
+        where isbn13 = #{isbn13}
+        and state = #{state}
+    </select>
+
 </mapper>
