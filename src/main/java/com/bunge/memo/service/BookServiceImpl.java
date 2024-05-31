@@ -1,6 +1,7 @@
 package com.bunge.memo.service;
 
 import com.bunge.memo.domain.Book;
+import com.bunge.memo.domain.ReadState;
 import com.bunge.memo.mapper.BookMapper;
 import com.bunge.memo.filter.BookFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,4 +54,11 @@ public class BookServiceImpl implements BookService {
         }
         return newBooks;
     }
+
+    @Override
+    public Book getMyBookByState(ReadState readState) {
+        return bookMapper.getMyBookByState(readState);
+    }
+
+
 }

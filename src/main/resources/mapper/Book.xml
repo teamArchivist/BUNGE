@@ -49,9 +49,18 @@
         </if>
     </select>
 
+
     <select id="getBookDetail" parameterType="com.bunge.memo.filter.BookFilter" resultType="com.bunge.memo.domain.Book">
-        SELECT *
-        FROM book
-        WHERE isbn13 = #{isbn13}
+        select *
+        from book
+        where isbn13 = #{isbn13}
+    </select>
+
+    <select id="getMyBookByState" parameterType="com.bunge.memo.domain.ReadState" resultType="com.bunge.memo.domain.Book">
+        select b.*
+        from book b
+        join readstate rs on b.isbn13 = rs.isbn13
+        where rs.state = #{state}
+        and b.isbn13 = #{isbn13}
     </select>
 </mapper>
