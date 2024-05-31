@@ -51,6 +51,9 @@ dependencies {
 
     // validation
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // kafka
+    implementation 'org.springframework.kafka:spring-kafka:3.0.17'
 }
 
 tasks.named('bootBuildImage') {
