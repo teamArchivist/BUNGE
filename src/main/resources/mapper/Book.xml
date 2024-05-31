@@ -64,9 +64,9 @@
         and b.isbn13 = #{isbn13}
     </select>
 
-    <update id="updatePage">
+    <update id="updatePage" parameterType="com.bunge.memo.domain.ReadState">
         update book
-        set page = #{page}
+        set page = #{totalpage}
         where isbn13 = #{isbn13}
     </update>
 </mapper>

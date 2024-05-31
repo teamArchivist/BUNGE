@@ -5,7 +5,8 @@ public class ReadState {
     private String isbn13;
     private String id;
     private String state;
-    private int page;
+    private int totalpage;
+    private int readpage;
 
     public String getIsbn13() {
         return isbn13;
@@ -31,12 +32,20 @@ public class ReadState {
         this.state = state;
     }
 
-    public int getPage() {
-        return page;
+    public int getTotalpage() {
+        return totalpage;
     }
 
-    public void setPage(int page) {
-        this.page = page;
+    public void setTotalpage(int totalpage) {
+        this.totalpage = totalpage;
+    }
+
+    public int getReadpage() {
+        return readpage;
+    }
+
+    public void setReadpage(int readpage) {
+        this.readpage = readpage;
     }
 
     @Override
@@ -45,7 +54,8 @@ public class ReadState {
                 "isbn13='" + isbn13 + '\'' +
                 ", id='" + id + '\'' +
                 ", state='" + state + '\'' +
-                ", page=" + page +
+                ", totalpage=" + totalpage +
+                ", readpage=" + readpage +
                 '}';
     }
 }

@@ -64,68 +64,40 @@
                       <div class="tab-base">
                           <ul class="nav nav-tabs" role="tablist">
                               <li class="nav-item active" role="presentation">
-                                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#_dm-tabsMemo" type="button" role="tab" aria-controls="memo" aria-selected="true">최근 기록</button>
+                                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#_dm-tabsMemo" type="button" role="tab" aria-controls="memo" aria-selected="true">기록내역</button>
                               </li>
                           </ul>
 
                           <div id="_dm-tabsMemo" class="tab-pane fade active show" role="tabpane1" aria-labelledy="memo-tab">
                               <div class="tab-content">
-                                      <div class="row mb-3 border-bottom">
-                                          <div class="col-md-4 text-center">
-                                              <img th:src="@{/img/sample-img/bookcover1.jpg}" width="120px" height="160px">
-                                          </div>
-                                          <div class="col-md-8">
-                                              <dl class="row mb-0">
-                                                  <dt class="col-sm-4">제목</dt>
-                                                  <dd class="col-sm-8">"다 된 밥에 재뿌리기"의 사회학적 정의</dd>
-
-                                                  <dt class="col-sm-4">저자</dt>
-                                                  <dd class="col-sm-8">코레오 오르날도</dd>
-
-                                                  <dt class="col-sm-4">읽은페이지(목표)</dt>
-                                                  <dd class="col-sm-8">20(420)</dd>
-
-                                                  <dt class="col-sm-4">남은 페이지(목표)</dt>
-                                                  <dd class="col-sm-8">400(420)</dd>
-
-                                                  <dt class="col-sm-4">기록내용</dt>
-                                                  <dd class="col-sm-8">
-                                                      기록 내용이 들어간다. 어쩌구 저쩌구 어디까지 글이 기록되나요 쭉 입력하면?
-                                                      아 여기 보니까 영역을 넘어가면 알아서 줄바꿈이 되는 구나 신기하네 ㅋㅋ
-                                                      그런데 글이 길어지면 어떻게 될까? 공백포함해서 300자 공아 생각
-                                                      135자를 넘을 수 없음
-                                                  </dd>
-                                              </dl>
-                                          </div>
-                                      </div>
-
-                                  <div class="row mb-3 border-bottom">
+                                  <div th:each="myMemo:${myMemoList}" class="row mb-3 border-bottom">
                                       <div class="col-md-4 text-center">
-                                          <img th:src="@{/img/sample-img/bookcover1.jpg}" width="120px" height="160px">
+                                          <img th:src="${myMemo.cover}" width="120px" height="160px">
                                       </div>
                                       <div class="col-md-8">
-                                          <dl class="row mb-0">
+
+                                          <dl class="row mb-0 h-100">
                                               <dt class="col-sm-4">제목</dt>
-                                              <dd class="col-sm-8">"다 된 밥에 재뿌리기"의 사회학적 정의</dd>
+                                              <dd class="col-sm-8" th:text="${myMemo.title}">"다 된 밥에 재뿌리기"의 사회학적 정의</dd>
 
-                                              <dt class="col-sm-4">저자</dt>
-                                              <dd class="col-sm-8">코레오 오르날도</dd>
+                                              <dt class="col-sm-4">읽은 페이지</dt>
+                                              <dd class="col-sm-8">[[${myMemo.readpage}]] page</dd>
 
-                                              <dt class="col-sm-4">읽은페이지(목표)</dt>
-                                              <dd class="col-sm-8">20(420)</dd>
+                                              <dt class="col-sm-4">남은 페이지</dt>
+                                              <dd class="col-sm-8">[[${myMemo.remainpage}]] page</dd>
 
-                                              <dt class="col-sm-4">남은 페이지(목표)</dt>
-                                              <dd class="col-sm-8">400(420)</dd>
+                                              <dt class="col-sm-4">기록일</dt>
+                                              <dd class="col-sm-8" th:text="${myMemo.created}"></dd>
 
                                               <dt class="col-sm-4">기록내용</dt>
-                                              <dd class="col-sm-8">
-                                                  기록 내용이 들어간다. 어쩌구 저쩌구 어디까지 글이 기록되나요 쭉 입력하면?
-                                                  아 여기 보니까 영역을 넘어가면 알아서 줄바꿈이 되는 구나 신기하네 ㅋㅋ
-                                                  그런데 글이 길어지면 어떻게 될까? 공백포함해서 300자 공아 생각
-                                                  135자를 넘을 수 없음
+                                              <dd class="col-sm-8" >[[${myMemo.content}]]
+                                                  <button type="button" class="btn btn-icon btn-success btn-xs rounded-circle">
+                                                    <i class="demo-pli-pencil"></i>
+                                                  </button>
                                               </dd>
 
                                           </dl>
+
                                       </div>
                                   </div>
 
@@ -199,27 +171,7 @@
                                             <img th:src="@{/img/sample-img/bookcover6.jpg}" width="150px" height="200px">
                                         </div>
                                     </div>
-
-                                    <div class="mt-4">
-                                        <nav class="text-center" aria-label="Page navigation">
-                                            <ul class="pagination justify-content-center">
-                                                <li class="page-item disabled">
-                                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                                                </li>
-                                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                                <li class="page-item active" aria-current="page">
-                                                    <a class="page-link" href="#">2</a>
-                                                </li>
-                                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="#">Next</a>
-                                                </li>
-                                            </ul>
-                                        </nav>
-                                    </div>
-
                                 </div>
-
 
                                 <div id="_dm-tabsProgress" class="tab-pane fade" role="tabpanel" aria-labelledby="progress-tab">
                                     <div class="row text-center mb-4">
@@ -228,6 +180,7 @@
                                             <button type="button" class="btn btn-success" data-bs-toggle="modal"
                                                     data-bs-target="#verticalWithScrollbar"
                                                     id="memowrite"
+                                                    th:data-isbn13="${myChallenge.isbn13}"
                                                     th:data-title="${myChallenge.title}"
                                                     th:data-author="${myChallenge.author}"
                                                     th:data-categoryname="${myChallenge.categoryName}"
@@ -285,7 +238,7 @@
 
                                                             <div class="col-md-12 mb-3">
                                                                 <label for="_dm-inputPages" class="form-label">읽은 페이지</label>
-                                                                <input name="readpages" id="_dm-inputPages" type="text" class="form-control" placeholder="읽은 페이지 수를 입력해주세요. 숫자만 가능합니다 (1, 6, 15 ...)" required>
+                                                                <input name="readpage" id="_dm-inputPages" type="text" class="form-control" placeholder="읽은 페이지 수를 입력해주세요. 숫자만 가능합니다 (1, 6, 15 ...)" required>
                                                             </div>
 
                                                             <div class="col-md-12 mb-3">
@@ -308,6 +261,9 @@
                                                                 <label class="form-label">내용</label>
                                                                 <textarea name="content" class="form-control" placeholder="내용을 입력해주세요 (최대 500자)" rows="14" required></textarea>
                                                             </div>
+
+                                                            <input type="hidden" name="isbn13" id="isbn13">
+                                                            <input type="hidden" name="cover" id="cover">
 
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>

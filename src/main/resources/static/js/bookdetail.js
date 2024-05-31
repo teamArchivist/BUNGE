@@ -38,7 +38,7 @@ $(function() {
             isbn13 : isbn13,
             id : loginId,
             state : "목표",
-            page : parseInt($("#itemPage").text(), 10)
+            totalpage : parseInt($("#itemPage").text(), 10)
         };
 
         let answer = confirm("목표로 추가하시겠습니까?")
@@ -83,7 +83,7 @@ $(function() {
             isbn13 : isbn13,
             id : loginId,
             state : "도전",
-            page : parseInt($("#itemPage").text(), 10)
+            totalpage : parseInt($("#itemPage").text(), 10)
         };
 
         let answer = confirm("도전으로 추가하시겠습니까?")

@@ -6,9 +6,9 @@
 
     <insert id="addReadState" parameterType="com.bunge.memo.domain.ReadState">
         insert into readstate
-        (isbn13, id, state, page)
+        (isbn13, id, state, totalpage, readpage)
         values
-        (#{isbn13}, #{id}, #{state}, #{page})
+        (#{isbn13}, #{id}, #{state}, #{totalpage}, 0)
     </insert>
 
     <select id="countReadState" parameterType="com.bunge.memo.domain.ReadState" resultType="int">
@@ -23,5 +23,6 @@
         from readstate
         where id = #{id}
     </select>
+
 
 </mapper>

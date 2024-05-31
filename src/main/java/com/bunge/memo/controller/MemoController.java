@@ -46,10 +46,10 @@ public class MemoController {
     public ModelAndView memoMain(ModelAndView mv) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String loginId = authentication.getName();
-        logger.info("loginId : " + loginId);
+        //logger.info("loginId : " + loginId);
 
         List<ReadState> readStates = readStateService.getAllReadState(loginId);
-        logger.info("readStates : " + readStates.toString());
+        //logger.info("readStates : " + readStates.toString());
 
         List<Book> myGoalList = new ArrayList<>();
         List<Book> myChallengeList = new ArrayList<>();
@@ -62,13 +62,17 @@ public class MemoController {
             }
         }
 
-        logger.info("myGoalList : " + myGoalList.toString());
-        logger.info(String.valueOf(myGoalList.size()));
-        logger.info("myChallengeList : " + myChallengeList.toString());
-        logger.info(String.valueOf(myChallengeList.size()));
+        //logger.info("myGoalList : " + myGoalList.toString());
+        //logger.info(String.valueOf(myGoalList.size()));
+        //logger.info("myChallengeList : " + myChallengeList.toString());
+        //logger.info(String.valueOf(myChallengeList.size()));
+
+        List<Memo> myMemoList = memoService.getMyMemoList(loginId);
+        logger.info("myMemoList: " + myMemoList.toString());
 
         mv.addObject("myGoalList", myGoalList);
         mv.addObject("myChallengeList", myChallengeList);
+        mv.addObject("myMemoList", myMemoList);
 
         mv.setViewName("memo/memo_mine");
 
@@ -76,9 +80,11 @@ public class MemoController {
     }
 
     @PostMapping("/addmemo")
-    public String addMemo(Memo memo, HttpServletRequest request) {
+    public String addMemo(Memo memo) {
 
+        //logger.info(memo.toString());
         memoService.addMemo(memo);
+
 
         return "redirect:mine";
     }
