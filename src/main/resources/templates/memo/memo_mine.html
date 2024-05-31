@@ -8,6 +8,7 @@
         <script th:src="@{/pages/chart.js}"></script>
         <script type="module" th:src="@{/pages/forms-tags-bootstrap5.js}"></script>
         <link rel="stylesheet" th:href="@{/vendors/bootstrap5-tags/bootstrap5-tags.css}">
+        <script th:src="@{/js/memomine.js}"></script>
     </links>
 </head>
 <body class="out-quart">
@@ -17,7 +18,6 @@
 
         <div class="content__header content__boxed rounded-0">
             <div class="content__wrap">
-
 
                 <!-- Breadcrumb -->
                 <nav aria-label="breadcrumb">
@@ -44,6 +44,7 @@
 
                     <div class="col-md-6 mb-3">
                         <div class="tab-base">
+
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="nav-item active" role="presentation">
@@ -51,55 +52,10 @@
                                 </li>
                             </ul>
 
-                                    <!-- Bar Chart -->
-                                    <canvas id="_dm-barChart"></canvas>
-                                    <!-- END : Bar Chart -->
+                            <!-- Bar Chart -->
+                            <canvas id="_dm-barChart"></canvas>
+                            <!-- END : Bar Chart -->
 
-                        </div>
-
-
-                        <div class="tab-base mt-5 mb-4">
-                            <ul class="nav nav-tabs" role="tablist">
-                                <li class="nav-item active" role="presentation">
-                                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#_dm-tabsKeyword" type="button" role="tab" aria-controls="keyword" aria-selected="true">키워드</button>
-                                </li>
-                            </ul>
-
-                            <!-- Tabs content -->
-                            <div class="tab-content">
-                                <div id="_dm-tabsKeyword" class="tab-pan fade active show" role="tabpanel" aria-labelledby="keyword-tab">
-                                    <div class="row text-center mb-4">
-                                        <div class="col-md-3">
-                                            <button type="button" class="btn btn-outline-primary rounded-pill">행복</button>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <button type="button" class="btn btn-outline-primary rounded-pill">시사</button>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <button type="button" class="btn btn-outline-primary rounded-pill">필독</button>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <button type="button" class="btn btn-outline-primary rounded-pill">우울</button>
-                                        </div>
-                                    </div>
-
-                                    <div class="row text-center">
-                                        <div class="col-md-3">
-                                            <button type="button" class="btn btn-outline-primary rounded-pill">너진짜똑똑하다</button>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <button type="button" class="btn btn-outline-primary rounded-pill">유튜브구독자500만이상</button>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <button type="button" class="btn btn-outline-primary rounded-pill">종교계추천도서</button>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <button type="button" class="btn btn-outline-primary rounded-pill">프로파일러</button>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
                         </div>
 
                   </div>
@@ -108,98 +64,40 @@
                       <div class="tab-base">
                           <ul class="nav nav-tabs" role="tablist">
                               <li class="nav-item active" role="presentation">
-                                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#_dm-tabsMemo" type="button" role="tab" aria-controls="memo" aria-selected="true">최근 기록</button>
+                                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#_dm-tabsMemo" type="button" role="tab" aria-controls="memo" aria-selected="true">기록내역</button>
                               </li>
                           </ul>
 
                           <div id="_dm-tabsMemo" class="tab-pane fade active show" role="tabpane1" aria-labelledy="memo-tab">
                               <div class="tab-content">
-                                      <div class="row mb-3 border-bottom">
-                                          <div class="col-md-4 text-center">
-                                              <img th:src="@{/img/sample-img/bookcover1.jpg}" width="120px" height="160px">
-                                          </div>
-                                          <div class="col-md-8">
-                                              <dl class="row mb-0">
-                                                  <dt class="col-sm-4">제목</dt>
-                                                  <dd class="col-sm-8">"다 된 밥에 재뿌리기"의 사회학적 정의</dd>
-
-                                                  <dt class="col-sm-4">저자</dt>
-                                                  <dd class="col-sm-8">코레오 오르날도</dd>
-
-                                                  <dt class="col-sm-4">읽은페이지(목표)</dt>
-                                                  <dd class="col-sm-8">20(420)</dd>
-
-                                                  <dt class="col-sm-4">남은 페이지(목표)</dt>
-                                                  <dd class="col-sm-8">400(420)</dd>
-
-                                                  <dt class="col-sm-4">기록내용</dt>
-                                                  <dd class="col-sm-8">
-                                                      기록 내용이 들어간다. 어쩌구 저쩌구 어디까지 글이 기록되나요 쭉 입력하면?
-                                                      아 여기 보니까 영역을 넘어가면 알아서 줄바꿈이 되는 구나 신기하네 ㅋㅋ
-                                                      그런데 글이 길어지면 어떻게 될까? 공백포함해서 300자 공아 생각
-                                                      135자를 넘을 수 없음
-                                                  </dd>
-                                              </dl>
-                                          </div>
-                                      </div>
-
-                                  <div class="row mb-3 border-bottom">
+                                  <div th:each="myMemo:${myMemoList}" class="row mb-3 border-bottom">
                                       <div class="col-md-4 text-center">
-                                          <img th:src="@{/img/sample-img/bookcover1.jpg}" width="120px" height="160px">
+                                          <img th:src="${myMemo.cover}" width="120px" height="160px">
                                       </div>
                                       <div class="col-md-8">
-                                          <dl class="row mb-0">
+
+                                          <dl class="row mb-0 h-100">
                                               <dt class="col-sm-4">제목</dt>
-                                              <dd class="col-sm-8">"다 된 밥에 재뿌리기"의 사회학적 정의</dd>
+                                              <dd class="col-sm-8" th:text="${myMemo.title}">"다 된 밥에 재뿌리기"의 사회학적 정의</dd>
 
-                                              <dt class="col-sm-4">저자</dt>
-                                              <dd class="col-sm-8">코레오 오르날도</dd>
+                                              <dt class="col-sm-4">읽은 페이지</dt>
+                                              <dd class="col-sm-8">[[${myMemo.readpage}]] page</dd>
 
-                                              <dt class="col-sm-4">읽은페이지(목표)</dt>
-                                              <dd class="col-sm-8">20(420)</dd>
+                                              <dt class="col-sm-4">남은 페이지</dt>
+                                              <dd class="col-sm-8">[[${myMemo.remainpage}]] page</dd>
 
-                                              <dt class="col-sm-4">남은 페이지(목표)</dt>
-                                              <dd class="col-sm-8">400(420)</dd>
+                                              <dt class="col-sm-4">기록일</dt>
+                                              <dd class="col-sm-8" th:text="${myMemo.created}"></dd>
 
                                               <dt class="col-sm-4">기록내용</dt>
-                                              <dd class="col-sm-8">
-                                                  기록 내용이 들어간다. 어쩌구 저쩌구 어디까지 글이 기록되나요 쭉 입력하면?
-                                                  아 여기 보니까 영역을 넘어가면 알아서 줄바꿈이 되는 구나 신기하네 ㅋㅋ
-                                                  그런데 글이 길어지면 어떻게 될까? 공백포함해서 300자 공아 생각
-                                                  135자를 넘을 수 없음
+                                              <dd class="col-sm-8" >[[${myMemo.content}]]
+                                                  <button type="button" class="btn btn-icon btn-success btn-xs rounded-circle">
+                                                    <i class="demo-pli-pencil"></i>
+                                                  </button>
                                               </dd>
 
                                           </dl>
-                                      </div>
-                                  </div>
 
-                                  <div class="row mb-3 border-bottom">
-                                      <div class="col-md-4 text-center">
-                                          <img th:src="@{/img/sample-img/bookcover1.jpg}" width="120px" height="160px">
-                                      </div>
-                                      <div class="col-md-8">
-                                          <dl class="row mb-0">
-                                              <dt class="col-sm-4">제목</dt>
-                                              <dd class="col-sm-8">"다 된 밥에 재뿌리기"의 사회학적 정의</dd>
-
-                                              <dt class="col-sm-4">저자</dt>
-                                              <dd class="col-sm-8">코레오 오르날도</dd>
-
-                                              <dt class="col-sm-4">읽은페이지(목표)</dt>
-                                              <dd class="col-sm-8">20(420)</dd>
-
-                                              <dt class="col-sm-4">남은 페이지(목표)</dt>
-                                              <dd class="col-sm-8">400(420)</dd>
-
-                                              <dt class="col-sm-4">기록내용</dt>
-                                              <dd class="col-sm-8">
-                                                  기록 내용이 들어간다. 어쩌구 저쩌구 어디까지 글이 기록되나요 쭉 입력하면?
-                                                  아 여기 보니까 영역을 넘어가면 알아서 줄바꿈이 되는 구나 신기하네 ㅋㅋ
-                                                  그런데 글이 길어지면 어떻게 될까? 공백포함해서 300자 공아 생각
-                                                  135자를 넘을 수 없음
-                                              </dd>
-
-                                          </dl>
                                       </div>
                                   </div>
 
@@ -236,18 +134,22 @@
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="nav-item active" role="presentation">
-                                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#_dm-tabsComplete" type="button" role="tab" aria-controls="complete" aria-selected="true">완독</button>
+                                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#_dm-tabsComplete"
+                                            type="button" role="tab" aria-controls="complete" aria-selected="true">완독</button>
                                 </li>
 
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#_dm-tabsProgress" type="button" role="tab" aria-controls="progress" aria-selected="false" tabindex="-1">진행중</button>
+                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#_dm-tabsProgress"
+                                            type="button" role="tab" aria-controls="progress" aria-selected="false" tabindex="-1">진행중</button>
                                 </li>
+
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#_dm-tabsTarget" type="button" role="tab" aria-controls="target" aria-selected="false" tabindex="-1">목표</button>
+                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#_dm-tabsTarget"
+                                            type="button" role="tab" aria-controls="target" aria-selected="false" tabindex="-1">목표</button>
                                 </li>
                             </ul>
 
-                            <div class="tab-content">
+                            <div class="tab-content" style="background-color:var(--bs-primary)">
                                 <div id="_dm-tabsComplete" class="tab-pane fade active show" role="tabpanel" aria-labelledby="complete-tab">
                                     <div class="row text-center mb-4">
                                         <div class="col-md-2">
@@ -269,53 +171,22 @@
                                             <img th:src="@{/img/sample-img/bookcover6.jpg}" width="150px" height="200px">
                                         </div>
                                     </div>
-
-                                    <div class="mt-4">
-                                        <nav class="text-center" aria-label="Page navigation">
-                                            <ul class="pagination justify-content-center">
-                                                <li class="page-item disabled">
-                                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                                                </li>
-                                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                                <li class="page-item active" aria-current="page">
-                                                    <a class="page-link" href="#">2</a>
-                                                </li>
-                                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="#">Next</a>
-                                                </li>
-                                            </ul>
-                                        </nav>
-                                    </div>
-
                                 </div>
-
 
                                 <div id="_dm-tabsProgress" class="tab-pane fade" role="tabpanel" aria-labelledby="progress-tab">
                                     <div class="row text-center mb-4">
-                                        <div class="col-md-2">
-                                            <img th:src="@{/img/sample-img/bookcover1.jpg}" width="150px" height="200px">
-                                            <button type="button" class="btn btn-success memowrite" data-bs-toggle="modal" data-bs-target="#verticalWithScrollbar">기록하기</button>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <img th:src="@{/img/sample-img/bookcover2.jpg}" width="150px" height="200px">
-                                            <button type="button" class="btn btn-success memowrite" data-bs-toggle="modal" data-bs-target="#verticalWithScrollbar">기록하기</button>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <img th:src="@{/img/sample-img/bookcover3.jpg}" width="150px" height="200px">
-                                            <button type="button" class="btn btn-success memowrite" data-bs-toggle="modal" data-bs-target="#verticalWithScrollbar">기록하기</button>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <img th:src="@{/img/sample-img/bookcover4.jpg}" width="150px" height="200px">
-                                            <button type="button" class="btn btn-success memowrite" data-bs-toggle="modal" data-bs-target="#verticalWithScrollbar">기록하기</button>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <img th:src="@{/img/sample-img/bookcover5.jpg}" width="150px" height="200px">
-                                            <button type="button" class="btn btn-success memowrite" data-bs-toggle="modal" data-bs-target="#verticalWithScrollbar">기록하기</button>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <img th:src="@{/img/sample-img/bookcover6.jpg}" width="150px" height="200px">
-                                            <button type="button" class="btn btn-success memowrite" data-bs-toggle="modal" data-bs-target="#verticalWithScrollbar">기록하기</button>
+                                        <div th:each="myChallenge:${myChallengeList}" class="col-md-2 mb-2">
+                                            <img th:src="${myChallenge.cover}" width="150px" height="200px">
+                                            <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                                                    data-bs-target="#verticalWithScrollbar"
+                                                    id="memowrite"
+                                                    th:data-isbn13="${myChallenge.isbn13}"
+                                                    th:data-title="${myChallenge.title}"
+                                                    th:data-author="${myChallenge.author}"
+                                                    th:data-categoryname="${myChallenge.categoryName}"
+                                                    th:data-cover="${myChallenge.cover}"
+                                                    th:data-score="${myChallenge.score}"
+                                                    th:data-page="${myChallenge.page}">기록하기</button>
                                         </div>
 
                                         <!-- Modal -->
@@ -330,25 +201,25 @@
                                                         <div class="row mb-4">
 
                                                             <div class="col-md-4 text-center">
-                                                                <img th:src="@{/img/sample-img/bookcover1.jpg}" width="120px" height="160px">
+                                                                <img th:src="@{/img/sample-img/bookcover1.jpg}" id="modalcover" class="img-fluid w-100 h-100">
                                                             </div>
 
                                                             <div class="col-md-8 align-content-center border-bottom">
                                                                 <dl class="row mb-0">
                                                                     <dt class="col-sm-4">제목</dt>
-                                                                    <dd class="col-sm-8 text-start">"다 된 밥에 재뿌리기"의 사회학적...</dd>
+                                                                    <dd class="col-sm-8 text-start" id="modaltitle">"다 된 밥에 재뿌리기"의 사회학적...</dd>
 
                                                                     <dt class="col-sm-4">저자</dt>
-                                                                    <dd class="col-sm-8 text-start">코레오 오르날도</dd>
+                                                                    <dd class="col-sm-8 text-start" id="modalauthor">코레오 오르날도</dd>
 
                                                                     <dt class="col-sm-4">카테고리</dt>
-                                                                    <dd class="col-sm-8 text-start">eBook > 인문학 > 교양 인문학</dd>
+                                                                    <dd class="col-sm-8 text-start" id="modalcategoryName">eBook > 인문학 > 교양 인문학</dd>
 
                                                                     <dt class="col-sm-4">별점</dt>
-                                                                    <dd class="col-sm-8 text-start">5점</dd>
+                                                                    <dd class="col-sm-8 text-start" id="modalscore">5점</dd>
 
                                                                     <dt class="col-sm-4">페이지</dt>
-                                                                    <dd class="col-sm-8 text-start">276쪽</dd>
+                                                                    <dd class="col-sm-8 text-start" id="modalpage">276쪽</dd>
 
                                                                     <dt class="col-sm-4">남은 페이지</dt>
                                                                     <dd class="col-sm-8 text-start">180쪽</dd>
@@ -367,7 +238,7 @@
 
                                                             <div class="col-md-12 mb-3">
                                                                 <label for="_dm-inputPages" class="form-label">읽은 페이지</label>
-                                                                <input name="readpages" id="_dm-inputPages" type="text" class="form-control" placeholder="읽은 페이지 수를 입력해주세요. 숫자만 가능합니다 (1, 6, 15 ...)" required>
+                                                                <input name="readpage" id="_dm-inputPages" type="text" class="form-control" placeholder="읽은 페이지 수를 입력해주세요. 숫자만 가능합니다 (1, 6, 15 ...)" required>
                                                             </div>
 
                                                             <div class="col-md-12 mb-3">
@@ -386,33 +257,13 @@
                                                                 <input name="title" id="_dm-Title" type="text" class="form-control" placeholder="제목을 입력해주세요 (최대 100자)" required>
                                                             </div>
 
-                                                            <div class="col-md-12 mb-3">
-                                                                <label class="form-label">키워드</label>
-
-                                                                <div>
-                                                                    <!-- Custom colors -->
-                                                                    <select class="form-select form-tags" id="validationTagsShow" name="keyword" multiple data-show-all-suggestions="true">
-                                                                        <option selected disabled hidden value="">키워드를 고를 수 있습니다</option>
-                                                                        <option value="1">행복</option>
-                                                                        <option value="2" data-badge-style="primary">강력추천</option>
-                                                                        <option value="3" data-badge-style="secondary">새해목표</option>
-                                                                        <option value="4" data-badge-style="info">필독</option>
-                                                                        <option value="5" data-badge-style="success">프로파일러</option>
-                                                                        <option value="6" data-badge-style="warning">책마니인기지수TOP100</option>
-                                                                        <option value="7" data-badge-style="danger">책마니인기지수TOP50</option>
-                                                                        <option value="8" data-badge-class="bg-light text-warning">책마니인기지수TOP10</option>
-                                                                    </select>
-                                                                    <div class="invalid-feedback">Please select a valid tag.</div>
-                                                                    <!-- END : Custom colors -->
-
-                                                                </div>
-
-                                                            </div>
-
                                                             <div class="col-md-12">
                                                                 <label class="form-label">내용</label>
                                                                 <textarea name="content" class="form-control" placeholder="내용을 입력해주세요 (최대 500자)" rows="14" required></textarea>
                                                             </div>
+
+                                                            <input type="hidden" name="isbn13" id="isbn13">
+                                                            <input type="hidden" name="cover" id="cover">
 
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
@@ -429,67 +280,16 @@
                                         </div>
                                         <!-- END : Vertical centered scrollable modal -->
                                     </div>
-
-                                    <div class="mt-4">
-                                        <nav class="text-center" aria-label="Page navigation">
-                                            <ul class="pagination justify-content-center">
-                                                <li class="page-item disabled">
-                                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                                                </li>
-                                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                                <li class="page-item active" aria-current="page">
-                                                    <a class="page-link" href="#">2</a>
-                                                </li>
-                                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="#">Next</a>
-                                                </li>
-                                            </ul>
-                                        </nav>
-                                    </div>
-
                                 </div>
 
                                 <div id="_dm-tabsTarget" class="tab-pane fade" role="tabpanel" aria-labelledby="target-tab">
                                     <div class="row text-center mb-4">
-                                        <div class="col-md-2">
-                                            <img th:src="@{/img/sample-img/bookcover6.jpg}" width="150px" height="200px">
+                                        <div th:each="myGoal:${myGoalList}" class="col-md-2 mb-2">
+                                            <img th:src="${myGoal.cover}" width="150px" height="200px">
                                         </div>
-                                        <div class="col-md-2">
-                                            <img th:src="@{/img/sample-img/bookcover6.jpg}" width="150px" height="200px">
-                                        </div>
-                                        <div class="col-md-2">
-                                            <img th:src="@{/img/sample-img/bookcover6.jpg}" width="150px" height="200px">
-                                        </div>
-                                        <div class="col-md-2">
-                                            <img th:src="@{/img/sample-img/bookcover6.jpg}" width="150px" height="200px">
-                                        </div>
-                                        <div class="col-md-2">
-                                            <img th:src="@{/img/sample-img/bookcover6.jpg}" width="150px" height="200px">
-                                        </div>
-                                        <div class="col-md-2">
-                                            <img th:src="@{/img/sample-img/bookcover6.jpg}" width="150px" height="200px">
-                                        </div>
-                                    </div>
-
-                                    <div class="mt-4">
-                                        <nav class="text-center" aria-label="Page navigation">
-                                            <ul class="pagination justify-content-center">
-                                                <li class="page-item disabled">
-                                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                                                </li>
-                                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                                <li class="page-item active" aria-current="page">
-                                                    <a class="page-link" href="#">2</a>
-                                                </li>
-                                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                                <li class="page-item">
-                                                    <a class="page-link" href="#">Next</a>
-                                                </li>
-                                            </ul>
-                                        </nav>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>

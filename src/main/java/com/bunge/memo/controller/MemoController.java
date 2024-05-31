@@ -13,11 +13,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,16 +42,50 @@ public class MemoController {
         this.readStateService = readStateService;
     }
 
-    //기록·리뷰 -> 나의 기록 눌렀을 때 처음 페이지
     @GetMapping("/mine")
-    public ModelAndView memoMain(@RequestParam(value="page", defaultValue="1") int page, ModelAndView mv) {
+    public ModelAndView memoMain(ModelAndView mv) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loginId = authentication.getName();
+        //logger.info("loginId : " + loginId);
+
+        List<ReadState> readStates = readStateService.getAllReadState(loginId);
+        //logger.info("readStates : " + readStates.toString());
+
+        List<Book> myGoalList = new ArrayList<>();
+        List<Book> myChallengeList = new ArrayList<>();
+
+        for (ReadState readState : readStates) {
+            if (readState.getState().equals("목표")) {
+                myGoalList.add(bookService.getMyBookByState(readState));
+            } else if (readState.getState().equals("도전")) {
+                myChallengeList.add(bookService.getMyBookByState(readState));
+            }
+        }
+
+        //logger.info("myGoalList : " + myGoalList.toString());
+        //logger.info(String.valueOf(myGoalList.size()));
+        //logger.info("myChallengeList : " + myChallengeList.toString());
+        //logger.info(String.valueOf(myChallengeList.size()));
+
+        List<Memo> myMemoList = memoService.getMyMemoList(loginId);
+        logger.info("myMemoList: " + myMemoList.toString());
+
+        mv.addObject("myGoalList", myGoalList);
+        mv.addObject("myChallengeList", myChallengeList);
+        mv.addObject("myMemoList", myMemoList);
+
         mv.setViewName("memo/memo_mine");
+
         return mv;
     }
 
     @PostMapping("/addmemo")
-    public String addMemo(Memo memo, HttpServletRequest request) {
+    public String addMemo(Memo memo) {
+
+        //logger.info(memo.toString());
         memoService.addMemo(memo);
+
+
         return "redirect:mine";
     }
 
@@ -179,7 +216,8 @@ public class MemoController {
     @PostMapping("/addreadstate")
     public ResponseEntity<String> addReadState(@RequestBody ReadState readState) {
 
-        //logger.info("state" + readState.getState());
+        //logger.info(readState.toString());
+        bookService.updatePage(readState);
 
         if (readState.getState().equals("목표")) {
             try {
