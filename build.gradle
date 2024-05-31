@@ -54,6 +54,9 @@ dependencies {
 
     // kafka
     implementation 'org.springframework.kafka:spring-kafka:3.0.17'
+
+    // guava
+    implementation 'com.google.guava:guava:33.2.0-jre'
 }
 
 tasks.named('bootBuildImage') {
