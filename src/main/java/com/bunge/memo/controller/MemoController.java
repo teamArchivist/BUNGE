@@ -210,7 +210,8 @@ public class MemoController {
     @PostMapping("/addreadstate")
     public ResponseEntity<String> addReadState(@RequestBody ReadState readState) {
 
-        //logger.info("state" + readState.getState());
+        //logger.info(readState.toString());
+        bookService.updatePage(readState);
 
         if (readState.getState().equals("목표")) {
             try {

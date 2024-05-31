@@ -6,47 +6,47 @@
 
     <insert id="addBook">
         insert into book
-        (isbn13, title, author, pubDate, categoryName, description, cover, regitdate, score)
+        (isbn13, title, author, pubDate, categoryName, description, cover, regitdate, score, page)
         values
-        (#{isbn13}, #{title}, #{author}, #{pubDate}, #{categoryName}, #{description}, #{cover}, now(), 0)
+        (#{isbn13}, #{title}, #{author}, #{pubDate}, #{categoryName}, #{description}, #{cover}, now(), 0, 0)
     </insert>
 
-    <select id="getBookList" parameterType="com.bunge.memo.filter.BookFilter" resultType="com.bunge.memo.domain.Book">
-        SELECT *
-        FROM book
-        WHERE 1=1
+    <select id="getBookListCount" parameterType="com.bunge.memo.filter.BookFilter" resultType="int">
+        select count(*)
+        from book
+        where 1=1
         <if test="title != null and title != ''">
-            AND title LIKE CONCAT('%', #{title}, '%')
+            and title like CONCAT('%', #{title}, '%')
         </if>
         <if test="author != null and author != ''">
-            AND author LIKE CONCAT('%', #{author}, '%')
+            and author like CONCAT('%', #{author}, '%')
         </if>
         <if test="category != null and category != ''">
-            AND category LIKE CONCAT('%', #{category}, '%')
+            and category like CONCAT('%', #{category}, '%')
         </if>
         <if test="score != null">
-            AND score >= #{score}
+            and score >= #{score}
         </if>
-        ORDER BY regitdate desc
-        LIMIT #{offset}, #{limit}
     </select>
 
-    <select id="getBookListCount" parameterType="com.bunge.memo.filter.BookFilter" resultType="int">
-        SELECT count(*)
-        FROM book
-        WHERE 1=1
+    <select id="getBookList" parameterType="com.bunge.memo.filter.BookFilter" resultType="com.bunge.memo.domain.Book">
+        select *
+        from book
+        where 1=1
         <if test="title != null and title != ''">
-            AND title LIKE CONCAT('%', #{title}, '%')
+            and title like CONCAT('%', #{title}, '%')
         </if>
         <if test="author != null and author != ''">
-            AND author LIKE CONCAT('%', #{author}, '%')
+            and author like CONCAT('%', #{author}, '%')
         </if>
         <if test="category != null and category != ''">
-            AND category LIKE CONCAT('%', #{category}, '%')
+            and category like CONCAT('%', #{category}, '%')
         </if>
         <if test="score != null">
-            AND score >= #{score}
+            and score >= #{score}
         </if>
+        order by regitdate desc
+        limit #{offset}, #{limit}
     </select>
 
 
@@ -63,4 +63,10 @@
         where rs.state = #{state}
         and b.isbn13 = #{isbn13}
     </select>
+
+    <update id="updatePage">
+        update book
+        set page = #{page}
+        where isbn13 = #{isbn13}
+    </update>
 </mapper>

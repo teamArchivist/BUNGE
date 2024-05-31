@@ -60,5 +60,10 @@ public class BookServiceImpl implements BookService {
         return bookMapper.getMyBookByState(readState);
     }
 
+    @Override
+    public void updatePage(ReadState readState) {
+        bookMapper.updatePage(readState);
+    }
+
 
 }

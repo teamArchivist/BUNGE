@@ -24,4 +24,7 @@ public interface BookMapper {
 
     //readstate에 따른 책
     public Book getMyBookByState(ReadState readState);
+
+    //책 페이지 수 update
+    public void updatePage(ReadState readState);
 }
