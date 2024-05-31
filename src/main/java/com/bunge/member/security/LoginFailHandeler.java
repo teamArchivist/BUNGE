@@ -19,7 +19,7 @@ private static final Logger logger = LoggerFactory.getLogger(LoginFailHandeler.c
         HttpSession session = request.getSession();
         logger.info("로그인실패");
         session.setAttribute("loginfail","loginFilMsg");
-        String url = request.getContextPath()+"member/login";
+        String url = request.getContextPath()+"/member/login";
         response.sendRedirect(url);
     }
 }
