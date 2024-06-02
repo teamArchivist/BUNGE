@@ -4,6 +4,10 @@ import com.bunge.memo.domain.Memo;
 import com.bunge.memo.mapper.MemoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.beans.Transient;
+import java.util.List;
 
 @Service
 public class MemoServiceImpl implements MemoService {
@@ -16,8 +20,15 @@ public class MemoServiceImpl implements MemoService {
     }
 
     @Override
+    @Transactional
     public void addMemo(Memo memo) {
+        memoMapper.updateReadPage(memo);
         memoMapper.addMemo(memo);
+    }
+
+    @Override
+    public List<Memo> getMyMemoList(String loginId) {
+        return memoMapper.getMyMemoList(loginId);
     }
 
 

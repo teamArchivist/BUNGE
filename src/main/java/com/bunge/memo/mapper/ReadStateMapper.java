@@ -3,6 +3,8 @@ package com.bunge.memo.mapper;
 import com.bunge.memo.domain.ReadState;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface ReadStateMapper {
 
@@ -11,5 +13,8 @@ public interface ReadStateMapper {
 
     //해당 책의 상태에 따른 유저 수
     public int countReadState(ReadState readState);
+
+    //로그인한 사용자의 모든 독서상태
+    public List<ReadState> getAllReadState(String loginId);
 
 }

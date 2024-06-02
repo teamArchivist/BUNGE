@@ -68,7 +68,6 @@ public class MemberServiceimpl implements MemberService{
         }
         return null;
     }
-
     @Override
     public boolean findpwd(String id, String name, String email) {
         HashMap<String, String> map = new HashMap<>();
@@ -76,15 +75,16 @@ public class MemberServiceimpl implements MemberService{
         map.put("name", name);
         map.put("email", email);
         int count = memberMapper.findpwd(map);
-        if (count == 1) {
-            return true;
-        }else{
-            return false;
-        }
+        return count == 1;
     }
+
     @Override
     public boolean pwdset(Member member) {
-        int result = memberMapper.pwdset(member);
+        HashMap<String, String> map = new HashMap<>();
+        map.put("pwd", member.getPwd());
+        map.put("findid", member.getId());
+        int result = memberMapper.pwdset(map);
+        if(result ==1) return true;
         return false;
     }
 }

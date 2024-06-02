@@ -171,6 +171,7 @@ public class MemberController {
             model.addAttribute("message" ,"비밀번호가 정상적으로 변경되었습니다.");
             model.addAttribute("url","redirect:/member/login");
             return model.toString();
+
         } else {
             model.addAttribute("message","비밀번호 변경에 실패하였습니다.");
             model.addAttribute("url" , "/member/pwdset");
