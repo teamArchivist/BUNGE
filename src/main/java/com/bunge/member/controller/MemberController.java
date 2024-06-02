@@ -6,7 +6,6 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.apache.coyote.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.security.Principal;
 
 @Controller
@@ -51,13 +48,11 @@ public class MemberController {
                         HttpSession session,
                         Principal userPrincipal)  {
         if (readCookie != null) {
-            String message = "로그인에 성공하셨습니다.";
-            mav.addObject("message" , message);
-            mav.setViewName("readirect:/member/index");
+            mav.addObject("message" , "로그인에 성공하셨습니다.");
+            mav.addObject("url","/member/index");
         } else {
-            String message = "아이디나 비밀번호가 틀렸습니다.";
-            mav.addObject("message" , message);
-            mav.setViewName("member/login");
+            mav.addObject("message" ,"아이디나 비밀번호가 틀렸습니다.");
+            mav.setViewName("/member/login");
 
             mav.addObject("loginfail", session.getAttribute("loginfail"));
             session.removeAttribute("loginfail");
@@ -144,8 +139,9 @@ public class MemberController {
     public String findpwdProcess(@RequestParam("id") String id ,
                                        @RequestParam("name") String name ,
                                        @RequestParam("email") String email, Model model,
-                                       HttpServletResponse response) {
-       boolean pwdset = memberservice.findpwd(id, name , email);
+                                       HttpServletResponse response , HttpSession session) {
+       session.setAttribute("findid", id);
+        boolean pwdset = memberservice.findpwd(id, name , email);
         if (!pwdset) {
             String message = "아이디, 이름, 이메일 정보 중 일치하지 않습니다.";
             model.addAttribute("message", message);
@@ -158,39 +154,27 @@ public class MemberController {
         }
     }
     //비밀번호 재설정
+    @PreAuthorize("isAnonymous()")
     @PostMapping(value = "/pwdsetProcess")
     public String pwdset(Member member,Model model, HttpServletRequest request, HttpSession session) {
 
         String findid = (String) session.getAttribute("findid");
         //비밀번호 암호화 추가
         String encPassword = passwordEncoder.encode(member.getPwd());
+
         member.setPwd(encPassword);
+        member.setId(findid);
 
         boolean result = memberservice.pwdset(member);
+
         if(result) {
-            String message ="비밀번호가 정상적으로 변경되었습니다.";
-            model.addAttribute("message" , message);
-            return "/member/login";
+            model.addAttribute("message" ,"비밀번호가 정상적으로 변경되었습니다.");
+            model.addAttribute("url","redirect:/member/login");
+            return model.toString();
         } else {
-            String message ="비밀번호 변경에 실패하였습니다.";
-            model.addAttribute("message" ,message);
-            return "/member/pwdset";
+            model.addAttribute("message","비밀번호 변경에 실패하였습니다.");
+            model.addAttribute("url" , "/member/pwdset");
+            return model.toString();
         }
-    }
-    //회원정보 수정
-    @GetMapping(value = "/update")
-    public ModelAndView index(ModelAndView mav , Principal principal){
-
-        String id = principal.getName();
-
-        if(id == null) {
-            mav.setViewName("redirect:login");
-            logger.info("id is null");
-        }else {
-            Member m = memberservice.memberinfo(id);
-            mav.setViewName("member/update");
-            mav.addObject("memberinfo", m);
-        }
-        return mav;
     }
 }

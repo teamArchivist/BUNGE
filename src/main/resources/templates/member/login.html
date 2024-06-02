@@ -3,8 +3,15 @@
       xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>로그인</title>
+    <script th:inline="javascript">
+        let message = [[${message}]];
+        let url  =[[${url}]];
+        alert(message);
+        document.location.href=url;
+    </script>
     <links>
         <!--/* link, script 태그 영역 */-->
+        <script th:src="@{/js/message.js}"></script>
     </links>
 </head>
 <body>

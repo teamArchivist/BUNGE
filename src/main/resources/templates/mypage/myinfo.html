@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}"
+      xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>내 정보 보기</title>
+    <links>
+        <!--/* link, script 태그 영역 */-->
+    </links>
+</head>
+<body>
+<th:block sec:authorize="isAnonymous()">
+    <section id="content" class="content">
+        <div class="content__boxed w-100 min-vh-100 d-flex flex-column align-items-center justify-content-center">
+            <div class="content__wrap">
+
+                <!-- Login card -->
+                <div class="card shadow-lg">
+                    <div class="card-body">
+
+
+                        <div class="text-center">
+                            <h1 class="h3">내 정보 수정</h1>
+                        </div>
+
+                            <div class="w-md-400px d-inline-flex row g-3 mb-4">
+                                <div class="mininav-toggle text-center py-2">
+                                    <img class="hv-oc img-xl rounded-circle border" sec:authentication="principal.profile" alt="Profile">
+                                </div>
+
+                                <div class="mt-2 col-9">
+                                    <font style="vertical-align: inherit;">아이디</font>
+                                    <input type="text" name="id" class="form-control" th:value="${memberinfo.getId()}">
+                                </div>
+                                <div class="mt-4 col-3">
+                                    <button type="button" class="btn btn-primary"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">변경</font></font></button>
+                                </div>
+                                <div class="mt-2 col-9">
+                                    <font style="vertical-align: inherit;">비밀번호</font>
+                                    <input type="password" name="pwd" class="form-control" th:value="${#strings.substring(memberinfo.password, 0,8)}">
+                                </div>
+                                <div class="mt-4 col-3">
+                                    <button type="button" class="btn btn-primary"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">변경</font></font></button>
+                                </div>
+                                <div class="mt-2 col-9">
+                                    <font style="vertical-align: inherit;">이름</font>
+                                    <input type="text" name="name" class="form-control" th:value="${memberinfo.getName()}">
+                                </div>
+                                <div class="mt-4 col-3">
+                                    <button type="button" class="btn btn-primary"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">변경</font></font></button>
+                                </div>
+                                <div class="mt-2 col-9">
+                                    <font style="vertical-align: inherit;">닉네임</font>
+                                    <input type="text" name="nick" class="form-control" th:value="${memberinfo.getNick()}">
+                                </div>
+                                <div class="mt-4 col-3">
+                                    <button type="button" class="btn btn-primary"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">변경</font></font></button>
+                                </div>
+                                <div class="mt-2 col-sm-6">
+                                    <font style="vertical-align: inherit;">우편번호</font>
+                                    <input type="text" name="zipcode" class="form-control" th:value="${memberinfo.getZipcode()}">
+                                </div>
+                                <div class="mt-4 col-sm-6">
+                                    <input type="button" class="btn btn-primary" value="우편검색" name="postcode">
+                                </div>
+                                <div class="mt-2 col-9">
+                                    <font style="vertical-align: inherit;">주소</font>
+                                    <input type="text" name="addr1" class="form-control" th:value="${memberinfo.getAddr1()}">
+                                </div>
+                                <div class="mt-2 col-9">
+                                    <font style="vertical-align: inherit;">상세주소</font>
+                                    <input type="text" name="addr2" class="form-control" required th:value="${memberinfo.getAddr2()}">
+                                </div>
+                                <div class="mt-2 col-9">
+                                    <font style="vertical-align: inherit;">핸드폰</font>
+                                    <input type="text" name="phone" class="form-control"  required th:value="${memberinfo.getPhone()}">
+                                </div>
+                                <div class="mt-4 col-3">
+                                    <button type="button" class="btn btn-primary"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">변경</font></font></button>
+                                </div>
+                                <div class="mt-2 col-9">
+                                    <font style="vertical-align: inherit;">이메일</font>
+                                    <input type="email" name="email" class="form-control" aria-label="Email" th:value="${memberinfo.getEmail()}">
+                                </div>
+                                <div class="mt-4 col-3">
+                                    <button type="button" class="btn btn-primary"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">변경</font></font></button>
+                                </div>
+                            </div>
+                            <div class="d-grid mt-4">
+                                <button class="btn btn-light" onclick="window.history.back()">돌아가기</button>
+                            </div>
+                    </div>
+                </div>
+
+                <!-- END : Login card -->
+                <!-- END : Show the background images container -->
+
+
+            </div>
+        </div>
+    </section>
+</th:block>
+</body>
+</html>
