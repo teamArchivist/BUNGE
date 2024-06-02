@@ -33,4 +33,14 @@ public class ReadStateServiceImpl implements ReadStateService {
         return readStateMapper.getAllReadState(loginId);
     }
 
+    @Override
+    public int countRemainPage(ReadState readState) {
+
+        int totalpage = readStateMapper.countTotalPage(readState);
+        int readpage = readStateMapper.countReadPage(readState);
+        int remainpage = totalpage - readpage;
+
+        return remainpage;
+    }
+
 }
