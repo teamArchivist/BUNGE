@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.security.Principal;
 
 @Controller
@@ -50,12 +48,10 @@ public class MemberController {
                         HttpSession session,
                         Principal userPrincipal)  {
         if (readCookie != null) {
-            String message = "로그인에 성공하셨습니다.";
-            mav.addObject("message" , message);
-            mav.setViewName("redirect:/member/index");
+            mav.addObject("message" , "로그인에 성공하셨습니다.");
+            mav.addObject("url","/member/index");
         } else {
-            String message = "아이디나 비밀번호가 틀렸습니다.";
-            mav.addObject("message" , message);
+            mav.addObject("message" ,"아이디나 비밀번호가 틀렸습니다.");
             mav.setViewName("/member/login");
 
             mav.addObject("loginfail", session.getAttribute("loginfail"));
@@ -158,42 +154,28 @@ public class MemberController {
         }
     }
     //비밀번호 재설정
+    @PreAuthorize("isAnonymous()")
     @PostMapping(value = "/pwdsetProcess")
     public String pwdset(Member member,Model model, HttpServletRequest request, HttpSession session) {
 
         String findid = (String) session.getAttribute("findid");
         //비밀번호 암호화 추가
         String encPassword = passwordEncoder.encode(member.getPwd());
-      
+
         member.setPwd(encPassword);
         member.setId(findid);
 
         boolean result = memberservice.pwdset(member);
 
         if(result) {
-            String message ="비밀번호가 정상적으로 변경되었습니다.";
-            model.addAttribute("message" , message);
-            return "redirect:/member/login";
+            model.addAttribute("message" ,"비밀번호가 정상적으로 변경되었습니다.");
+            model.addAttribute("url","redirect:/member/login");
+            return model.toString();
+
         } else {
-            String message ="비밀번호 변경에 실패하였습니다.";
-            model.addAttribute("message" ,message);
-            return "/member/pwdset";
+            model.addAttribute("message","비밀번호 변경에 실패하였습니다.");
+            model.addAttribute("url" , "/member/pwdset");
+            return model.toString();
         }
-    }
-    //회원정보 수정
-    @GetMapping(value = "/update")
-    public ModelAndView index(ModelAndView mav , Principal principal){
-
-        String id = principal.getName();
-
-        if(id == null) {
-            mav.setViewName("redirect:login");
-            logger.info("id is null");
-        }else {
-            Member m = memberservice.memberinfo(id);
-            mav.setViewName("member/update");
-            mav.addObject("memberinfo", m);
-        }
-        return mav;
     }
 }

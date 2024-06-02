@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}"
+      xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>마이페이지</title>
+    <links>
+        <!--/* link, script 태그 영역 */-->
+    </links>
+</head>
+<body>
+<th:block sec:authorize="isAnonymous()">
+<section id="content" class="content">
+        <div class="content__header content__boxed rounded-0">
+            <div class="content__wrap d-md-flex align-items-start hv-outline-parent hv-outline-inherit">
+
+
+                <figure class="m-0">
+                    <div class="d-inline-flex align-items-center position-relative pt-xl-3 mb-3">
+                        <div class="flex-shrink-0">
+                            <img class="hv-oc img-xl rounded-circle border" sec:authentication="principal.profile" alt="profile" loading="lazy">
+                        </div>
+                        <div class="flex-grow-1 ms-4">
+                            <a href="#" class="h3 btn-link text-body-emphasis" sec:authentication="principal.id"></a>
+                            <p class="m-0" sec:authentication="principal.role"></p>
+
+                            <!-- Social network button -->
+
+                        </div>
+                    </div>
+
+                    <div class="pb-4">
+                        <blockquote class="blockquote text-reset">
+                            <p>간단한 메세지</p>
+                        </blockquote>
+                    </div>
+
+                </figure>
+                <div class="d-inline-flex justify-content-end pt-xl-5 gap-2 ms-auto">
+                    <form th:action="@{/mypage/myinfo}" method="post" style="margin-bottom:0px" name="myinfo">
+                        <button class="btn btn-light text-nowrap">프로필 편집</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="content__boxed mt-4">
+            <div class="content__wrap">
+                <div class="d-md-flex gap-4">
+
+                    <!-- Sidebar -->
+                    <div class="w-md-200px flex-shrink-0">
+
+                        <div class="text-primary">
+                            <h5 class="text-primary-emphasis">내 정보</h5>
+                            <ul class="list-unstyled mb-3">
+                                <li class="mb-2"><i class="demo-psi-map-marker-2 fs-5 me-3" sec:authentication="principal.addr1"></i></li>
+                                <li class="mb-2"><i class="demo-psi-old-telephone fs-5 me-3" sec:authentication="principal.phone"></i></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- END : Sidebar -->
+
+
+                    <div class="vr d-none"></div>
+
+                    <!-- Content -->
+                    <div class="flex-fill">
+                        <div class="card-body">
+                            <!-- Tabs with base -->
+                            <div class="tab-base">
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#_dm-tabs-review" type="button" role="tab" aria-controls="review" aria-selected="true">내리뷰게시물</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#_dm-tabs-like-review" type="button" role="tab" aria-controls="like-review" aria-selected="false">좋아요리뷰게시물</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#_dm-tabs-trade" type="button" role="tab" aria-controls="trade" aria-selected="false">중고개게시물</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#_dm-tabs-inquiry" type="button" role="tab" aria-controls="inquiry" aria-selected="false">문의글</button>
+                                    </li>
+                                </ul>
+                                <!-- Tabs content -->
+                                <div class="tab-content">
+                                    <div id="_dm-tabs-review" class="tab-pane fade show active" role="tabpanel" aria-labelledby="review-tab">
+                                        <div class="d-flex mb-4">
+                                            <div class="flex-shrink-0">
+                                                <img class="img-sm rounded-circle" src="./assets/img/-photos/2.png" alt="북커버이미지" loading="lazy">
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <div class="mb-1">
+                                                    <a href="#" class="h6 btn-link">(리뷰게시물번호)리뷰제목</a>
+                                                </div>
+                                                <small class="d-block text-body-secondary mb-2">등록일</small>
+                                                <p>리뷰내용</p>
+                                                    <div class="d-flex gap-4 mb-4">
+                                                        <i class="text-body-secondary demo-pli-heart-2 fs-5 me-2"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">좋아요수
+                                                    </font></font>
+                                                        <i class="text-body-secondary demo-pli-speech-bubble-4 fs-5 me-2"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">댓글수
+                                                    </font></font>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex mb-4">
+                                            <div class="flex-shrink-0">
+                                                <img class="img-sm rounded-circle" src="./assets/img/-photos/2.png" alt="북커버이미지" loading="lazy">
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <div class="mb-1">
+                                                    <a href="#" class="h6 btn-link">(리뷰게시물번호)리뷰제목</a>
+                                                </div>
+                                                <small class="d-block text-body-secondary mb-2">등록일</small>
+                                                <p>리뷰내용</p>
+                                                <div class="d-flex gap-4 mb-4">
+                                                    <i class="text-body-secondary demo-pli-heart-2 fs-5 me-2"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">좋아요수
+                                                </font></font>
+                                                    <i class="text-body-secondary demo-pli-speech-bubble-4 fs-5 me-2"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">댓글수
+                                                </font></font>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex mb-4">
+                                            <div class="flex-shrink-0">
+                                                <img class="img-sm rounded-circle" src="./assets/img/-photos/2.png" alt="북커버이미지" loading="lazy">
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <div class="mb-1">
+                                                    <a href="#" class="h6 btn-link">(리뷰게시물번호)리뷰제목</a>
+                                                </div>
+                                                <small class="d-block text-body-secondary mb-2">등록일</small>
+                                                <p>리뷰내용</p>
+                                                <div class="d-flex gap-4 mb-4">
+                                                    <i class="text-body-secondary demo-pli-heart-2 fs-5 me-2"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">좋아요수
+                                                </font></font>
+                                                    <i class="text-body-secondary demo-pli-speech-bubble-4 fs-5 me-2"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">댓글수
+                                                </font></font>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex mb-4">
+                                            <div class="flex-shrink-0">
+                                                <img class="img-sm rounded-circle" src="./assets/img/-photos/2.png" alt="북커버이미지" loading="lazy">
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <div class="mb-1">
+                                                    <a href="#" class="h6 btn-link">(리뷰게시물번호)리뷰제목</a>
+                                                </div>
+                                                <small class="d-block text-body-secondary mb-2">등록일</small>
+                                                <p>리뷰내용</p>
+                                                <div class="d-flex gap-4 mb-4">
+                                                    <i class="text-body-secondary demo-pli-heart-2 fs-5 me-2"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">좋아요수
+                                                </font></font>
+                                                    <i class="text-body-secondary demo-pli-speech-bubble-4 fs-5 me-2"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">댓글수
+                                                </font></font>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex mb-4">
+                                            <div class="flex-shrink-0">
+                                                <img class="img-sm rounded-circle" src="./assets/img/-photos/2.png" alt="북커버이미지" loading="lazy">
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <div class="mb-1">
+                                                    <a href="#" class="h6 btn-link">(리뷰게시물번호)리뷰제목</a>
+                                                </div>
+                                                <small class="d-block text-body-secondary mb-2">등록일</small>
+                                                <p>리뷰내용</p>
+                                                <div class="d-flex gap-4 mb-4">
+                                                    <i class="text-body-secondary demo-pli-heart-2 fs-5 me-2"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">좋아요수
+                                                </font></font>
+                                                    <i class="text-body-secondary demo-pli-speech-bubble-4 fs-5 me-2"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">댓글수
+                                                </font></font>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <ul class="pagination justify-content-center">
+                                            <li class="page-item disabled">
+                                                <a class="page-link"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">이전</font></font></a>
+                                            </li>
+                                            <li class="page-item active" aria-current="page">
+                                                <span class="page-link"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1</font></font></span>
+                                            </li>
+                                            <li class="page-item"><a class="page-link" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2</font></font></a></li>
+                                            <li class="page-item"><a class="page-link" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">3</font></font></a></li>
+                                            <li class="page-item"><a class="page-link" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">4</font></font></a></li>
+                                            <li class="page-item"><a class="page-link" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">5</font></font></a></li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">다음</font></font></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div id="_dm-tabs-like-review" class="tab-pane fade show active" role="tabpanel" aria-labelledby="review-tab">
+                                        <div class="d-flex mb-4">
+                                            <div class="flex-shrink-0">
+                                                <img class="img-sm rounded-circle" src="./assets/img/-photos/2.png" alt="북커버이미지" loading="lazy">
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <div class="mb-1">
+                                                    <a href="#" class="h6 btn-link">(좋아요한리뷰게시물번호)좋아요한리뷰제목</a>
+                                                </div>
+                                                <small class="d-block text-body-secondary mb-2">등록일</small>
+                                                <p>리뷰내용</p>
+                                                <div class="d-flex gap-4 mb-4">
+                                                    <i class="text-body-secondary demo-pli-heart-2 fs-5 me-2"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">좋아요수
+                                                </font></font>
+                                                    <i class="text-body-secondary demo-pli-speech-bubble-4 fs-5 me-2"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">댓글수
+                                                </font></font>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex mb-4">
+                                            <div class="flex-shrink-0">
+                                                <img class="img-sm rounded-circle" src="./assets/img/-photos/2.png" alt="북커버이미지" loading="lazy">
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <div class="mb-1">
+                                                    <a href="#" class="h6 btn-link">(리뷰게시물번호)리뷰제목</a>
+                                                </div>
+                                                <small class="d-block text-body-secondary mb-2">등록일</small>
+                                                <p>리뷰내용</p>
+                                                <div class="d-flex gap-4 mb-4">
+                                                    <i class="text-body-secondary demo-pli-heart-2 fs-5 me-2"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">좋아요수
+                                                </font></font>
+                                                    <i class="text-body-secondary demo-pli-speech-bubble-4 fs-5 me-2"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">댓글수
+                                                </font></font>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex mb-4">
+                                            <div class="flex-shrink-0">
+                                                <img class="img-sm rounded-circle" src="./assets/img/-photos/2.png" alt="북커버이미지" loading="lazy">
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <div class="mb-1">
+                                                    <a href="#" class="h6 btn-link">(리뷰게시물번호)리뷰제목</a>
+                                                </div>
+                                                <small class="d-block text-body-secondary mb-2">등록일</small>
+                                                <p>리뷰내용</p>
+                                                <div class="d-flex gap-4 mb-4">
+                                                    <i class="text-body-secondary demo-pli-heart-2 fs-5 me-2"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">좋아요수
+                                                </font></font>
+                                                    <i class="text-body-secondary demo-pli-speech-bubble-4 fs-5 me-2"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">댓글수
+                                                </font></font>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex mb-4">
+                                            <div class="flex-shrink-0">
+                                                <img class="img-sm rounded-circle" src="./assets/img/-photos/2.png" alt="북커버이미지" loading="lazy">
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <div class="mb-1">
+                                                    <a href="#" class="h6 btn-link">(리뷰게시물번호)리뷰제목</a>
+                                                </div>
+                                                <small class="d-block text-body-secondary mb-2">등록일</small>
+                                                <p>리뷰내용</p>
+                                                <div class="d-flex gap-4 mb-4">
+                                                    <i class="text-body-secondary demo-pli-heart-2 fs-5 me-2"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">좋아요수
+                                                </font></font>
+                                                    <i class="text-body-secondary demo-pli-speech-bubble-4 fs-5 me-2"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">댓글수
+                                                </font></font>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex mb-4">
+                                            <div class="flex-shrink-0">
+                                                <img class="img-sm rounded-circle" src="./assets/img/-photos/2.png" alt="북커버이미지" loading="lazy">
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <div class="mb-1">
+                                                    <a href="#" class="h6 btn-link">(리뷰게시물번호)리뷰제목</a>
+                                                </div>
+                                                <small class="d-block text-body-secondary mb-2">등록일</small>
+                                                <p>리뷰내용</p>
+                                                <div class="d-flex gap-4 mb-4">
+                                                    <i class="text-body-secondary demo-pli-heart-2 fs-5 me-2"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">좋아요수
+                                                </font></font>
+                                                    <i class="text-body-secondary demo-pli-speech-bubble-4 fs-5 me-2"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">댓글수
+                                                </font></font>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <ul class="pagination justify-content-center">
+                                            <li class="page-item disabled">
+                                                <a class="page-link"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">이전</font></font></a>
+                                            </li>
+                                            <li class="page-item active" aria-current="page">
+                                                <span class="page-link"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1</font></font></span>
+                                            </li>
+                                            <li class="page-item"><a class="page-link" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2</font></font></a></li>
+                                            <li class="page-item"><a class="page-link" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">3</font></font></a></li>
+                                            <li class="page-item"><a class="page-link" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">4</font></font></a></li>
+                                            <li class="page-item"><a class="page-link" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">5</font></font></a></li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">다음</font></font></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div id="_dm-tabs-trade" class="tab-pane fade" role="tabpanel" aria-labelledby="trade-tab">
+                                        <div class="d-flex mb-4">
+                                            <div class="flex-shrink-0">
+                                                <img class="img-sm rounded-circle" src="./assets/img/-photos/10.png" alt="북커버이미지" loading="lazy">
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <div class="mb-1">
+                                                    <a href="#" class="h6 btn-link">(중고거래게시물번호)거래제목</a>
+                                                </div>
+                                                <small class="d-block text-body-secondary mb-2">등록일</small>
+
+                                                <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">거래내용</font></font></p>
+                                                <div class="row g-1">
+                                                    <div class="col-6">
+                                                        <img class="img-fluid rounded" src="./assets/img/sample-img/img-3.jpg" alt="거래게시물 이미지" loading="lazy">
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="row g-1 mb-3">
+                                                            <div class="col-6">
+                                                                <img class="img-fluid rounded" src="./assets/img/sample-img/img-5.jpg" alt="책이미지1" loading="lazy">
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <img class="img-fluid rounded" src="./assets/img/sample-img/img-1.jpg" alt="책이미지2" loading="lazy">
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <img class="img-fluid rounded" src="./assets/img/sample-img/img-2.jpg" alt="책이미지3" loading="lazy">
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <img class="img-fluid rounded" src="./assets/img/sample-img/img-4.jpg" alt="책이미지4" loading="lazy">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="d-flex gap-4 mb-4">
+                                                        <i class="text-body-secondary demo-pli-heart-2 fs-5 me-2"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">좋아요수
+                                                    </font></font>
+                                                        <i class="text-body-secondary demo-pli-speech-bubble-4 fs-5 me-2"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">댓글수
+                                                    </font></font>
+                                                </div>
+                                                <!-- Reply / Comment Content -->
+                                            </div>
+                                        </div>
+                                        <div class="d-flex mb-4">
+                                            <div class="flex-shrink-0">
+                                                <img class="img-sm rounded-circle" src="./assets/img/-photos/10.png" alt="북커버이미지" loading="lazy">
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <div class="mb-1">
+                                                    <a href="#" class="h6 btn-link">(중고거래게시물번호)거래제목</a>
+                                                </div>
+                                                <small class="d-block text-body-secondary mb-2">등록일</small>
+
+                                                <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">거래내용</font></font></p>
+                                                <div class="row g-1">
+                                                    <div class="col-6">
+                                                        <img class="img-fluid rounded" src="./assets/img/sample-img/img-3.jpg" alt="거래게시물 이미지" loading="lazy">
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="row g-1 mb-3">
+                                                            <div class="col-6">
+                                                                <img class="img-fluid rounded" src="./assets/img/sample-img/img-5.jpg" alt="책이미지1" loading="lazy">
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <img class="img-fluid rounded" src="./assets/img/sample-img/img-1.jpg" alt="책이미지2" loading="lazy">
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <img class="img-fluid rounded" src="./assets/img/sample-img/img-2.jpg" alt="책이미지3" loading="lazy">
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <img class="img-fluid rounded" src="./assets/img/sample-img/img-4.jpg" alt="책이미지4" loading="lazy">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="d-flex gap-4 mb-4">
+                                                    <i class="text-body-secondary demo-pli-heart-2 fs-5 me-2"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">좋아요수
+                                                </font></font>
+                                                    <i class="text-body-secondary demo-pli-speech-bubble-4 fs-5 me-2"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">댓글수
+                                                </font></font>
+                                                </div>
+                                                <!-- Reply / Comment Content -->
+                                            </div>
+                                        </div>
+                                        <div class="d-flex mb-4">
+                                            <div class="flex-shrink-0">
+                                                <img class="img-sm rounded-circle" src="./assets/img/-photos/10.png" alt="북커버이미지" loading="lazy">
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <div class="mb-1">
+                                                    <a href="#" class="h6 btn-link">(중고거래게시물번호)거래제목</a>
+                                                </div>
+                                                <small class="d-block text-body-secondary mb-2">등록일</small>
+
+                                                <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">거래내용</font></font></p>
+                                                <div class="row g-1">
+                                                    <div class="col-6">
+                                                        <img class="img-fluid rounded" src="./assets/img/sample-img/img-3.jpg" alt="거래게시물 이미지" loading="lazy">
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="row g-1 mb-3">
+                                                            <div class="col-6">
+                                                                <img class="img-fluid rounded" src="./assets/img/sample-img/img-5.jpg" alt="책이미지1" loading="lazy">
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <img class="img-fluid rounded" src="./assets/img/sample-img/img-1.jpg" alt="책이미지2" loading="lazy">
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <img class="img-fluid rounded" src="./assets/img/sample-img/img-2.jpg" alt="책이미지3" loading="lazy">
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <img class="img-fluid rounded" src="./assets/img/sample-img/img-4.jpg" alt="책이미지4" loading="lazy">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="d-flex gap-4 mb-4">
+                                                    <i class="text-body-secondary demo-pli-heart-2 fs-5 me-2"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">좋아요수
+                                                </font></font>
+                                                    <i class="text-body-secondary demo-pli-speech-bubble-4 fs-5 me-2"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">댓글수
+                                                </font></font>
+                                                </div>
+                                                <!-- Reply / Comment Content -->
+                                            </div>
+                                        </div>
+                                        <div class="d-flex mb-4">
+                                            <div class="flex-shrink-0">
+                                                <img class="img-sm rounded-circle" src="./assets/img/-photos/10.png" alt="북커버이미지" loading="lazy">
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <div class="mb-1">
+                                                    <a href="#" class="h6 btn-link">(중고거래게시물번호)거래제목</a>
+                                                </div>
+                                                <small class="d-block text-body-secondary mb-2">등록일</small>
+
+                                                <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">거래내용</font></font></p>
+                                                <div class="row g-1">
+                                                    <div class="col-6">
+                                                        <img class="img-fluid rounded" src="./assets/img/sample-img/img-3.jpg" alt="거래게시물 이미지" loading="lazy">
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="row g-1 mb-3">
+                                                            <div class="col-6">
+                                                                <img class="img-fluid rounded" src="./assets/img/sample-img/img-5.jpg" alt="책이미지1" loading="lazy">
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <img class="img-fluid rounded" src="./assets/img/sample-img/img-1.jpg" alt="책이미지2" loading="lazy">
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <img class="img-fluid rounded" src="./assets/img/sample-img/img-2.jpg" alt="책이미지3" loading="lazy">
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <img class="img-fluid rounded" src="./assets/img/sample-img/img-4.jpg" alt="책이미지4" loading="lazy">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="d-flex gap-4 mb-4">
+                                                    <i class="text-body-secondary demo-pli-heart-2 fs-5 me-2"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">좋아요수
+                                                </font></font>
+                                                    <i class="text-body-secondary demo-pli-speech-bubble-4 fs-5 me-2"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">댓글수
+                                                </font></font>
+                                                </div>
+                                                <!-- Reply / Comment Content -->
+                                            </div>
+                                        </div>
+                                        <div class="d-flex mb-4">
+                                            <div class="flex-shrink-0">
+                                                <img class="img-sm rounded-circle" src="./assets/img/-photos/10.png" alt="북커버이미지" loading="lazy">
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <div class="mb-1">
+                                                    <a href="#" class="h6 btn-link">(중고거래게시물번호)거래제목</a>
+                                                </div>
+                                                <small class="d-block text-body-secondary mb-2">등록일</small>
+
+                                                <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">거래내용</font></font></p>
+                                                <div class="row g-1">
+                                                    <div class="col-6">
+                                                        <img class="img-fluid rounded" src="./assets/img/sample-img/img-3.jpg" alt="거래게시물 이미지" loading="lazy">
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="row g-1 mb-3">
+                                                            <div class="col-6">
+                                                                <img class="img-fluid rounded" src="./assets/img/sample-img/img-5.jpg" alt="책이미지1" loading="lazy">
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <img class="img-fluid rounded" src="./assets/img/sample-img/img-1.jpg" alt="책이미지2" loading="lazy">
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <img class="img-fluid rounded" src="./assets/img/sample-img/img-2.jpg" alt="책이미지3" loading="lazy">
+                                                            </div>
+                                                            <div class="col-6">
+                                                                <img class="img-fluid rounded" src="./assets/img/sample-img/img-4.jpg" alt="책이미지4" loading="lazy">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="d-flex gap-4 mb-4">
+                                                    <i class="text-body-secondary demo-pli-heart-2 fs-5 me-2"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">좋아요수
+                                                </font></font>
+                                                    <i class="text-body-secondary demo-pli-speech-bubble-4 fs-5 me-2"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">댓글수
+                                                </font></font>
+                                                </div>
+                                                <!-- Reply / Comment Content -->
+                                            </div>
+                                        </div>
+                                        <ul class="pagination justify-content-center">
+                                            <li class="page-item disabled">
+                                                <a class="page-link"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">이전</font></font></a>
+                                            </li>
+                                            <li class="page-item active" aria-current="page">
+                                                <span class="page-link"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1</font></font></span>
+                                            </li>
+                                            <li class="page-item"><a class="page-link" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2</font></font></a></li>
+                                            <li class="page-item"><a class="page-link" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">3</font></font></a></li>
+                                            <li class="page-item"><a class="page-link" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">4</font></font></a></li>
+                                            <li class="page-item"><a class="page-link" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">5</font></font></a></li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">다음</font></font></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div id="_dm-tabs-inquiry" class="tab-pane fade" role="tabpanel" aria-labelledby="contact-tab">
+                                        <div class="d-flex mb-4">
+                                            <div class="flex-shrink-0">
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <div class="mb-1">
+                                                    <a href="#" class="h6 btn-link">(문의번호)문의제목</a>
+                                                </div>
+                                                <div class="d-flex align-items-center position-relative">
+                                                    <div class="flex-shrink-0">
+                                                        <img src="/img/inquiry/private.png" style="width: 16px; height: 16px;">
+                                                    </div>
+                                                    <div class="flex-grow-1 ms-2">
+                                                        <a href="#" class="stretched-link text-reset btn-link"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">비공개</font></font></a>
+                                                    </div>
+                                                </div>
+                                                <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">문의내용</font></font></p>
+                                                <div class="d-flex gap-4 mb-4">
+                                                    <i class="text-body-secondary demo-pli-speech-bubble-4 fs-5 me-2"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">댓글수
+                                                </font></font>
+                                                </div>
+                                                <!-- Reply / Comment Content -->
+                                            </div>
+                                        </div>
+                                        <div class="d-flex mb-4">
+                                            <div class="flex-shrink-0">
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <div class="mb-1">
+                                                    <a href="#" class="h6 btn-link">(문의번호)문의제목</a>
+                                                </div>
+                                                <div class="d-flex align-items-center position-relative">
+                                                    <div class="flex-shrink-0">
+                                                        <img src="/img/inquiry/private.png" style="width: 16px; height: 16px;">
+                                                    </div>
+                                                    <div class="flex-grow-1 ms-2">
+                                                        <a href="#" class="stretched-link text-reset btn-link"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">비공개</font></font></a>
+                                                    </div>
+                                                </div>
+                                                <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">문의내용</font></font></p>
+                                                <div class="d-flex gap-4 mb-4">
+                                                    <i class="text-body-secondary demo-pli-speech-bubble-4 fs-5 me-2"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">댓글수
+                                                </font></font>
+                                                </div>
+                                                <!-- Reply / Comment Content -->
+                                            </div>
+                                        </div>
+                                        <div class="d-flex mb-4">
+                                            <div class="flex-shrink-0">
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <div class="mb-1">
+                                                    <a href="#" class="h6 btn-link">(문의번호)문의제목</a>
+                                                </div>
+                                                <div class="d-flex align-items-center position-relative">
+                                                    <div class="flex-shrink-0">
+                                                        <img src="/img/inquiry/private.png" style="width: 16px; height: 16px;">
+                                                    </div>
+                                                    <div class="flex-grow-1 ms-2">
+                                                        <a href="#" class="stretched-link text-reset btn-link"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">비공개</font></font></a>
+                                                    </div>
+                                                </div>
+                                                <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">문의내용</font></font></p>
+                                                <div class="d-flex gap-4 mb-4">
+                                                    <i class="text-body-secondary demo-pli-speech-bubble-4 fs-5 me-2"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">댓글수
+                                                </font></font>
+                                                </div>
+                                                <!-- Reply / Comment Content -->
+                                            </div>
+                                        </div>
+                                        <div class="d-flex mb-4">
+                                            <div class="flex-shrink-0">
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <div class="mb-1">
+                                                    <a href="#" class="h6 btn-link">(문의번호)문의제목</a>
+                                                </div>
+                                                <div class="d-flex align-items-center position-relative">
+                                                    <div class="flex-shrink-0">
+                                                        <img src="/img/inquiry/private.png" style="width: 16px; height: 16px;">
+                                                    </div>
+                                                    <div class="flex-grow-1 ms-2">
+                                                        <a href="#" class="stretched-link text-reset btn-link"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">비공개</font></font></a>
+                                                    </div>
+                                                </div>
+                                                <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">문의내용</font></font></p>
+                                                <div class="d-flex gap-4 mb-4">
+                                                    <i class="text-body-secondary demo-pli-speech-bubble-4 fs-5 me-2"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">댓글수
+                                                </font></font>
+                                                </div>
+                                                <!-- Reply / Comment Content -->
+                                            </div>
+                                        </div>
+                                        <div class="d-flex mb-4">
+                                            <div class="flex-shrink-0">
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <div class="mb-1">
+                                                    <a href="#" class="h6 btn-link">(문의번호)문의제목</a>
+                                                </div>
+                                                <div class="d-flex align-items-center position-relative">
+                                                    <div class="flex-shrink-0">
+                                                        <img src="/img/inquiry/private.png" style="width: 16px; height: 16px;">
+                                                    </div>
+                                                    <div class="flex-grow-1 ms-2">
+                                                        <a href="#" class="stretched-link text-reset btn-link"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">비공개</font></font></a>
+                                                    </div>
+                                                </div>
+                                                <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">문의내용</font></font></p>
+                                                <div class="d-flex gap-4 mb-4">
+                                                    <i class="text-body-secondary demo-pli-speech-bubble-4 fs-5 me-2"></i><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">댓글수
+                                                </font></font>
+                                                </div>
+                                                <!-- Reply / Comment Content -->
+                                            </div>
+                                        </div>
+                                        <ul class="pagination justify-content-center">
+                                            <li class="page-item disabled">
+                                                <a class="page-link"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">이전</font></font></a>
+                                            </li>
+                                            <li class="page-item active" aria-current="page">
+                                                <span class="page-link"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1</font></font></span>
+                                            </li>
+                                            <li class="page-item"><a class="page-link" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2</font></font></a></li>
+                                            <li class="page-item"><a class="page-link" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">3</font></font></a></li>
+                                            <li class="page-item"><a class="page-link" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">4</font></font></a></li>
+                                            <li class="page-item"><a class="page-link" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">5</font></font></a></li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">다음</font></font></a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END : Tabs with base -->
+                        </div>
+                    </div>
+                    <!-- END : Content -->
+
+                </div>
+
+            </div>
+        </div>
+</section>
+</th:block>
+</body>
+</html>
