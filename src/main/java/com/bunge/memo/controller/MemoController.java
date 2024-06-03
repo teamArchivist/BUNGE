@@ -240,7 +240,7 @@ public class MemoController {
     }
 
     @ResponseBody
-    @PostMapping("/countremainpage")
+    @PostMapping("/count-remain-page")
     public int countRemainPage(@RequestBody ReadState readState) {
 
         //logger.info(readState.toString());
