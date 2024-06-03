@@ -271,4 +271,12 @@ public class MemoController {
         return "redirect:mine";
     }
 
+    @ResponseBody
+    @PostMapping("/delete-memo")
+    public int deleteMemo(@RequestBody Memo memo) {
+        //logger.info(memo.toString());
+
+        return memoService.deleteMemo(memo);
+    }
+
 }

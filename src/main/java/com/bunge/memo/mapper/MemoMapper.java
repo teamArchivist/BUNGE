@@ -21,4 +21,10 @@ public interface MemoMapper {
     //메모 수정
     public void updateMemo(Memo memo);
 
+    //메모 삭제
+    public int deleteMemo(Memo memo);
+
+    //읽은 페이지 업데이트 (메모 삭제하면서 같이 진행)
+    public void updateReadPageByDelete(Memo memo);
+
 }
