@@ -38,5 +38,11 @@
         and id = #{id}
     </select>
 
+    <update id="updateReadState">
+        update readstate
+        set state = '완독'
+        where totalpage = readpage
+    </update>
+
 
 </mapper>

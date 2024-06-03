@@ -33,7 +33,7 @@ $(function() {
         };
 
         $.ajax({
-            url: "countremainpage",
+            url: "count-remain-page",
             method: "POST",
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(checkRemainData),
@@ -55,4 +55,11 @@ $(function() {
             }
         }) //ajax end
     }) //$("body").on(click) end ...
+
+    $("body").on("keyup", "#_dm-inputPages", function() {
+        if (parseInt($("#modalremainpage").text()) - parseInt($("#_dm-inputPages").val()) < 0) {
+            alert("남아 있는 페이지보다 클 수 없습니다.");
+            $("#_dm-inputPages").val("");
+        }
+    })
 }) //ready end
