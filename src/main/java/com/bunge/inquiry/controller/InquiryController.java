@@ -16,9 +16,8 @@ import java.util.List;
 @Controller
 @RequestMapping( "/inquiry")
 public class InquiryController {
-    @Autowired
-    private InquiryService inquiryService;
 
+    private InquiryService inquiryService;
 
 
     private static final Logger logger = LoggerFactory.getLogger(InquiryController.class);
