@@ -14,5 +14,8 @@ public interface MemoService {
     //메모 목록
     public List<Memo> getMyMemoList(String loginId);
 
+    //메모 수정
+    public void updateMemo(Memo memo);
+
 
 }

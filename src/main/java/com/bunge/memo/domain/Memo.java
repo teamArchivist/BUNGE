@@ -9,7 +9,6 @@ public class Memo {
     private String isbn13;
     private String cover;
     private String title;
-    private String keyword;
     private String content;
     private String created;
     private String lastmodified;
@@ -78,14 +77,6 @@ public class Memo {
         this.title = title;
     }
 
-    public String getKeyword() {
-        return keyword;
-    }
-
-    public void setKeyword(String keyword) {
-        this.keyword = keyword;
-    }
-
     public String getContent() {
         return content;
     }
@@ -121,7 +112,6 @@ public class Memo {
                 ", isbn13='" + isbn13 + '\'' +
                 ", cover='" + cover + '\'' +
                 ", title='" + title + '\'' +
-                ", keyword='" + keyword + '\'' +
                 ", content='" + content + '\'' +
                 ", created='" + created + '\'' +
                 ", lastmodified='" + lastmodified + '\'' +
