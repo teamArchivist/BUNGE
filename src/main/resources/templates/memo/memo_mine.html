@@ -152,23 +152,8 @@
                             <div class="tab-content" style="background-color:var(--bs-primary)">
                                 <div id="_dm-tabsComplete" class="tab-pane fade active show" role="tabpanel" aria-labelledby="complete-tab">
                                     <div class="row text-center mb-4">
-                                        <div class="col-md-2">
-                                            <img th:src="@{/img/sample-img/bookcover6.jpg}" width="150px" height="200px">
-                                        </div>
-                                        <div class="col-md-2">
-                                            <img th:src="@{/img/sample-img/bookcover6.jpg}" width="150px" height="200px">
-                                        </div>
-                                        <div class="col-md-2">
-                                            <img th:src="@{/img/sample-img/bookcover6.jpg}" width="150px" height="200px">
-                                        </div>
-                                        <div class="col-md-2">
-                                            <img th:src="@{/img/sample-img/bookcover6.jpg}" width="150px" height="200px">
-                                        </div>
-                                        <div class="col-md-2">
-                                            <img th:src="@{/img/sample-img/bookcover6.jpg}" width="150px" height="200px">
-                                        </div>
-                                        <div class="col-md-2">
-                                            <img th:src="@{/img/sample-img/bookcover6.jpg}" width="150px" height="200px">
+                                        <div th:each="myComplete:${myCompleteList}" class="col-md-2 mb-2">
+                                            <img th:src="${myComplete.cover}" width="150px" height="200px">
                                         </div>
                                     </div>
                                 </div>

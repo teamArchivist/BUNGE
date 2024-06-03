@@ -21,4 +21,7 @@ public interface ReadStateMapper {
 
     public int countReadPage(ReadState readState);
 
+    //독서상태 업데이트
+    public void updateReadState(ReadState readState);
+
 }

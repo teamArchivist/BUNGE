@@ -43,4 +43,9 @@ public class ReadStateServiceImpl implements ReadStateService {
         return remainpage;
     }
 
+    @Override
+    public void updateReadState(ReadState readState) {
+        readStateMapper.updateReadState(readState);
+    }
+
 }

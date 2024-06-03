@@ -42,53 +42,6 @@ public class MemoController {
         this.readStateService = readStateService;
     }
 
-    @GetMapping("/mine")
-    public ModelAndView memoMain(ModelAndView mv) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String loginId = authentication.getName();
-        //logger.info("loginId : " + loginId);
-
-        List<ReadState> readStates = readStateService.getAllReadState(loginId);
-        //logger.info("readStates : " + readStates.toString());
-
-        List<Book> myGoalList = new ArrayList<>();
-        List<Book> myChallengeList = new ArrayList<>();
-
-        for (ReadState readState : readStates) {
-            if (readState.getState().equals("목표")) {
-                myGoalList.add(bookService.getMyBookByState(readState));
-            } else if (readState.getState().equals("도전")) {
-                myChallengeList.add(bookService.getMyBookByState(readState));
-            }
-        }
-
-        //logger.info("myGoalList : " + myGoalList.toString());
-        //logger.info(String.valueOf(myGoalList.size()));
-        //logger.info("myChallengeList : " + myChallengeList.toString());
-        //logger.info(String.valueOf(myChallengeList.size()));
-
-        List<Memo> myMemoList = memoService.getMyMemoList(loginId);
-        logger.info("myMemoList: " + myMemoList.toString());
-
-        mv.addObject("myGoalList", myGoalList);
-        mv.addObject("myChallengeList", myChallengeList);
-        mv.addObject("myMemoList", myMemoList);
-
-        mv.setViewName("memo/memo_mine");
-
-        return mv;
-    }
-
-    @PostMapping("/addmemo")
-    public String addMemo(Memo memo) {
-
-        //logger.info(memo.toString());
-        memoService.addMemo(memo);
-
-
-        return "redirect:mine";
-    }
-
     @ResponseBody
     @PostMapping("/addbook")
     public ResponseEntity<String> addBook(@RequestBody Book book) {
@@ -239,6 +192,65 @@ public class MemoController {
         }
     }
 
+    @GetMapping("/mine")
+    public ModelAndView memoMain(ModelAndView mv) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loginId = authentication.getName();
+        //logger.info("loginId : " + loginId);
+
+
+        List<ReadState> readStates = readStateService.getAllReadState(loginId);
+        //logger.info("readStates : " + readStates.toString());
+
+        List<Book> myGoalList = new ArrayList<>();
+        List<Book> myChallengeList = new ArrayList<>();
+        List<Book> myCompleteList = new ArrayList<>();
+
+        for (ReadState readState : readStates) {
+            if (readState.getState().equals("목표")) {
+                if(readState.getTotalpage() == readState.getReadpage()) {
+                    readStateService.updateReadState(readState);
+                } else {
+                    myGoalList.add(bookService.getMyBookByState(readState));
+                }
+            } else if (readState.getState().equals("도전")) {
+                myChallengeList.add(bookService.getMyBookByState(readState));
+            } else if (readState.getState().equals("완독")) {
+                myCompleteList.add(bookService.getMyBookByState(readState));
+            }
+        }
+
+        //logger.info("myGoalList : " + myGoalList.toString());
+        //logger.info(String.valueOf(myGoalList.size()));
+        //logger.info("myChallengeList : " + myChallengeList.toString());
+        //logger.info(String.valueOf(myChallengeList.size()));
+        logger.info("myCompleteList : " + myCompleteList);
+        logger.info(String.valueOf(myCompleteList.size()));
+
+        List<Memo> myMemoList = memoService.getMyMemoList(loginId);
+        //logger.info("myMemoList: " + myMemoList.toString());
+
+        mv.addObject("myGoalList", myGoalList);
+        mv.addObject("myChallengeList", myChallengeList);
+        mv.addObject("myCompleteList", myCompleteList);
+        mv.addObject("myMemoList", myMemoList);
+
+        mv.setViewName("memo/memo_mine");
+
+        return mv;
+    }
+
+    @PostMapping("/addmemo")
+    public String addMemo(Memo memo) {
+
+        //logger.info(memo.toString());
+        memoService.addMemo(memo);
+
+
+        return "redirect:mine";
+    }
+
+
     @ResponseBody
     @PostMapping("/count-remain-page")
     public int countRemainPage(@RequestBody ReadState readState) {
@@ -247,7 +259,6 @@ public class MemoController {
 
         int countRemainPage = readStateService.countRemainPage(readState);
         return countRemainPage;
-
     }
 
 }
