@@ -38,6 +38,16 @@
         where no = #{no}
     </update>
 
+    <delete id="deleteMemo">
+        delete from memo
+        where no = #{no}
+    </delete>
 
+    <update id="updateReadPageByDelete">
+        update readstate
+        set readpage = readpage - #{readpage}
+        where isbn13 = #{isbn13}
+        and id = #{id}
+    </update>
 
 </mapper>

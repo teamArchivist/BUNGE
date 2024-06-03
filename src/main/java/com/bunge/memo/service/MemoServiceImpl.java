@@ -36,5 +36,13 @@ public class MemoServiceImpl implements MemoService {
         memoMapper.updateMemo(memo);
     }
 
+    @Override
+    @Transactional
+    public int deleteMemo(Memo memo) {
+        memoMapper.updateReadPageByDelete(memo);
+        int result = memoMapper.deleteMemo(memo);
+        return result;
+    }
+
 
 }

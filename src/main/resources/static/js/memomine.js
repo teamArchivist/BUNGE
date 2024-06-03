@@ -28,7 +28,47 @@ $(function() {
         $("#thiscontent").text(thiscontent)
         $("#thisisbn13").attr("value", thisisbn13)
         $("#thisno").attr("value", thisno)
+    })
 
+    $("body").on("click", ".deleteMemo", function() {
+        let deleteno = $(this).data("thisno")
+        let deleteisbn13 = $(this).data("thisisbn13")
+        let deletereadpage = $(this).data("thisreadpage")
+
+        let answer = confirm("정말 삭제하시겠습니까?");
+
+        if (confirm) {
+           let deleteMemoData = {
+               no : deleteno,
+               isbn13 : deleteisbn13,
+               id : loginId,
+               readpage : deletereadpage
+           }
+
+           $.ajax({
+               url: "delete-memo",
+               method: "post",
+               contentType: "application/json; charset=utf-8",
+               data: JSON.stringify(deleteMemoData),
+               cache: false,
+               beforeSend : function (xhr) {
+                   if (header && token) {
+                       xhr.setRequestHeader(header, token);
+                   }
+               },
+               success: function (rdata) {
+                   //console.log(this.data)
+                   //console.log(rdata)
+
+                   if (rdata == 1) {
+                       alert("삭제 성공")
+                       location.href = "mine"
+                   } else {
+                       alert("삭제 실패")
+                   }
+               }
+           })
+       }
     })
 
     $("body").on("click", "#writeMemo", function() {

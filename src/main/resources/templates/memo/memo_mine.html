@@ -86,6 +86,13 @@
                                                   th:data-thiscreated="${myMemo.created}">
                                               <i class="demo-pli-pencil"></i>
                                           </button>
+                                          <button type="button" class="btn btn-icon btn-danger btn-xs rounded-circle deleteMemo"
+                                                  id="deleteMemo"
+                                                  th:data-thisno="${myMemo.no}"
+                                                  th:data-thisisbn13="${myMemo.isbn13}"
+                                                  th:data-thisreadpage="${myMemo.readpage}">
+                                              <i class="demo-pli-trash"></i>
+                                          </button>
                                       </div>
 
                                       <!-- Modal -->
