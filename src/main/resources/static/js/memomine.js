@@ -5,7 +5,33 @@ $(function() {
     let loginId = $("#loginId").text();
     //console.log(loginId);
 
-    $("body").on("click", "#memowrite", function() {
+    $("body").on("click", ".updateMemo", function() {
+        let thisno = $(this).data("thisno")
+        let thiscover = $(this).data("thiscover")
+        let thisreadpage = $(this).data("thisreadpage")
+        let thisispublic = $(this).data("thisispublic")
+        let thisisbn13 = $(this).data("thisisbn13")
+        let thistitle = $(this).data("thistitle")
+        let thiscontent = $(this).data("thiscontent")
+
+        $("#thismodalcover").attr("src", thiscover)
+        $("#thisreadpage").attr("value", thisreadpage)
+        $("#thisloginid").attr("value", loginId)
+
+        if (thisispublic == "Y") {
+            $("option[value='Y']").attr("selected", "true")
+        } else if (thisispublic == "N") {
+            $("option[value='N']").attr("selected", "true")
+        }
+
+        $("#thistitle").attr("value", thistitle)
+        $("#thiscontent").text(thiscontent)
+        $("#thisisbn13").attr("value", thisisbn13)
+        $("#thisno").attr("value", thisno)
+
+    })
+
+    $("body").on("click", "#writeMemo", function() {
         let cover = $(this).data("cover")
         let isbn13 = $(this).data("isbn13")
         let title = $(this).data("title")

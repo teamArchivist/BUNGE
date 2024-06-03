@@ -31,5 +31,10 @@ public class MemoServiceImpl implements MemoService {
         return memoMapper.getMyMemoList(loginId);
     }
 
+    @Override
+    public void updateMemo(Memo memo) {
+        memoMapper.updateMemo(memo);
+    }
+
 
 }

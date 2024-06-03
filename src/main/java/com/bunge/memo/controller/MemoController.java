@@ -224,8 +224,8 @@ public class MemoController {
         //logger.info(String.valueOf(myGoalList.size()));
         //logger.info("myChallengeList : " + myChallengeList.toString());
         //logger.info(String.valueOf(myChallengeList.size()));
-        logger.info("myCompleteList : " + myCompleteList);
-        logger.info(String.valueOf(myCompleteList.size()));
+        //logger.info("myCompleteList : " + myCompleteList);
+        //logger.info(String.valueOf(myCompleteList.size()));
 
         List<Memo> myMemoList = memoService.getMyMemoList(loginId);
         //logger.info("myMemoList: " + myMemoList.toString());
@@ -259,6 +259,16 @@ public class MemoController {
 
         int countRemainPage = readStateService.countRemainPage(readState);
         return countRemainPage;
+    }
+
+    @PostMapping("/update-memo")
+    public String updateMemo(@ModelAttribute Memo memo) {
+
+        //logger.info(memo.toString());
+
+        memoService.updateMemo(memo);
+
+        return "redirect:mine";
     }
 
 }

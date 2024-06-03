@@ -19,9 +19,9 @@
             and id = #{id};
         </selectKey>
             insert into memo
-            (id, readpage, remainpage, ispublic, isbn13, cover, title, content, created)
+            (id, readpage, remainpage, ispublic, isbn13, cover, title, content, created, lastmodified)
             values
-            (#{id}, #{readpage}, #{remainpage}, #{ispublic}, #{isbn13}, #{cover}, #{title}, #{content}, now())
+            (#{id}, #{readpage}, #{remainpage}, #{ispublic}, #{isbn13}, #{cover}, #{title}, #{content}, now(), now())
     </insert>
 
 
@@ -29,7 +29,14 @@
         select *
         from memo
         where id = #{loginId}
+        order by no desc
     </select>
+
+    <update id="updateMemo">
+        update memo
+        set readpage = #{readpage}, ispublic = #{ispublic}, title = #{title}, content = #{content}, lastmodified = now()
+        where no = #{no}
+    </update>
 
 
 
