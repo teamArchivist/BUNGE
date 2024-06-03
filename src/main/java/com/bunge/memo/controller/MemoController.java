@@ -228,7 +228,7 @@ public class MemoController {
         //logger.info(String.valueOf(myCompleteList.size()));
 
         List<Memo> myMemoList = memoService.getMyMemoList(loginId);
-        //logger.info("myMemoList: " + myMemoList.toString());
+        logger.info("myMemoList: " + myMemoList.toString());
 
         mv.addObject("myGoalList", myGoalList);
         mv.addObject("myChallengeList", myChallengeList);

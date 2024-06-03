@@ -183,8 +183,8 @@
                                               <dt class="col-sm-4">기록일</dt>
                                               <dd class="col-sm-8">[[${myMemo.created}]]</dd>
 
-                                              <dt th:if="${myMemo.lastmodified != '0000-00-00'}" class="col-sm-4">최종 수정일</dt>
-                                              <dd th:if="${myMemo.lastmodified != '0000-00-00'}" class="col-sm-8">[[${myMemo.lastmodified}]]</dd>
+                                              <dt th:if="${!#strings.equals(myMemo.lastmodified, myMemo.created)}" class="col-sm-4">최종 수정일</dt>
+                                              <dd th:if="${!#strings.equals(myMemo.lastmodified, myMemo.created)}" class="col-sm-8">[[${myMemo.lastmodified}]]</dd>
 
                                               <dt class="col-sm-4">기록내용</dt>
                                               <dd class="col-sm-8">[[${myMemo.content}]]</dd>
