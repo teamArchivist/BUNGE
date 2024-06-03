@@ -237,12 +237,17 @@ public class MemoController {
         } else {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"message\":\"state error\"}");
         }
-
     }
 
+    @ResponseBody
+    @PostMapping("/countremainpage")
+    public int countRemainPage(@RequestBody ReadState readState) {
 
+        //logger.info(readState.toString());
 
+        int countRemainPage = readStateService.countRemainPage(readState);
+        return countRemainPage;
 
-
+    }
 
 }

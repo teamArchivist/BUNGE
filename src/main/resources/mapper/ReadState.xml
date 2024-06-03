@@ -24,5 +24,19 @@
         where id = #{id}
     </select>
 
+    <select id="countTotalPage" parameterType="map" resultType="int">
+        select totalpage
+        from readstate
+        where isbn13 = #{isbn13}
+        and id = #{id}
+    </select>
+
+    <select id="countReadPage" parameterType="map" resultType="int">
+        select readpage
+        from readstate
+        where isbn13 = #{isbn13}
+        and id = #{id}
+    </select>
+
 
 </mapper>

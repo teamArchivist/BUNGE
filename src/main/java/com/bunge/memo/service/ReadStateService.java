@@ -15,4 +15,7 @@ public interface ReadStateService {
     //로그인한 사용자의 모든 독서상태
     List<ReadState> getAllReadState(String loginId);
 
+    //메모 기록하기 눌렀을 때 남은 페이지 카운트
+    public int countRemainPage(ReadState readState);
+
 }

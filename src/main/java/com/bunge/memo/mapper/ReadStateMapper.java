@@ -17,4 +17,8 @@ public interface ReadStateMapper {
     //로그인한 사용자의 모든 독서상태
     public List<ReadState> getAllReadState(String loginId);
 
+    public int countTotalPage(ReadState readState);
+
+    public int countReadPage(ReadState readState);
+
 }
