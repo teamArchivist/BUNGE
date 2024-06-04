@@ -246,6 +246,7 @@ public class MemoController {
         int startPage = Math.max(1, page - 5);
         int endPage = Math.min(maxPage, page + 5);
 
+        mv.addObject("loginId", loginId);
         mv.addObject("myGoalList", myGoalList);
         mv.addObject("myChallengeList", myChallengeList);
         mv.addObject("myCompleteList", myCompleteList);
