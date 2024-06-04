@@ -38,14 +38,14 @@ public class MemberServiceimpl implements MemberService{
 
     @Override
     public boolean nickcheck(String nick) {
-        Member member = memberMapper.nickcheck(nick);
+        Member member = memberMapper.checknick(nick);
         if(member != null) return true;
         return false;
     }
 
     @Override
     public boolean emailcheck(String email) {
-        Member member = memberMapper.emailcheck(email);
+        Member member = memberMapper.checkemail(email);
         if(member != null) return true;
         return false;
     }

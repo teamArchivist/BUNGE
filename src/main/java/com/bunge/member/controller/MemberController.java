@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.security.Principal;
 
 @Controller
@@ -48,10 +50,12 @@ public class MemberController {
                         HttpSession session,
                         Principal userPrincipal)  {
         if (readCookie != null) {
-            mav.addObject("message" , "로그인에 성공하셨습니다.");
-            mav.addObject("url","/member/index");
+            String message = "로그인에 성공하셨습니다.";
+            mav.addObject("message" , message);
+            mav.setViewName("redirect:/member/index");
         } else {
-            mav.addObject("message" ,"아이디나 비밀번호가 틀렸습니다.");
+            String message = "아이디나 비밀번호가 틀렸습니다.";
+            mav.addObject("message" , message);
             mav.setViewName("/member/login");
 
             mav.addObject("loginfail", session.getAttribute("loginfail"));
@@ -154,14 +158,13 @@ public class MemberController {
         }
     }
     //비밀번호 재설정
-    @PreAuthorize("isAnonymous()")
     @PostMapping(value = "/pwdsetProcess")
     public String pwdset(Member member,Model model, HttpServletRequest request, HttpSession session) {
 
         String findid = (String) session.getAttribute("findid");
         //비밀번호 암호화 추가
         String encPassword = passwordEncoder.encode(member.getPwd());
-
+      
         member.setPwd(encPassword);
         member.setId(findid);
 
@@ -169,13 +172,10 @@ public class MemberController {
 
         if(result) {
             model.addAttribute("message" ,"비밀번호가 정상적으로 변경되었습니다.");
-            model.addAttribute("url","redirect:/member/login");
-            return model.toString();
-
+            return "member/login";
         } else {
             model.addAttribute("message","비밀번호 변경에 실패하였습니다.");
-            model.addAttribute("url" , "/member/pwdset");
-            return model.toString();
+            return "member/pwdset";
         }
     }
 }
