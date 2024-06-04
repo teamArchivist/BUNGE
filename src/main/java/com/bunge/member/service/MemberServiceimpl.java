@@ -13,12 +13,12 @@ import java.util.HashMap;
 public class MemberServiceimpl implements MemberService{
 
     private MemberMapper    memberMapper;
-    private PasswordEncoder passwordEncoder;
+
 
     @Autowired
-    public MemberServiceimpl(MemberMapper memberMapper, PasswordEncoder passwordEncoder) {
+    public MemberServiceimpl(MemberMapper memberMapper) {
         this.memberMapper = memberMapper;
-        this.passwordEncoder = passwordEncoder;
+
     }
     @Override
     public int insert(Member member) {

@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}"
       xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
     <title>임시페이지</title>
     <links>
         <!--/* link, script 태그 영역 */-->
-
     </links>
 </head>
 <body>
@@ -23,6 +23,6 @@
         <button type="submit" class="nav-link" href="#" id="logout">로그아웃</button>
     </form>
 </section>
-</body>
 </th:block>
+</body>
 </html>

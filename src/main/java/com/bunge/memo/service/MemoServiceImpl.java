@@ -1,6 +1,7 @@
 package com.bunge.memo.service;
 
 import com.bunge.memo.domain.Memo;
+import com.bunge.memo.filter.MemoFilter;
 import com.bunge.memo.mapper.MemoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,8 +28,27 @@ public class MemoServiceImpl implements MemoService {
     }
 
     @Override
-    public List<Memo> getMyMemoList(String loginId) {
-        return memoMapper.getMyMemoList(loginId);
+    public List<Memo> getMyMemoList(MemoFilter memoFilter) {
+        return memoMapper.getMyMemoList(memoFilter);
+    }
+
+
+    @Override
+    public void updateMemo(Memo memo) {
+        memoMapper.updateMemo(memo);
+    }
+
+    @Override
+    @Transactional
+    public int deleteMemo(Memo memo) {
+        memoMapper.updateReadPageByDelete(memo);
+        int result = memoMapper.deleteMemo(memo);
+        return result;
+    }
+
+    @Override
+    public int getMemoListCount(MemoFilter memoFilter) {
+        return memoMapper.getMemoListCount(memoFilter);
     }
 
 

@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.security.Principal;
 
 @Controller
@@ -48,10 +50,12 @@ public class MemberController {
                         HttpSession session,
                         Principal userPrincipal)  {
         if (readCookie != null) {
-            mav.addObject("message" , "로그인에 성공하셨습니다.");
-            mav.addObject("url","/member/index");
+            String message = "로그인에 성공하셨습니다.";
+            mav.addObject("message" , message);
+            mav.setViewName("redirect:/member/index");
         } else {
-            mav.addObject("message" ,"아이디나 비밀번호가 틀렸습니다.");
+            String message = "아이디나 비밀번호가 틀렸습니다.";
+            mav.addObject("message" , message);
             mav.setViewName("/member/login");
 
             mav.addObject("loginfail", session.getAttribute("loginfail"));
@@ -61,21 +65,21 @@ public class MemberController {
     }
     //아이디 검사
     @ResponseBody
-    @GetMapping(value = "/checkid")
-    public boolean checkid(@RequestParam("id") String id) {
-        return memberservice.checkid(id);
+    @PostMapping(value = "/idcheck")
+    public boolean idcheck(@RequestParam("id") String id) {
+        return memberservice.idcheck(id);
     }
     //닉네임 검사
     @ResponseBody
-    @GetMapping(value = "/checknick")
+    @PostMapping(value = "/nickcheck")
     public boolean nickcheck(@RequestParam("nick") String nick){
-        return memberservice.checknick(nick);
+        return memberservice.nickcheck(nick);
     }
     //이메일 검사
     @ResponseBody
-    @GetMapping(value ="/checkemail")
+    @PostMapping(value ="/emailcheck")
     public boolean emailcheck(@RequestParam("email") String email){
-        return memberservice.checkemail(email);
+        return memberservice.emailcheck(email);
     }
     //회원가입 폼 이동
     @GetMapping(value="/join")
@@ -83,6 +87,7 @@ public class MemberController {
         return "member/join";
     }
     //회원가입
+    @PreAuthorize("isAnonymous()")
     @PostMapping(value = "/joinProcess")
     public String joinProcess (Member member, RedirectAttributes rattr,
                                Model model, HttpServletRequest request) {
@@ -109,6 +114,7 @@ public class MemberController {
     public String findid(){
         return "member/findid";
     }
+
     //아이디 찾기 결과
     @PreAuthorize("isAnonymous()")
     @PostMapping(value = "/findidProcess")
@@ -119,11 +125,11 @@ public class MemberController {
             String message = "아이디 찾기에 성공하셨습니다.";
             model.addAttribute("message",message);
             model.addAttribute("sendid", sendid);
-            return "member/idcomplete";
+            return "/member/idcomplete";
         } else {
             String message = "이름과 이메일 정보가 일치하지 않습니다.";
             model.addAttribute("message", message);
-            return "member/findid";
+            return "/member/findid";
         }
     }
     //비밀번호 폼 이동
@@ -137,14 +143,13 @@ public class MemberController {
     public String findpwdProcess(@RequestParam("id") String id ,
                                        @RequestParam("name") String name ,
                                        @RequestParam("email") String email, Model model,
-                                       HttpSession session) {
+                                       HttpServletResponse response , HttpSession session) {
        session.setAttribute("findid", id);
         boolean pwdset = memberservice.findpwd(id, name , email);
-
         if (!pwdset) {
             String message = "아이디, 이름, 이메일 정보 중 일치하지 않습니다.";
             model.addAttribute("message", message);
-           return "member/findpwd";
+           return "/member/findpwd";
         } else {
             String message = "비밀번호 찾기에 성공하셨습니다.";
             model.addAttribute("message", message);
@@ -152,19 +157,14 @@ public class MemberController {
             return "/member/pwdset";
         }
     }
-    //비밀번호 재설정 폼
-    @GetMapping(value = "/pwdset")
-    public String pwdinfo() {return "/member/pwdset";}
-
     //비밀번호 재설정
-    @PreAuthorize("isAnonymous()")
     @PostMapping(value = "/pwdsetProcess")
-    public String pwdset(Member member,Model model, HttpSession session) {
+    public String pwdset(Member member,Model model, HttpServletRequest request, HttpSession session) {
 
         String findid = (String) session.getAttribute("findid");
         //비밀번호 암호화 추가
         String encPassword = passwordEncoder.encode(member.getPwd());
-
+      
         member.setPwd(encPassword);
         member.setId(findid);
 
