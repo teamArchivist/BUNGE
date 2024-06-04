@@ -15,7 +15,7 @@ $(function() {
         let challengeperiod = $(this).data("challengeperiod")
 
         let modifyReviewData = {
-            isbn13 : isbn13
+            no : no,
         }
 
         $.ajax({
@@ -47,6 +47,40 @@ $(function() {
                 $("input[name='no']").attr("value", no)
             }
         })
+    }) //modifyBtn end
+
+    $("body").on("click", ".deleteBtn", function() {
+        let no = $(this).data("deleteno");
+
+        let deleteReviewData = {
+            no : no
+        }
+        let answer = confirm("정말 삭제 하시겠습니까?")
+        if (answer) {
+
+            $.ajax({
+                url : "delete-review",
+                method : "post",
+                contentType : "application/json; charset=utf-8",
+                data : JSON.stringify(deleteReviewData),
+                dataType : "json",
+                cache : false,
+                beforeSend : function (xhr) {
+                    if (header && token) {
+                        xhr.setRequestHeader(header, token);
+                    }
+                },
+                success : function (rdata) {
+                    console.log(rdata)
+                    if (rdata == 1) {
+                        alert("삭제 완료")
+                        location.href="main";
+                    } else {
+                        alert("삭제 실패")
+                    }
+                }
+            })
+        }
     })
 
     $("form").on("keyup", "#reviewScore", function() {

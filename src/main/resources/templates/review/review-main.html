@@ -80,8 +80,10 @@
                                             th:data-created="${review.created}"
                                             th:data-challengeperiod="${review.challengeperiod}">
                                             수정</button>
-                                    <button type="button" class="btn btn-danger btn-sm rounded-pill deleteBtn"
-                                            th:if="${#strings.equals(review.id, loginId)}">삭제</button>
+                                    <button th:if="${#strings.equals(review.id, loginId)}"
+                                            type="button" class="btn btn-danger btn-sm rounded-pill deleteBtn"
+                                            th:data-deleteno="${review.no}">
+                                            삭제</button>
                                 </div>
 
                                 <!-- Modal -->

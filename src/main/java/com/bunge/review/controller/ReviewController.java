@@ -60,12 +60,17 @@ public class ReviewController {
 
     @PostMapping("/modify-review")
     public String modifyReview(@ModelAttribute Review review) {
-        logger.info(review.toString());
+        //logger.info(review.toString());
         reviewService.updateReview(review);
         return "redirect:main";
     }
 
-
+    @ResponseBody
+    @PostMapping("/delete-review")
+    public int deleteReview(@RequestBody Review review) {
+        logger.info(review.toString());
+        return reviewService.deleteReview(review);
+    }
     
 
 }
