@@ -70,21 +70,21 @@ public class MemberController {
     }
     //아이디 검사
     @ResponseBody
-    @PostMapping(value = "/idcheck")
-    public boolean idcheck(@RequestParam("id") String id) {
-        return memberservice.idcheck(id);
+    @GetMapping(value = "/checkid")
+    public boolean checkid(@RequestParam("id") String id) {
+        return memberservice.checkid(id);
     }
     //닉네임 검사
     @ResponseBody
-    @PostMapping(value = "/nickcheck")
-    public boolean nickcheck(@RequestParam("nick") String nick){
-        return memberservice.nickcheck(nick);
+    @GetMapping(value = "/checknick")
+    public boolean checknick(@RequestParam("nick") String nick){
+        return memberservice.checknick(nick);
     }
     //이메일 검사
     @ResponseBody
-    @PostMapping(value ="/emailcheck")
-    public boolean emailcheck(@RequestParam("email") String email){
-        return memberservice.emailcheck(email);
+    @GetMapping(value ="/checkemail")
+    public boolean checkemail(@RequestParam("email") String email){
+        return memberservice.checkemail(email);
     }
     //회원가입 폼 이동
     @GetMapping(value="/join")

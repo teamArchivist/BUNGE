@@ -8,23 +8,18 @@ import java.util.HashMap;
 
 @Mapper
 public interface MemberMapper {
-    public Member isId(String id);
 
     public int insert(Member member);
 
-    public Member idcheck(String id);
+    public Member checkid(String id);
 
-     Member checkid(String id);
+    public Member checknick(String nick);
 
-     Member checknick(String nick);
+    public Member checkemail(String email);
 
-     Member checkemail(String email);
+    public Member findid(HashMap<String , String> map);
 
-     Member findid(HashMap<String , String> map);
+    public int findpwd(HashMap<String, String> map);
 
-     int findpwd(HashMap<String, String> map);
-
-    int pwdset(Member member);
-
-    int pwdset(HashMap<String, String> map);
+    public int pwdset(HashMap<String, String> map);
 }
