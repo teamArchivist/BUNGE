@@ -4,6 +4,7 @@ import com.bunge.memo.domain.Book;
 import com.bunge.memo.domain.Memo;
 import com.bunge.memo.domain.ReadState;
 import com.bunge.memo.filter.BookFilter;
+import com.bunge.memo.filter.MemoFilter;
 import com.bunge.memo.service.BookService;
 import com.bunge.memo.service.MemoService;
 import com.bunge.memo.service.ReadStateService;
@@ -193,7 +194,8 @@ public class MemoController {
     }
 
     @GetMapping("/mine")
-    public ModelAndView memoMain(ModelAndView mv) {
+    public ModelAndView memoMain(ModelAndView mv,
+                                 @RequestParam(value="page", required=false, defaultValue="1") Integer page) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String loginId = authentication.getName();
         //logger.info("loginId : " + loginId);
@@ -205,6 +207,9 @@ public class MemoController {
         List<Book> myGoalList = new ArrayList<>();
         List<Book> myChallengeList = new ArrayList<>();
         List<Book> myCompleteList = new ArrayList<>();
+
+        int pageSize = 3;
+        int offset = (page - 1) * pageSize;
 
         for (ReadState readState : readStates) {
             if (readState.getState().equals("목표")) {
@@ -227,13 +232,30 @@ public class MemoController {
         //logger.info("myCompleteList : " + myCompleteList);
         //logger.info(String.valueOf(myCompleteList.size()));
 
-        List<Memo> myMemoList = memoService.getMyMemoList(loginId);
-        //logger.info("myMemoList: " + myMemoList.toString());
+        MemoFilter memoFilter = new MemoFilter();
+        memoFilter.setLoginId(loginId);
+        memoFilter.setOffset(offset);
+        memoFilter.setLimit(pageSize);
+
+        List<Memo> myMemoList = memoService.getMyMemoList(memoFilter);
+        logger.info("myMemoList: " + myMemoList.toString());
+
+        int totalMemos = memoService.getMemoListCount(memoFilter);
+        logger.info("totalMemos: " + totalMemos);
+
+        int maxPage = (int) Math.ceil((double) totalMemos / pageSize);
+        int startPage = Math.max(1, page - 5);
+        int endPage = Math.min(maxPage, page + 5);
 
         mv.addObject("myGoalList", myGoalList);
         mv.addObject("myChallengeList", myChallengeList);
         mv.addObject("myCompleteList", myCompleteList);
+
         mv.addObject("myMemoList", myMemoList);
+        mv.addObject("currentPage", page);
+        mv.addObject("maxPage", maxPage);
+        mv.addObject("startPage", startPage);
+        mv.addObject("endPage", endPage);
 
         mv.setViewName("memo/memo_mine");
 

@@ -25,11 +25,12 @@
     </insert>
 
 
-    <select id="getMyMemoList" resultType="com.bunge.memo.domain.Memo">
+    <select id="getMyMemoList" parameterType="com.bunge.memo.filter.MemoFilter" resultType="com.bunge.memo.domain.Memo">
         select *
         from memo
         where id = #{loginId}
         order by no desc
+        limit #{offset}, #{limit}
     </select>
 
     <update id="updateMemo">
@@ -47,7 +48,13 @@
         update readstate
         set readpage = readpage - #{readpage}
         where isbn13 = #{isbn13}
-        and id = #{id}
+        and id = #{loginId}
     </update>
+
+    <select id="getMemoListCount" parameterType="com.bunge.memo.filter.MemoFilter" resultType="int">
+        select count(*)
+        from memo
+        where id = #{loginId}
+    </select>
 
 </mapper>
