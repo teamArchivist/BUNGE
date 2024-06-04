@@ -104,7 +104,7 @@ $(function() {
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(checkRemainData),
             dataType: "json",
-            chche: false,
+            cache: false,
             beforeSend : function (xhr) {
                 if (header && token) {
                     xhr.setRequestHeader(header, token);

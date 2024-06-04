@@ -1,5 +1,6 @@
 package com.bunge.review.service;
 
+import com.bunge.memo.domain.Book;
 import com.bunge.review.domain.Review;
 import com.bunge.review.mapper.ReviewMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,16 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public List<Review> getAllReviews() {
         return reviewMapper.getAllReviews();
+    }
+
+    @Override
+    public Book getBookByReview(Review review) {
+        return reviewMapper.getBookByReview(review);
+    }
+
+    @Override
+    public void updateReview(Review review) {
+        reviewMapper.updateReview(review);
     }
 
 
