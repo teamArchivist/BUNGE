@@ -12,4 +12,7 @@ public interface ReviewMapper {
     //리뷰 등록
     public void addReview(Review review);
 
+    //리뷰 목록
+    public List<Review> getAllReviews();
+
 }

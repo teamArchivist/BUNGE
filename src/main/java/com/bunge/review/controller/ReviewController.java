@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import java.util.List;
 
 @Controller
 @RequestMapping(value="/review")
@@ -22,11 +23,21 @@ public class ReviewController {
         this.reviewService = reviewservice;
     }
 
+    @GetMapping("/main")
+    public ModelAndView reviewMain(ModelAndView modelAndView) {
+        List<Review> reviewList = reviewService.getAllReviews();
+        logger.info(reviewList.toString());
+
+        modelAndView.addObject("reviewList", reviewList);
+        modelAndView.setViewName("review/review-main");
+        return modelAndView;
+    }
+
     @PostMapping("/add-review")
     public String addReview(@ModelAttribute Review review) {
-        logger.info(review.toString());
+        //logger.info(review.toString());
         reviewService.addReview(review);
-        return "redirect:review/main";
+        return "redirect:review/review-main";
     }
 
 

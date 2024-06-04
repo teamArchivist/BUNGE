@@ -10,4 +10,8 @@
         (#{id}, #{isbn13}, #{cover}, #{linetitle}, #{content}, #{score}, now(), now(), 0)
     </insert>
 
+    <select id="getAllReviews" resultType="com.bunge.review.domain.Review">
+        select * from review
+    </select>
+
 </mapper>
