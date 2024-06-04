@@ -4,6 +4,7 @@ import com.bunge.member.domain.Mail;
 import com.bunge.member.domain.Member;
 import com.bunge.member.service.MemberService;
 import com.bunge.member.service.SendMail;
+import com.mysql.cj.Session;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -156,6 +157,7 @@ public class MemberController {
             Mail mail = new Mail();
             mail.setTo(member.getEmail());
             sendmail.sendMail(mail);
+            session.setAttribute("random", mail.getRandom());
             model.addAttribute("message", "비밀번호 찾기에 성공하셨습니다.");
             model.addAttribute("pwdset", pwdset);
             return "member/pwdinfo";
@@ -163,7 +165,17 @@ public class MemberController {
     }
     //
     @GetMapping(value = "/pwdset")
-    public String pwdset(){return "member/pwdset";}
+    public String pwdset(String email, String random , HttpSession session){
+        logger.info(email);
+        logger.info(random);
+        if(random.equals((String) session.getAttribute("random"))) {
+            session.removeAttribute("random");
+            return "member/pwdset";
+        }else {
+            session.removeAttribute("random");
+            return "error/403";
+        }
+    }
 
     //비밀번호 재설정
     @PostMapping(value = "/pwdsetProcess")
