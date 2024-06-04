@@ -175,7 +175,7 @@ $(function () {
             };
 
             $.ajax({
-                url: "addbook",  // 서버에 책 정보를 저장하는 엔드포인트
+                url: "add-book",  // 서버에 책 정보를 저장하는 엔드포인트
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -188,7 +188,7 @@ $(function () {
                 data: JSON.stringify(bookData),
                 success: function (response) {
                     alert("책 정보가 저장되었습니다.");
-                    window.location.href = response.message;
+                    location.href = response.message;
                 },
                 error: function (error) {
                     alert("책 정보 저장에 실패했습니다.")

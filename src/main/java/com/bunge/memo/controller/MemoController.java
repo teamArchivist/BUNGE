@@ -44,11 +44,11 @@ public class MemoController {
     }
 
     @ResponseBody
-    @PostMapping("/addbook")
+    @PostMapping("/add-book")
     public ResponseEntity<String> addBook(@RequestBody Book book) {
         bookService.addBook(book);
         //logger.info(book.toString());
-        return ResponseEntity.status(HttpStatus.OK).body("{\"message\":\"searchmain\"}");
+        return ResponseEntity.status(HttpStatus.OK).body("{\"message\":\"search-main\"}");
     }
 
     @GetMapping("/search-main")
