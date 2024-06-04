@@ -1,5 +1,6 @@
 package com.bunge.review.service;
 
+import com.bunge.review.domain.Review;
 import com.bunge.review.mapper.ReviewMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,16 +8,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class ReviewServiceImpl implements ReviewService {
 
-    private ReviewMapper dao;
+    private ReviewMapper reviewMapper;
 
     @Autowired
-    public ReviewServiceImpl(ReviewMapper dao) {
-        this.dao = dao;
+    public ReviewServiceImpl(ReviewMapper reviewMapper) {
+        this.reviewMapper = reviewMapper;
     }
 
-    @Override
-    public int getListCount() {
 
-        return 0;
+    @Override
+    public void addReview(Review review) {
+        reviewMapper.addReview(review);
     }
 }

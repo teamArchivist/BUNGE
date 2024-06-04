@@ -229,7 +229,99 @@
                                     <div class="row text-center mb-4">
                                         <div th:each="myComplete:${myCompleteList}" class="col-md-2 mb-2">
                                             <img th:src="${myComplete.cover}" width="150px" height="200px">
+                                            <button type="button" class="btn btn-danger rounded-pill" data-bs-toggle="modal"
+                                                    data-bs-target="#verticalWithScrollbar2"
+                                                    id="addReview"
+                                                    th:data-reviewIsbn13="${myComplete.isbn13}"
+                                                    th:data-reviewBooktitle="${myComplete.title}"
+                                                    th:data-reviewAuthor="${myComplete.author}"
+                                                    th:data-reviewCategoryName="${myComplete.categoryName}"
+                                                    th:data-reviewCover="${myComplete.cover}"
+                                                    th:data-reviewRegitDate="${myComplete.regitdate}"
+                                                    th:data-reviewPage="${myComplete.page}"
+                                                    th:data-reviewScore="${myComplete.score}">
+                                                리뷰쓰기</button>
                                         </div>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="verticalWithScrollbar2" tabindex="-1" aria-labelledby="verticalWithScrollbarLabel2" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="verticalWithScrollbarLabel2">리뷰 작성</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body align-content-center">
+                                                        <div class="row mb-4">
+
+                                                            <div class="col-md-4 text-center">
+                                                                <img th:src="@{/img/sample-img/bookcover1.jpg}" id="reviewModalCover" class="img-fluid w-100 h-100">
+                                                            </div>
+
+                                                            <div class="col-md-8 align-content-center border-bottom">
+                                                                <dl class="row mb-0">
+                                                                    <dt class="col-sm-4">제목</dt>
+                                                                    <dd class="col-sm-8 text-start" id="reviewModalBookTitle">"다 된 밥에 재뿌리기"의 사회학적...</dd>
+
+                                                                    <dt class="col-sm-4">저자</dt>
+                                                                    <dd class="col-sm-8 text-start" id="reviewModalAuthor">코레오 오르날도</dd>
+
+                                                                    <dt class="col-sm-4">카테고리</dt>
+                                                                    <dd class="col-sm-8 text-start" id="reviewModalCategoryName">eBook > 인문학 > 교양 인문학</dd>
+
+                                                                    <dt class="col-sm-4">평점</dt>
+                                                                    <dd class="col-sm-8 text-start" id="reviewModalScore">5점</dd>
+
+                                                                    <dt class="col-sm-4">페이지</dt>
+                                                                    <dd class="col-sm-8 text-start" id="reviewModalPage">416</dd>
+                                                                </dl>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <!-- Block styled form -->
+                                                        <form th:action="@{/review/add-review}" method="post" class="row">
+
+                                                            <div class="col-md-12 mb-3">
+                                                                <label class="form-label">작성자</label>
+                                                                <input name="id" type="text" class="form-control" value="" id="reviewModalId" readonly>
+                                                            </div>
+
+                                                            <div class="col-md-12 mb-3">
+                                                                <label class="form-label">평점</label>
+                                                                <input id="reviewScore" name="score" type="text" class="form-control" placeholder="점수를 입력해주세요 1~5 사이 정수만 가능합니다 (1, 2, 3, 4, 5)" required>
+                                                            </div>
+
+                                                            <div class="col-md-12 mb-3">
+                                                                <label class="form-label">한줄평</label>
+                                                                <input name="linetitle" type="text" class="form-control" placeholder="한줄평을 입력해주세요 (최대 50자)" required>
+                                                                <p class="float-end mb-0" id="countLineTitle"></p>
+                                                            </div>
+
+                                                            <div class="col-md-12">
+                                                                <label class="form-label">리뷰</label>
+                                                                <textarea name="content" class="form-control" placeholder="내용을 입력해주세요 (최대 200자)" rows="14" required></textarea>
+                                                                <p class="float-end mb-0" id="countReviewContent"></p>
+                                                            </div>
+
+                                                            <input type="hidden" name="isbn13" id="modalInputIsbn13">
+                                                            <input type="hidden" name="cover" id="modalInputCover">
+
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                                                                <button type="submit" class="btn btn-primary">등록</button>
+                                                            </div>
+
+                                                        </form>
+                                                        <!-- END : Block styled form -->
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- END : Vertical centered scrollable modal -->
+
                                     </div>
                                 </div>
 
@@ -248,6 +340,7 @@
                                                     th:data-score="${myChallenge.score}"
                                                     th:data-page="${myChallenge.page}">
                                             기록하기</button>
+
                                         </div>
 
                                         <!-- Modal -->
@@ -276,7 +369,7 @@
                                                                     <dt class="col-sm-4">카테고리</dt>
                                                                     <dd class="col-sm-8 text-start" id="modalcategoryName">eBook > 인문학 > 교양 인문학</dd>
 
-                                                                    <dt class="col-sm-4">별점</dt>
+                                                                    <dt class="col-sm-4">평점</dt>
                                                                     <dd class="col-sm-8 text-start" id="modalscore">5점</dd>
 
                                                                     <dt class="col-sm-4">페이지</dt>
@@ -340,6 +433,7 @@
                                             </div>
                                         </div>
                                         <!-- END : Vertical centered scrollable modal -->
+
                                     </div>
                                 </div>
 
