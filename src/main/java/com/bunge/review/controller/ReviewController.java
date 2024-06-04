@@ -71,6 +71,11 @@ public class ReviewController {
         logger.info(review.toString());
         return reviewService.deleteReview(review);
     }
-    
+
+    @ResponseBody
+    @PostMapping("/get-all-reviews")
+    public List<Review> getAllReview() {
+        return reviewService.getAllReviews();
+    }
 
 }

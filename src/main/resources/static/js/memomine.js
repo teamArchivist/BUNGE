@@ -4,6 +4,48 @@ let header = $("meta[name='_csrf_header']").attr("content");
 $(function() {
     let loginId = $("#loginId").text();
     //console.log(loginId);
+    let reviewIsbn13List = [];
+
+    $.ajax({
+        url: "/review/get-all-reviews",
+        method: "post",
+        cache: false,
+        beforeSend: function (xhr) {
+            if (header && token) {
+                xhr.setRequestHeader(header, token);
+            }
+        },
+        success: function (rdata) {
+            //console.log(rdata)
+            for (let i=0; i<rdata.length; i++) {
+                reviewIsbn13List.push(rdata[i].isbn13)
+            }
+            //console.log(reviewIsbn13List);
+            showButtons(reviewIsbn13List);
+        }
+    });
+
+    function showButtons(reviewIsbn13List) {
+        $("button#addReview").each(function() {
+            let reviewIsbn13 = $(this).attr("data-reviewisbn13");
+            //console.log(reviewIsbn13)
+            if (reviewIsbn13List.includes(reviewIsbn13)) {
+                //console.log("hi");
+                $(this).hide();
+
+                let reviewModifyBtn = $("<button>", {
+                    type: 'button',
+                    class: 'btn btn-warning rounded-pill',
+                    text: '수정하기',
+                    click: function() {
+                        location.href = "/review/main"
+                    }
+                });
+
+                $(this).parent().append(reviewModifyBtn);
+            }
+        })
+    }
 
     $("body").on("click", ".updateMemo", function() {
         let thisno = $(this).data("thisno")
