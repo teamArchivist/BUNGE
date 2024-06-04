@@ -11,7 +11,20 @@
     </insert>
 
     <select id="getAllReviews" resultType="com.bunge.review.domain.Review">
-        select * from review
+        select *
+        from review
     </select>
+
+    <select id="getBookByReview" parameterType="com.bunge.review.domain.Review" resultType="com.bunge.memo.domain.Book">
+        select *
+        from book
+        where isbn13 = #{isbn13}
+    </select>
+
+    <update id="updateReview">
+        update review
+        set score = #{score}, linetitle = #{linetitle}, content = #{content}, lastmodified = now()
+        where no = #{no}
+    </update>
 
 </mapper>

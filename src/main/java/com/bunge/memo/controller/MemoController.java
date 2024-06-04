@@ -261,7 +261,7 @@ public class MemoController {
         return mv;
     }
 
-    @PostMapping("/addmemo")
+    @PostMapping("/add-memo")
     public String addMemo(Memo memo) {
 
         //logger.info(memo.toString());
