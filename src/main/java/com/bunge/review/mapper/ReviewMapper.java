@@ -9,10 +9,7 @@ import java.util.List;
 @Mapper
 public interface ReviewMapper {
 
-    //리뷰 갯수
-    public int getListCount();
-
-    //글 목록
-    public List<Review> getReviewList(HashMap<String, Integer> map);
+    //리뷰 등록
+    public void addReview(Review review);
 
 }

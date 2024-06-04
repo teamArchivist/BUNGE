@@ -163,5 +163,69 @@ $(function() {
                 }
             })
         }
-    })
+    })  //$("body").on("click", "#changeReadState", ... end
+
+    $("body").on("click", "#addReview", function() {
+        let reviewIsbn13 = $(this).data("reviewisbn13")
+        let reviewBookTitle = $(this).data("reviewbooktitle")
+        let reviewAuthor = $(this).data("reviewauthor")
+        let reviewCategoryName = $(this).data("reviewcategoryname")
+        let reviewCover = $(this).data("reviewcover")
+        let reviewRegitDate = $(this).data("reviewregitdate")
+        let reviewPage = $(this).data("reviewpage")
+        let reviewScore = $(this).data("reviewscore")
+
+        $("#reviewModalId").attr("value", loginId);
+        $("#reviewModalCover").attr("src", reviewCover);
+        $("#modalInputIsbn13").attr("value", reviewIsbn13)
+        $("#modalInputCover").attr("value", reviewCover)
+        $("#reviewModalBookTitle").text(reviewBookTitle);
+        $("#reviewModalAuthor").text(reviewAuthor);
+        $("#reviewModalCategoryName").text(reviewCategoryName);
+        $("#reviewModalScore").text(reviewScore + " 점")
+        $("#reviewModalPage").text(reviewPage + " page")
+
+        $("form").on("keyup", "#reviewScore", function() {
+            let value = $(this).val()
+            let regValue = /^[1-5]$/
+
+            if (!regValue.test(value)) {
+                alert("1~5 사이의 정수만 입력할 수 있습니다")
+                $(this).val("");
+            }
+        })
+
+        $("form").on("keyup", "input[name=linetitle]", function() {
+            let lineTitleValue = $(this).val()
+            let maxLength = 30
+            //console.log(lineTitleValue);
+
+            $("#countLineTitle").text(lineTitleValue.length + " / " + maxLength)
+
+            if (lineTitleValue.length > maxLength) {
+                alert("최대 " + maxLength + "자까지만 가능합니다")
+                $(this).val(lineTitleValue.substring(0, maxLength))
+                $("#countLineTitle").text(maxLength + " / " + maxLength)
+            }
+        })
+
+        $("form").on("keyup", "textarea[name=content]", function() {
+            let reviewContentValue = $(this).val()
+            console.log(reviewContentValue)
+            let maxLength = 200
+
+            $("#countReviewContent").text(reviewContentValue.length + " / " + maxLength)
+
+            if (reviewContentValue.length > maxLength) {
+                alert("최대 " + maxLength + "자까지만 가능합니다")
+                $(this).val(reviewContentValue.substring(0, maxLength))
+                $("#countReviewContent").text(maxLength + " / " + maxLength)
+            }
+        })
+    }) //$("body").on(click) end ...
+
+
+
+
+
 }) //ready end
