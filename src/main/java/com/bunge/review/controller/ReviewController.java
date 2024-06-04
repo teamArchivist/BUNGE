@@ -37,7 +37,7 @@ public class ReviewController {
     public String addReview(@ModelAttribute Review review) {
         //logger.info(review.toString());
         reviewService.addReview(review);
-        return "redirect:review/review-main";
+        return "redirect:main";
     }
 
 

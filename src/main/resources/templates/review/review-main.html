@@ -61,9 +61,9 @@
                 <div class="row">
                     <div th:each="review:${reviewList}" class="col-sm-6 col-xl-2 mb-3">
                         <div class="card mb-3 hv-grow-parent h-100 bg-dark text-white">
-                            <img class="card-img-top opacity-30" th:src="${review.cover}" loading="lazy">
+                            <img class="card-img-top opacity-30" th:src="${review.cover}" loading="lazy" height="350px">
                             <div class="card-img-overlay text-center"
-                                 style="position:absolute;top:120px;font-size:large;">
+                                 style="position:absolute;top:120px;font-size:large;height:30%">
                                 "[[${review.linetitle}]]"
                             </div>
                             <div class="card-body mt-4">
