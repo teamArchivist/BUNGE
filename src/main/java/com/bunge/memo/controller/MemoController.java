@@ -44,11 +44,11 @@ public class MemoController {
     }
 
     @ResponseBody
-    @PostMapping("/addbook")
+    @PostMapping("/add-book")
     public ResponseEntity<String> addBook(@RequestBody Book book) {
         bookService.addBook(book);
         //logger.info(book.toString());
-        return ResponseEntity.status(HttpStatus.OK).body("{\"message\":\"searchmain\"}");
+        return ResponseEntity.status(HttpStatus.OK).body("{\"message\":\"search-main\"}");
     }
 
     @GetMapping("/search-main")
@@ -246,6 +246,7 @@ public class MemoController {
         int startPage = Math.max(1, page - 5);
         int endPage = Math.min(maxPage, page + 5);
 
+        mv.addObject("loginId", loginId);
         mv.addObject("myGoalList", myGoalList);
         mv.addObject("myChallengeList", myChallengeList);
         mv.addObject("myCompleteList", myCompleteList);

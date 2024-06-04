@@ -48,7 +48,7 @@
         update readstate
         set readpage = readpage - #{readpage}
         where isbn13 = #{isbn13}
-        and id = #{loginId}
+        and id = #{id}
     </update>
 
     <select id="getMemoListCount" parameterType="com.bunge.memo.filter.MemoFilter" resultType="int">

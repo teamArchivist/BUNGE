@@ -1,5 +1,6 @@
 package com.bunge.memo.service;
 
+import com.bunge.memo.domain.Memo;
 import com.bunge.memo.domain.ReadState;
 import com.bunge.memo.mapper.ReadStateMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,11 @@ public class ReadStateServiceImpl implements ReadStateService {
     }
 
     @Override
+    public ReadState getReadState(Memo memo) {
+        return readStateMapper.getReadState(memo);
+    }
+
+    @Override
     public int countRemainPage(ReadState readState) {
 
         int totalpage = readStateMapper.countTotalPage(readState);
@@ -50,6 +56,7 @@ public class ReadStateServiceImpl implements ReadStateService {
 
     @Override
     public int changeReadState(ReadState readState) {
+        readState.setState("도전");
         return readStateMapper.changeReadState(readState);
     }
 
