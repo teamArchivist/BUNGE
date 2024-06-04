@@ -13,6 +13,7 @@
     <select id="getAllReviews" resultType="com.bunge.review.domain.Review">
         select *
         from review
+        order by no desc
     </select>
 
     <select id="getBookByReview" parameterType="com.bunge.review.domain.Review" resultType="com.bunge.memo.domain.Book">
