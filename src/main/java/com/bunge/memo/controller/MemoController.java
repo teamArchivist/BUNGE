@@ -213,12 +213,11 @@ public class MemoController {
 
         for (ReadState readState : readStates) {
             if (readState.getState().equals("목표")) {
-                if(readState.getTotalpage() == readState.getReadpage()) {
-                    readStateService.updateReadState(readState);
-                } else {
-                    myGoalList.add(bookService.getMyBookByState(readState));
-                }
+                myGoalList.add(bookService.getMyBookByState(readState));
             } else if (readState.getState().equals("도전")) {
+                if (readState.getTotalpage() == readState.getReadpage()) {
+                    readStateService.updateReadState(readState);
+                }
                 myChallengeList.add(bookService.getMyBookByState(readState));
             } else if (readState.getState().equals("완독")) {
                 myCompleteList.add(bookService.getMyBookByState(readState));
@@ -238,10 +237,10 @@ public class MemoController {
         memoFilter.setLimit(pageSize);
 
         List<Memo> myMemoList = memoService.getMyMemoList(memoFilter);
-        logger.info("myMemoList: " + myMemoList.toString());
+        //logger.info("myMemoList: " + myMemoList.toString());
 
         int totalMemos = memoService.getMemoListCount(memoFilter);
-        logger.info("totalMemos: " + totalMemos);
+        //logger.info("totalMemos: " + totalMemos);
 
         int maxPage = (int) Math.ceil((double) totalMemos / pageSize);
         int startPage = Math.max(1, page - 5);
@@ -299,6 +298,13 @@ public class MemoController {
         //logger.info(memo.toString());
 
         return memoService.deleteMemo(memo);
+    }
+
+    @ResponseBody
+    @PostMapping("/change-read-state")
+    public int changeReadState(@RequestBody ReadState readState) {
+        int result = readStateService.changeReadState(readState);
+        return result;
     }
 
 }

@@ -48,4 +48,9 @@ public class ReadStateServiceImpl implements ReadStateService {
         readStateMapper.updateReadState(readState);
     }
 
+    @Override
+    public int changeReadState(ReadState readState) {
+        return readStateMapper.changeReadState(readState);
+    }
+
 }

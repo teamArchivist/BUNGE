@@ -128,4 +128,40 @@ $(function() {
             $("#_dm-inputPages").val("");
         }
     })
+
+    $("body").on("click", "#changeReadState", function() {
+        let isbn13 = $(this).data("isbn13")
+        let title = $(this).data("title")
+        let page = $(this).data("page")
+        let changeReadStateData = {
+            isbn13 : isbn13,
+            id : loginId
+        }
+
+        let answer = confirm("'" + title + "' 총 " + page + " page 입니다. 도전 하시겠습니까?")
+
+        if (answer) {
+            $.ajax ({
+                url : "change-read-state",
+                method : "post",
+                contentType : "application/json; charset=utf-8",
+                data : JSON.stringify(changeReadStateData),
+                dataType : "json",
+                cache : false,
+                beforeSend : function (xhr) {
+                    if (header && token) {
+                        xhr.setRequestHeader(header, token);
+                    }
+                },
+                success : function(rdata) {
+                    console.log(this.data)
+                    console.log(rdata)
+                    if (rdata = 1) {
+                        alert("도전 도서로 변경되었습니다. 완독을 응원합니다!")
+                        location.href = "mine"
+                    }
+                }
+            })
+        }
+    })
 }) //ready end

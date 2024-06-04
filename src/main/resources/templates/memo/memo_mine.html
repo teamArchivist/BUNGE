@@ -214,8 +214,8 @@
                                 </li>
 
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#_dm-tabsProgress"
-                                            type="button" role="tab" aria-controls="progress" aria-selected="false" tabindex="-1">진행중</button>
+                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#_dm-tabsChallenge"
+                                            type="button" role="tab" aria-controls="challenge" aria-selected="false" tabindex="-1">도전</button>
                                 </li>
 
                                 <li class="nav-item" role="presentation">
@@ -233,7 +233,7 @@
                                     </div>
                                 </div>
 
-                                <div id="_dm-tabsProgress" class="tab-pane fade" role="tabpanel" aria-labelledby="progress-tab">
+                                <div id="_dm-tabsChallenge" class="tab-pane fade" role="tabpanel" aria-labelledby="challenge-tab">
                                     <div class="row text-center mb-4">
                                         <div th:each="myChallenge:${myChallengeList}" class="col-md-2 mb-2">
                                             <img th:src="${myChallenge.cover}" width="150px" height="200px">
@@ -347,6 +347,16 @@
                                     <div class="row text-center mb-4">
                                         <div th:each="myGoal:${myGoalList}" class="col-md-2 mb-2">
                                             <img th:src="${myGoal.cover}" width="150px" height="200px">
+                                            <button type="button" class="btn btn-warning rounded-pill"
+                                                    id="changeReadState"
+                                                    th:data-isbn13="${myGoal.isbn13}"
+                                                    th:data-title="${myGoal.title}"
+                                                    th:data-author="${myGoal.author}"
+                                                    th:data-categoryname="${myGoal.categoryName}"
+                                                    th:data-cover="${myGoal.cover}"
+                                                    th:data-score="${myGoal.score}"
+                                                    th:data-page="${myGoal.page}">
+                                                도전하기</button>
                                         </div>
                                     </div>
                                 </div>

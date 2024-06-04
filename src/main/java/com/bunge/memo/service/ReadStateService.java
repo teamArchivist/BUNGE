@@ -21,4 +21,6 @@ public interface ReadStateService {
     //독서상태 업데이트
     public void updateReadState(ReadState readState);
 
+    //목표도서 도전도서로 변경
+    public int changeReadState(ReadState readState);
 }
