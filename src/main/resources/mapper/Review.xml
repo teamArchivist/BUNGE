@@ -27,4 +27,9 @@
         where no = #{no}
     </update>
 
+    <delete id="deleteReview">
+        delete from review
+        where no = #{no}
+    </delete>
+
 </mapper>

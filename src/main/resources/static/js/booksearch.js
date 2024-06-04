@@ -39,7 +39,7 @@ $(function () {
                                     <div class='card-body'>
                                         <a href="bookdetail?isbn13=${book.isbn13}" +  class='card-text link-success h5'>${book.title}</a>
                                         <p class='card-text mt-3'>${book.author}</p>
-                                        <p class='card-text'>${book.category}</p>
+                                        <p class='card-text'>${book.categoryName}</p>
                                         <p class='card-text'>평점 : ${book.score}</p>
                                         <p class='card-text'>${book.description}</p>
                                     </div>

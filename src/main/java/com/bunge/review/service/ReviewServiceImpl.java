@@ -38,5 +38,10 @@ public class ReviewServiceImpl implements ReviewService {
         reviewMapper.updateReview(review);
     }
 
+    @Override
+    public int deleteReview(Review review) {
+        return reviewMapper.deleteReview(review);
+    }
+
 
 }
