@@ -2,7 +2,6 @@ package com.bunge.member.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.bunge.member.domain.Member;
 import com.bunge.member.mapper.MemberMapper;
@@ -26,25 +25,25 @@ public class MemberServiceimpl implements MemberService{
     }
     @Override
     public Member memberinfo(String id) {
-        return memberMapper.idcheck(id);
+        return memberMapper.checkid(id);
     }
 
     @Override
-    public boolean idcheck(String id) {
-        Member member = memberMapper.idcheck(id);
+    public boolean checkid(String id) {
+        Member member = memberMapper.checkid(id);
         if(member != null) return true;
         return false;
     }
 
     @Override
-    public boolean nickcheck(String nick) {
+    public boolean checknick(String nick) {
         Member member = memberMapper.checknick(nick);
         if(member != null) return true;
         return false;
     }
 
     @Override
-    public boolean emailcheck(String email) {
+    public boolean checkemail(String email) {
         Member member = memberMapper.checkemail(email);
         if(member != null) return true;
         return false;

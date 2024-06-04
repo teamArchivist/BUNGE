@@ -32,7 +32,7 @@ public class CustomUserDatilsService implements UserDetailsService{
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-		Member member = membermapper.idcheck(username);
+		Member member = membermapper.checkid(username);
 		if(member==null) {
 
 			throw new UsernameNotFoundException("User not found with username: " + username);
