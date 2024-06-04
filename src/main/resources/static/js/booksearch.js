@@ -12,7 +12,7 @@ $(function () {
 
     function searchBooks(keyword, type, page) {
         $.ajax({
-            url: "searchresult",
+            url: "search-result",
             method: "GET",
             beforeSend: function(xhr) {
                 if (header && token) {
@@ -37,7 +37,7 @@ $(function () {
                                 <div class='card mb-3 hv-grow-parent h-100'>
                                     <img class='card-img-top' src='${book.cover}' alt='...' height='350px'>
                                     <div class='card-body'>
-                                        <a class='card-text link-success h5'>${book.title}</a>
+                                        <a href="bookdetail?isbn13=${book.isbn13}" +  class='card-text link-success h5'>${book.title}</a>
                                         <p class='card-text mt-3'>${book.author}</p>
                                         <p class='card-text'>${book.category}</p>
                                         <p class='card-text'>평점 : ${book.score}</p>

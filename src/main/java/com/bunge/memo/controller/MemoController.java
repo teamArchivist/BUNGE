@@ -51,7 +51,7 @@ public class MemoController {
         return ResponseEntity.status(HttpStatus.OK).body("{\"message\":\"searchmain\"}");
     }
 
-    @GetMapping("/searchmain")
+    @GetMapping("/search-main")
     public String SearchBooks(@RequestParam(value = "title", required = false) String title,
                               @RequestParam(value = "author", required = false) String author,
                               @RequestParam(value = "category", required = false) String category,
@@ -90,7 +90,7 @@ public class MemoController {
     }
 
     @ResponseBody
-    @GetMapping("/searchresult")
+    @GetMapping("/search-result")
     public Map<String, Object> searchBooks(@RequestParam(value = "title", required = false) String title,
                                            @RequestParam(value = "author", required = false) String author,
                                            @RequestParam(value = "category", required = false) String category,
