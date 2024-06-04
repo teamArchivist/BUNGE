@@ -1,2 +1,2 @@
-package com.bunge.trade.model;public class trade {
-}
+//package com.bunge.trade.model;public class trade {
+//}

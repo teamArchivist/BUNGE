@@ -14,13 +14,17 @@ public interface MemberMapper {
 
     public Member idcheck(String id);
 
-    public Member nickcheck(String nick);
+     Member checkid(String id);
 
-    public Member emailcheck(String email);
+     Member checknick(String nick);
 
-    Member findid(HashMap<String , String> map);
+     Member checkemail(String email);
 
-    int findpwd(HashMap<String, String> map);
+     Member findid(HashMap<String , String> map);
+
+     int findpwd(HashMap<String, String> map);
+
+    int pwdset(Member member);
 
     int pwdset(HashMap<String, String> map);
 }
