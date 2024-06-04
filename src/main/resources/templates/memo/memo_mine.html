@@ -327,7 +327,7 @@
 
                                 <div id="_dm-tabsChallenge" class="tab-pane fade" role="tabpanel" aria-labelledby="challenge-tab">
                                     <div class="row text-center mb-4">
-                                        <div th:each="myChallenge:${myChallengeList}" class="col-md-2 mb-2">
+                                        <div th:if="${#lists.size(myChallengeList) > 0}"  th:each="myChallenge:${myChallengeList}" class="col-md-2 mb-2">
                                             <img th:src="${myChallenge.cover}" width="150px" height="200px">
                                             <button type="button" class="btn btn-success rounded-pill" data-bs-toggle="modal"
                                                     data-bs-target="#verticalWithScrollbar"

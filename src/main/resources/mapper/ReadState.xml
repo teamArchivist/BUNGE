@@ -24,6 +24,13 @@
         where id = #{id}
     </select>
 
+    <select id="getReadState" parameterType="com.bunge.memo.domain.Memo" resultType="com.bunge.memo.domain.ReadState">
+        select *
+        from readstate
+        where id = #{id}
+        and isbn13 = #{isbn13}
+    </select>
+
     <select id="countTotalPage" parameterType="map" resultType="int">
         select totalpage
         from readstate
@@ -46,10 +53,9 @@
 
     <update id="changeReadState" parameterType="com.bunge.memo.domain.ReadState">
         update readstate
-        set state = '도전'
+        set state = #{state}
         where isbn13 = #{isbn13}
         and id = #{id}
     </update>
-
 
 </mapper>

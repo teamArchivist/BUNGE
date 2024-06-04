@@ -1,5 +1,6 @@
 package com.bunge.memo.mapper;
 
+import com.bunge.memo.domain.Memo;
 import com.bunge.memo.domain.ReadState;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -17,6 +18,9 @@ public interface ReadStateMapper {
     //로그인한 사용자의 모든 독서상태
     public List<ReadState> getAllReadState(String loginId);
 
+    //기록에 대응되는 독서상태 조회
+    public ReadState getReadState(Memo memo);
+
     public int countTotalPage(ReadState readState);
 
     public int countReadPage(ReadState readState);
@@ -24,7 +28,7 @@ public interface ReadStateMapper {
     //독서상태 업데이트
     public void updateReadState(ReadState readState);
 
-    //목표도서 도전도서로 변경
+    //독서상태 변경
     public int changeReadState(ReadState readState);
 
 }
