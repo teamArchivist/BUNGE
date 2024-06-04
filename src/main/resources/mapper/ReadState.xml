@@ -44,5 +44,12 @@
         where totalpage = readpage
     </update>
 
+    <update id="changeReadState" parameterType="com.bunge.memo.domain.ReadState">
+        update readstate
+        set state = '도전'
+        where isbn13 = #{isbn13}
+        and id = #{id}
+    </update>
+
 
 </mapper>

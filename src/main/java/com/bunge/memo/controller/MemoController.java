@@ -202,7 +202,7 @@ public class MemoController {
 
 
         List<ReadState> readStates = readStateService.getAllReadState(loginId);
-        logger.info("readStates : " + readStates.toString());
+        //logger.info("readStates : " + readStates.toString());
 
         List<Book> myGoalList = new ArrayList<>();
         List<Book> myChallengeList = new ArrayList<>();
@@ -298,6 +298,13 @@ public class MemoController {
         //logger.info(memo.toString());
 
         return memoService.deleteMemo(memo);
+    }
+
+    @ResponseBody
+    @PostMapping("/change-read-state")
+    public int changeReadState(@RequestBody ReadState readState) {
+        int result = readStateService.changeReadState(readState);
+        return result;
     }
 
 }
