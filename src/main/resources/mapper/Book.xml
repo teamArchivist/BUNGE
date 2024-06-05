@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bunge.memo.mapper.BookMapper">
+
+    <insert id="addBook">
+        insert into book
+        (isbn13, title, author, pubDate, categoryName, description, cover, regitdate, score, page)
+        values
+        (#{isbn13}, #{title}, #{author}, #{pubDate}, #{categoryName}, #{description}, #{cover}, now(), 0, 0)
+    </insert>
+
+    <select id="getBookListCount" parameterType="com.bunge.memo.filter.BookFilter" resultType="int">
+        select count(*)
+        from book
+        where 1=1
+        <if test="title != null and title != ''">
+            and title like CONCAT('%', #{title}, '%')
+        </if>
+        <if test="author != null and author != ''">
+            and author like CONCAT('%', #{author}, '%')
+        </if>
+        <if test="category != null and category != ''">
+            and category like CONCAT('%', #{category}, '%')
+        </if>
+        <if test="score != null">
+            and score >= #{score}
+        </if>
+    </select>
+
+    <select id="getBookList" parameterType="com.bunge.memo.filter.BookFilter" resultType="com.bunge.memo.domain.Book">
+        select *
+        from book
+        where 1=1
+        <if test="title != null and title != ''">
+            and title like CONCAT('%', #{title}, '%')
+        </if>
+        <if test="author != null and author != ''">
+            and author like CONCAT('%', #{author}, '%')
+        </if>
+        <if test="category != null and category != ''">
+            and category like CONCAT('%', #{category}, '%')
+        </if>
+        <if test="score != null">
+            and score >= #{score}
+        </if>
+        order by regitdate desc
+        limit #{offset}, #{limit}
+    </select>
+
+
+    <select id="getBookDetail" parameterType="com.bunge.memo.filter.BookFilter" resultType="com.bunge.memo.domain.Book">
+        select *
+        from book
+        where isbn13 = #{isbn13}
+    </select>
+
+    <select id="getMyBookByState" parameterType="com.bunge.memo.domain.ReadState" resultType="com.bunge.memo.domain.Book">
+        select b.*
+        from book b
+        join readstate rs on b.isbn13 = rs.isbn13
+        where rs.state = #{state}
+        and b.isbn13 = #{isbn13}
+    </select>
+
+    <update id="updatePage" parameterType="com.bunge.memo.domain.ReadState">
+        update book
+        set page = #{totalpage}
+        where isbn13 = #{isbn13}
+    </update>
+</mapper>

@@ -6,71 +6,87 @@
 
     <!-- 문의글 삽입 -->
     <insert id="insertInquiry">
-        INSERT INTO inquiry (member_id, type_id, title, content)
-        VALUES (#{memberId}, #{typeId}, #{title}, #{content})
+        INSERT INTO inquiry (memberId, typeId, title, content, isPublic, createdAt, updatedAt)
+        VALUES (#{memberId}, #{typeId}, #{title}, #{content}, #{isPublic}, NOW(), NOW())
     </insert>
 
     <!-- 문의글 수정 -->
     <update id="updateInquiry">
         UPDATE inquiry
-        SET title = #{title}, content = #{content}, type_id = #{typeId},
-            updated_at = CURRENT_TIMESTAMP
-        WHERE inquiry_id = #{inquiryId}
+        SET title = #{title}, content = #{content}, typeId = #{typeId},
+            updatedAt = CURRENT_TIMESTAMP, isPublic = #{isPublic}, isAnswered = #{isAnswered}
+        WHERE inquiryId = #{inquiryId}
     </update>
 
     <!-- 문의글 삭제 -->
     <delete id="deleteInquiry">
-        DELETE FROM inquiry WHERE inquiry_id = #{inquiryId}
+        DELETE FROM inquiry WHERE inquiryId = #{inquiryId}
     </delete>
 
     <!-- 모든 문의글 조회 (페이징 적용) -->
-    <select id="selectAllInquiries" resultType="com.bunge.inquiry.domain.Inquiry">
-        SELECT inquiry_id AS inquiryId,
-               member_id AS memberId,
-               type_id AS typeId,
-               title,
-               content,
-               created_at AS createdAt,
-               updated_at AS updatedAt
-        FROM inquiry
-        ORDER BY inquiry_id DESC
+    <select id="selectAllInquiries" resultType="inquiry">
+        SELECT i.inquiryId AS inquiryId,
+               i.memberId AS memberId,
+               i.typeId AS typeId,
+               t.typeName AS typeName,
+               i.title,
+               i.content,
+               i.isPublic AS isPublic,
+               i.isAnswered AS isAnswered,
+               i.createdAt AS createdAt,
+               i.updatedAt AS updatedAt
+        FROM inquiry i
+                 JOIN inquiry_type t ON i.typeId = t.typeId
+        ORDER BY i.inquiryId DESC
             LIMIT #{limit} OFFSET #{offset}
     </select>
 
     <!-- 문의글 조회 -->
-    <select id="selectInquiry" resultType="com.bunge.inquiry.domain.Inquiry">
-        SELECT
-            inquiry_id AS inquiryId,
-            member_id AS memberId,
-            type_id AS typeId,
-            title,
-            content,
-            created_at AS createdAt,
-            updated_at AS updatedAt
-        FROM inquiry
-        WHERE inquiry_id = #{inquiryId}
-        ORDER BY inquiry_id DESC
-            LIMIT #{limit} OFFSET #{offset}
+    <select id="selectInquiry" resultType="inquiry">
+        SELECT i.inquiryId AS inquiryId,
+               i.memberId AS memberId,
+               i.typeId AS typeId,
+               t.typeName AS typeName,
+               i.title,
+               i.content,
+               i.isPublic AS isPublic,
+               i.isAnswered AS isAnswered,
+               i.createdAt AS createdAt,
+               i.updatedAt AS updatedAt
+        FROM inquiry i
+                 JOIN inquiry_type t ON i.typeId = t.typeId
+        WHERE i.inquiryId = #{inquiryId}
     </select>
 
     <!-- 문의글 목록 조회 (유형 필터 및 페이징 적용) -->
-    <select id="selectInquiriesByType" resultType="com.bunge.inquiry.domain.Inquiry">
-        SELECT inquiry_id AS inquiryId,
-               member_id AS memberId,
-               type_id AS typeId,
-               title,
-               content,
-               created_at AS createdAt,
-               updated_at AS updatedAt
-        FROM inquiry
-        WHERE type_id = #{typeId}
-        ORDER BY inquiry_id DESC
+    <select id="selectInquiriesByType" resultType="inquiry">
+        SELECT i.inquiryId AS inquiryId,
+               i.memberId AS memberId,
+               i.typeId AS typeId,
+               t.typeName AS typeName,
+               i.title,
+               i.content,
+               i.isPublic AS isPublic,
+               i.isAnswered AS isAnswered,
+               i.createdAt AS createdAt,
+               i.updatedAt AS updatedAt
+        FROM inquiry i
+                 JOIN inquiryType t ON i.typeId = t.typeId
+        WHERE i.typeId = #{typeId}
+        ORDER BY i.inquiryId DESC
             LIMIT #{limit} OFFSET #{offset}
     </select>
 
     <!-- 리스트 카운트 조회 -->
     <select id="selectListCount" resultType="int">
         SELECT COUNT(*) FROM inquiry
+    </select>
+
+    <!-- 문의글 상세페이지 -->
+    <select id="getView" resultType="inquiry">
+        select 	 *
+        from	 inquiry
+        where    inquiryId = #{inquiryId}
     </select>
 
 </mapper>

@@ -1,20 +1,21 @@
 package com.bunge.inquiry.mapper;
 
+import java.util.List;
+
 import com.bunge.inquiry.domain.Inquiry;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.HashMap;
-import java.util.List;
-
 @Mapper
 public interface InquiryMapper {
-    void insertInquiry(Inquiry inquiry);
-    void updateInquiry(@Param("inquiry") Inquiry inquiry);
-    void deleteInquiry(@Param("inquiryId") int inquiryId);
-    Inquiry selectInquiry(int inquiryId);
+    int selectListCount();
     List<Inquiry> selectInquiriesByType(@Param("typeId") int typeId, @Param("limit") int limit, @Param("offset") int offset);
     List<Inquiry> selectAllInquiries(@Param("limit") int limit, @Param("offset") int offset);
-    int selectListCount();
+    Inquiry selectInquiry(@Param("inquiryId") Long inquiryId);
+    void insertInquiry(Inquiry inquiry);
+    void updateInquiry(Inquiry inquiry);
+    void deleteInquiry(@Param("inquiryId") Long inquiryId);
+    Inquiry getView(Long inquiryId);
 }
+
 

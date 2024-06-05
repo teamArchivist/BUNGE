@@ -18,7 +18,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler{
 	
 		public void handle(HttpServletRequest request, HttpServletResponse response,
 				AccessDeniedException accessDeniedException) throws IOException, ServletException {
-			logger.error("Access Denied Handler");
+
 			String url = "templates/error/403.html";
 			RequestDispatcher dispatcher = request.getRequestDispatcher(url);
 			dispatcher.forward(request, response);

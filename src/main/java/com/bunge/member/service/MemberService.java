@@ -5,15 +5,19 @@ import com.bunge.member.domain.Member;
 
 public interface MemberService {
 
-    public int isId(String id);
-
-    public int insert(Member m);
+    public int insert(Member member);
 
     public  Member memberinfo(String id);
 
-    public int idcheck(String id);
+    public boolean checkid(String id);
 
-    public int nickcheck(String nick);
+    public boolean checknick(String nick);
 
-    public int emailcheck(String email);
+    public boolean checkemail(String email);
+
+    public String findid(String name, String email);
+
+    public boolean findpwd(String id, String name, String email);
+
+    public boolean pwdset(Member member);
 }

@@ -1,7 +1,4 @@
 $(function(){
-	$(".cancelbtn").click(function () {
-		location.href="index.jsp";
-	});
 	//id keyup 시작
 	$("input[name=id]").on('keyup',
 		function(){
@@ -18,8 +15,7 @@ $(function(){
 			}
 			//id 유효성 검사
 		$.ajax({
-				type : "post" ,
-				url : "idcheck" ,
+				url : "checkid" ,
 				data : {"id" : id} ,
 				success : function(idck) {
 					if (idck == '-1') {
@@ -77,8 +73,7 @@ $("input[name=nick]").on('keyup' ,
 		}//nick 유효성 end
 		
 		$.ajax ({
-				type : "post" ,
-				url : "nickcheck" ,
+				url : "checknick" ,
 				data : {"nick" : nick} ,
 				success : function(nick) {
 					if (nick == '-1') {
@@ -97,7 +92,7 @@ $("input[name=gender]").click(function(){
 	if(!gender) {
 		$("#gender_message").css('color', 'red').text('성별 : 성별을 선택하세요.').show();
 	} else {
-		$("#gender_message").hide();
+		$("#gender_message").css('color','green').text('성별: 체크완료');
 	}
 });//성별 유효성 검사 end
 
@@ -141,8 +136,7 @@ $("input[name=email]").on('keyup',
 			return;
 		}
 		$.ajax ({
-			type : "post" ,
-				url : "emailcheck" ,
+				url : "checkemail" ,
 				data : {"email" : email} ,
 				success : function(emck) {
 					if (emck == '-1') {

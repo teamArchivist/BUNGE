@@ -2,50 +2,88 @@ package com.bunge.member.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.bunge.member.domain.Member;
 import com.bunge.member.mapper.MemberMapper;
+
+import java.util.HashMap;
+
 @Service
 public class MemberServiceimpl implements MemberService{
 
-    private MemberMapper    dao;
-    private PasswordEncoder passwordEncoder;
+    private MemberMapper    memberMapper;
+
 
     @Autowired
-    public MemberServiceimpl(MemberMapper dao, PasswordEncoder passwordEncoder) {
-        this.dao = dao;
-        this.passwordEncoder = passwordEncoder;
+    public MemberServiceimpl(MemberMapper memberMapper) {
+        this.memberMapper = memberMapper;
+
     }
     @Override
-    public int isId (String id) {
-        Member rmember = dao.isId(id);
-        return (rmember==null) ? -1 : 1; //-1은 아이디가 존재하지 않는 경우
-    }									 // 1은 아이디가 존재하는 경우
-    @Override
-    public int insert(Member m) {
-        return dao.insert(m);
+    public int insert(Member member) {
+        return memberMapper.insert(member);
     }
     @Override
     public Member memberinfo(String id) {
-        return dao.isId(id);
+        return memberMapper.checkid(id);
     }
 
     @Override
-    public int idcheck(String id) {
-        Member m = dao.idcheck(id);
-        return (m==null) ? -1 : 1;
+    public boolean checkid(String id) {
+        Member member = memberMapper.checkid(id);
+        if(member != null) return true;
+        return false;
     }
 
     @Override
-    public int nickcheck(String nick) {
-        Member m = dao.nickcheck(nick);
-        return (m==null) ? -1 : 1;
+    public boolean checknick(String nick) {
+        Member member = memberMapper.checknick(nick);
+        if(member != null) return true;
+        return false;
     }
 
     @Override
-    public int emailcheck(String email) {
-        Member m = dao.emailcheck(email);
-        return (m==null) ? -1 : 1;
+    public boolean checkemail(String email) {
+        Member member = memberMapper.checkemail(email);
+        if(member != null) return true;
+        return false;
+    }
+
+    @Override
+    public String findid(String name, String email) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("name", name);
+        map.put("email", email);
+        Member memid = memberMapper.findid(map);
+        if(memid != null) {
+            String memberId = memid.getId();
+            String findid = "";
+            if(memberId.length() > 2) {
+                findid = memberId.substring(0, memberId.length() - 2) + "**";
+            } else {
+                findid = memberId.substring(0, 1) + "**";
+            }
+            return findid;
+        }
+        return null;
+    }
+    @Override
+    public boolean findpwd(String id, String name, String email) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("id", id);
+        map.put("name", name);
+        map.put("email", email);
+        int count = memberMapper.findpwd(map);
+        return count == 1;
+    }
+
+    @Override
+    public boolean pwdset(Member member) {
+        HashMap<String, String> map = new HashMap<>();
+        map.put("pwd", member.getPwd());
+        map.put("findid", member.getId());
+        int result = memberMapper.pwdset(map);
+        if(result ==1) return true;
+        return false;
     }
 }

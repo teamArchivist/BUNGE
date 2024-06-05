@@ -1,25 +1,25 @@
 package com.bunge.inquiry.domain;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 public class Inquiry {
-    private int inquiryId;
+    private Long inquiryId;
     private String memberId;
     private int typeId;
+    private String typeName;
     private String title;
     private String content;
+    private boolean isPublic;  // boolean 타입으로 설정
+    private boolean isAnswered;
     private Timestamp createdAt;
     private Timestamp updatedAt;
-    private List<InquiryAttachment> attachments;
-    private List<InquiryComment> comments;
 
     // Getters and Setters
-    public int getInquiryId() {
+    public Long getInquiryId() {
         return inquiryId;
     }
 
-    public void setInquiryId(int inquiryId) {
+    public void setInquiryId(Long inquiryId) {
         this.inquiryId = inquiryId;
     }
 
@@ -55,6 +55,22 @@ public class Inquiry {
         this.content = content;
     }
 
+    public boolean isPublic() {
+        return isPublic;
+    }
+
+    public void setPublic(boolean isPublic) {
+        this.isPublic = isPublic;
+    }
+
+    public boolean isAnswered() {
+        return isAnswered;
+    }
+
+    public void setAnswered(boolean isAnswered) {
+        this.isAnswered = isAnswered;
+    }
+
     public Timestamp getCreatedAt() {
         return createdAt;
     }
@@ -71,19 +87,27 @@ public class Inquiry {
         this.updatedAt = updatedAt;
     }
 
-    public List<InquiryAttachment> getAttachments() {
-        return attachments;
+    public String getTypeName() {
+        return typeName;
     }
 
-    public void setAttachments(List<InquiryAttachment> attachments) {
-        this.attachments = attachments;
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
 
-    public List<InquiryComment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<InquiryComment> comments) {
-        this.comments = comments;
+    @Override
+    public String toString() {
+        return "Inquiry{" +
+                "inquiryId=" + inquiryId +
+                ", memberId='" + memberId + '\'' +
+                ", typeId=" + typeId +
+                ", typeName='" + typeName + '\'' +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", isPublic=" + isPublic +
+                ", isAnswered=" + isAnswered +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 }

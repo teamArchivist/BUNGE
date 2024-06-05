@@ -25,34 +25,19 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class CustomUserDatilsService implements UserDetailsService{
-	private static final Logger logger = LoggerFactory.getLogger(LoginFailHandeler.class);
 	
 	@Autowired
-	private MemberMapper dao;
+	MemberMapper membermapper;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		logger.info("username은 로그인시 입력한 값 ㅣ " + username);
-		Member users = dao.isId(username);
-		if(users==null) {
+
+		Member member = membermapper.checkid(username);
+		if(member==null) {
 
 			throw new UsernameNotFoundException("User not found with username: " + username);
 		}
-		//GrantedAuthority : 인증 갸채애 부여된 권한을 나타내기 위한 인터페이스로 이를 구현한 구현체는 
-		//					 권한을 문자열로 넣어주면 됩니다.
-		//SimpleGrantedAuthority : GrantedAuthority의 구현체입니다,
-		Collection<SimpleGrantedAuthority> roles = new ArrayList<SimpleGrantedAuthority>();
-		
-		//roles.add(new SimpleGrantedAuthority(users.getAuth()));
-
-		return User.withUsername(username)
-				.password(users.getPwd())
-				.authorities(Collections.emptyList()) // Set authorities if needed
-				.accountExpired(false)
-				.accountLocked(false)
-				.credentialsExpired(false)
-				.disabled(false)
-				.build();
+		return member;
 	}
 
 }

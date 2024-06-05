@@ -5,8 +5,7 @@ import java.sql.Timestamp;
 public class InquiryComment {
     private int commentId;
     private int inquiryId;
-    private String authorId;
-    private boolean isAdmin;
+    private boolean AdminId;
     private String content;
     private Timestamp createdAt;
 
@@ -26,28 +25,20 @@ public class InquiryComment {
         this.inquiryId = inquiryId;
     }
 
-    public String getAuthorId() {
-        return authorId;
-    }
-
-    public void setAuthorId(String authorId) {
-        this.authorId = authorId;
-    }
-
-    public boolean isAdmin() {
-        return isAdmin;
-    }
-
-    public void setAdmin(boolean admin) {
-        isAdmin = admin;
-    }
-
     public String getContent() {
         return content;
     }
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public boolean isAdminId() {
+        return AdminId;
+    }
+
+    public void setAdminId(boolean adminId) {
+        AdminId = adminId;
     }
 
     public Timestamp getCreatedAt() {

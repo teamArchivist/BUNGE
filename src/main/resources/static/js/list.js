@@ -118,7 +118,7 @@ function ajax(sdata) {
 			*/
 $(function() {
 	$("#inquiry_add").click(function(){
-		location.href="add";
+		location.href="addform";
 	})
 	
 //	$("#viewcount").change(function (){

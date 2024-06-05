@@ -3,20 +3,26 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.bunge.member.mapper.MemberMapper">
-    <select id="isId" resultType="member">
-        select * from member where id = #{id}
-    </select>
     <insert id="insert">
         insert into member (id, pwd, name, nick, gender, zipcode, addr1, addr2, phone, email, birthdate)
         values (#{id}, #{pwd}, #{name}, #{nick}, #{gender}, #{zipcode}, #{addr1}, #{addr2}, #{phone}, #{email}, #{birthdate})
     </insert>
-    <select id="idcheck" resultType="member">
+    <select id="checkid" resultType="member">
         select * from member where id = #{id}
     </select>
-    <select id="nickcheck" resultType="member">
+    <select id="checknick" resultType="member">
         select * from member where nick = #{nick}
     </select>
-    <select id="emailcheck" resultType="member">
+    <select id="checkemail" resultType="member">
         select * from member where email = #{email}
     </select>
+    <select id="findid" resultType="member">
+        select id from member where name = #{name} AND email = #{email}
+    </select>
+    <select id="findpwd" resultType="int">
+        select count(*) as count from member where id = #{id} and name = #{name} and email = #{email}
+    </select>
+    <update id="pwdset">
+        update member set pwd = #{pwd} where id = #{findid};
+    </update>
 </mapper>
