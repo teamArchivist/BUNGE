@@ -5,6 +5,8 @@
     <title>내 정보 보기</title>
     <links>
         <!--/* link, script 태그 영역 */-->
+        <script th:src="@{/js/join.js}"></script>
+        <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
     </links>
 </head>
 <body>
@@ -21,68 +23,264 @@
                         <div class="text-center">
                             <h1 class="h3">내 정보 수정</h1>
                         </div>
-
                             <div class="w-md-400px d-inline-flex row g-3 mb-4">
-                                <div class="mininav-toggle text-center py-2">
-                                    <img class="hv-oc img-xl rounded-circle border" sec:authentication="principal.profile" alt="Profile">
-                                </div>
-
-                                <div class="mt-2 col-9">
-                                    <font style="vertical-align: inherit;">아이디</font>
-                                    <input type="text" name="id" class="form-control" th:value="${memberinfo.getId()}">
+                                <div class="mt-4 col-9">
+                                    <img class="hv-oc img-xl rounded-circle border" th:value="${memberinfo.profile}" alt="Profile">
                                 </div>
                                 <div class="mt-4 col-3">
-                                    <button type="button" class="btn btn-primary"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">변경</font></font></button>
+                                    <!-- Vertical centered modal -->
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changeprofile"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+                                        변경
+                                    </font></font></button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="changeprofile" tabindex="-1" aria-labelledby="changeprofileLabel" style="display: none;" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <form th:action="@{/mypage/update-process}" method="post">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="changeprofileLabel"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">프로필 변경</font></font></h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫다"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <input type="file" name="profile" class="form-control" accept="image/*" >
+                                                    <input type="hidden" name="id" class="form-control" th:value="${memberinfo.id}">
+                                                    <input type="hidden" name="nick" class="form-control" th:value="${memberinfo.nick}">
+                                                    <input type="hidden" name="name" class="form-control" th:value="${memberinfo.name}">
+                                                    <input type="hidden" name="zipcode" class="form-control" th:value="${memberinfo.zipcode}">
+                                                    <input type="hidden" name="addr1" class="form-control" th:value="${memberinfo.addr1}">
+                                                    <input type="hidden" name="addr2" class="form-control" th:value="${memberinfo.addr2}">
+                                                    <input type="hidden" name="phone" class="form-control" th:value="${memberinfo.phone}">
+                                                    <input type="hidden" name="email" class="form-control" th:value="${memberinfo.email}">
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-primary">변경하기</button>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">돌아가기</button>
+                                                </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- END : Vertical centered modal -->
+                                </div>
+                                <div class="mt-2 col-9">
+                                    <font style="vertical-align: inherit;">아이디</font>
+                                    <input type="text" name="id" class="form-control" th:value="${memberinfo.id}" required>
                                 </div>
                                 <div class="mt-2 col-9">
                                     <font style="vertical-align: inherit;">비밀번호</font>
                                     <input type="password" name="pwd" class="form-control" th:value="${#strings.substring(memberinfo.password, 0,8)}">
                                 </div>
+
                                 <div class="mt-4 col-3">
-                                    <button type="button" class="btn btn-primary"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">변경</font></font></button>
+                                    <!-- Vertical centered modal -->
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changepwd"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+                                        변경
+                                    </font></font></button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="changepwd" tabindex="-1" aria-labelledby="changepwdLabel" style="display: none;" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <form th:action="@{/mypage/pwd-update-process}" method="post">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="changepwdLabel"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">비밀번호 변경</font></font></h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫다"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <input type="password" name="pwd" class="form-control" placeholder="비밀번호 입력">
+                                                    <input type="hidden" name="id" class="form-control" th:value="${memberinfo.id}">
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-primary">변경하기</button>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">돌아가기</button>
+                                                </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- END : Vertical centered modal -->
                                 </div>
                                 <div class="mt-2 col-9">
                                     <font style="vertical-align: inherit;">이름</font>
-                                    <input type="text" name="name" class="form-control" th:value="${memberinfo.getName()}">
-                                </div>
-                                <div class="mt-4 col-3">
-                                    <button type="button" class="btn btn-primary"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">변경</font></font></button>
+                                    <input type="text" name="name" class="form-control" th:value="${memberinfo.name}">
                                 </div>
                                 <div class="mt-2 col-9">
                                     <font style="vertical-align: inherit;">닉네임</font>
-                                    <input type="text" name="nick" class="form-control" th:value="${memberinfo.getNick()}">
+                                    <input type="text" name="nick" class="form-control" th:value="${memberinfo.nick}">
                                 </div>
                                 <div class="mt-4 col-3">
-                                    <button type="button" class="btn btn-primary"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">변경</font></font></button>
+                                    <!-- Vertical centered modal -->
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changenick"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+                                        변경
+                                    </font></font></button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="changenick" tabindex="-1" aria-labelledby="changenickLabel" style="display: none;" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <form th:action="@{/mypage/update-process}" method="post">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="changenickLabel"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">닉네임 변경</font></font></h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫다"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <input type="text" name="nick" class="form-control" placeholder="닉네임을 입력" maxlength="10">
+                                                        <input type="hidden" name="id" class="form-control" th:value="${memberinfo.id}">
+                                                        <input type="hidden" name="name" class="form-control" th:value="${memberinfo.name}">
+                                                        <input type="hidden" name="zipcode" class="form-control" th:value="${memberinfo.zipcode}">
+                                                        <input type="hidden" name="addr1" class="form-control" th:value="${memberinfo.addr1}">
+                                                        <input type="hidden" name="addr2" class="form-control" th:value="${memberinfo.addr2}">
+                                                        <input type="hidden" name="phone" class="form-control" th:value="${memberinfo.phone}">
+                                                        <input type="hidden" name="email" class="form-control" th:value="${memberinfo.email}">
+                                                        <input type="hidden" name="profile" class="form-control" th:value="${memberinfo.profile}">
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-primary">변경하기</button>
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">돌아가기</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- END : Vertical centered modal -->
                                 </div>
-                                <div class="mt-2 col-sm-6">
+                                <div class="mt-2 col-9">
                                     <font style="vertical-align: inherit;">우편번호</font>
-                                    <input type="text" name="zipcode" class="form-control" th:value="${memberinfo.getZipcode()}">
+                                    <input type="text" name="zipcode" class="form-control" th:value="${memberinfo.zipcode}">
                                 </div>
-                                <div class="mt-4 col-sm-6">
-                                    <input type="button" class="btn btn-primary" value="우편검색" name="postcode">
+                                <div class="mt-4 col-3">
+                                    <!-- Vertical centered modal -->
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changeaddr"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+                                        변경
+                                    </font></font></button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="changeaddr" tabindex="-1" aria-labelledby="changeaddrLabel" style="display: none;" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <form th:action="@{/mypage/update-process}" method="post">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="changeaddrLabel"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">우편변호 변경</font></font></h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫다"></button>
+                                                    </div>
+                                                    <div class="modal-body d-inline-flex row">
+                                                        <div class="col-sm-6">
+                                                            <input type="text" name="zipcode" class="form-control" placeholder="우편번호">
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <input type="button" class="btn btn-primary" value="우편검색" name="postcode">
+                                                        </div>
+                                                        <div class="col-12 mt-3">
+                                                            <input type="text" name="addr1" class="form-control" placeholder="주소입력">
+                                                        </div>
+                                                        <div class="col-12 mt-3">
+                                                            <input type="text" name="addr2" class="form-control" placeholder="상세주소 입력">
+                                                        </div>
+                                                        <input type="hidden" name="id" class="form-control" th:value="${memberinfo.id}">
+                                                        <input type="hidden" name="name" class="form-control" th:value="${memberinfo.name}">
+                                                        <input type="hidden" name="nick" class="form-control" th:value="${memberinfo.nick}">
+                                                        <input type="hidden" name="phone" class="form-control" th:value="${memberinfo.phone}">
+                                                        <input type="hidden" name="email" class="form-control" th:value="${memberinfo.email}">
+                                                        <input type="hidden" name="profile" class="form-control" th:value="${memberinfo.profile}">
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-primary">변경하기</button>
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">돌아가기</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- END : Vertical centered modal -->
                                 </div>
                                 <div class="mt-2 col-9">
                                     <font style="vertical-align: inherit;">주소</font>
-                                    <input type="text" name="addr1" class="form-control" th:value="${memberinfo.getAddr1()}">
+                                    <input type="text" name="addr1" class="form-control" th:value="${memberinfo.addr1}">
                                 </div>
                                 <div class="mt-2 col-9">
                                     <font style="vertical-align: inherit;">상세주소</font>
-                                    <input type="text" name="addr2" class="form-control" required th:value="${memberinfo.getAddr2()}">
+                                    <input type="text" name="addr2" class="form-control" required th:value="${memberinfo.addr2}">
                                 </div>
                                 <div class="mt-2 col-9">
                                     <font style="vertical-align: inherit;">핸드폰</font>
-                                    <input type="text" name="phone" class="form-control"  required th:value="${memberinfo.getPhone()}">
+                                    <input type="text" name="phone" class="form-control"  required th:value="${memberinfo.phone}">
                                 </div>
                                 <div class="mt-4 col-3">
-                                    <button type="button" class="btn btn-primary"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">변경</font></font></button>
+                                    <!-- Vertical centered modal -->
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changephone"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+                                        변경
+                                    </font></font></button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="changephone" tabindex="-1" aria-labelledby="changephoneLabel" style="display: none;" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <form th:action="@{/mypage/update-process}" method="post">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="changephoneLabel"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">핸드폰 변경</font></font></h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫다"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <input type="text" name="phone" class="form-control" placeholder="핸드폰번호 입력">
+                                                        <input type="hidden" name="id" class="form-control" th:value="${memberinfo.id}">
+                                                        <input type="hidden" name="name" class="form-control" th:value="${memberinfo.name}">
+                                                        <input type="hidden" name="nick" class="form-control" th:value="${memberinfo.nick}">
+                                                        <input type="hidden" name="zipcode" class="form-control" th:value="${memberinfo.zipcode}">
+                                                        <input type="hidden" name="addr1" class="form-control" th:value="${memberinfo.addr1}">
+                                                        <input type="hidden" name="addr2" class="form-control" th:value="${memberinfo.addr2}">
+                                                        <input type="hidden" name="email" class="form-control" th:value="${memberinfo.email}">
+                                                        <input type="hidden" name="profile" class="form-control" th:value="${memberinfo.profile}">
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-primary">변경하기</button>
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">돌아가기</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- END : Vertical centered modal -->
                                 </div>
                                 <div class="mt-2 col-9">
                                     <font style="vertical-align: inherit;">이메일</font>
-                                    <input type="email" name="email" class="form-control" aria-label="Email" th:value="${memberinfo.getEmail()}">
+                                    <input type="email" name="email" class="form-control" aria-label="Email" th:value="${memberinfo.email}">
                                 </div>
                                 <div class="mt-4 col-3">
-                                    <button type="button" class="btn btn-primary"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">변경</font></font></button>
+                                    <!-- Vertical centered modal -->
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changeemail"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+                                        변경
+                                    </font></font></button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="changeemail" tabindex="-1" aria-labelledby="changeemailLabel" style="display: none;" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <form th:action="@{/mypage/update-process}" method="post">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="changeemailLabel"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">이메일 변경</font></font></h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫다"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <input type="text" name="email" class="form-control" placeholder="이메일 입력">
+                                                        <input type="hidden" name="id" class="form-control" th:value="${memberinfo.id}">
+                                                        <input type="hidden" name="name" class="form-control" th:value="${memberinfo.name}">
+                                                        <input type="hidden" name="nick" class="form-control" th:value="${memberinfo.nick}">
+                                                        <input type="hidden" name="zipcode" class="form-control" th:value="${memberinfo.zipcode}">
+                                                        <input type="hidden" name="addr1" class="form-control" th:value="${memberinfo.addr1}">
+                                                        <input type="hidden" name="addr2" class="form-control" th:value="${memberinfo.addr2}">
+                                                        <input type="hidden" name="phone" class="form-control" th:value="${memberinfo.phone}">
+                                                        <input type="hidden" name="profile" class="form-control" th:value="${memberinfo.profile}">
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-primary">변경하기</button>
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">돌아가기</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- END : Vertical centered modal -->
                                 </div>
                             </div>
                             <div class="d-grid mt-4">

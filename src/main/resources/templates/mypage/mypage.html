@@ -5,6 +5,7 @@
     <title>마이페이지</title>
     <links>
         <!--/* link, script 태그 영역 */-->
+        <script th:src="@{/js/mypage.js}"></script>
     </links>
 </head>
 <body>
@@ -33,10 +34,9 @@
                             <p>간단한 메세지</p>
                         </blockquote>
                     </div>
-
                 </figure>
                 <div class="d-inline-flex justify-content-end pt-xl-5 gap-2 ms-auto">
-                    <form th:action="@{/mypage/myinfo}" method="post" style="margin-bottom:0px" name="myinfo">
+                    <form th:action="@{/mypage/myinfo}" method="get" style="margin-bottom:0px" name="myinfo">
                         <button class="btn btn-light text-nowrap">프로필 편집</button>
                     </form>
                 </div>
