@@ -33,4 +33,11 @@
         where no = #{no}
     </delete>
 
+    <insert id="addReviewComment">
+        insert into reviewcomm
+        (id, reviewno, content, created)
+        values
+        (#{id}, #{reviewno}, #{content}, now())
+    </insert>
+
 </mapper>

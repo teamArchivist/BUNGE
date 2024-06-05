@@ -2,6 +2,7 @@ package com.bunge.review.mapper;
 
 import com.bunge.memo.domain.Book;
 import com.bunge.review.domain.Review;
+import com.bunge.review.domain.ReviewComm;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.HashMap;
@@ -24,6 +25,9 @@ public interface ReviewMapper {
 
     //리뷰 삭제
     public int deleteReview(Review review);
+
+    //리뷰 댓글 등록
+    public int addReviewComment(ReviewComm reviewComm);
 
 
 }
