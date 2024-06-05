@@ -167,13 +167,102 @@
 
                                 <p class="card-text">작성자 : [[${review.id}]]</p>
                                 <p class="card-text">평점 : [[${review.score}]]</p>
-                                <p class="card-text">작성 : [[${review.created}]]</p>
                                 <p class="card-text">도전기간 : [[${review.challengeperiod}]]일</p>
                                 <p class="card-text">[[${review.content}]]</p>
+
                             </div>
-                        </div>
-                    </div>
-                </div>
+
+                            <div class="card-footer mt-4 pt-3 border-top d-flex align-items-center">
+                                <div class="d-flex g-2">
+                                    <button type="button" class="btn btn-icon btn-sm btn-link px-2 py-0">
+                                        <i class="demo-pli-heart-2 fs-5 me-2"></i>87
+                                    </button>
+                                    <button type="button" class="btn btn-icon btn-sm btn-link px-2 py-0 comment-toggle" th:data-review-no="${review.no}">
+                                        <i class="demo-pli-speech-bubble-4 fs-5 me-2"></i>107
+                                    </button>
+                                </div>
+                                <small class="text-body-secondary ms-auto">[[${review.created}]]</small>
+                            </div>
+
+                            <div class="reviewComment-section bg-dark" th:id="${#strings.append('commentSection', review.no)}" style="display:none;">
+                                <div class="card card-body mt-2 bg-dark">
+                                    <!-- 댓글 리스트 -->
+                                    <div class="reviewComment-list" th:id="${#strings.append('commentList', review.no)}">
+
+                                        <div class="row align-items-start mb-3">
+                                            <div class="col-sm-2 text-center" style="font-size:8px">
+                                                <img th:src="@{/img/profile-photos/1.png}" class="img-xs rounded-circle">
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <div class="row align-items-center" style="font-size:8px">
+                                                    admin (24-06-04) &nbsp; &nbsp;
+                                                    <button type="button" class="btn btn-icon btn-outline-light rounded-circle btn-xs ml">
+                                                        <i class="demo-pli-pencil"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-icon btn-outline-danger rounded-circle btn-xs ml">
+                                                        <i class="demo-pli-trash"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="row">
+                                                    안녕하세요 최대 100글자 까지 가능합니다.ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇ
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row align-items-start mb-3">
+                                            <div class="col-sm-2 text-center" style="font-size:8px">
+                                                <img th:src="@{/img/profile-photos/1.png}" class="img-xs rounded-circle">
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <div class="row align-items-center" style="font-size:8px">
+                                                    admin (24-06-04) &nbsp; &nbsp;
+                                                    <button type="button" class="btn btn-icon btn-outline-light rounded-circle btn-xs ml">
+                                                        <i class="demo-pli-pencil"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-icon btn-outline-danger rounded-circle btn-xs ml">
+                                                        <i class="demo-pli-trash"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="row">
+                                                    안녕하세요 최대 100글자 까지 가능합니다.ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇ
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row align-items-start mb-3">
+                                            <div class="col-sm-2 text-center" style="font-size:8px">
+                                                <img th:src="@{/img/profile-photos/1.png}" class="img-xs rounded-circle">
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <div class="row align-items-center" style="font-size:8px">
+                                                    admin (24-06-04) &nbsp; &nbsp;
+                                                    <button type="button" class="btn btn-icon btn-outline-light rounded-circle btn-xs ml">
+                                                        <i class="demo-pli-pencil"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-icon btn-outline-danger rounded-circle btn-xs ml">
+                                                        <i class="demo-pli-trash"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="row">
+                                                    안녕하세요 최대 100글자 까지 가능합니다.ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇ
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="input-group mt-3 d-flex gap-2 align-items-center">
+                                        <input type="text" class="form-control reviewComment-input" th:id="${#strings.append('commentInput', review.no)}" placeholder="댓글을 입력하세요">
+                                        <button class="btn btn-icon btn-primary btn-xs rounded-circle flex-shrink-0" type="button" th:data-review-no="${review.no}" onclick="addComment(this)">
+                                            <i class="demo-pli-add"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div> <!-- <div class="card mb-3 hv-grow-parent h-100 bg-dark text-white"> end -->
+                    </div> <!--div th:each="review:${reviewList}" end -->
+                </div> <!-- row end -->
 
             </div>
         </div>

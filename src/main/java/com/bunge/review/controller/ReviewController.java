@@ -2,6 +2,7 @@ package com.bunge.review.controller;
 
 import com.bunge.memo.domain.Book;
 import com.bunge.memo.service.BookService;
+import com.bunge.review.domain.ReviewComm;
 import com.bunge.review.domain.Review;
 import com.bunge.review.service.ReviewService;
 import org.slf4j.Logger;
@@ -21,12 +22,10 @@ public class ReviewController {
     private static final Logger logger = LoggerFactory.getLogger(ReviewController.class);
 
     private ReviewService reviewService;
-    private BookService bookService;
 
     @Autowired
-    public ReviewController(ReviewService reviewservice, BookService bookService) {
+    public ReviewController(ReviewService reviewservice) {
         this.reviewService = reviewservice;
-        this.bookService = bookService;
     }
 
     @GetMapping("/main")
@@ -36,7 +35,7 @@ public class ReviewController {
         //logger.info("loginId : " + loginId);
 
         List<Review> reviewList = reviewService.getAllReviews();
-        logger.info(reviewList.toString());
+        //logger.info(reviewList.toString());
 
         modelAndView.addObject("loginId", loginId);
         modelAndView.addObject("reviewList", reviewList);
@@ -68,7 +67,7 @@ public class ReviewController {
     @ResponseBody
     @PostMapping("/delete-review")
     public int deleteReview(@RequestBody Review review) {
-        logger.info(review.toString());
+        //logger.info(review.toString());
         return reviewService.deleteReview(review);
     }
 
@@ -76,6 +75,13 @@ public class ReviewController {
     @PostMapping("/get-all-reviews")
     public List<Review> getAllReview() {
         return reviewService.getAllReviews();
+    }
+
+    @ResponseBody
+    @PostMapping("/add-comment")
+    public int addReviewComment(ReviewComm reviewComm) {
+        logger.info(reviewComm.toString());
+        return reviewService.addReviewComment(reviewComm);
     }
 
 }

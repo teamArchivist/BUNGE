@@ -2,6 +2,7 @@ package com.bunge.review.service;
 
 import com.bunge.memo.domain.Book;
 import com.bunge.review.domain.Review;
+import com.bunge.review.domain.ReviewComm;
 import com.bunge.review.mapper.ReviewMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,11 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public int deleteReview(Review review) {
         return reviewMapper.deleteReview(review);
+    }
+
+    @Override
+    public int addReviewComment(ReviewComm reviewComm) {
+        return reviewMapper.addReviewComment(reviewComm);
     }
 
 

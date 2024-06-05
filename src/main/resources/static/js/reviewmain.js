@@ -4,6 +4,7 @@ let header = $("meta[name='_csrf_header']").attr("content");
 $(function() {
 
     let loginId = $("#loginId").text();
+    let page = 1;
 
     $("body").on("click", ".modifyBtn", function() {
         let no = $(this).data("no")
@@ -120,4 +121,104 @@ $(function() {
         }
     })
 
-})
+    $("body").on("click", ".comment-toggle", function() {
+        let reviewno = $(this).data("review-no");
+        let commentSection = $("#commentSection" + reviewno);
+
+        if (commentSection.is(":visible")) {
+            commentSection.hide()
+        } else {
+            commentSection.show()
+            //getCommList(reviewno, 1);
+        }
+    }) // end
+
+    window.addComment = function(button) {
+        //console.log("여기");
+        let reviewno = $(button).data('review-no');
+        let contentselector = $("#commentInput" + reviewno);
+        let content = contentselector.val();
+        //console.log(content)
+
+        if (content) {
+            $.ajax({
+                url: '/review/add-comment',  // 서버의 댓글 추가 엔드포인트
+                method: 'post',
+                data: {
+                    id : loginId,
+                    reviewno: reviewno,
+                    content: content
+                },
+                cache: false,
+                beforeSend : function (xhr) {
+                    if (header && token) {
+                        xhr.setRequestHeader(header, token);
+                    }
+                },
+                success: function(response) {
+                    // 댓글 추가 성공 시 UI 업데이트
+                    contentselector.val('');  // 입력 필드 초기화
+                    if (response == 1) {
+                        getCommList(reviewno, 1)
+                    }
+                },
+                error: function() {
+                    alert('댓글을 추가하는 중 오류가 발생했습니다.');
+                }
+            });
+        } else {
+            alert('댓글을 입력하세요.');
+        }
+    } //end
+
+    function getCommList(reviewno, currentPage) {
+        $.ajax({
+            url: "/review/comment-list",
+            type: "post",
+            data: {
+                reviewno : reviewno,
+                page : currentPage
+            },
+            dataType: "json",
+            beforeSend : function (xhr) {
+                if (header && token) {
+                    xhr.setRequestHeader(header, token);
+                }
+            },
+            success: function(rdata) {
+                $(".comment-toggle").html("<i class='demo-pli-speech-bubble-4 fs-5 me-2'></i>" + rdata.listcount)
+                if (rdata.listcount > 0) {
+                    $(rdata.list).each(function () {
+                        let output = ''
+                        let button = ''
+
+                        if (loginId == this.id) {
+                            button  = "<button type='button' class='btn btn-icon btn-outline-light rounded-circle btn-xs ml'>"
+                                + "<i class='demo-pli-pencil'></i>"
+                                + "</button>"
+                                + "<button type='button' class='btn btn-icon btn-outline-danger rounded-circle btn-xs ml'>"
+                                + "<i class='demo-pli-trash'></i>"
+                                + "</button>"
+                        }
+
+                        output += "<div class='row align-items-start mb-3'>"
+                            + "<div class='col-sm-2 text-center' style='font-size:8px'>"
+                            + this.id + "(" + this.created + ")" + "&nbsp;&nbsp;"
+                            + button
+                            + "</div>"
+                            + "<div class='row'>"
+                            + this.content
+                            + "</div>"
+
+                        $("#commentList" + reviewno).append(output)
+                    }) //each end
+                } //if end
+                else {
+                    $("#commentList" + reviewno).append("<span>등록된 댓글이 없습니다</span>")
+                }
+            } //success end
+        }) //ajax end
+    } //function getCommList(reviewno, currentPage) end
+
+
+}) //ready end
