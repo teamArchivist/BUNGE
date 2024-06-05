@@ -7,13 +7,13 @@
         insert into member (id, pwd, name, nick, gender, zipcode, addr1, addr2, phone, email, birthdate)
         values (#{id}, #{pwd}, #{name}, #{nick}, #{gender}, #{zipcode}, #{addr1}, #{addr2}, #{phone}, #{email}, #{birthdate})
     </insert>
-    <select id="idcheck" resultType="member">
+    <select id="checkid" resultType="member">
         select * from member where id = #{id}
     </select>
-    <select id="nickcheck" resultType="member">
+    <select id="checknick" resultType="member">
         select * from member where nick = #{nick}
     </select>
-    <select id="emailcheck" resultType="member">
+    <select id="checkemail" resultType="member">
         select * from member where email = #{email}
     </select>
     <select id="findid" resultType="member">

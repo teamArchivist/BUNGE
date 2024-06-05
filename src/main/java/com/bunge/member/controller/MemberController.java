@@ -1,7 +1,10 @@
 package com.bunge.member.controller;
 
+import com.bunge.member.domain.Mail;
 import com.bunge.member.domain.Member;
 import com.bunge.member.service.MemberService;
+import com.bunge.member.service.SendMail;
+import com.mysql.cj.Session;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.security.Principal;
 
 @Controller
@@ -26,11 +31,13 @@ public class MemberController {
 
     private MemberService   memberservice;
     private PasswordEncoder passwordEncoder;
+    private SendMail sendmail;
 
     @Autowired
-    public MemberController(MemberService memberservice, PasswordEncoder passwordEncoder) {
+    public MemberController(MemberService memberservice, PasswordEncoder passwordEncoder, SendMail sendmail) {
         this.memberservice=memberservice;
         this.passwordEncoder=passwordEncoder;
+        this.sendmail=sendmail;
     }
     //임시페이지
     @PreAuthorize("isAnonymous()")
@@ -48,11 +55,13 @@ public class MemberController {
                         HttpSession session,
                         Principal userPrincipal)  {
         if (readCookie != null) {
-            mav.addObject("message" , "로그인에 성공하셨습니다.");
-            mav.addObject("url","/member/index");
+            String message = "로그인에 성공하셨습니다.";
+            mav.addObject("message" , message);
+            mav.setViewName("redirect:member/index");
         } else {
-            mav.addObject("message" ,"아이디나 비밀번호가 틀렸습니다.");
-            mav.setViewName("/member/login");
+            String message = "아이디나 비밀번호가 틀렸습니다.";
+            mav.addObject("message" , message);
+            mav.setViewName("member/login");
 
             mav.addObject("loginfail", session.getAttribute("loginfail"));
             session.removeAttribute("loginfail");
@@ -61,21 +70,21 @@ public class MemberController {
     }
     //아이디 검사
     @ResponseBody
-    @PostMapping(value = "/idcheck")
-    public boolean idcheck(@RequestParam("id") String id) {
-        return memberservice.idcheck(id);
+    @GetMapping(value = "/checkid")
+    public boolean checkid(@RequestParam("id") String id) {
+        return memberservice.checkid(id);
     }
     //닉네임 검사
     @ResponseBody
-    @PostMapping(value = "/nickcheck")
-    public boolean nickcheck(@RequestParam("nick") String nick){
-        return memberservice.nickcheck(nick);
+    @GetMapping(value = "/checknick")
+    public boolean checknick(@RequestParam("nick") String nick){
+        return memberservice.checknick(nick);
     }
     //이메일 검사
     @ResponseBody
-    @PostMapping(value ="/emailcheck")
-    public boolean emailcheck(@RequestParam("email") String email){
-        return memberservice.emailcheck(email);
+    @GetMapping(value ="/checkemail")
+    public boolean checkemail(@RequestParam("email") String email){
+        return memberservice.checkemail(email);
     }
     //회원가입 폼 이동
     @GetMapping(value="/join")
@@ -118,14 +127,12 @@ public class MemberController {
                                       @RequestParam("email") String email, Model model, HttpServletResponse response) {
         String sendid = memberservice.findid(name, email);
         if (sendid != null) {
-            String message = "아이디 찾기에 성공하셨습니다.";
-            model.addAttribute("message",message);
+            model.addAttribute("message","아이디 찾기에 성공하셨습니다.");
             model.addAttribute("sendid", sendid);
-            return "/member/idcomplete";
+            return "member/idcomplete";
         } else {
-            String message = "이름과 이메일 정보가 일치하지 않습니다.";
-            model.addAttribute("message", message);
-            return "/member/findid";
+            model.addAttribute("message", "이름과 이메일 정보가 일치하지 않습니다.");
+            return "member/findid";
         }
     }
     //비밀번호 폼 이동
@@ -139,29 +146,45 @@ public class MemberController {
     public String findpwdProcess(@RequestParam("id") String id ,
                                        @RequestParam("name") String name ,
                                        @RequestParam("email") String email, Model model,
-                                       HttpServletResponse response , HttpSession session) {
+                                       HttpServletResponse response , HttpSession session ,
+                                 Member member) {
        session.setAttribute("findid", id);
         boolean pwdset = memberservice.findpwd(id, name , email);
         if (!pwdset) {
-            String message = "아이디, 이름, 이메일 정보 중 일치하지 않습니다.";
-            model.addAttribute("message", message);
-           return "/member/findpwd";
+            model.addAttribute("message","아이디, 이름, 이메일 정보 중 일치하지 않습니다.");
+           return "member/findpwd";
         } else {
-            String message = "비밀번호 찾기에 성공하셨습니다.";
-            model.addAttribute("message", message);
+            Mail mail = new Mail();
+            mail.setTo(member.getEmail());
+            sendmail.sendMail(mail);
+            session.setAttribute("random", mail.getRandom());
+            model.addAttribute("message", "비밀번호 찾기에 성공하셨습니다.");
             model.addAttribute("pwdset", pwdset);
-            return "/member/pwdset";
+            return "member/pwdinfo";
         }
     }
+    //
+    @GetMapping(value = "/pwdset")
+    public String pwdset(String email, String random , HttpSession session){
+        logger.info(email);
+        logger.info(random);
+        if(random.equals((String) session.getAttribute("random"))) {
+            session.removeAttribute("random");
+            return "member/pwdset";
+        }else {
+            session.removeAttribute("random");
+            return "error/403";
+        }
+    }
+
     //비밀번호 재설정
-    @PreAuthorize("isAnonymous()")
     @PostMapping(value = "/pwdsetProcess")
     public String pwdset(Member member,Model model, HttpServletRequest request, HttpSession session) {
 
         String findid = (String) session.getAttribute("findid");
         //비밀번호 암호화 추가
         String encPassword = passwordEncoder.encode(member.getPwd());
-
+      
         member.setPwd(encPassword);
         member.setId(findid);
 
@@ -169,13 +192,10 @@ public class MemberController {
 
         if(result) {
             model.addAttribute("message" ,"비밀번호가 정상적으로 변경되었습니다.");
-            model.addAttribute("url","redirect:/member/login");
-            return model.toString();
-
+            return "member/login";
         } else {
             model.addAttribute("message","비밀번호 변경에 실패하였습니다.");
-            model.addAttribute("url" , "/member/pwdset");
-            return model.toString();
+            return "member/pwdset";
         }
     }
 }

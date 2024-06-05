@@ -4,6 +4,48 @@ let header = $("meta[name='_csrf_header']").attr("content");
 $(function() {
     let loginId = $("#loginId").text();
     //console.log(loginId);
+    let reviewIsbn13List = [];
+
+    $.ajax({
+        url: "/review/get-all-reviews",
+        method: "post",
+        cache: false,
+        beforeSend: function (xhr) {
+            if (header && token) {
+                xhr.setRequestHeader(header, token);
+            }
+        },
+        success: function (rdata) {
+            //console.log(rdata)
+            for (let i=0; i<rdata.length; i++) {
+                reviewIsbn13List.push(rdata[i].isbn13)
+            }
+            //console.log(reviewIsbn13List);
+            showButtons(reviewIsbn13List);
+        }
+    });
+
+    function showButtons(reviewIsbn13List) {
+        $("button#addReview").each(function() {
+            let reviewIsbn13 = $(this).attr("data-reviewisbn13");
+            //console.log(reviewIsbn13)
+            if (reviewIsbn13List.includes(reviewIsbn13)) {
+                //console.log("hi");
+                $(this).hide();
+
+                let reviewModifyBtn = $("<button>", {
+                    type: 'button',
+                    class: 'btn btn-warning rounded-pill',
+                    text: '수정하기',
+                    click: function() {
+                        location.href = "/review/main"
+                    }
+                });
+
+                $(this).parent().append(reviewModifyBtn);
+            }
+        })
+    }
 
     $("body").on("click", ".updateMemo", function() {
         let thisno = $(this).data("thisno")
@@ -104,7 +146,7 @@ $(function() {
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(checkRemainData),
             dataType: "json",
-            chche: false,
+            cache: false,
             beforeSend : function (xhr) {
                 if (header && token) {
                     xhr.setRequestHeader(header, token);
@@ -128,4 +170,104 @@ $(function() {
             $("#_dm-inputPages").val("");
         }
     })
+
+    $("body").on("click", "#changeReadState", function() {
+        let isbn13 = $(this).data("isbn13")
+        let title = $(this).data("title")
+        let page = $(this).data("page")
+        let changeReadStateData = {
+            isbn13 : isbn13,
+            id : loginId
+        }
+
+        let answer = confirm("'" + title + "' 총 " + page + " page 입니다. 도전 하시겠습니까?")
+
+        if (answer) {
+            $.ajax ({
+                url : "change-read-state",
+                method : "post",
+                contentType : "application/json; charset=utf-8",
+                data : JSON.stringify(changeReadStateData),
+                dataType : "json",
+                cache : false,
+                beforeSend : function (xhr) {
+                    if (header && token) {
+                        xhr.setRequestHeader(header, token);
+                    }
+                },
+                success : function(rdata) {
+                    console.log(this.data)
+                    console.log(rdata)
+                    if (rdata = 1) {
+                        alert("도전 도서로 변경되었습니다. 완독을 응원합니다!")
+                        location.href = "mine"
+                    }
+                }
+            })
+        }
+    })  //$("body").on("click", "#changeReadState", ... end
+
+    $("body").on("click", "#addReview", function() {
+        let reviewIsbn13 = $(this).data("reviewisbn13")
+        let reviewBookTitle = $(this).data("reviewbooktitle")
+        let reviewAuthor = $(this).data("reviewauthor")
+        let reviewCategoryName = $(this).data("reviewcategoryname")
+        let reviewCover = $(this).data("reviewcover")
+        let reviewRegitDate = $(this).data("reviewregitdate")
+        let reviewPage = $(this).data("reviewpage")
+        let reviewScore = $(this).data("reviewscore")
+
+        $("#reviewModalId").attr("value", loginId);
+        $("#reviewModalCover").attr("src", reviewCover);
+        $("#modalInputIsbn13").attr("value", reviewIsbn13)
+        $("#modalInputCover").attr("value", reviewCover)
+        $("#reviewModalBookTitle").text(reviewBookTitle);
+        $("#reviewModalAuthor").text(reviewAuthor);
+        $("#reviewModalCategoryName").text(reviewCategoryName);
+        $("#reviewModalScore").text(reviewScore + " 점")
+        $("#reviewModalPage").text(reviewPage + " page")
+
+        $("form").on("keyup", "#reviewScore", function() {
+            let value = $(this).val()
+            let regValue = /^[1-5]$/
+
+            if (!regValue.test(value)) {
+                alert("1~5 사이의 정수만 입력할 수 있습니다")
+                $(this).val("");
+            }
+        })
+
+        $("form").on("keyup", "input[name=linetitle]", function() {
+            let lineTitleValue = $(this).val()
+            let maxLength = 30
+            //console.log(lineTitleValue);
+
+            $("#countLineTitle").text(lineTitleValue.length + " / " + maxLength)
+
+            if (lineTitleValue.length > maxLength) {
+                alert("최대 " + maxLength + "자까지만 가능합니다")
+                $(this).val(lineTitleValue.substring(0, maxLength))
+                $("#countLineTitle").text(maxLength + " / " + maxLength)
+            }
+        })
+
+        $("form").on("keyup", "textarea[name=content]", function() {
+            let reviewContentValue = $(this).val()
+            console.log(reviewContentValue)
+            let maxLength = 200
+
+            $("#countReviewContent").text(reviewContentValue.length + " / " + maxLength)
+
+            if (reviewContentValue.length > maxLength) {
+                alert("최대 " + maxLength + "자까지만 가능합니다")
+                $(this).val(reviewContentValue.substring(0, maxLength))
+                $("#countReviewContent").text(maxLength + " / " + maxLength)
+            }
+        })
+    }) //$("body").on(click) end ...
+
+
+
+
+
 }) //ready end

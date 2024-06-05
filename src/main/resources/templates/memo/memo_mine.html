@@ -55,169 +55,151 @@
                             <!-- Bar Chart -->
                             <canvas id="_dm-barChart"></canvas>
                             <!-- END : Bar Chart -->
-
                         </div>
+                    </div>
 
-                  </div>
+                    <div class="col-md-6">
+                        <div class="tab-base">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="nav-item active" role="presentation">
+                                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#_dm-tabsMemo" type="button" role="tab" aria-controls="memo" aria-selected="true">최근기록</button>
+                                </li>
+                            </ul>
 
-                  <div class="col-md-6">
-                      <div class="tab-base">
-                          <ul class="nav nav-tabs" role="tablist">
-                              <li class="nav-item active" role="presentation">
-                                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#_dm-tabsMemo" type="button" role="tab" aria-controls="memo" aria-selected="true">최근기록</button>
-                              </li>
-                          </ul>
+                            <div id="_dm-tabsMemo" class="tab-pane fade active show" role="tabpanel" aria-labelledby="memo-tab">
+                                <div class="tab-content">
+                                    <div th:each="myMemo, myMemoStat : ${myMemoList}" th:if="${myMemoStat.index < 3}" class="row mb-3 border-bottom">
+                                        <div class="col-md-4 text-center">
+                                            <img th:src="${myMemo.cover}" width="120px" height="160px">
+                                            <button type="button" class="btn btn-icon btn-success btn-xs rounded-circle updateMemo"
+                                                    data-bs-toggle="modal" data-bs-target="#verticalWithScrollbar1"
+                                                    th:data-thisno="${myMemo.no}"
+                                                    th:data-thiscover="${myMemo.cover}"
+                                                    th:data-thisreadpage="${myMemo.readpage}"
+                                                    th:data-thisremainpage="${myMemo.remainpage}"
+                                                    th:data-thisispublic="${myMemo.ispublic}"
+                                                    th:data-thisisbn13="${myMemo.isbn13}"
+                                                    th:data-thistitle="${myMemo.title}"
+                                                    th:data-thiscontent="${myMemo.content}"
+                                                    th:data-thiscreated="${myMemo.created}">
+                                                <i class="demo-pli-pencil"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-icon btn-danger btn-xs rounded-circle deleteMemo"
+                                                    id="deleteMemo"
+                                                    th:data-thisno="${myMemo.no}"
+                                                    th:data-thisisbn13="${myMemo.isbn13}"
+                                                    th:data-thisreadpage="${myMemo.readpage}">
+                                                <i class="demo-pli-trash"></i>
+                                            </button>
 
-                          <div id="_dm-tabsMemo" class="tab-pane fade active show" role="tabpane1" aria-labelledy="memo-tab">
-                              <div class="tab-content">
-                                  <div th:each="myMemo : ${myMemoList}" class="row mb-3 border-bottom">
-                                      <div class="col-md-4 text-center">
-                                          <img th:src="${myMemo.cover}" width="120px" height="160px">
-                                          <button type="button" class="btn btn-icon btn-success btn-xs rounded-circle updateMemo"
-                                                  data-bs-toggle="modal" data-bs-target="#verticalWithScrollbar1"
-                                                  th:data-thisno="${myMemo.no}"
-                                                  th:data-thiscover="${myMemo.cover}"
-                                                  th:data-thisreadpage="${myMemo.readpage}"
-                                                  th:data-thisremainpage="${myMemo.remainpage}"
-                                                  th:data-thisispublic="${myMemo.ispublic}"
-                                                  th:data-thisisbn13="${myMemo.isbn13}"
-                                                  th:data-thistitle="${myMemo.title}"
-                                                  th:data-thiscontent="${myMemo.content}"
-                                                  th:data-thiscreated="${myMemo.created}">
-                                              <i class="demo-pli-pencil"></i>
-                                          </button>
-                                          <button type="button" class="btn btn-icon btn-danger btn-xs rounded-circle deleteMemo"
-                                                  id="deleteMemo"
-                                                  th:data-thisno="${myMemo.no}"
-                                                  th:data-thisisbn13="${myMemo.isbn13}"
-                                                  th:data-thisreadpage="${myMemo.readpage}">
-                                              <i class="demo-pli-trash"></i>
-                                          </button>
-                                      </div>
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="verticalWithScrollbar1" tabindex="-1" aria-labelledby="verticalWithScrollbarLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h1 class="modal-title fs-5" id="verticalWithScrollbarLabel1">메모 수정하기</h1>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body align-content-center">
+                                                            <div class="row mb-4">
+                                                                <div class="col-md-4 text-center">
+                                                                    <img th:src="@{/img/sample-img/bookcover1.jpg}" id="thismodalcover" class="img-fluid w-100 h-100">
+                                                                </div>
+                                                            </div>
 
-                                      <!-- Modal -->
-                                      <div class="modal fade" id="verticalWithScrollbar1" tabindex="-1" aria-labelledby="verticalWithScrollbarLabel" aria-hidden="true">
-                                          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                              <div class="modal-content">
-                                                  <div class="modal-header">
-                                                      <h1 class="modal-title fs-5" id="verticalWithScrollbarLabel1">메모 수정하기</h1>
-                                                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                  </div>
-                                                  <div class="modal-body align-content-center">
-                                                      <div class="row mb-4">
+                                                            <!-- Block styled form -->
+                                                            <form th:action="@{update-memo}" method="post" class="row">
+                                                                <div class="col-md-12 mb-3">
+                                                                    <label for="_dm-inputNames" class="form-label">작성자</label>
+                                                                    <input name="id" id="thisloginid" type="text" class="form-control" value="" readonly>
+                                                                </div>
+                                                                <div class="col-md-12 mb-3">
+                                                                    <label for="_dm-inputPages" class="form-label">읽은 페이지</label>
+                                                                    <input name="readpage" id="thisreadpage" type="text" class="form-control" placeholder="읽은 페이지 수를 입력해주세요. 숫자만 가능합니다 (1, 6, 15 ...)" required>
+                                                                </div>
+                                                                <div class="col-md-12 mb-3">
+                                                                    <label class="form-label">공개 · 비공개</label>
+                                                                    <div class="form-floating mb-3">
+                                                                        <select class="form-select" aria-label="Floating label select example" name="ispublic">
+                                                                            <option value="Y">공개</option>
+                                                                            <option value="N">비공개</option>
+                                                                        </select>
+                                                                        <label for="floatingSelect">공개 또는 비공개 여부를 정할 수 있습니다</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-12 mb-3">
+                                                                    <label for="_dm-Title" class="form-label">제목</label>
+                                                                    <input name="title" id="thistitle" type="text" class="form-control" placeholder="제목을 입력해주세요 (최대 100자)" required>
+                                                                </div>
+                                                                <div class="col-md-12">
+                                                                    <label class="form-label">내용</label>
+                                                                    <textarea name="content" class="form-control" placeholder="내용을 입력해주세요 (최대 500자)" rows="14" required="required" id="thiscontent"></textarea>
+                                                                </div>
+                                                                <input type="hidden" name="no" id="thisno">
+                                                                <input type="hidden" name="isbn13" id="thisisbn13">
+                                                                <input type="hidden" name="cover" id="thiscover">
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                                                                    <button type="submit" class="btn btn-primary">등록</button>
+                                                                </div>
+                                                            </form>
+                                                            <!-- END : Block styled form -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- END : Vertical centered scrollable modal -->
+                                        </div>
 
-                                                          <div class="col-md-4 text-center">
-                                                              <img th:src="@{/img/sample-img/bookcover1.jpg}" id="thismodalcover" class="img-fluid w-100 h-100">
-                                                          </div>
+                                        <div class="col-md-8">
+                                            <dl class="row mb-0 h-100">
+                                                <dt class="col-sm-4">제목</dt>
+                                                <dd class="col-sm-8">[[${myMemo.title}]]</dd>
+                                                <dt class="col-sm-4">읽은 페이지</dt>
+                                                <dd class="col-sm-8">[[${myMemo.readpage}]] page</dd>
+                                                <dt class="col-sm-4">남은 페이지</dt>
+                                                <dd class="col-sm-8">[[${myMemo.remainpage}]] page</dd>
+                                                <dt class="col-sm-4">기록일</dt>
+                                                <dd class="col-sm-8">[[${myMemo.created}]]</dd>
+                                                <dt th:if="${!#strings.equals(myMemo.lastmodified, myMemo.created)}" class="col-sm-4">최종 수정일</dt>
+                                                <dd th:if="${!#strings.equals(myMemo.lastmodified, myMemo.created)}" class="col-sm-8">[[${myMemo.lastmodified}]]</dd>
+                                                <dt class="col-sm-4">기록내용</dt>
+                                                <dd class="col-sm-8">[[${myMemo.content}]]</dd>
+                                            </dl>
+                                        </div>
+                                    </div>
 
-                                                      </div>
+                                    <!-- 페이징처리 -->
+                                    <div th:if="${myMemoList.size() != 0}" class="mt-3">
+                                        <nav class="text-align-center mt-5" aria-label="Page navigation">
+                                            <ul class="pagination justify-content-center">
+                                                <li th:if="${currentPage <= 1}" class="page-item">
+                                                    <a class="page-link disabled">이전</a>
+                                                </li>
 
-                                                      <!-- Block styled form -->
-                                                      <form th:action="@{update-memo}" method="post" class="row">
+                                                <li th:if="${currentPage > 1}" class="page-item">
+                                                    <a th:href="@{'/memo/mine?page=' + ${currentPage - 1}}" class="page-link">이전</a>
+                                                </li>
 
-                                                          <div class="col-md-12 mb-3">
-                                                              <label for="_dm-inputNames" class="form-label">작성자</label>
-                                                              <input name="id" id="thisloginid" type="text" class="form-control" value="" readonly>
-                                                          </div>
+                                                <li th:each="pageNum : ${#numbers.sequence(1, maxPage)}" th:classappend="${pageNum == currentPage} ? 'active'">
+                                                    <a th:href="@{'/memo/mine?page=' + ${pageNum}}" class="page-link" th:text="${pageNum}">1</a>
+                                                </li>
 
-                                                          <div class="col-md-12 mb-3">
-                                                              <label for="_dm-inputPages" class="form-label">읽은 페이지</label>
-                                                              <input name="readpage" id="thisreadpage" type="text" class="form-control" placeholder="읽은 페이지 수를 입력해주세요. 숫자만 가능합니다 (1, 6, 15 ...)" required>
-                                                          </div>
+                                                <li th:if="${currentPage < maxPage}" class="page-item">
+                                                    <a th:href="@{'/memo/mine?page=' + ${currentPage + 1}}" class="page-link">다음</a>
+                                                </li>
 
-                                                          <div class="col-md-12 mb-3">
-                                                              <label class="form-label">공개 · 비공개</label>
-                                                              <div class="form-floating mb-3">
-                                                                  <select class="form-select" aria-label="Floating label select example" name="ispublic">
-                                                                      <option value="Y">공개</option>
-                                                                      <option value="N">비공개</option>
-                                                                  </select>
-                                                                  <label for="floatingSelect">공개 또는 비공개 여부를 정할 수 있습니다</label>
-                                                              </div>
-                                                          </div>
+                                                <li th:if="${currentPage >= maxPage}" class="page-item">
+                                                    <a class="page-link disabled">다음</a>
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
 
-                                                          <div class="col-md-12 mb-3">
-                                                              <label for="_dm-Title" class="form-label">제목</label>
-                                                              <input name="title" id="thistitle" type="text" class="form-control" placeholder="제목을 입력해주세요 (최대 100자)" required>
-                                                          </div>
-
-                                                          <div class="col-md-12">
-                                                              <label class="form-label">내용</label>
-                                                              <textarea name="content" class="form-control" placeholder="내용을 입력해주세요 (최대 500자)" rows="14" required="required" id="thiscontent"></textarea>
-                                                          </div>
-
-                                                          <input type="hidden" name="no" id="thisno">
-                                                          <input type="hidden" name="isbn13" id="thisisbn13">
-                                                          <input type="hidden" name="cover" id="thiscover">
-
-                                                          <div class="modal-footer">
-                                                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                                                              <button type="submit" class="btn btn-primary">등록</button>
-                                                          </div>
-
-                                                      </form>
-                                                      <!-- END : Block styled form -->
-
-                                                  </div>
-
-                                              </div>
-                                          </div>
-                                      </div>
-                                      <!-- END : Vertical centered scrollable modal -->
-
-
-                                      <div class="col-md-8">
-
-                                          <dl class="row mb-0 h-100">
-                                              <dt class="col-sm-4">제목</dt>
-                                              <dd class="col-sm-8">[[${myMemo.title}]]
-                                              </dd>
-
-                                              <dt class="col-sm-4">읽은 페이지</dt>
-                                              <dd class="col-sm-8">[[${myMemo.readpage}]] page
-                                              </dd>
-
-                                              <dt class="col-sm-4">남은 페이지</dt>
-                                              <dd class="col-sm-8">[[${myMemo.remainpage}]] page</dd>
-
-                                              <dt class="col-sm-4">기록일</dt>
-                                              <dd class="col-sm-8">[[${myMemo.created}]]</dd>
-
-                                              <dt th:if="${myMemo.lastmodified != '0000-00-00'}" class="col-sm-4">최종 수정일</dt>
-                                              <dd th:if="${myMemo.lastmodified != '0000-00-00'}" class="col-sm-8">[[${myMemo.lastmodified}]]</dd>
-
-                                              <dt class="col-sm-4">기록내용</dt>
-                                              <dd class="col-sm-8">[[${myMemo.content}]]</dd>
-
-                                          </dl>
-
-                                      </div>
-                                  </div>
-
-                                  <div class="mt-3">
-                                      <nav class="text-center" aria-label="Page navigation">
-                                          <ul class="pagination justify-content-center">
-                                              <li class="page-item disabled">
-                                                  <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                                              </li>
-                                              <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                              <li class="page-item active" aria-current="page">
-                                                  <a class="page-link" href="#">2</a>
-                                              </li>
-                                              <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                              <li class="page-item">
-                                                  <a class="page-link" href="#">Next</a>
-                                              </li>
-                                          </ul>
-                                      </nav>
-                                  </div>
-
-                              </div>
-
-                          </div>
-                      </div>
-                  </div>
-
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="row">
@@ -232,8 +214,8 @@
                                 </li>
 
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#_dm-tabsProgress"
-                                            type="button" role="tab" aria-controls="progress" aria-selected="false" tabindex="-1">진행중</button>
+                                    <button class="nav-link" data-bs-toggle="tab" data-bs-target="#_dm-tabsChallenge"
+                                            type="button" role="tab" aria-controls="challenge" aria-selected="false" tabindex="-1">도전</button>
                                 </li>
 
                                 <li class="nav-item" role="presentation">
@@ -247,13 +229,105 @@
                                     <div class="row text-center mb-4">
                                         <div th:each="myComplete:${myCompleteList}" class="col-md-2 mb-2">
                                             <img th:src="${myComplete.cover}" width="150px" height="200px">
+                                            <button type="button" class="btn btn-danger rounded-pill" data-bs-toggle="modal"
+                                                    data-bs-target="#verticalWithScrollbar2"
+                                                    id="addReview"
+                                                    th:data-reviewIsbn13="${myComplete.isbn13}"
+                                                    th:data-reviewBooktitle="${myComplete.title}"
+                                                    th:data-reviewAuthor="${myComplete.author}"
+                                                    th:data-reviewCategoryName="${myComplete.categoryName}"
+                                                    th:data-reviewCover="${myComplete.cover}"
+                                                    th:data-reviewRegitDate="${myComplete.regitdate}"
+                                                    th:data-reviewPage="${myComplete.page}"
+                                                    th:data-reviewScore="${myComplete.score}">
+                                                리뷰쓰기</button>
                                         </div>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="verticalWithScrollbar2" tabindex="-1" aria-labelledby="verticalWithScrollbarLabel2" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="verticalWithScrollbarLabel2">리뷰 작성</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body align-content-center">
+                                                        <div class="row mb-4">
+
+                                                            <div class="col-md-4 text-center">
+                                                                <img th:src="@{/img/sample-img/bookcover1.jpg}" id="reviewModalCover" class="img-fluid w-100 h-100">
+                                                            </div>
+
+                                                            <div class="col-md-8 align-content-center border-bottom">
+                                                                <dl class="row mb-0">
+                                                                    <dt class="col-sm-4">제목</dt>
+                                                                    <dd class="col-sm-8 text-start" id="reviewModalBookTitle">"다 된 밥에 재뿌리기"의 사회학적...</dd>
+
+                                                                    <dt class="col-sm-4">저자</dt>
+                                                                    <dd class="col-sm-8 text-start" id="reviewModalAuthor">코레오 오르날도</dd>
+
+                                                                    <dt class="col-sm-4">카테고리</dt>
+                                                                    <dd class="col-sm-8 text-start" id="reviewModalCategoryName">eBook > 인문학 > 교양 인문학</dd>
+
+                                                                    <dt class="col-sm-4">평점</dt>
+                                                                    <dd class="col-sm-8 text-start" id="reviewModalScore">5점</dd>
+
+                                                                    <dt class="col-sm-4">페이지</dt>
+                                                                    <dd class="col-sm-8 text-start" id="reviewModalPage">416</dd>
+                                                                </dl>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <!-- Block styled form -->
+                                                        <form th:action="@{/review/add-review}" method="post" class="row">
+
+                                                            <div class="col-md-12 mb-3">
+                                                                <label class="form-label">작성자</label>
+                                                                <input name="id" type="text" class="form-control" value="" id="reviewModalId" readonly>
+                                                            </div>
+
+                                                            <div class="col-md-12 mb-3">
+                                                                <label class="form-label">평점</label>
+                                                                <input id="reviewScore" name="score" type="text" class="form-control" placeholder="점수를 입력해주세요 1~5 사이 정수만 가능합니다 (1, 2, 3, 4, 5)" required>
+                                                            </div>
+
+                                                            <div class="col-md-12 mb-3">
+                                                                <label class="form-label">한줄평</label>
+                                                                <input name="linetitle" type="text" class="form-control" placeholder="한줄평을 입력해주세요 (최대 50자)" required>
+                                                                <p class="float-end mb-0" id="countLineTitle"></p>
+                                                            </div>
+
+                                                            <div class="col-md-12">
+                                                                <label class="form-label">리뷰</label>
+                                                                <textarea name="content" class="form-control" placeholder="내용을 입력해주세요 (최대 200자)" rows="14" required></textarea>
+                                                                <p class="float-end mb-0" id="countReviewContent"></p>
+                                                            </div>
+
+                                                            <input type="hidden" name="isbn13" id="modalInputIsbn13">
+                                                            <input type="hidden" name="cover" id="modalInputCover">
+
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                                                                <button type="submit" class="btn btn-primary">등록</button>
+                                                            </div>
+
+                                                        </form>
+                                                        <!-- END : Block styled form -->
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- END : Vertical centered scrollable modal -->
+
                                     </div>
                                 </div>
 
-                                <div id="_dm-tabsProgress" class="tab-pane fade" role="tabpanel" aria-labelledby="progress-tab">
+                                <div id="_dm-tabsChallenge" class="tab-pane fade" role="tabpanel" aria-labelledby="challenge-tab">
                                     <div class="row text-center mb-4">
-                                        <div th:each="myChallenge:${myChallengeList}" class="col-md-2 mb-2">
+                                        <div th:if="${#lists.size(myChallengeList) > 0}"  th:each="myChallenge:${myChallengeList}" class="col-md-2 mb-2">
                                             <img th:src="${myChallenge.cover}" width="150px" height="200px">
                                             <button type="button" class="btn btn-success rounded-pill" data-bs-toggle="modal"
                                                     data-bs-target="#verticalWithScrollbar"
@@ -266,6 +340,7 @@
                                                     th:data-score="${myChallenge.score}"
                                                     th:data-page="${myChallenge.page}">
                                             기록하기</button>
+
                                         </div>
 
                                         <!-- Modal -->
@@ -294,7 +369,7 @@
                                                                     <dt class="col-sm-4">카테고리</dt>
                                                                     <dd class="col-sm-8 text-start" id="modalcategoryName">eBook > 인문학 > 교양 인문학</dd>
 
-                                                                    <dt class="col-sm-4">별점</dt>
+                                                                    <dt class="col-sm-4">평점</dt>
                                                                     <dd class="col-sm-8 text-start" id="modalscore">5점</dd>
 
                                                                     <dt class="col-sm-4">페이지</dt>
@@ -308,11 +383,11 @@
                                                         </div>
 
                                                         <!-- Block styled form -->
-                                                        <form th:action="addmemo" method="post" class="row">
+                                                        <form th:action="add-memo" method="post" class="row">
 
                                                             <div class="col-md-12 mb-3">
                                                                 <label for="_dm-inputNames" class="form-label">작성자</label>
-                                                                <input name="id" id="_dm-inputNames" type="text" class="form-control" value="admin" readonly>
+                                                                <input name="id" id="_dm-inputNames" type="text" class="form-control" th:value="${loginId}" readonly>
                                                             </div>
 
                                                             <div class="col-md-12 mb-3">
@@ -366,10 +441,19 @@
                                     <div class="row text-center mb-4">
                                         <div th:each="myGoal:${myGoalList}" class="col-md-2 mb-2">
                                             <img th:src="${myGoal.cover}" width="150px" height="200px">
+                                            <button type="button" class="btn btn-warning rounded-pill"
+                                                    id="changeReadState"
+                                                    th:data-isbn13="${myGoal.isbn13}"
+                                                    th:data-title="${myGoal.title}"
+                                                    th:data-author="${myGoal.author}"
+                                                    th:data-categoryname="${myGoal.categoryName}"
+                                                    th:data-cover="${myGoal.cover}"
+                                                    th:data-score="${myGoal.score}"
+                                                    th:data-page="${myGoal.page}">
+                                                도전하기</button>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>

@@ -20,7 +20,7 @@ public class MypageServicelmpi implements MypageService {
 
     @Override
     public Member memberinfo(String id) {
-        return membermapper.idcheck(id);
+        return membermapper.checkid(id);
     }
 
     @Override
