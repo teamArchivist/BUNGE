@@ -175,10 +175,10 @@
                             <div class="card-footer mt-4 pt-3 border-top d-flex align-items-center">
                                 <div class="d-flex g-2">
                                     <button type="button" class="btn btn-icon btn-sm btn-link px-2 py-0">
-                                        <i class="demo-pli-heart-2 fs-5 me-2"></i>87
+                                        <i class="demo-pli-heart-2 fs-5 me-2"></i><span>3</span>
                                     </button>
                                     <button type="button" class="btn btn-icon btn-sm btn-link px-2 py-0 comment-toggle" th:data-review-no="${review.no}">
-                                        <i class="demo-pli-speech-bubble-4 fs-5 me-2"></i>107
+                                        <i class="demo-pli-speech-bubble-4 fs-5 me-2"></i><span th:id="${#strings.append('commentListCount', review.no)}">[[${review.countcomment}]]</span>
                                     </button>
                                 </div>
                                 <small class="text-body-secondary ms-auto">[[${review.created}]]</small>
@@ -252,7 +252,7 @@
                                     </div>
 
                                     <div class="input-group mt-3 d-flex gap-2 align-items-center">
-                                        <input type="text" class="form-control reviewComment-input" th:id="${#strings.append('commentInput', review.no)}" placeholder="댓글을 입력하세요">
+                                        <textarea class="form-control reviewComment-input" th:id="${#strings.append('commentInput', review.no)}" placeholder="댓글을 입력하세요" rows="3"></textarea>
                                         <button class="btn btn-icon btn-primary btn-xs rounded-circle flex-shrink-0" type="button" th:data-review-no="${review.no}" onclick="addComment(this)">
                                             <i class="demo-pli-add"></i>
                                         </button>
@@ -266,6 +266,33 @@
 
             </div>
         </div>
+
+        <nav th:if="${reviewList.size()} != 0" class="text-align-center mt-5" aria-label="Page navigation" id="reviewpagenation">
+            <ul class="pagination justify-content-center">
+
+                <li th:if="${currentPage <= 1}" class="page-item">
+                    <a class="page-link disabled">이전</a>
+                </li>
+
+                <li th:if="${currentPage > 1}" class="page-item">
+                    <a th:href="@{'/review/main?page=' + ${currentPage - 1}}" class="page-link">이전</a>
+                </li>
+
+                <li th:each="pageNum : ${#numbers.sequence(1, maxPage)}" th:classappend="${pageNum == currentPage} ? 'active'">
+                    <a th:href="@{'/review/main?page=' + ${pageNum}}" class="page-link" th:text="${pageNum}">1</a>
+                </li>
+
+                <li th:if="${currentPage < maxPage}" class="page-item">
+                    <a th:href="@{'/review/main?page=' + ${currentPage + 1}}" class="page-link">다음</a>
+                </li>
+
+                <li th:if="${currentPage >= maxPage}" class="page-item">
+                    <a class="page-link disabled">다음</a>
+                </li>
+
+            </ul>
+        </nav>
+
     </section>
 </div>
 </body>

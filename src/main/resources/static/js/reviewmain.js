@@ -129,7 +129,7 @@ $(function() {
             commentSection.hide()
         } else {
             commentSection.show()
-            //getCommList(reviewno, 1);
+            getCommList(reviewno, 1);
         }
     }) // end
 
@@ -173,10 +173,10 @@ $(function() {
 
     function getCommList(reviewno, currentPage) {
         $.ajax({
-            url: "/review/comment-list",
+            url: "/review/get-comment-list",
             type: "post",
             data: {
-                reviewno : reviewno,
+                no : reviewno,
                 page : currentPage
             },
             dataType: "json",
@@ -186,7 +186,8 @@ $(function() {
                 }
             },
             success: function(rdata) {
-                $(".comment-toggle").html("<i class='demo-pli-speech-bubble-4 fs-5 me-2'></i>" + rdata.listcount)
+                $("#commentListCount" + reviewno).text(rdata.listcount)
+                $(".reviewComment-list").empty()
                 if (rdata.listcount > 0) {
                     $(rdata.list).each(function () {
                         let output = ''
@@ -203,6 +204,10 @@ $(function() {
 
                         output += "<div class='row align-items-start mb-3'>"
                             + "<div class='col-sm-2 text-center' style='font-size:8px'>"
+                            + "<img src='../img/profile-photos/1.png' class='img-xs rounded-circle'>"
+                            + "</div>"
+                            + "<div class='col-sm-9'>"
+                            + "<div class='row align-items-center' style='font-size:8px'>"
                             + this.id + "(" + this.created + ")" + "&nbsp;&nbsp;"
                             + button
                             + "</div>"

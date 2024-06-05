@@ -40,4 +40,62 @@
         (#{id}, #{reviewno}, #{content}, now())
     </insert>
 
+    <select id="getReviewListCount" parameterType="com.bunge.review.filter.ReviewFilter" resultType="int">
+        select count(*)
+        from review
+        where 1=1
+        <if test="booktitle != null and booktitle != ''">
+            and booktitle like concat('%', #{booktitle}, '%')
+        </if>
+        <if test="id != null and id != ''">
+            and id like concat('%', #{id}, '%')
+        </if>
+        <if test="linetitle != null and linetitle != ''">
+            and linetitle like concat('%', #{linetitle}, '%')
+        </if>
+        <if test="content != null and content != ''">
+            and content like concat('%', #{content}, '%')
+        </if>
+        <if test="score != 0">
+            and score >= #{score}
+        </if>
+    </select>
+
+    <select id="getReviewList" parameterType="com.bunge.review.filter.ReviewFilter" resultType="com.bunge.review.domain.Review">
+        select *
+        from review
+        where 1=1
+        <if test="booktitle != null and booktitle != ''">
+            and booktitle like concat('%', #{booktitle}, '%')
+        </if>
+        <if test="id != null and id != ''">
+            and id like concat('%', #{id}, '%')
+        </if>
+        <if test="linetitle != null and linetitle != ''">
+            and linetitle like concat('%', #{linetitle}, '%')
+        </if>
+        <if test="content != null and content != ''">
+            and content like concat('%', #{content}, '%')
+        </if>
+        <if test="score != 0">
+            and score >= #{score}
+        </if>
+        order by no desc
+        limit #{limit} offset #{offset}
+    </select>
+
+    <select id="getReviewCommList" parameterType="com.bunge.review.domain.Review" resultType="com.bunge.review.domain.ReviewComm">
+        select *
+        from reviewcomm
+        where reviewno = #{no}
+        order by no desc
+    </select>
+
+    <select id="getReviewCommListCount" parameterType="com.bunge.review.domain.Review" resultType="int">
+        select count(*)
+        from reviewcomm
+        where reviewno = #{no}
+        order by no desc
+    </select>
+
 </mapper>

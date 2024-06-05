@@ -10,9 +10,6 @@ public class BookFilter {
     private int offset;
     private int limit;
 
-    // Getters and Setters
-
-
     public String getIsbn13() { return isbn13; }
 
     public void setIsbn13(String isbn13) { this.isbn13 = isbn13; }
