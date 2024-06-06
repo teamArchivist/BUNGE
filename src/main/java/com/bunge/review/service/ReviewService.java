@@ -3,7 +3,9 @@ package com.bunge.review.service;
 import com.bunge.memo.domain.Book;
 import com.bunge.review.domain.Review;
 import com.bunge.review.domain.ReviewComm;
+import com.bunge.review.domain.ReviewLike;
 import com.bunge.review.filter.ReviewFilter;
+import com.bunge.review.parameter.ReviewLikeRequest;
 
 import java.util.List;
 
@@ -11,6 +13,9 @@ public interface ReviewService {
 
     //리뷰 등록
     public void addReview(Review review);
+
+    //전체 리뷰글 목록
+    public List<Review> getAllReviews();
 
     //필터 적용 리뷰글 목록
     public List<Review> getReviewList(ReviewFilter reviewFilter);
@@ -35,4 +40,13 @@ public interface ReviewService {
 
     //리뷰 댓글 목록 수
     public int getReviewCommListCount(Review review);
+
+    //리뷰 좋아요
+    public int controlReviewLike(ReviewLikeRequest reviewLikeRequest);
+
+    //리뷰 좋아요 수
+    public int countReviewLike(ReviewLikeRequest reviewLikeRequest);
+
+    //좋아요를 누른 리뷰 리스트
+    public List<ReviewLike> checkReviewLikeList(ReviewLikeRequest reviewLikeRequest);
 }

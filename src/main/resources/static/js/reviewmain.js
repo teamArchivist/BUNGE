@@ -3,7 +3,7 @@ let header = $("meta[name='_csrf_header']").attr("content");
 
 $(function() {
 
-    let loginId = $("#loginId").text();
+    let id = $("#loginId").text();
     let page = 1;
 
     $("body").on("click", ".modifyBtn", function() {
@@ -41,7 +41,7 @@ $(function() {
                 $("#reviewModalScore").text(rdata.score);
                 $("#reviewModalPage").text(rdata.page);
 
-                $("#reviewModalId").attr("value", loginId)
+                $("#reviewModalId").attr("value", id)
                 $("#reviewScore").attr("value", score)
                 $("input[name='linetitle']").attr("value", linetitle)
                 $("textarea[name='content']").text(content)
@@ -145,7 +145,7 @@ $(function() {
                 url: '/review/add-comment',  // 서버의 댓글 추가 엔드포인트
                 method: 'post',
                 data: {
-                    id : loginId,
+                    id : id,
                     reviewno: reviewno,
                     content: content
                 },
@@ -193,7 +193,7 @@ $(function() {
                         let output = ''
                         let button = ''
 
-                        if (loginId == this.id) {
+                        if (id == this.id) {
                             button  = "<button type='button' class='btn btn-icon btn-outline-light rounded-circle btn-xs ml'>"
                                 + "<i class='demo-pli-pencil'></i>"
                                 + "</button>"
@@ -224,6 +224,63 @@ $(function() {
             } //success end
         }) //ajax end
     } //function getCommList(reviewno, currentPage) end
+
+    $("body").on("click", ".likeBtn", function() {
+        //console.log($(this).data("review-no"))
+        let reviewno = $(this).data("review-no");
+
+        $.ajax({
+            url: "review-like",
+            method: "post",
+            data: {reviewno, id},
+            cache: false,
+            beforeSend : function (xhr) {
+                if (header && token) {
+                    xhr.setRequestHeader(header, token);
+                }
+            },
+            success: function (rdata) {
+                //console.log("성공")
+                //console.log(rdata)
+                $("#likeCount" + reviewno).text(rdata.likeCount)
+                if (rdata.result == 1) {
+                    $("#heart" + reviewno).attr("name", "heart")
+                } else if (rdata.result == 0) {
+                    $("#heart" + reviewno).attr("name", "heart-outline")
+                }
+            },
+            error: function(status, error) {
+                console.log("ajax 요청 실패")
+                console.log("상태:" + status)
+                console.log("오류:" + error)
+                alert("좋아요 처리 중 오류가 발생했습니다. 다시 시도해주세요")
+            }
+        }) //ajax end
+    }) //likeBtn click end
+
+    $.ajax({
+        url: "check-review-like-list",
+        method: "post",
+        data: {id},
+        cache: false,
+        beforeSend : function (xhr) {
+            if (header && token) {
+                xhr.setRequestHeader(header, token);
+            }
+        },
+        success: function (rdata) {
+            //console.log(rdata)
+            $(rdata).each(function () {
+              //console.log(this.reviewno)
+                $("#heart" + this.reviewno).attr("name", "heart")
+            })
+        },
+        error: function(status, error) {
+            console.log("ajax 요청 실패")
+            console.log("상태:" + status)
+            console.log("오류:" + error)
+        }
+    })
 
 
 }) //ready end

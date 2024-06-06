@@ -5,6 +5,7 @@
     <title>리뷰 둘러보기</title>
     <links>
         <script th:src="@{/js/reviewmain.js}"></script>
+        <script type="module" th:src="@{/vendors/ionicons/ionicons.js}"></script>
     </links>
 </head>
 <body class="out-quart">
@@ -174,11 +175,12 @@
 
                             <div class="card-footer mt-4 pt-3 border-top d-flex align-items-center">
                                 <div class="d-flex g-2">
-                                    <button type="button" class="btn btn-icon btn-sm btn-link px-2 py-0">
-                                        <i class="demo-pli-heart-2 fs-5 me-2"></i><span>3</span>
+                                    <button type="button" class="btn btn-icon btn-sm btn-link px-2 py-0 likeBtn" th:data-review-no="${review.no}">
+                                        <ion-icon name="heart-outline" class="fs-5 me-2" th:id="${#strings.append('heart', review.no)}"></ion-icon>
+                                        <span th:id="${#strings.append('likeCount', review.no)}">[[${review.countlike}]]</span>
                                     </button>
                                     <button type="button" class="btn btn-icon btn-sm btn-link px-2 py-0 comment-toggle" th:data-review-no="${review.no}">
-                                        <i class="demo-pli-speech-bubble-4 fs-5 me-2"></i><span th:id="${#strings.append('commentListCount', review.no)}">[[${review.countcomment}]]</span>
+                                        <ion-icon name="chatbubble-outline" class="fs-5 me-2"></ion-icon><span th:id="${#strings.append('commentListCount', review.no)}">[[${review.countcomment}]]</span>
                                     </button>
                                 </div>
                                 <small class="text-body-secondary ms-auto">[[${review.created}]]</small>

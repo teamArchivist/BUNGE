@@ -3,7 +3,9 @@ package com.bunge.review.mapper;
 import com.bunge.memo.domain.Book;
 import com.bunge.review.domain.Review;
 import com.bunge.review.domain.ReviewComm;
+import com.bunge.review.domain.ReviewLike;
 import com.bunge.review.filter.ReviewFilter;
+import com.bunge.review.parameter.ReviewLikeRequest;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.HashMap;
@@ -14,6 +16,9 @@ public interface ReviewMapper {
 
     //리뷰 등록
     public void addReview(Review review);
+
+    //전체 리뷰글 목록
+    public List<Review> getAllReviews();
 
     //필터 적용 리뷰 목록
     public List<Review> getReviewList(ReviewFilter reviewFilter);
@@ -38,5 +43,15 @@ public interface ReviewMapper {
 
     //리뷰 댓글 목록 수
     public int getReviewCommListCount(Review review);
+
+    //리뷰 좋아요 관련 작업
+    public ReviewLike checkReviewLike(ReviewLikeRequest reviewLikeRequest);
+    public int addReviewLike(ReviewLikeRequest reviewLikeRequest);
+    public int deleteReviewLike(ReviewLikeRequest reviewLikeRequest);
+    public int countReviewLike(ReviewLikeRequest reviewLikeRequest);
+    public int countReviewLikeByReview(Review review);
+
+    //좋아요를 누른 리뷰 리스트
+    public List<ReviewLike> checkReviewLikeList(ReviewLikeRequest reviewLikeRequest);
 
 }

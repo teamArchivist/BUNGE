@@ -98,4 +98,42 @@
         order by no desc
     </select>
 
+    <select id="checkReviewLike" parameterType="com.bunge.review.parameter.ReviewLikeRequest" resultType="com.bunge.review.domain.ReviewLike">
+        select *
+        from reviewlike
+        where reviewno = #{reviewno}
+        and id = #{id}
+    </select>
+
+    <insert id="addReviewLike" parameterType="com.bunge.review.parameter.ReviewLikeRequest">
+        insert into reviewlike
+        (reviewno, id)
+        values
+        (#{reviewno}, #{id})
+    </insert>
+
+    <delete id="deleteReviewLike" parameterType="com.bunge.review.parameter.ReviewLikeRequest">
+        delete from reviewlike
+        where reviewno = #{reviewno}
+        and id = #{id}
+    </delete>
+
+    <select id="countReviewLike" parameterType="com.bunge.review.parameter.ReviewLikeRequest" resultType="int">
+        select count(*)
+        from reviewlike
+        where reviewno = #{reviewno}
+    </select>
+
+    <select id="countReviewLikeByReview" parameterType="com.bunge.review.domain.Review" resultType="int">
+        select count(*)
+        from reviewlike
+        where reviewno = #{no}
+    </select>
+
+    <select id="checkReviewLikeList" parameterType="com.bunge.review.parameter.ReviewLikeRequest" resultType="com.bunge.review.domain.ReviewLike">
+        select reviewno
+        from reviewlike
+        where id = #{id}
+    </select>
+
 </mapper>
