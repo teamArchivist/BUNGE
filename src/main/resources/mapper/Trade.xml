@@ -45,5 +45,5 @@
         WHERE tradeNo = #{tradeNo}
     </update>
 
-    <
+
 </mapper>
