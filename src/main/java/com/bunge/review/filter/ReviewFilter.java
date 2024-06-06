@@ -1,8 +1,6 @@
 package com.bunge.review.filter;
 
 public class ReviewFilter {
-    private int no;
-    private int reviewno;
     private String booktitle;
     private String id;
     private String linetitle;
@@ -11,22 +9,6 @@ public class ReviewFilter {
     private Integer page;
     private int offset;
     private int limit;
-
-    public int getNo() {
-        return no;
-    }
-
-    public void setNo(int no) {
-        this.no = no;
-    }
-
-    public int getReviewno() {
-        return reviewno;
-    }
-
-    public void setReviewno(int reviewno) {
-        this.reviewno = reviewno;
-    }
 
     public String getBooktitle() {
         return booktitle;
@@ -95,9 +77,7 @@ public class ReviewFilter {
     @Override
     public String toString() {
         return "ReviewFilter{" +
-                "no=" + no +
-                ", reviewno=" + reviewno +
-                ", booktitle='" + booktitle + '\'' +
+                "booktitle='" + booktitle + '\'' +
                 ", id='" + id + '\'' +
                 ", linetitle='" + linetitle + '\'' +
                 ", content='" + content + '\'' +

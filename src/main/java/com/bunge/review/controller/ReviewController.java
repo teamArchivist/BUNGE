@@ -48,13 +48,7 @@ public class ReviewController {
         int pageSize = 12;
         int offset = (page - 1) * pageSize;
 
-        ReviewFilter reviewFilter = new ReviewFilter();
-        reviewFilter.setBooktitle(booktitle);
-        reviewFilter.setId(id);
-        reviewFilter.setLinetitle(linetitle);
-        reviewFilter.setContent(content);
-        reviewFilter.setScore(score);
-        reviewFilter.setPage(pageSize);
+        reviewFilter.setPage(page);
         reviewFilter.setOffset(offset);
         reviewFilter.setLimit(pageSize);
 
@@ -69,13 +63,12 @@ public class ReviewController {
         int startPage = Math.max(1, page-5);
         int endPage = Math.min(maxPage, page + 4);
 
-        modelAndView.addObject("loginId", loginId);
-        modelAndView.addObject("reviewList", reviewList);
-        modelAndView.addObject("currentPage", page);
-        modelAndView.addObject("maxPage", maxPage);
-        modelAndView.addObject("startPage", startPage);
-        modelAndView.addObject("endPage", endPage);
+        model.addAttribute("loginId", loginId);
         model.addAttribute("reviewList", reviewList);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("maxPage", maxPage);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
 
         return "review/review_main";
     }
