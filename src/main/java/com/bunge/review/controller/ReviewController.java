@@ -1,10 +1,11 @@
 package com.bunge.review.controller;
 
 import com.bunge.memo.domain.Book;
-import com.bunge.memo.service.BookService;
 import com.bunge.review.domain.ReviewComm;
 import com.bunge.review.domain.Review;
+import com.bunge.review.domain.ReviewLike;
 import com.bunge.review.filter.ReviewFilter;
+import com.bunge.review.parameter.ReviewLikeRequest;
 import com.bunge.review.service.ReviewService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,8 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
 import java.util.List;
@@ -33,50 +34,43 @@ public class ReviewController {
     }
 
     @GetMapping("/main")
-    public ModelAndView reviewMain(ModelAndView modelAndView,
-                                   @RequestParam(value="booktitle", required=false) String booktitle,
-                                   @RequestParam(value="id", required=false) String id,
-                                   @RequestParam(value="linetitle", required=false) String linetitle,
-                                   @RequestParam(value="content", required=false) String content,
-                                   @RequestParam(value="score", required=false, defaultValue = "0") Integer score,
-                                   @RequestParam(value="page", required=false, defaultValue = "1") Integer page) {
+    public String reviewMain(Model model,
+                             ReviewFilter reviewFilter,
+                             ReviewLikeRequest reviewLikeRequest,
+                             @RequestParam(value="page", required=false, defaultValue = "1") Integer page) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String loginId = authentication.getName();
         //logger.info("loginId : " + loginId);
+        //logger.info(reviewFilter.toString());
+        //logger.info(reviewLikeRequest.toString());
 
         int pageSize = 12;
         int offset = (page - 1) * pageSize;
 
-        ReviewFilter reviewFilter = new ReviewFilter();
-        reviewFilter.setBooktitle(booktitle);
-        reviewFilter.setId(id);
-        reviewFilter.setLinetitle(linetitle);
-        reviewFilter.setContent(content);
-        reviewFilter.setScore(score);
-        reviewFilter.setPage(pageSize);
+        reviewFilter.setPage(page);
         reviewFilter.setOffset(offset);
         reviewFilter.setLimit(pageSize);
 
+        reviewLikeRequest.setId(loginId);
+
+
         List<Review> reviewList = reviewService.getReviewList(reviewFilter);
         //logger.info(reviewList.toString());
-
         int totalReviews = reviewService.getReviewListCount(reviewFilter);
 
         int maxPage = (int) Math.ceil((double) totalReviews / pageSize );
-
         int startPage = Math.max(1, page-5);
         int endPage = Math.min(maxPage, page + 4);
 
-        modelAndView.addObject("loginId", loginId);
-        modelAndView.addObject("reviewList", reviewList);
-        modelAndView.addObject("currentPage", page);
-        modelAndView.addObject("maxPage", maxPage);
-        modelAndView.addObject("startPage", startPage);
-        modelAndView.addObject("endPage", endPage);
+        model.addAttribute("loginId", loginId);
+        model.addAttribute("reviewList", reviewList);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("maxPage", maxPage);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
 
-        modelAndView.setViewName("review/review-main");
-        return modelAndView;
+        return "review/review_main";
     }
 
     @PostMapping("/add-review")
@@ -131,6 +125,31 @@ public class ReviewController {
         map.put("listcount",listcount);
 
         return map;
+    }
+
+    @ResponseBody
+    @PostMapping("/review-like")
+    public Map<String, Object> reviewLike(ReviewLikeRequest reviewLikeRequest) {
+        //logger.info(reviewLikeRequest.toString());
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        int result = reviewService.controlReviewLike(reviewLikeRequest);
+        int likeCount = reviewService.countReviewLike(reviewLikeRequest);
+
+        map.put("result", result);
+        map.put("likeCount", likeCount);
+
+        return map;
+    }
+
+    @ResponseBody
+    @PostMapping("/check-review-like-list")
+    public List<ReviewLike> checkReviewLikeList(ReviewLikeRequest reviewLikeRequest) {
+        //logger.info(reviewLikeRequest.toString());
+        List<ReviewLike> likedReviewList = reviewService.checkReviewLikeList(reviewLikeRequest);
+        logger.info(likedReviewList.toString());
+
+        return likedReviewList;
     }
 
 }

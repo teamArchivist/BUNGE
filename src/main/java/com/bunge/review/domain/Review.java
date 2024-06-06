@@ -13,6 +13,7 @@ public class Review {
     private int challengeperiod;
 
     private int countcomment;
+    private int countlike;
 
     public int getNo() {
         return no;
@@ -102,6 +103,14 @@ public class Review {
         this.countcomment = countcomment;
     }
 
+    public int getCountlike() {
+        return countlike;
+    }
+
+    public void setCountlike(int countlike) {
+        this.countlike = countlike;
+    }
+
     @Override
     public String toString() {
         return "Review{" +
@@ -116,6 +125,7 @@ public class Review {
                 ", lastmodified='" + lastmodified + '\'' +
                 ", challengeperiod=" + challengeperiod +
                 ", countcomment=" + countcomment +
+                ", countlike=" + countlike +
                 '}';
     }
 }
