@@ -5,6 +5,7 @@ import com.bunge.review.domain.ReviewComm;
 import com.bunge.review.domain.Review;
 import com.bunge.review.domain.ReviewLike;
 import com.bunge.review.filter.ReviewFilter;
+import com.bunge.review.parameter.ReviewCommDeleteRequest;
 import com.bunge.review.parameter.ReviewCommUpdateRequest;
 import com.bunge.review.parameter.ReviewLikeRequest;
 import com.bunge.review.service.ReviewService;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -156,9 +158,22 @@ public class ReviewController {
     @ResponseBody
     @PostMapping("/update-comm")
     public int updateComm(ReviewCommUpdateRequest reviewCommUpdateRequest) {
-        logger.info(reviewCommUpdateRequest.toString());
+        //logger.info(reviewCommUpdateRequest.toString());
 
         return reviewService.updateReviewComm(reviewCommUpdateRequest);
+    }
+
+    @ResponseBody
+    @PostMapping("/delete-comm")
+    public int deleteComm(ReviewCommDeleteRequest reviewCommDeleteRequest) {
+        //logger.info(reviewCommDeleteRequest.toString());
+        //logger.info(review.toString());
+
+        Map<String, Integer> map = new HashMap<String, Integer>();
+
+        int deleteResult = reviewService.deleteReviewComm(reviewCommDeleteRequest);
+
+        return deleteResult;
     }
 
 }

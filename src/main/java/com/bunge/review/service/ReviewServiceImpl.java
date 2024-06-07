@@ -6,6 +6,7 @@ import com.bunge.review.domain.ReviewComm;
 import com.bunge.review.domain.ReviewLike;
 import com.bunge.review.filter.ReviewFilter;
 import com.bunge.review.mapper.ReviewMapper;
+import com.bunge.review.parameter.ReviewCommDeleteRequest;
 import com.bunge.review.parameter.ReviewCommUpdateRequest;
 import com.bunge.review.parameter.ReviewLikeRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,6 +109,11 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public int updateReviewComm(ReviewCommUpdateRequest reviewCommUpdateRequest) {
         return reviewMapper.updateReviewComm(reviewCommUpdateRequest);
+    }
+
+    @Override
+    public int deleteReviewComm(ReviewCommDeleteRequest reviewCommDeleteRequest) {
+        return reviewMapper.deleteReviewComm(reviewCommDeleteRequest);
     }
 
 }

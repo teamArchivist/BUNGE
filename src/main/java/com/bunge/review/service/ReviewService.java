@@ -5,6 +5,7 @@ import com.bunge.review.domain.Review;
 import com.bunge.review.domain.ReviewComm;
 import com.bunge.review.domain.ReviewLike;
 import com.bunge.review.filter.ReviewFilter;
+import com.bunge.review.parameter.ReviewCommDeleteRequest;
 import com.bunge.review.parameter.ReviewCommUpdateRequest;
 import com.bunge.review.parameter.ReviewLikeRequest;
 
@@ -53,4 +54,7 @@ public interface ReviewService {
 
     //리뷰 댓글 수정
     public int updateReviewComm(ReviewCommUpdateRequest reviewCommUpdateRequest);
+
+    //리뷰 댓글 삭제
+    public int deleteReviewComm(ReviewCommDeleteRequest reviewCommDeleteRequest);
 }
