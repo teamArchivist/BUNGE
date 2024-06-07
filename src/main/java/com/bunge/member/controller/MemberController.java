@@ -61,12 +61,10 @@ public class MemberController {
                         HttpSession session,
                         Principal userPrincipal)  {
         if (readCookie != null) {
-            String message = "로그인에 성공하셨습니다.";
-            mav.addObject("message" , message);
+            String successmessage = "로그인에 성공하셨습니다.";
+            mav.addObject("successmessage" , successmessage);
             mav.setViewName("redirect:member/index");
         } else {
-            String message = "아이디나 비밀번호가 틀렸습니다.";
-            mav.addObject("message" , message);
             mav.setViewName("member/login");
 
             mav.addObject("loginfail", session.getAttribute("loginfail"));

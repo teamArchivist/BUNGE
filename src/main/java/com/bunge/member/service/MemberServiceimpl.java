@@ -2,6 +2,7 @@ package com.bunge.member.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import com.bunge.member.domain.Member;
 import com.bunge.member.mapper.MemberMapper;
