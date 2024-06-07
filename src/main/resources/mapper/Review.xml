@@ -136,4 +136,10 @@
         where id = #{id}
     </select>
 
+    <update id="updateReviewComm" parameterType="com.bunge.review.parameter.ReviewCommUpdateRequest">
+        update reviewcomm
+        set content = #{content}
+        where no = #{no}
+    </update>
+
 </mapper>

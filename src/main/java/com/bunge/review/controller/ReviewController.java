@@ -5,6 +5,7 @@ import com.bunge.review.domain.ReviewComm;
 import com.bunge.review.domain.Review;
 import com.bunge.review.domain.ReviewLike;
 import com.bunge.review.filter.ReviewFilter;
+import com.bunge.review.parameter.ReviewCommUpdateRequest;
 import com.bunge.review.parameter.ReviewLikeRequest;
 import com.bunge.review.service.ReviewService;
 import org.slf4j.Logger;
@@ -147,9 +148,17 @@ public class ReviewController {
     public List<ReviewLike> checkReviewLikeList(ReviewLikeRequest reviewLikeRequest) {
         //logger.info(reviewLikeRequest.toString());
         List<ReviewLike> likedReviewList = reviewService.checkReviewLikeList(reviewLikeRequest);
-        logger.info(likedReviewList.toString());
+        //logger.info(likedReviewList.toString());
 
         return likedReviewList;
+    }
+
+    @ResponseBody
+    @PostMapping("/update-comm")
+    public int updateComm(ReviewCommUpdateRequest reviewCommUpdateRequest) {
+        logger.info(reviewCommUpdateRequest.toString());
+
+        return reviewService.updateReviewComm(reviewCommUpdateRequest);
     }
 
 }
