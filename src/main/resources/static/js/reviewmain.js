@@ -202,7 +202,8 @@ $(function() {
                                 + "<i class='demo-pli-pencil'></i>"
                                 + "</button>"
                                 + "&nbsp;&nbsp;"
-                                + "<button type='button' class='btn btn-icon btn-outline-danger rounded-circle btn-xs ml delete-comm-btn' data-deletecommno='" + this.no + "'>"
+                                + "<button type='button' class='btn btn-icon btn-outline-danger rounded-circle btn-xs ml delete-comm-btn'" +
+                                "          data-deletecommno='" + this.no + "' data-reviewno='" + this.reviewno + "'>"
                                 + "<i class='demo-pli-trash'></i>"
                                 + "</button>"
                         }
@@ -335,7 +336,6 @@ $(function() {
                 },
                 success: function (rdata) {
                     if (rdata == 1) {
-                        getCommList(reviewno, page)
                         $(".reviewComment-input").val("")
                         $("#comment-add-btn").show();
                         $(".delete-comm-btn").next().css("display","none")
@@ -355,8 +355,41 @@ $(function() {
                 }
             }) // ajax end
         }) //$(".updateSubmitBtn").click end
-
     })
+
+    $("body").on("click", ".delete-comm-btn", function() {
+        let reviewno = $(this).data("reviewno")
+        let no = $(this).data("deletecommno")
+        let answer = confirm("정말 삭제 하시겠습니까?");
+        if (answer) {
+            $.ajax({
+                url: "delete-comm",
+                method: "post",
+                data: {no},
+                cache: false,
+                beforeSend: function (xhr) {
+                    if (header && token) {
+                        xhr.setRequestHeader(header, token);
+                    }
+                },
+                success: function (rdata) {
+                    //console.log(rdata)
+                    if (rdata == 1) {
+                        alert("댓글 삭제 성공");
+                        getCommList(reviewno, page)
+                    } else {
+                        alert("댓글 삭제 실패, 다시 한번 시도해주세요")
+                    }
+                },
+                error: function(status, error) {
+                    console.log("ajax 요청 실패")
+                    console.log("상태:" + status)
+                    console.log("오류:" + error)
+                    alert("댓글 삭제 중 오류가 발생했습니다. 다시 시도해주세요")
+                }
+            }) // ajax end
+        } // if end
+    }) // $("body").on("click", ".delete-comm-btn", function() end
 
 
 }) //ready end
