@@ -5,6 +5,7 @@ import com.bunge.review.domain.Review;
 import com.bunge.review.domain.ReviewComm;
 import com.bunge.review.domain.ReviewLike;
 import com.bunge.review.filter.ReviewFilter;
+import com.bunge.review.parameter.ReviewCommUpdateRequest;
 import com.bunge.review.parameter.ReviewLikeRequest;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -53,5 +54,8 @@ public interface ReviewMapper {
 
     //좋아요를 누른 리뷰 리스트
     public List<ReviewLike> checkReviewLikeList(ReviewLikeRequest reviewLikeRequest);
+
+    //리뷰 댓글 수정
+    public int updateReviewComm(ReviewCommUpdateRequest reviewCommUpdateRequest);
 
 }
