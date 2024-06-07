@@ -2,6 +2,41 @@ let token = $("meta[name='_csrf']").attr("content");
 let header = $("meta[name='_csrf_header']").attr("content");
 
 $(function (){
+    //이메일 인증코드 발송
+    $('#emailVerifyButton').click(function () {
+        const email = $('input[name="email"]').val().trim();
+        if (email !== "") {
+            $.ajax({
+                url: "mymaildelivery",
+                type: "get",
+                data: { email: email},
+                success: function (response) {
+                    console.log("인증코드"+response);
+                    generatedCode = response;
+                    $("#emailCode").attr('type', 'text').val('');
+                    $("#emailcode_message").text("인증코드가 발송되었습니다.");
+                },
+                error: function () {
+                    $('#email_message').text("인증 코드 발송이 실패했습니다. 다시 시도해주세요.");
+                }
+            });
+        } else {
+            $('#email_message').text("이메일을 입력해 주세요.");
+            $('#emailCode').hide();
+        }
+    });
+    //이메일인증 코드 비교
+    $("input[name=emailcode]").on('keyup', function () {
+        const emailcode = $(this).val().trim();
+        if (emailcode === generatedCode) {
+            $("#emailcode_message").css('color', 'green').text("인증되었습니다.");
+            return true;
+        } else {
+            $("#emailcode_message").css('color', 'red').text("인증코드가 일치하지 않습니다.");
+            return false;
+        }
+    });
+
     console.log($("#loginId").text());
     let id=$("#loginId").text();
     $.ajax({
@@ -25,4 +60,4 @@ $(function (){
             })
         }
     })
-})
+});

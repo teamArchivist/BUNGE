@@ -1,15 +1,18 @@
 package com.bunge.mypage.controller;
 
 import com.bunge.member.controller.MemberController;
+import com.bunge.member.domain.Mail;
 import com.bunge.member.domain.Member;
 import com.bunge.member.service.MemberService;
 import com.bunge.member.service.MemberServiceimpl;
+import com.bunge.mypage.service.MypageSendEmail;
 import com.bunge.mypage.service.MypageService;
 import com.bunge.review.domain.Review;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -33,12 +36,15 @@ public class MypageController {
     private                MemberService memberservice;
     private                MypageService mypageservice;
     private                PasswordEncoder passwordEncoder;
+    private                MypageSendEmail mypagesendemail;
 
     @Autowired
-    public MypageController(MypageService  mypageservice, PasswordEncoder passwordEncoder, MemberService memberservice) {
+    public MypageController(MypageService  mypageservice, PasswordEncoder passwordEncoder,
+                            MemberService memberservice, MypageSendEmail mypagesendemail) {
         this.mypageservice = mypageservice;
         this.passwordEncoder=passwordEncoder;
         this.memberservice=memberservice;
+        this.mypagesendemail=mypagesendemail;
     }
 
     //마이 페이지 폼 이동
@@ -92,6 +98,13 @@ public class MypageController {
             mav.setViewName("error/403");
         }
         return mav;
+    }
+    @GetMapping(value = "/mymaildelivery")
+    public ResponseEntity<String> maildelivery(@RequestParam("email") String email){
+        Mail mail = new Mail();
+        mail.setTo(email);
+        mypagesendemail.mypagesendmail(mail);
+        return ResponseEntity.ok(mail.getRandom());
     }
     //내 정보 수정 처리
     @PostMapping(value = "/update-process")

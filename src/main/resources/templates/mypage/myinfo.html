@@ -5,7 +5,7 @@
     <title>내 정보 보기</title>
     <links>
         <!--/* link, script 태그 영역 */-->
-        <script th:src="@{/js/join.js}"></script>
+        <script th:src="@{/js/mypage.js}"></script>
         <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
     </links>
 </head>
@@ -150,7 +150,7 @@
                                     <input type="text" name="zipcode" class="form-control" th:value="${memberinfo.zipcode}">
                                 </div>
                                 <div class="mt-4 col-3">
-                                    <!-- Vertical centered modal -->
+                                    <!-- 주소 modal -->
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changeaddr"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
                                         변경
                                     </font></font></button>
@@ -262,7 +262,20 @@
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫다"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <input type="text" name="email" class="form-control" placeholder="이메일 입력">
+                                                        <div class="d-inline-flex">
+                                                            <div class="col-7 mt-2">
+                                                                <input type="email" name="email" class="form-control" placeholder="Email" aria-label="Email"required>
+                                                            </div>
+                                                            <div class="col-4 mt-2" style="margin-left: 10px;">
+                                                                <button type="button" class="btn btn-primary" id="emailVerifyButton" name="checkemail">이메일 인증</button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12 mt-2">
+
+                                                            <div class="col-6 mt-1">
+                                                                <input type="hidden" id="emailCode" name="emailcode" class="form-control" placeholder="인증코드 입력" required>
+                                                                <span id="emailcode_message"></span>
+                                                            </div>
                                                         <input type="hidden" name="id" class="form-control" th:value="${memberinfo.id}">
                                                         <input type="hidden" name="name" class="form-control" th:value="${memberinfo.name}">
                                                         <input type="hidden" name="nick" class="form-control" th:value="${memberinfo.nick}">
