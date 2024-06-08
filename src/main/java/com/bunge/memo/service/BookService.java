@@ -12,13 +12,13 @@ public interface BookService {
     public void addBook(Book book);
 
     //책 개수
-    public int getBookListCount(BookFilter filter);
+    public int getBookListCount(BookFilter bookFilter);
 
     //책 목록
-    public List<Book> getBookList(BookFilter filter);
+    public List<Book> getBookList(BookFilter bookFilter);
 
     //책 상세보기
-    public Book getBookDetail(BookFilter filter);
+    public Book getBookDetail(BookFilter bookFilter);
 
     //검색결과 DB 비교
     public List<Book> filterNewBooks(List<Book> books);

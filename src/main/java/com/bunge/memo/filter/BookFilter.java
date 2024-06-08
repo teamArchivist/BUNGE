@@ -1,18 +1,14 @@
 package com.bunge.memo.filter;
 
 public class BookFilter {
-    private String isbn13;
     private String title;
     private String author;
     private String category;
     private Integer score;
     private Integer page;
+    private String isbn13;
     private int offset;
     private int limit;
-
-    public String getIsbn13() { return isbn13; }
-
-    public void setIsbn13(String isbn13) { this.isbn13 = isbn13; }
 
     public String getTitle() {
         return title;
@@ -54,20 +50,28 @@ public class BookFilter {
         this.page = page;
     }
 
-    public void setOffset(int offset) {
-        this.offset = offset;
+    public String getIsbn13() {
+        return isbn13;
+    }
+
+    public void setIsbn13(String isbn13) {
+        this.isbn13 = isbn13;
     }
 
     public int getOffset() {
         return offset;
     }
 
-    public void setLimit(int limit) {
-        this.limit = limit;
+    public void setOffset(int offset) {
+        this.offset = offset;
     }
 
     public int getLimit() {
         return limit;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
     }
 
     @Override
@@ -78,6 +82,7 @@ public class BookFilter {
                 ", category='" + category + '\'' +
                 ", score=" + score +
                 ", page=" + page +
+                ", isbn13='" + isbn13 + '\'' +
                 ", offset=" + offset +
                 ", limit=" + limit +
                 '}';

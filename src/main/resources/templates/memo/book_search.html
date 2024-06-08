@@ -81,7 +81,7 @@
             </div>
         </div>
 
-        <nav th:if="${maxPage > 1}" class="text-align-center mt-5" aria-label="Page navigation" id="reviewPagination">
+        <nav th:if="${maxPage > 1 and books.size() != 0}" class="text-align-center mt-5" aria-label="Page navigation" id="reviewPagination">
             <ul class="pagination justify-content-center">
                 <li th:if="${currentPage == 1}" class="page-item">
                     <a class="page-link disabled">이전</a>

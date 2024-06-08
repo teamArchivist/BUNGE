@@ -13,7 +13,7 @@ $(function () {
     function searchBooks(keyword, type, page) {
         $.ajax({
             url: "search-result",
-            method: "GET",
+            method: "get",
             beforeSend: function(xhr) {
                 if (header && token) {
                     xhr.setRequestHeader(header, token);
