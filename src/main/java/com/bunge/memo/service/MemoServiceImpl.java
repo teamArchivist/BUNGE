@@ -60,5 +60,10 @@ public class MemoServiceImpl implements MemoService {
         return memoMapper.getMemoListCount(memoFilter);
     }
 
+    @Override
+    public int countMemoRecord(String formattedDate) {
+        return memoMapper.countMemoRecord(formattedDate);
+    }
+
 
 }

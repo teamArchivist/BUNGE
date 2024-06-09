@@ -57,4 +57,10 @@
         where id = #{loginId}
     </select>
 
+    <select id="countMemoRecord" parameterType="String" resultType="int">
+        select count(*)
+        from memo
+        where DATE_FORMAT(lastmodified, '%Y/%c') = #{formattedDate}
+    </select>
+
 </mapper>
