@@ -2,7 +2,7 @@ package com.bunge.member.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import com.bunge.member.domain.Member;
 import com.bunge.member.mapper.MemberMapper;
@@ -13,39 +13,44 @@ import java.util.HashMap;
 public class MemberServiceimpl implements MemberService{
 
     private MemberMapper    memberMapper;
-    private PasswordEncoder passwordEncoder;
+
 
     @Autowired
-    public MemberServiceimpl(MemberMapper memberMapper, PasswordEncoder passwordEncoder) {
+    public MemberServiceimpl(MemberMapper memberMapper) {
         this.memberMapper = memberMapper;
-        this.passwordEncoder = passwordEncoder;
+
     }
     @Override
-    public int insert(Member member) {
-        return memberMapper.insert(member);
+    public int insert(Member member) throws DuplicateKeyException {
+        try{
+            return memberMapper.insert(member);
+        }catch (DuplicateKeyException e) {
+            throw new DuplicateKeyException("중복된 아이디입니다. 다시 가입해주세요", e);
+        }
     }
+
     @Override
     public Member memberinfo(String id) {
-        return memberMapper.idcheck(id);
+        return memberMapper.checkid(id);
     }
 
     @Override
-    public boolean idcheck(String id) {
-        Member member = memberMapper.idcheck(id);
+    public boolean checkid(String id) {
+        Member member = memberMapper.checkid(id);
         if(member != null) return true;
         return false;
     }
 
     @Override
-    public boolean nickcheck(String nick) {
-        Member member = memberMapper.nickcheck(nick);
+    public boolean checknick(String nick) {
+        Member member = memberMapper.checknick(nick);
         if(member != null) return true;
         return false;
     }
 
     @Override
-    public boolean emailcheck(String email) {
-        Member member = memberMapper.emailcheck(email);
+    public boolean checkemail(String email) {
+        Member member = memberMapper.checkemail(email);
         if(member != null) return true;
         return false;
     }
@@ -68,7 +73,6 @@ public class MemberServiceimpl implements MemberService{
         }
         return null;
     }
-
     @Override
     public boolean findpwd(String id, String name, String email) {
         HashMap<String, String> map = new HashMap<>();
@@ -76,15 +80,16 @@ public class MemberServiceimpl implements MemberService{
         map.put("name", name);
         map.put("email", email);
         int count = memberMapper.findpwd(map);
-        if (count == 1) {
-            return true;
-        }else{
-            return false;
-        }
+        return count == 1;
     }
+
     @Override
     public boolean pwdset(Member member) {
-        int result = memberMapper.pwdset(member);
+        HashMap<String, String> map = new HashMap<>();
+        map.put("pwd", member.getPwd());
+        map.put("findid", member.getId());
+        int result = memberMapper.pwdset(map);
+        if(result ==1) return true;
         return false;
     }
 }

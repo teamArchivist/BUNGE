@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bunge.trade.mapper.TradeMapper">
+    <select id="getListCount" resultType="int">
+        SELECT COUNT(*) FROM trade
+    </select>
+
+    <select id="getTradeList" parameterType="java.util.HashMap" resultType="com.bunge.trade.domain.Trade">
+        <![CDATA[
+        SELECT * FROM trade
+        WHERE tradeNo >= #{start} AND tradeNo <= #{end}
+        ORDER BY tradeNo DESC
+            ]]>
+    </select>
+
+    <insert id="insertTrade" parameterType="com.bunge.trade.domain.Trade">
+        INSERT INTO trade (tradeNo, sellerID, title, description)
+        VALUES (#{tradeNo}, #{sellerID}, #{title}, #{description})
+    </insert>
+
+    <insert id="insertTradeImage" parameterType="com.bunge.trade.domain.TradeImage">
+        INSERT INTO trade_image (tradeNo, imagePath)
+        VALUES (#{tradeNo}, #{imagePath})
+    </insert>
+
+    <select id="getTradeImages" parameterType="int" resultType="com.bunge.trade.domain.TradeImage">
+        SELECT * FROM trade_image WHERE tradeNo = #{tradeNo}
+    </select>
+
+    <select id="selectTradeByCategoryID" parameterType="String" resultType="com.bunge.trade.domain.Trade">
+        SELECT * FROM trade
+        WHERE categoryID = #{categoryID}
+    </select>
+
+    <select id="getDetail" parameterType="int" resultType="com.bunge.trade.domain.Trade">
+        SELECT * FROM trade WHERE tradeNo = #{tradeNo}
+    </select>
+
+    <update id="setReadCountUpdate" parameterType="int">
+        UPDATE trade
+        SET readCount = readCount + 1
+        WHERE tradeNo = #{tradeNo}
+    </update>
+
+</mapper>

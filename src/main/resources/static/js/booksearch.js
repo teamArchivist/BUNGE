@@ -12,8 +12,8 @@ $(function () {
 
     function searchBooks(keyword, type, page) {
         $.ajax({
-            url: "searchresult",
-            method: "GET",
+            url: "search-result",
+            method: "get",
             beforeSend: function(xhr) {
                 if (header && token) {
                     xhr.setRequestHeader(header, token);
@@ -37,9 +37,9 @@ $(function () {
                                 <div class='card mb-3 hv-grow-parent h-100'>
                                     <img class='card-img-top' src='${book.cover}' alt='...' height='350px'>
                                     <div class='card-body'>
-                                        <a class='card-text link-success h5'>${book.title}</a>
+                                        <a href="bookdetail?isbn13=${book.isbn13}" +  class='card-text link-success h5'>${book.title}</a>
                                         <p class='card-text mt-3'>${book.author}</p>
-                                        <p class='card-text'>${book.category}</p>
+                                        <p class='card-text'>${book.categoryName}</p>
                                         <p class='card-text'>평점 : ${book.score}</p>
                                         <p class='card-text'>${book.description}</p>
                                     </div>
@@ -175,7 +175,7 @@ $(function () {
             };
 
             $.ajax({
-                url: "addbook",  // 서버에 책 정보를 저장하는 엔드포인트
+                url: "add-book",  // 서버에 책 정보를 저장하는 엔드포인트
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -188,7 +188,7 @@ $(function () {
                 data: JSON.stringify(bookData),
                 success: function (response) {
                     alert("책 정보가 저장되었습니다.");
-                    window.location.href = response.message;
+                    location.href = response.message;
                 },
                 error: function (error) {
                     alert("책 정보 저장에 실패했습니다.")

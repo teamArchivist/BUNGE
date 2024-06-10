@@ -22,10 +22,11 @@ import java.util.List;
 @Controller
 @RequestMapping( "/inquiry")
 public class InquiryController {
+
     @Autowired
     private InquiryService inquiryService;
     private MemberService memberService;
-
+  
     @Autowired
     public InquiryController(InquiryService inquiryService,
                              InquiryCommentService inquiryCommentService,

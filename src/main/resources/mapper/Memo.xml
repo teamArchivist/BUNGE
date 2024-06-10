@@ -4,14 +4,57 @@
 
 <mapper namespace="com.bunge.memo.mapper.MemoMapper">
 
+    <update id="updateReadPage">
+        update readstate
+        set readpage = readpage + #{readpage}
+        where isbn13 = #{isbn13}
+          and id = #{id}
+    </update>
+
     <insert id="addMemo">
-        <selectKey resultType="int" order="BEFORE" keyProperty="no">
-            select coalesce(max(no), 0)+1 from memo
+        <selectKey resultType="int" order="BEFORE" keyProperty="remainpage">
+            select (totalpage-readpage) remainpage
+            from readstate
+            where isbn13 = #{isbn13}
+            and id = #{id};
         </selectKey>
-        insert into memo
-        (no, id, ispublic, readpages, title, keyword, content, created, lastmodified)
-        values
-        (#{no}, #{id}, #{ispublic}, #{readpages}, #{title}, #{keyword}, #{content}, now(), now())
+            insert into memo
+            (id, readpage, remainpage, ispublic, isbn13, cover, title, content, created, lastmodified)
+            values
+            (#{id}, #{readpage}, #{remainpage}, #{ispublic}, #{isbn13}, #{cover}, #{title}, #{content}, now(), now())
     </insert>
+
+
+    <select id="getMyMemoList" parameterType="com.bunge.memo.filter.MemoFilter" resultType="com.bunge.memo.domain.Memo">
+        select *
+        from memo
+        where id = #{loginId}
+        order by no desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <update id="updateMemo">
+        update memo
+        set readpage = #{readpage}, ispublic = #{ispublic}, title = #{title}, content = #{content}, lastmodified = now()
+        where no = #{no}
+    </update>
+
+    <delete id="deleteMemo">
+        delete from memo
+        where no = #{no}
+    </delete>
+
+    <update id="updateReadPageByDelete">
+        update readstate
+        set readpage = readpage - #{readpage}
+        where isbn13 = #{isbn13}
+        and id = #{id}
+    </update>
+
+    <select id="getMemoListCount" parameterType="com.bunge.memo.filter.MemoFilter" resultType="int">
+        select count(*)
+        from memo
+        where id = #{loginId}
+    </select>
 
 </mapper>

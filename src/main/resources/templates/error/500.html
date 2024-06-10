@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}"
+      xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+   <title>500</title>
+   <links>
+   </links>
+</head>
+<body>
+<th:block sec:authorize="isAnonymous()">
+      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+      <section id="content" class="content">
+         <div class="content__boxed card rounded-0 w-100 min-vh-100 d-flex flex-column align-items-stretch justify-content-center">
+            <div class="content__wrap">
+
+
+               <div class="text-center">
+                  <div class="error-code page-title fw-semibold mb-3">500</div>
+                  <h3 class="mb-4">
+                     <div class="badge bg-danger text-uppercase px-5">Internal Server Error !</div>
+                  </h3>
+                  <p class="lead mb-5 text-body-emphasis">Something went wrong and server couldn't process your request.</p>
+               </div>
+
+               <!-- Search form -->
+               <div class="col-md-8 offset-md-2 py-4">
+                  <form class="searchbox input-group">
+                     <input class="searchbox__input form-control form-control-lg" type="search" placeholder="Type for search . . ." aria-label="Search">
+                     <div class="searchbox__btn-group">
+                        <button class="searchbox__btn btn btn-icon shadow-none border-0 btn-sm" type="submit">
+                           <i class="demo-pli-magnifi-glass"></i>
+                        </button>
+                     </div>
+                  </form>
+               </div>
+               <!-- END : Search form -->
+
+
+               <!-- Action buttons -->
+               <div class="d-flex justify-content-center gap-3">
+                  <button type="button" onclick="window.history.back()" class="btn btn-light hstack gap-2">
+                     <i class="demo-psi-left-4 fs-5 opacity-30"></i>
+                     <span class="vr"></span>
+                     Go back
+                  </button>
+                  <a href="./" class="btn btn-primary hstack gap-2">
+                     <i class="demo-psi-home fs-5"></i>
+                     <span class="vr"></span>
+                     Return home
+                  </a>
+               </div>
+               <!-- END : Action buttons -->
+
+
+            </div>
+         </div>
+      </section>
+</th:block>
+</body>
+</html>
