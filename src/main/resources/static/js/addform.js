@@ -22,13 +22,21 @@ $(function() {
 		$("#title").focus();
 		return false;
 	}
-	
-	if($.trim($("#_dm-quillCustomToolbar").find('p').text()) == "") {
-		alert("내용을 입력하세요.");
-		$("#_dm-quillCustomToolbar").focus();
-		return false;
-	}
+
+		// 다양한 빈 태그들을 확인하기 위한 정규 표현식
+		var emptyContentPattern = /^(\s*<p><br><\/p>\s*|\s*<div><br><\/div>\s*|\s*<h[1-6]><br><\/h[1-6]>\s*)+$/;
+
+		if (emptyContentPattern.test(content) || content === "") {
+			alert("내용을 입력하세요.");
+			$("#_dm-quillCustomToolbar").focus();
 			return false;
+		}
+
+	// if($.trim($("#_dm-quillCustomToolbar").find('p').text()) == "") {
+	// 	alert("내용을 입력하세요.");
+	// 	$("#_dm-quillCustomToolbar").focus();
+	// 	return false;
+	// }
 	
 	if($.trim($("#email").val()) == "") {
 		alert("이메일을 입력하세요.");
@@ -48,4 +56,5 @@ $(function() {
 	$(".btn-danger").click(function(){
 		 history.go(-1);
 		 });
+
 });

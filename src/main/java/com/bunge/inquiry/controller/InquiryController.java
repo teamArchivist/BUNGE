@@ -111,12 +111,12 @@ public class InquiryController {
             mv.addObject("url", request.getRequestURL());
             mv.addObject("message","상세보기 실패입니다.");
         } else {
-            logger.info("상세보기 성공");
-            mv.setViewName("inquiry/view");
         //    log.info("상세보기 성공");
             mv.setViewName("inquiry/inquiry_view");
             mv.addObject("inquirydata",inquiry);
         }
+        return mv;
+    }
         return mv;
     }
 

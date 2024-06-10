@@ -6,16 +6,21 @@
 
     <!-- 문의글 삽입 -->
     <insert id="insertInquiry">
-        INSERT INTO inquiry (memberId, typeId, title, content, isPublic, createdAt, updatedAt)
-        VALUES (#{memberId}, #{typeId}, #{title}, #{content}, #{isPublic}, NOW(), NOW())
+        INSERT INTO inquiry (memberId, typeId, title, content, isPrivate, isAnswered, createdAt, updatedAt, email)
+        VALUES (#{memberId}, #{typeId}, #{title}, #{content}, #{isPrivate}, #{isAnswered},NOW(), NOW(),#{email})
     </insert>
 
     <!-- 문의글 수정 -->
     <update id="updateInquiry">
-        UPDATE inquiry
-        SET title = #{title}, content = #{content}, typeId = #{typeId},
-            updatedAt = CURRENT_TIMESTAMP, isPublic = #{isPublic}, isAnswered = #{isAnswered}
-        WHERE inquiryId = #{inquiryId}
+    <!-- inquiry 테이블 업데이트 -->
+    UPDATE inquiry
+    SET title = #{title},
+    content = #{content},
+    typeId = #{typeId},
+    updatedAt = CURRENT_TIMESTAMP,
+    isPrivate = #{isPrivate},
+    isAnswered = #{isAnswered}
+    WHERE inquiryId = #{inquiryId};
     </update>
 
     <!-- 문의글 삭제 -->
@@ -31,7 +36,7 @@
                t.typeName AS typeName,
                i.title,
                i.content,
-               i.isPublic AS isPublic,
+               i.isPrivate AS isPrivate,
                i.isAnswered AS isAnswered,
                i.createdAt AS createdAt,
                i.updatedAt AS updatedAt
@@ -49,7 +54,7 @@
                t.typeName AS typeName,
                i.title,
                i.content,
-               i.isPublic AS isPublic,
+               i.isPrivate AS isPrivate,
                i.isAnswered AS isAnswered,
                i.createdAt AS createdAt,
                i.updatedAt AS updatedAt
@@ -66,12 +71,12 @@
                t.typeName AS typeName,
                i.title,
                i.content,
-               i.isPublic AS isPublic,
+               i.isPrivate AS isPrivate,
                i.isAnswered AS isAnswered,
                i.createdAt AS createdAt,
                i.updatedAt AS updatedAt
         FROM inquiry i
-                 JOIN inquiryType t ON i.typeId = t.typeId
+                 JOIN inquiry_type t ON i.typeId = t.typeId
         WHERE i.typeId = #{typeId}
         ORDER BY i.inquiryId DESC
             LIMIT #{limit} OFFSET #{offset}
@@ -84,9 +89,20 @@
 
     <!-- 문의글 상세페이지 -->
     <select id="getView" resultType="inquiry">
-        select 	 *
-        from	 inquiry
-        where    inquiryId = #{inquiryId}
+        SELECT i.inquiryId AS inquiryId,
+               i.memberId AS memberId,
+               i.typeId AS typeId,
+               t.typeName AS typeName,
+               i.title,
+               i.content,
+               i.isPrivate AS isPrivate,
+               i.isAnswered AS isAnswered,
+               i.createdAt AS createdAt,
+               i.updatedAt AS updatedAt,
+               i.email AS email
+        FROM inquiry i
+                 JOIN inquiry_type t ON i.typeId = t.typeId
+        WHERE i.inquiryId = #{inquiryId}
     </select>
 
 </mapper>
