@@ -3,28 +3,36 @@ package com.bunge.inquiry.controller;
 import com.bunge.inquiry.domain.Inquiry;
 import com.bunge.inquiry.service.InquiryCommentService;
 import com.bunge.inquiry.service.InquiryService;
+import com.bunge.member.domain.Member;
+import com.bunge.member.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
+@Slf4j
 @Controller
 @RequestMapping( "/inquiry")
 public class InquiryController {
 
-    private InquiryService inquiryService;
-
-
-    private static final Logger logger = LoggerFactory.getLogger(InquiryController.class);
-
     @Autowired
-    public InquiryController(InquiryService inquiryService, InquiryCommentService inquiryCommentService) {
+    private InquiryService inquiryService;
+    private MemberService memberService;
+  
+    @Autowired
+    public InquiryController(InquiryService inquiryService,
+                             InquiryCommentService inquiryCommentService,
+                             MemberService memberService) {
         this.inquiryService = inquiryService;
+        this.memberService = memberService;
     }
 
     @GetMapping("/list")
@@ -50,15 +58,10 @@ public class InquiryController {
 
         int offset = (page - 1) * limit;
 
-       // if (typeId != null) {
-       //     inquiryList = inquiryService.getInquiriesByType(typeId, limit, offset);
-        //} else {
-            inquiryList = inquiryService.getAllInquiries(limit, offset);
-        //}
+        inquiryList = inquiryService.getAllInquiries(limit, offset);
 
-    //    logger.info(inquiryList.toString());
 
-        mv.setViewName("inquiry/list");
+        mv.setViewName("inquiry/inquiry_list");
         mv.addObject("page", page);
         mv.addObject("maxpage", maxpage);
         mv.addObject("startpage", startpage);
@@ -72,27 +75,25 @@ public class InquiryController {
         return mv;
     }
 
-    @GetMapping("/addform")
+    @GetMapping("/add-form")
     public ModelAndView addInquiryForm(ModelAndView mv) {
 
-
-        mv.setViewName("inquiry/add");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loginId = authentication.getName();
+        log.info("loginId : " + loginId);
+        Member memberInfo = memberService.memberinfo(loginId);
+        log.info("member:"+memberInfo);
+        mv.addObject("memberInfo",memberInfo);
+        mv.setViewName("inquiry/inquiry_add");
         return mv;
     }
 
     @PostMapping("/add")
-    public String inquiryWrite(Inquiry inquiry/*,@RequestParam("files") List<MultipartFile> files*/) {
+    public String inquiryWrite(Inquiry inquiry) {
         inquiryService.addInquiry(inquiry);
-        return "redirect:/inquiry/list";
+    //    log.info("content={}", inquiry.getContent());
+        return "redirect:list";
     }
-/*
-    @GetMapping("/view")
-    public String viewInquiry(@RequestParam("inquiryId") Long inquiryId, ModelAndView mv) {
-        Inquiry inquiry = inquiryService.getView(inquiryId);
-        mv.addObject("inquiry", inquiry);
-        return "inquiry/view";
-    }*/
-
 
     @GetMapping("/view")
     public ModelAndView viewInquiry(
@@ -100,19 +101,21 @@ public class InquiryController {
             HttpServletRequest request,
             @RequestHeader(value="referer", required=false)String beforeURL) {
 
-        logger.info("referer :" + beforeURL);
+        //log.info("referer :" + beforeURL);
 
         Inquiry inquiry = inquiryService.getView(inquiryId);
-        logger.info(inquiry.toString());
+        //log.info(inquiry.toString());
         //board = null; //error 페이지 이동 확인하고자 임의로 지정합니다.
         if(inquiry == null) {
-            logger.info("상세보기 실패");
+        //    log.info("상세보기 실패");
             mv.setViewName("error/error");
             mv.addObject("url", request.getRequestURL());
             mv.addObject("message","상세보기 실패입니다.");
         } else {
             logger.info("상세보기 성공");
             mv.setViewName("inquiry/view");
+        //    log.info("상세보기 성공");
+            mv.setViewName("inquiry/inquiry_view");
             mv.addObject("inquirydata",inquiry);
         }
         return mv;

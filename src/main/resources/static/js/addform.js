@@ -9,29 +9,38 @@ $(function() {
 	$("#memberId").val($("#loginId").text());
 
 	
-	$("#upfile").change(function(){
-		console.log($(this).val())
-		const inputfile = $(this).val().split('\\');
-		$('#filevalue').text(inputfile[inputfile.length -1]);
-	});
+//	$("#upfile").change(function(){
+//		console.log($(this).val())
+//		const inputfile = $(this).val().split('\\');
+//		$('#filevalue').text(inputfile[inputfile.length -1]);
+//	});
 	
 	//submit 버튼 클릭할 때 이벤트 부분
-	$("form[name=boardform]").submit(function(){
-		if($.trim($("#board_pass").val()) == "") {
-		alert("비밀번호를 입력하세요.");
-		$("board_pass").focus();
-		return false;
-	}
-	
-	if($.trim($("#board_subject").val()) == "") {
+	$("form[name=inquiryform]").submit(function(){
+		if($.trim($("#title").val()) == "") {
 		alert("제목을 입력하세요.");
-		$("board_subject").focus();
+		$("#title").focus();
 		return false;
 	}
 	
-	if($.trim($("#board_content").val()) == "") {
+	if($.trim($("#_dm-quillCustomToolbar").find('p').text()) == "") {
 		alert("내용을 입력하세요.");
-		$("board_content").focus();
+		$("#_dm-quillCustomToolbar").focus();
+		return false;
+	}
+			return false;
+	
+	if($.trim($("#email").val()) == "") {
+		alert("이메일을 입력하세요.");
+		$("#email").focus();
+		return false;
+	}
+
+
+
+	if($.trim($("#typeId").val()) == 0) {
+		alert("문의유형을 선택하세요.");
+		$("#typeId").focus();
 		return false;
 	}
   });

@@ -118,8 +118,10 @@ function ajax(sdata) {
 			*/
 $(function() {
 	$("#inquiry_add").click(function(){
-		location.href="addform";
+		location.href="add-form";
 	})
+
+	$("#memberId").val($("#loginId").text());
 	
 //	$("#viewcount").change(function (){
 //		go(1);//보여줄 페이지를 1페이지로 설정합니다.
