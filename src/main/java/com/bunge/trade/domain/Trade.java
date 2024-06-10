@@ -18,4 +18,3 @@ public class Trade {
     private int readCount;
     private int likes;
 }
-

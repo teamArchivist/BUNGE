@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>신고</title>
+    <style>
+        .popup-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+        }
+    </style>
+</head>
+<body>
+<div class="popup-content">
+    <h2>신고 사유 선택</h2>
+    <form id="reportForm" onsubmit="submitReport(event)">
+        <input type="hidden" name="tradeNo" th:value="${tradeNo}">
+        <label>
+            <input type="radio" name="reason" value="스팸" required> 스팸
+        </label>
+        <label>
+            <input type="radio" name="reason" value="부적절한 내용"> 부적절한 내용
+        </label>
+        <label>
+            <input type="radio" name="reason" value="기타"> 기타
+        </label>
+        <textarea name="details" id="details"></textarea>
+        <button type="submit">제출</button>
+    </form>
+</div>
+
+<script>
+    function submitReport(event) {
+        event.preventDefault();
+        const form = document.getElementById('reportForm');
+        const formData = new FormData(form);
+
+        fetch('/trade/report', {
+            method: 'POST',
+            body: formData
+        }).then(response => response.text())
+            .then(data => {
+                alert(data);
+                window.close(); // 팝업 창 닫기
+            }).catch(error => {
+            console.error('Error:', error);
+        });
+    }
+</script>
+</body>
+</html>

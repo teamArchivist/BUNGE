@@ -1,4 +1,4 @@
-CREATE TABLE trades (
+CREATE TABLE trade (
                         tradeNo INT AUTO_INCREMENT PRIMARY KEY,
                         sellerID VARCHAR(255) NOT NULL,
                         title VARCHAR(255) NOT NULL,
@@ -17,6 +17,14 @@ CREATE TABLE trades (
 CREATE TABLE trade_images (
                               id INT AUTO_INCREMENT PRIMARY KEY,
                               tradeNo INT NOT NULL,
-                              image_url VARCHAR(255) NOT NULL,
-                              FOREIGN KEY (tradeNo) REFERENCES trades(tradeNo) ON DELETE CASCADE
+                              imagePath VARCHAR(255) NOT NULL,
+                              FOREIGN KEY (tradeNo) REFERENCES trade(tradeNo) ON DELETE CASCADE
+);
+
+CREATE TABLE report (
+                        reportId INT AUTO_INCREMENT PRIMARY KEY,
+                        tradeNo INT NOT NULL,
+                        reason VARCHAR(255) NOT NULL,
+                        details TEXT,
+                        FOREIGN KEY (tradeNo) REFERENCES trade(tradeNo) ON DELETE CASCADE
 );

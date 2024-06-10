@@ -1,5 +1,6 @@
 package com.bunge.trade.service;
 
+import com.bunge.trade.domain.Report;
 import com.bunge.trade.domain.Trade;
 import com.bunge.trade.domain.TradeImage;
 import com.bunge.trade.mapper.TradeMapper;
@@ -29,14 +30,15 @@ public class TradeServiceImpl implements TradeService {
         HashMap<String, Integer> map = new HashMap<>();
         int startRow = (page - 1) * limit + 1;
         int endRow = startRow + limit - 1;
-        map.put("start", startRow);
-        map.put("end", endRow);
+        map.put("startRow", startRow);
+        map.put("endRow", endRow);
         return dao.getTradeList(map);
     }
 
     @Override
-    public void insertTrade(Trade trade) {
+    public int insertTrade(Trade trade) {
         dao.insertTrade(trade);
+        return trade.getTradeNo();
     }
 
     @Override
@@ -62,5 +64,30 @@ public class TradeServiceImpl implements TradeService {
     @Override
     public int setReadCountUpdate(int tradeNo) {
         return dao.setReadCountUpdate(tradeNo);
+    }
+
+    @Override
+    public List<Trade> getTradesByCategory(String categoryID) {
+        return dao.selectTradeByCategoryID(categoryID);
+    }
+
+    @Override
+    public void updateTrade(Trade trade) {
+        dao.updateTrade(trade);
+    }
+
+    @Override
+    public int deleteTrade(int tradeNo) {
+        return dao.deleteTrade(tradeNo);
+    }
+
+    @Override
+    public Trade getTrade(int tradeNo) {
+        return dao.getTrade(tradeNo);
+    }
+
+    @Override
+    public void submitReport(Report report) {
+        dao.insertReport(report);
     }
 }
