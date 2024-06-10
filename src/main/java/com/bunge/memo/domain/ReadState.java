@@ -7,6 +7,8 @@ public class ReadState {
     private String state;
     private int totalpage;
     private int readpage;
+    private String startdate;
+    private String enddate;
 
     public String getIsbn13() {
         return isbn13;
@@ -48,6 +50,22 @@ public class ReadState {
         this.readpage = readpage;
     }
 
+    public String getStartdate() {
+        return startdate;
+    }
+
+    public void setStartdate(String startdate) {
+        this.startdate = startdate;
+    }
+
+    public String getEnddate() {
+        return enddate;
+    }
+
+    public void setEnddate(String enddate) {
+        this.enddate = enddate;
+    }
+
     @Override
     public String toString() {
         return "ReadState{" +
@@ -56,6 +74,8 @@ public class ReadState {
                 ", state='" + state + '\'' +
                 ", totalpage=" + totalpage +
                 ", readpage=" + readpage +
+                ", startdate='" + startdate + '\'' +
+                ", enddate='" + enddate + '\'' +
                 '}';
     }
 }
