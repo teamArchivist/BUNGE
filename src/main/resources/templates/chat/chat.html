@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Title</title>
+    <links>
+        <script th:src="@{/js/sockjs.min.js}"></script>
+        <script th:src="@{/js/stomp.min.js}"></script>
+        <script th:src="@{/js/chat.js}"></script>
+    </links>
+</head>
+<body>
+
+<section id="content" class="content">
+    <div class="content__header content__boxed mb-3 overlapping">
+        <div class="content__wrap"></div>
+    </div>
+
+    <div class="content__boxed single-content-md">
+        <div class="content__wrap">
+            <div class="card h-100">
+                <div class="card-body h-100">
+                    <div class="d-md-flex h-100 gap-4">
+
+
+                        <!-- Chat sidebar -->
+                        <div class="w-md-250px flex-shrink-0 d-flex flex-column mb-3 mb-md-0">
+                            <form class="pb-3 border-bottom">
+                                <input type="text" class="form-control" placeholder="Search or start new chat">
+                            </form>
+
+                            <div class="list-group list-group-borderless flex-fill min-h-0 mt-3 overflow-scroll scrollable-content">
+
+                                <!-- People list -->
+                                <figure class="list-group-item list-group-item-action d-flex align-items-start mb-1 py-3">
+                                    <div class="flex-shrink-0 me-3">
+                                        <img class="img-xs rounded-circle" src="/img/profile-photos/2.png" alt="Profile Picture" loading="lazy">
+                                    </div>
+                                    <div class="flex-fill overflow-hidden">
+                                        <div class="d-flex justify-content-between">
+                                            <a href="#" class="h6 d-block mb-1 stretched-link text-nowrap text-truncate text-decoration-none pe-2">Jack George</a>
+                                            <small class="text-body-secondary text-nowrap">10:12AM</small>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <small class="fw-bold text-truncate pe-2">I should be incapable of drawing a single stroke at the present moment</small>
+                                            <span class="badge bg-success rounded-circle">9</span>
+                                        </div>
+                                    </div>
+                                </figure>
+                                <!-- END : People list -->
+
+
+                                <!-- People list -->
+                                <figure class="list-group-item list-group-item-action d-flex align-items-start mb-1 py-3">
+                                    <div class="flex-shrink-0 me-3">
+                                        <img class="img-xs rounded-circle" src="/img/profile-photos/4.png" alt="Profile Picture" loading="lazy">
+                                    </div>
+                                    <div class="flex-fill overflow-hidden">
+                                        <div class="d-flex justify-content-between">
+                                            <a href="#" class="h6 d-block mb-1 stretched-link text-nowrap text-truncate text-decoration-none pe-2">Donald Brown</a>
+                                            <small class="text-body-secondary text-nowrap">08:52AM</small>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <small class="fw-bold text-truncate pe-2">I must explain to you how all this mistaken idea</small>
+                                            <span class="badge bg-success rounded-circle">9</span>
+                                        </div>
+                                    </div>
+                                </figure>
+                                <!-- END : People list -->
+
+
+                                <!-- People list -->
+                                <figure class="list-group-item list-group-item-action d-flex align-items-start mb-1 py-3 active">
+                                    <div class="flex-shrink-0 me-3">
+                                        <img class="img-xs rounded-circle" src="/img/profile-photos/8.png" alt="Profile Picture" loading="lazy">
+                                    </div>
+                                    <div class="flex-fill overflow-hidden">
+                                        <div class="d-flex justify-content-between">
+                                            <a href="#" class="h6 d-block mb-1 stretched-link text-nowrap text-truncate text-decoration-none pe-2">Betty Murphy</a>
+                                            <small class="text-body-secondary text-nowrap">07:05AM</small>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <small class="fw-bold text-truncate pe-2">For science, music, sport, etc</small>
+                                            <span class="badge bg-success rounded-circle">2</span>
+                                        </div>
+                                    </div>
+                                </figure>
+                                <!-- END : People list -->
+
+
+                                <!-- People list -->
+                                <figure class="list-group-item list-group-item-action d-flex align-items-start mb-1 py-3">
+                                    <div class="flex-shrink-0 me-3">
+                                        <img class="img-xs rounded-circle" src="/img/profile-photos/9.png" alt="Profile Picture" loading="lazy">
+                                    </div>
+                                    <div class="flex-fill overflow-hidden">
+                                        <div class="d-flex justify-content-between">
+                                            <a href="#" class="h6 d-block mb-1 stretched-link text-nowrap text-truncate text-decoration-none pe-2">Samantha Reid</a>
+                                            <small class="text-body-secondary text-nowrap">Yesterday</small>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <small class="text-body-secondary text-truncate pe-2">Great explorer of the truth, the master-builder of human happiness.</small>
+                                        </div>
+                                    </div>
+                                </figure>
+                                <!-- END : People list -->
+
+
+                                <!-- People list -->
+                                <figure class="list-group-item list-group-item-action d-flex align-items-start mb-1 py-3">
+                                    <div class="flex-shrink-0 me-3">
+                                        <img class="img-xs rounded-circle" src="/img/profile-photos/10.png" alt="Profile Picture" loading="lazy">
+                                    </div>
+                                    <div class="flex-fill overflow-hidden">
+                                        <div class="d-flex justify-content-between">
+                                            <a href="#" class="h6 d-block mb-1 stretched-link text-nowrap text-truncate text-decoration-none pe-2">Brenda Fuller</a>
+                                            <small class="text-body-secondary text-nowrap">Yesterday</small>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <small class="text-body-secondary text-truncate pe-2">On the other hand</small>
+                                        </div>
+                                    </div>
+                                </figure>
+                                <!-- END : People list -->
+
+
+                                <!-- People list -->
+                                <figure class="list-group-item list-group-item-action d-flex align-items-start mb-1 py-3">
+                                    <div class="flex-shrink-0 me-3">
+                                        <img class="img-xs rounded-circle" src="/img/profile-photos/5.png" alt="Profile Picture" loading="lazy">
+                                    </div>
+                                    <div class="flex-fill overflow-hidden">
+                                        <div class="d-flex justify-content-between">
+                                            <a href="#" class="h6 d-block mb-1 stretched-link text-nowrap text-truncate text-decoration-none pe-2">Howard Rios</a>
+                                            <small class="text-body-secondary text-nowrap">Yesterday</small>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <small class="text-body-secondary text-truncate pe-2">Everyone realizes why a new common language would be desirable</small>
+                                        </div>
+                                    </div>
+                                </figure>
+                                <!-- END : People list -->
+
+
+                                <!-- People list -->
+                                <figure class="list-group-item list-group-item-action d-flex align-items-start mb-1 py-3">
+                                    <div class="flex-shrink-0 me-3">
+                                        <img class="img-xs rounded-circle" src="/img/profile-photos/6.png" alt="Profile Picture" loading="lazy">
+                                    </div>
+                                    <div class="flex-fill overflow-hidden">
+                                        <div class="d-flex justify-content-between">
+                                            <a href="#" class="h6 d-block mb-1 stretched-link text-nowrap text-truncate text-decoration-none pe-2">Lucy Moon</a>
+                                            <small class="text-body-secondary text-nowrap">1d ago</small>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <small class="text-body-secondary text-truncate pe-2">I should be incapable of drawing</small>
+                                        </div>
+                                    </div>
+                                </figure>
+                                <!-- END : People list -->
+
+
+                                <!-- People list -->
+                                <figure class="list-group-item list-group-item-action d-flex align-items-start mb-1 py-3">
+                                    <div class="flex-shrink-0 me-3">
+                                        <img class="img-xs rounded-circle" src="/img/profile-photos/7.png" alt="Profile Picture" loading="lazy">
+                                    </div>
+                                    <div class="flex-fill overflow-hidden">
+                                        <div class="d-flex justify-content-between">
+                                            <a href="#" class="h6 d-block mb-1 stretched-link text-nowrap text-truncate text-decoration-none pe-2">Brenda Fuller</a>
+                                            <small class="text-body-secondary text-nowrap">2d ago</small>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <small class="text-body-secondary text-truncate pe-2">Getting up early all the time</small>
+                                        </div>
+                                    </div>
+                                </figure>
+                                <!-- END : People list -->
+                            </div>
+                        </div>
+
+
+                        <div class="d-flex flex-column flex-fill">
+
+                            <!-- Chat header -->
+                            <div class="d-flex">
+
+                                <figure class="d-flex align-items-center position-relative">
+                                    <div class="flex-shrink-0 me-3">
+                                        <img class="img-sm rounded-circle" src="/img/profile-photos/8.png" alt="Profile Picture" loading="lazy">
+                                    </div>
+                                    <div class="flex-fill overflow-hidden">
+                                        <a href="#" class="h6 d-block mb-1 stretched-link text-nowrap text-truncate text-decoration-none pe-2">Betty Murphy</a>
+                                        <small class="text-success fw-bold fst-italic text-truncate pe-2">is typing...</small>
+                                    </div>
+                                </figure>
+
+                                <div class="d-flex gap-2 ms-auto">
+                                    <button type="button" class="btn btn-icon btn-sm btn-hover btn-light" data-bs-toggle="button" data-view="fullcontent" data-view-target=".card" aria-pressed="false" autocomplete="off">
+                                        <i class="icon-active demo-psi-minimize-3"></i>
+                                        <i class="icon-inactive demo-psi-maximize-3"></i>
+                                    </button>
+                                    <div class="dropdown">
+                                        <button class="btn btn-icon btn-sm btn-hover btn-light" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="demo-pli-dot-horizontal fs-5"></i>
+                                            <span class="visually-hidden">Toggle Dropdown</span>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li>
+                                                <a href="#" class="dropdown-item">
+                                                    <i class="demo-pli-pen-5 fs-5 me-2"></i> Edit
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="dropdown-item text-danger">
+                                                    <i class="demo-pli-recycling fs-5 me-2"></i> Remove
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <hr class="dropdown-divider">
+                                            </li>
+                                            <li>
+                                                <a href="#" class="dropdown-item">
+                                                    <i class="demo-pli-mail fs-5 me-2"></i> Send a Message
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="dropdown-item">
+                                                    <i class="demo-pli-calendar-4 fs-5 me-2"></i> View Details
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href="#" class="dropdown-item">
+                                                    <i class="demo-pli-lock-user fs-5 me-2"></i> Lock
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END : Chat header -->
+
+
+                            <div class="bg-body-tertiary bg-opacity-75 d-flex flex-column-reverse flex-fill min-h-0 overflow-auto scrollable-content p-4 rounded-3">
+                                <div class="justify-content-end">
+
+                                    <!-- Bubble speech -->
+                                    <div class="d-flex mb-2">
+                                        <div class="bubble">
+                                            <p class="mb-1">Hi...</p>
+                                            <small class="opacity-50">09:23AM</small>
+                                        </div>
+                                    </div>
+                                    <!-- END : Bubble speech -->
+
+
+                                    <!-- Primary bubble speech -->
+                                    <div class="d-flex justify-content-end mb-2">
+                                        <div class="bubble bubble-primary">
+                                            <p class="mb-1">Hello Betty</p>
+                                            <small class="opacity-50">09:25AM</small>
+                                        </div>
+                                    </div>
+                                    <!-- END : Primary bubble speech -->
+
+
+                                    <!-- Primary bubble speech -->
+                                    <div class="d-flex justify-content-end mb-2">
+                                        <div class="bubble bubble-primary">
+                                            <p class="mb-1">How can I help you today ?</p>
+                                            <small class="opacity-50">09:26AM</small>
+                                        </div>
+                                    </div>
+                                    <!-- END : Primary bubble speech -->
+
+
+                                    <!-- Bubble speech -->
+                                    <div class="d-flex mb-2">
+                                        <div class="bubble">
+                                            <p class="mb-1">I want to buy a new shoes.</p>
+                                            <small class="opacity-50">09:32AM</small>
+                                        </div>
+                                    </div>
+                                    <!-- END : Bubble speech -->
+
+
+                                    <!-- Primary bubble speech -->
+                                    <div class="d-flex justify-content-end mb-2">
+                                        <div class="bubble bubble-primary">
+                                            <p class="mb-1">Shipment is free. You'll get your shoes tomorrow!</p>
+                                            <small class="opacity-50">09:38AM</small>
+                                        </div>
+                                    </div>
+                                    <!-- END : Primary bubble speech -->
+
+
+                                    <!-- Bubble speech -->
+                                    <div class="d-flex mb-2">
+                                        <div class="bubble">
+                                            <p class="mb-1">Wow, that's great!</p>
+                                            <small class="opacity-50">09:40AM</small>
+                                        </div>
+                                    </div>
+                                    <!-- END : Bubble speech -->
+
+
+                                    <!-- Bubble speech -->
+                                    <div class="d-flex mb-2">
+                                        <div class="bubble">
+                                            <p class="mb-1">Ok. Thanks for the answer.</p>
+                                            <small class="opacity-50">09:40AM</small>
+                                        </div>
+                                    </div>
+                                    <!-- END : Bubble speech -->
+
+
+                                    <!-- Primary bubble speech -->
+                                    <div class="d-flex justify-content-end mb-2">
+                                        <div class="bubble bubble-primary">
+                                            <p class="mb-1">You are welcome!</p>
+                                            <small class="opacity-50">09:41AM</small>
+                                        </div>
+                                    </div>
+                                    <!-- END : Primary bubble speech -->
+
+
+                                    <div class="text-center my-4">
+                                        <div class="badge bg-white text-dark fs-6 fw-normal shadow-sm">53 unread messages</div>
+                                    </div>
+
+
+                                    <!-- Bubble speech -->
+                                    <div class="d-flex mb-2">
+                                        <div class="bubble">
+                                            <img class="img-fluid rounded my-2" src="/img/sample-img/img-5.jpg" alt="cooking" loading="lazy">
+                                            <p class="mb-1">How about this image ?</p>
+                                            <small class="opacity-50">09:40AM</small>
+                                        </div>
+                                    </div>
+                                    <!-- END : Bubble speech -->
+
+                                </div>
+                            </div>
+
+
+                            <form class="d-flex align-items-center gap-1 pt-3">
+                                <textarea class="chat-message-input form-control" placeholder="Type a message" rows="1" style="resize:none"></textarea>
+                                <button class="btn btn-icon bg-transparent">
+                                    <i class="demo-pli-paperclip fs-5"></i>
+                                </button>
+                                <button class="btn btn-icon bg-transparent">
+                                    <i class="demo-pli-smile fs-5"></i>
+                                </button>
+                                <button type="button" class="btn btn-icon btn-primary btn-send">
+                                    <i class="demo-pli-paper-plane fs-5"></i>
+                                </button>
+                            </form>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</section>
+
+</body>
+</html>
