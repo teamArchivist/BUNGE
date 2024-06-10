@@ -4,6 +4,7 @@ import com.bunge.member.domain.Member;
 import com.bunge.review.domain.Review;
 
 import java.util.List;
+import java.util.Map;
 
 public interface MypageService {
 
@@ -13,7 +14,7 @@ public interface MypageService {
 
     boolean update(Member member);
 
-    List<Review> getMyReviewList(String id);
+    List<Map<String, Object>> getMyReviewList(String id);
 
     int getMyReviewListCount(String id);
 

@@ -40,4 +40,12 @@
     <select id="getMyReviewListCount" parameterType="String" resultType="int">
         select count(*) from review where id = #{id};
     </select>
+
+    <select id="countReviewComm" parameterType="int" resultType="int">
+        select count(*) from reviewcomm where reviewno = #{no}
+    </select>
+
+    <select id="countReviewLike" parameterType="int" resultType="int">
+        select count(*) from reviewlike where reviewno = #{no}
+    </select>
 </mapper>
