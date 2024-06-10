@@ -117,6 +117,21 @@ public class InquiryController {
         }
         return mv;
     }
+
+    @PostMapping("/delete")
+    public String InquiryDelete(Long inquiryId) {
+        inquiryService.deleteInquiry(inquiryId);
+            return "redirect:list";
+        }
+
+    // 문의글 수정 페이지 이동
+    @GetMapping("/edit/{inquiryId}")
+    public ModelAndView editInquiryForm(@PathVariable Long inquiryId, ModelAndView mv) {
+        Inquiry inquiry = inquiryService.getView(inquiryId);
+        log.info(inquiry.toString());
+        mv.setViewName("inquiry/inquiry_update");
+        mv.addObject("inquirydata", inquiry);
+
         return mv;
     }
 
