@@ -9,10 +9,11 @@ public class Inquiry {
     private String typeName;
     private String title;
     private String content;
-    private boolean isPublic;  // boolean 타입으로 설정
+    private boolean isPrivate;  // boolean 타입으로 설정
     private boolean isAnswered;
     private Timestamp createdAt;
     private Timestamp updatedAt;
+    private String email;
 
     // Getters and Setters
     public Long getInquiryId() {
@@ -55,19 +56,19 @@ public class Inquiry {
         this.content = content;
     }
 
-    public boolean isPublic() {
-        return isPublic;
+    public boolean isPrivate() {
+        return isPrivate;
     }
 
-    public void setPublic(boolean isPublic) {
-        this.isPublic = isPublic;
+    public void setIsPrivate(boolean isPrivate) {
+        this.isPrivate = isPrivate;
     }
 
     public boolean isAnswered() {
         return isAnswered;
     }
 
-    public void setAnswered(boolean isAnswered) {
+    public void setIsAnswered(boolean isAnswered) {
         this.isAnswered = isAnswered;
     }
 
@@ -95,6 +96,14 @@ public class Inquiry {
         this.typeName = typeName;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @Override
     public String toString() {
         return "Inquiry{" +
@@ -104,10 +113,11 @@ public class Inquiry {
                 ", typeName='" + typeName + '\'' +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
-                ", isPublic=" + isPublic +
+                ", isPublic=" + isPrivate +
                 ", isAnswered=" + isAnswered +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
+                ", email=" + email +
                 '}';
     }
 }

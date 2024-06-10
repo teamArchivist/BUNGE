@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}"
+	  xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+	<title>Inquiry View</title>
+	<links>
+		<!-- JAVASCRIPTS -->
+		<script th:src="@{/js/view.js}"></script>
+
+		<!-- Tabulator Scripts [ OPTIONAL ] -->
+		<script th:src="@{/vendors/tabulator/tabulator.min.js}"></script>
+
+		<!-- Initialize [ SAMPLE ] -->
+		<script th:src="@{/pages/tabulator.js}"></script>
+
+	</links>
+</head>
+<style>
+	.large-content {
+		width: 100%;
+		height: 600px;
+		overflow-y: auto;
+	}
+
+	.comment, .reply {
+		display: block;
+		width: 100%;
+		margin-bottom: 15px;
+	}
+	.comment .comment-box, .reply .comment-box {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+	}
+</style>
+<body>
+<section>
+	<div class="content__boxed">
+		<div class="content__wrap">
+
+			<div class="card">
+				<div class="card-header">
+					<h3 class="h4 card-title">문의글 상세보기</h3>
+				</div>
+				<div class="card-body">
+
+					<!-- Inquiry Detail -->
+<!--					<div class="inquiry-details" sec:authorize="isAuthenticated() and (#inquirydata.memberId == principal.username or hasRole('ROLE_ADMIN'))">-->
+						<div class="container">
+							<div class="row mb-3" hidden>
+								<label for="inquiryId">문의글 ID</label>
+								<input name="inquiryId" id="inquiryId" type="text" th:value="${inquirydata.inquiryId}"
+									   class="form-control" readonly>
+							</div>
+							<div class="row mb-3">
+								<label for="memberId" class="col-sm-2 col-form-label">글쓴이</label>
+								<div class="col-sm-10">
+								<input name="memberId" id="memberId" type="text" th:value="${inquirydata.memberId}" class="form-control" readonly>
+								</div>
+							</div>
+
+							<div class="row mb-3">
+								<label for="typeName" class="col-sm-2 col-form-label">문의 유형</label>
+								<div class="col-sm-10">
+								<input name="typeName" id="typeName" type="text" th:value="${inquirydata.typeName}" class="form-control" readonly>
+								</div>
+							</div>
+
+							<div class="row mb-3">
+								<label for="isPrivate" class="col-sm-2 col-form-label">공개 상태</label>
+								<div class="col-sm-10">
+								<input name="isPrivate" id="isPrivate" type="text" th:value="${inquirydata.isPrivate ? '비공개' : '공개'}" class="form-control" readonly>
+								</div>
+							</div>
+
+							<div class="row mb-3">
+								<label for="isAnswered" class="col-sm-2 col-form-label">답변 여부</label>
+								<div class="col-sm-10">
+								<input name="isAnswered" id="isAnswered" type="text" th:value="${inquirydata.isAnswered ? '답변 완료' : '답변 중'}" class="form-control" readonly>
+								</div>
+							</div>
+
+							<div class="row mb-3">
+								<label for="title" class="col-sm-2 col-form-label">제목</label>
+								<div class="col-sm-10">
+								<textarea name="title" id="title" rows="1" maxlength="100" class="form-control" readonly th:text="${inquirydata.title}"></textarea>
+								</div>
+							</div>
+
+							<div class="row mb-3">
+								<label for="content" class="col-sm-2 col-form-label">내용</label>
+								<div class="col-sm-10">
+									<div name="content" id="content" class="form-control large-content" readonly
+										 th:utext="${inquirydata.content}" style="height:250px"></div>
+									<input type="hidden" id="contentHidden" th:value="${inquirydata.content}" />
+								</div>
+							</div>
+
+							<div class="form-group" style="text-align:center;">
+								<!--Delete button-->
+								<a href="#">
+								<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">삭제</button>
+								</a>
+								<button class="btn btn-light" onclick="window.location.href='/inquiry/list'">목록</button>
+								<a th:href="@{'/inquiry/edit/' + ${inquirydata.inquiryId}}">
+									<button class="btn btn-light">수정</button>
+								</a>
+							</div>
+						</div>
+					<!-- END : Inquiry Detail -->
+
+						<!-- Delete Modal -->
+						<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h1 class="modal-title fs-5" id="exampleModalLabel">문의글 삭제</h1>
+										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+									<div class="modal-body">
+									</div>
+									<form name="deleteForm" th:action="@{/inquiry/delete}" method="post">
+										<input type="hidden" name="inquiryId" th:value="${inquirydata.inquiryId}">
+										해당 글을 정말 삭제하시겠습니까?
+									<div class="modal-footer">
+										<button type="submit" class="btn btn-primary">삭제</button>
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+									</div>
+										<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+									</form>
+								</div>
+							</div>
+						</div>
+						<!-- END : Basic Modal -->
+
+					<!-- Login ID -->
+					<div id="loginId" th:text="${#authentication.getName()}" style="display: none;"></div>
+
+					<!-- Comment -->
+					<h4 class="h4 card-title">댓글</h4>
+					<hr>
+					<div id="commentsContainer">
+					<div class="d-flex my-4">
+						<div class="flex-shrink-0">
+							<img class="img-sm rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">
+						</div>
+						<div class="flex-grow-1 ms-3">
+							<div class="mb-2">
+								<a href="#" class="h6 btn-link">Kathryn Obrien</a>
+								<small class="ms-2 text-body-secondary">5min ago</small>
+									<button class="btn btn-icon btn-sm btn-hover btn-primary dropdown" data-bs-toggle="dropdown"
+											aria-expanded="false" style="float: right">
+										<i class="demo-pli-dot-horizontal fs-4"></i>
+										<span class="visually-hidden">Toggle Dropdown</span>
+									</button>
+									<ul class="dropdown-menu dropdown-menu-end">
+										<li>
+											<a href="#" class="dropdown-item">
+												<i class="demo-pli-pen-5 fs-5 me-2"></i> Edit
+											</a>
+										</li>
+										<li>
+											<a href="#" class="dropdown-item text-danger fw-semibold">
+												<i class="demo-psi-recycling fs-5 me-2"></i> Remove
+											</a>
+										</li>
+										<li>
+											<hr class="dropdown-divider">
+										</li>
+									</ul>
+							</div>
+							<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt</p>
+							<a class="btn btn-xs btn-outline-light">Reply</a>
+						</div>
+					</div>
+					</div>
+					<!-- END : Comment  -->
+
+					<!-- Comment -->
+					<div class="d-flex mb-3">
+						<div class="flex-shrink-0">
+							<img class="img-sm rounded-circle" th:src="@{/img/profile-photos/2.png}" alt="Profile Picture" loading="lazy">
+						</div>
+						<div class="flex-grow-1 ms-3">
+							<div class="mb-2">
+								<a href="#" class="h6 btn-link">John Doe</a>
+								<small class="ms-2 text-body-secondary">25min ago</small>
+								<button class="btn btn-icon btn-sm btn-hover btn-primary dropdown" data-bs-toggle="dropdown"
+										aria-expanded="false" style="float: right">
+									<i class="demo-pli-dot-horizontal fs-4"></i>
+									<span class="visually-hidden">Toggle Dropdown</span>
+								</button>
+								<ul class="dropdown-menu dropdown-menu-end">
+									<li>
+										<a href="#" class="dropdown-item">
+											<i class="demo-pli-pen-5 fs-5 me-2"></i> Edit
+										</a>
+									</li>
+									<li>
+										<a href="#" class="dropdown-item text-danger fw-semibold">
+											<i class="demo-psi-recycling fs-5 me-2"></i> Remove
+										</a>
+									</li>
+									<li>
+										<hr class="dropdown-divider">
+									</li>
+								</ul>
+							</div>
+
+							<p>The quick, brown fox jumps over a lazy dog.</p>
+							<a class="btn btn-xs btn-outline-light">Reply</a>
+
+							<div class="pt-4">
+								<!-- Reply comment -->
+								<div class="d-flex mb-3" id="replycomments">
+									<div class="flex-shrink-0">
+										<img class="img-sm rounded-circle" th:src="@{/img/profile-photos/5.png}" alt="Profile Picture" loading="lazy">
+									</div>
+									<div class="flex-grow-1 ms-3">
+										<div class="mb-2">
+											<a href="#" class="h6 btn-link">Bobby Marz</a>
+											<small class="ms-2 text-body-secondary">27min ago</small>
+											<button class="btn btn-icon btn-sm btn-hover btn-primary dropdown" data-bs-toggle="dropdown"
+													aria-expanded="false" style="float: right">
+												<i class="demo-pli-dot-horizontal fs-4"></i>
+												<span class="visually-hidden">Toggle Dropdown</span>
+											</button>
+											<ul class="dropdown-menu dropdown-menu-end">
+												<li>
+													<a href="#" class="dropdown-item">
+														<i class="demo-pli-pen-5 fs-5 me-2"></i> Edit
+													</a>
+												</li>
+												<li>
+													<a href="#" class="dropdown-item text-danger fw-semibold">
+														<i class="demo-psi-recycling fs-5 me-2"></i> Remove
+													</a>
+												</li>
+												<li>
+													<hr class="dropdown-divider">
+												</li>
+											</ul>
+										</div>
+
+										<p>Sed diam nonummy nibh euismod.</p>
+										<a class="btn btn-xs btn-outline-light">Reply</a>
+
+									</div>
+								</div>
+								<!-- END : Reply comment -->
+
+								<!-- Reply comment -->
+								<div class="d-flex mb-3">
+									<div class="flex-shrink-0">
+										<img class="img-sm rounded-circle" th:src="@{/img/profile-photos/7.png}" alt="Profile Picture" loading="lazy">
+									</div>
+									<div class="flex-grow-1 ms-3">
+										<div class="mb-2">
+											<a href="#" class="h6 btn-link">Lucy Moon</a>
+											<small class="ms-2 text-body-secondary">35min ago</small>
+											<button class="btn btn-icon btn-sm btn-hover btn-primary dropdown" data-bs-toggle="dropdown"
+													aria-expanded="false" style="float: right">
+												<i class="demo-pli-dot-horizontal fs-4"></i>
+												<span class="visually-hidden">Toggle Dropdown</span>
+											</button>
+											<ul class="dropdown-menu dropdown-menu-end">
+												<li>
+													<a href="#" class="dropdown-item">
+														<i class="demo-pli-pen-5 fs-5 me-2"></i> Edit
+													</a>
+												</li>
+												<li>
+													<a href="#" class="dropdown-item text-danger fw-semibold">
+														<i class="demo-psi-recycling fs-5 me-2"></i> Remove
+													</a>
+												</li>
+												<li>
+													<hr class="dropdown-divider">
+												</li>
+											</ul>
+										</div>
+										<p>Duis autem vel eum iriure dolor in vulputate ?</p>
+										<a class="btn btn-xs btn-outline-light">Reply</a>
+
+									</div>
+								</div>
+								<!-- END : Reply comment -->
+
+							</div>
+						</div>
+					</div>
+					<!-- END : Comment -->
+
+					<hr>
+
+					<!-- Submit comment form -->
+					<div class="card mb-3">
+						<div class="card-body">
+
+							<form class="mt-4" id="commentForm" >
+								<div class="row mb-3">
+									<textarea type="text" id="_dm-commentTextarea" class="form-control" rows="6" placeholder="댓글을 남겨보세요"
+											   maxLength="200"></textarea>
+								</div>
+								<br>
+									<button class="btn btn-primary" id="submitComment" type="submit" style="text-align:center;">Submit comment</button>
+									<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+							</form>
+						</div>
+					</div>
+					<!-- END : Submit comment form -->
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- FOOTER -->
+		<footer class="mt-auto">
+			<div class="content__boxed">
+				<div class="content__wrap py-3 py-md-1 d-flex flex-column flex-md-row align-items-md-center">
+					<div class="text-nowrap mb-4 mb-md-0">
+						Copyright &copy; 2024 <a href="#" class="ms-1 btn-link fw-bold">My Company</a>
+					</div>
+					<nav class="nav flex-column gap-1 flex-md-row gap-md-3 ms-md-auto">
+						<a class="nav-link link-offset-3 link-underline-hover px-0" href="#">Policy Privacy</a>
+						<a class="nav-link link-offset-3 link-underline-hover px-0" href="#">Terms and conditions</a>
+						<a class="nav-link link-offset-3 link-underline-hover px-0" href="#">Contact Us</a>
+					</nav>
+				</div>
+			</div>
+		</footer>
+		<!-- END - FOOTER -->
+</section>
+</body>
+</html>
