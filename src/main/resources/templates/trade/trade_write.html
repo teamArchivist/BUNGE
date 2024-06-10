@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}"
-      xmlns:th="http://www.thymeleaf.org">
+<html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>내 물건 올리기</title>
     <links>
         <style>
+            /* CSS 스타일 */
             body {
                 font-family: Arial, sans-serif;
                 background-color: #f4f4f9;
@@ -15,7 +15,7 @@
 
             .wrap-contact100 {
                 width: 100%;
-                max-width: 600px;
+                max-width: 800px; /* 폭을 조절 */
                 background: #fff;
                 border-radius: 10px;
                 overflow: hidden;
@@ -24,20 +24,41 @@
                 margin: 50px auto;
             }
 
-            .contact100-form {
-                width: 100%;
+            /* 버튼을 한 줄에 배치 */
+            .container-contact100-form-btn {
+                display: flex;
+                justify-content: space-between; /* 버튼 간의 간격 조절 */
+                align-items: center;
+                margin-top: 20px; /* 버튼과 폼 사이의 간격 조절 */
             }
 
-            .contact100-form-title {
-                display: block;
-                font-family: Poppins-Bold;
-                font-size: 24px;
-                color: #333;
-                line-height: 1.2;
-                text-align: center;
-                margin-bottom: 30px;
+            .contact100-form-btn,
+            .contact99-form-btn {
+                font-family: Poppins-Medium;
+                font-size: 16px;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                padding: 10px 20px;
+                cursor: pointer;
+                transition: background-color 0.4s;
             }
 
+            .contact100-form-btn {
+                background-color: #6c7ae0;
+                margin-right: 10px; /* 버튼 사이의 간격 조절 */
+            }
+
+            .contact99-form-btn {
+                background-color: #da092f;
+                text-decoration: none;
+            }
+
+            .contact100-form-btn:hover {
+                background-color: #5a68d0;
+            }
+
+            /* 나머지 스타일은 이전과 동일 */
             .wrap-input100 {
                 width: 100%;
                 position: relative;
@@ -56,22 +77,6 @@
                 padding: 10px 5px;
                 border: none;
                 outline: none;
-            }
-
-            .input100:focus + .focus-input100::after {
-                width: 100%;
-            }
-
-            .focus-input100::after {
-                content: '';
-                display: block;
-                position: absolute;
-                bottom: -2px;
-                left: 0;
-                width: 0;
-                height: 2px;
-                background: #6c7ae0;
-                transition: width 0.4s;
             }
 
             select {
@@ -129,40 +134,6 @@
                 border: 2px solid #d9d9d9;
                 border-radius: 5px;
             }
-
-            .container-contact100-form-btn {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-
-            .contact100-form-btn {
-                font-family: Poppins-Medium;
-                font-size: 16px;
-                color: #fff;
-                background-color: #6c7ae0;
-                border: none;
-                border-radius: 5px;
-                padding: 10px 20px;
-                cursor: pointer;
-                transition: background-color 0.4s;
-            }
-
-            .contact99-form-btn {
-                font-family: Poppins-Medium;
-                font-size: 16px;
-                color: #fff;
-                background-color: #da092f;
-                border: none;
-                border-radius: 5px;
-                padding: 10px 20px;
-                cursor: pointer;
-                transition: background-color 0.4s;
-            }
-
-            .contact100-form-btn:hover {
-                background-color: #5a68d0;
-            }
         </style>
     </links>
 </head>
@@ -174,15 +145,17 @@
                 내 물건 올리기<br>
             </span>
 
-<!--            <div class="wrap-input100">-->
-<!--                <label>사진 첨부 (최대 5장)</label>-->
-<!--                <input id="file" type="file" name="images" accept="image/*" multiple required onchange="previewFiles()">-->
-<!--                <div id="fileList" class="file-list"></div>-->
-<!--            </div>-->
-
+            <!-- 입력 폼 -->
             <div class="wrap-input100">
                 <input class="input100" type="text" name="title" placeholder="제목을 입력해 주세요" required>
             </div>
+
+            <div class="wrap-input100 insert">
+                <label for="file">이미지 업로드 (최대 5장)</label>
+                <input id="file" type="file" name="file" multiple onchange="previewFiles()" accept="image/*">
+            </div>
+
+            <div class="file-list" id="fileList"></div>
 
             카테고리
             <select name="categoryID" class="input100" required>
@@ -236,6 +209,9 @@
                 </select>
             </div>
 
+
+
+
             <div class="wrap-input100">
                 <select class="input100" name="tradeMethod" id="tradeMethod" onchange="toggleLocationField()" required>
                     <option value="택배거래">택배거래</option>
@@ -249,17 +225,12 @@
 
 
             <div class="container-contact100-form-btn">
-                <button class="contact100-form-btn" type="submit">
-                    물건 올리기
-                </button>
-            </div>
-
-            <div class="container-contact99-form-btn">
-                <button class="contact99-form-btn" type="submit">
-                    취소
-                </button>
-            </div>
-        </form>
+            <button class="contact100-form-btn" type="submit">
+                물건 올리기
+            </button>
+                <a href="/trade/main" class="contact99-form-btn">취소</a>
+    </div>
+    </form>
     </div>
 
     <script>

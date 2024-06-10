@@ -50,7 +50,7 @@
          <h4>최근 등록된 상품</h4>
          <br>
          <ul class="trade_list">
-            <li th:each="t : ${tradeList}">
+            <li th:each="t : ${trades}">
                <a th:href="@{'detail?tradeNo=' + ${t.tradeNo}}">
 
                   <div class="card_container">

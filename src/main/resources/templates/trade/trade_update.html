@@ -167,148 +167,19 @@
     </links>
 </head>
 <body>
-<section>
-    <div class="wrap-contact100">
-        <form class="contact100-form" th:action="@{/trade/add}" method="post" enctype="multipart/form-data">
-            <span class="contact100-form-title">
-                내 물건 올리기<br>
-            </span>
-
-            <div class="wrap-input100">
-                <input class="input100" type="text" name="title" placeholder="제목을 입력해 주세요" required>
-            </div>
-
-            카테고리
-            <select name="categoryID" class="input100" required>
-                <option value="문학/소설">문학/소설</option>
-                <option value="논픽션">논픽션</option>
-                <option value="아동/청소년">아동/청소년</option>
-                <option value="학습/참고서">학습/참고서</option>
-                <option value="과학/기술">과학/기술</option>
-                <option value="자기계발">자기계발</option>
-                <option value="경제/경영">경제/경영</option>
-                <option value="예술/대중문화">예술/대중문화</option>
-                <option value="취미/여행">취미/여행</option>
-                <option value="건강/운동">건강/운동</option>
-                <option value="종교/영성">종교/영성</option>
-                <option value="만화/그래픽노블">만화/그래픽노블</option>
-                <option value="잡지">잡지</option>
-            </select>
-
-            <div class="wrap-input100">
-                <input class="input100" name="sellerID" placeholder="판매자이름은?" required>
-            </div>
-
-            <div class="wrap-input100">
-                <input class="input100" type="number" name="price" placeholder="가격을 입력해 주세요" required>
-            </div>
-
-            <div class="wrap-input100">
-                <textarea class="input100" name="description" placeholder="물건 설명을 입력해 주세요" required></textarea>
-            </div>
-
-            <div class="wrap-input100">
-                <select class="input100" name="selling" required>
-                    <option value="판매">판매</option>
-                    <option value="구매">구매</option>
-                </select>
-            </div>
-
-            <div class="wrap-input100">
-                <select class="input100" name="status" required>
-                    <option value="판매 중">판매 중</option>
-                    <option value="예약 중">예약 중</option>
-                    <option value="판매 완료">판매 완료</option>
-                </select>
-            </div>
-
-            <div class="wrap-input100">
-                <select class="input100" name="conditions" required>
-                    <option value="A">A</option>
-                    <option value="B">B</option>
-                    <option value="C">C</option>
-                </select>
-            </div>
-
-            <div class="wrap-input100 insert">
-                <label for="file">이미지 업로드 (최대 5장)</label>
-                <input id="file" type="file" name="file" multiple onchange="previewFiles()" accept="image/*">
-            </div>
-
-            <div class="file-list" id="fileList"></div>
-
-            <div class="wrap-input100">
-                <select class="input100" name="tradeMethod" id="tradeMethod" onchange="toggleLocationField()" required>
-                    <option value="택배거래">택배거래</option>
-                    <option value="직거래">직거래</option>
-                </select>
-            </div>
-
-            <div class="wrap-input100" id="locationField" style="display:none;">
-                <input class="input100" type="text" name="locations" placeholder="거래 장소를 입력해 주세요">
-            </div>
-
-
-            <div class="container-contact100-form-btn">
-                <button class="contact100-form-btn" type="submit">
-                    물건 올리기
-                </button>
-            </div>
-
-            <div class="container-contact99-form-btn">
-                <button class="contact99-form-btn" type="reset">
-                    취소
-                </button>
-            </div>
-        </form>
-    </div>
-
-    <script>
-        function previewFiles() {
-            const fileList = document.getElementById("fileList");
-            const input = document.getElementById("file");
-            const files = input.files;
-
-            // Clear previous previews
-            fileList.innerHTML = "";
-
-            if (files.length > 5) {
-                alert("최대 5장까지 업로드할 수 있습니다.");
-                input.value = ""; // Clear the input
-                return;
-            }
-
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
-                const reader = new FileReader();
-
-                reader.onload = function(e) {
-                    const img = document.createElement("img");
-                    img.src = e.target.result;
-                    fileList.appendChild(img);
-                };
-
-                reader.readAsDataURL(file);
-            }
-        }
-    </script>
-    <script>
-        function toggleLocationField() {
-            const tradeMethod = document.getElementById('tradeMethod').value;
-            const locationField = document.getElementById('locationField');
-
-            if (tradeMethod === '직거래') {
-                locationField.style.display = 'block';
-            } else {
-                locationField.style.display = 'none';
-            }
-        }
-
-        // 초기 로드 시에도 tradeMethod의 값을 확인하여 locationField의 표시 여부를 설정
-        document.addEventListener('DOMContentLoaded', function() {
-            toggleLocationField();
-        });
-    </script>
-</section>
+<h1>Trade 정보 수정</h1>
+<form action="/trade/update" method="post">
+    <input type="hidden" name="tradeNo" th:value="${trade.tradeNo}" />
+    <label for="sellerID">판매자 ID:</label><br>
+    <input type="text" id="sellerID" name="sellerID" th:value="${trade.sellerID}" /><br>
+    <label for="title">상품 제목:</label><br>
+    <input type="text" id="title" name="title" th:value="${trade.title}" /><br>
+    <label for="description">상품 설명:</label><br>
+    <textarea id="description" name="description">${trade.description}</textarea><br>
+    <label for="price">가격:</label><br>
+    <input type="text" id="price" name="price" th:value="${trade.price}" /><br>
+    <!-- 나머지 필드들도 동일하게 추가 -->
+    <button type="submit">수정</button>
+</form>
 </body>
 </html>
