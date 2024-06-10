@@ -136,6 +136,8 @@
 					<!-- Login ID -->
 					<div id="loginId" th:text="${#authentication.getName()}" style="display: none;"></div>
 
+					<br><br><br><br>
+
 					<!-- Comment -->
 					<h4 class="h4 card-title">댓글</h4>
 					<hr>
@@ -176,122 +178,6 @@
 					</div>
 					<!-- END : Comment  -->
 
-					<!-- Comment -->
-					<div class="d-flex mb-3">
-						<div class="flex-shrink-0">
-							<img class="img-sm rounded-circle" th:src="@{/img/profile-photos/2.png}" alt="Profile Picture" loading="lazy">
-						</div>
-						<div class="flex-grow-1 ms-3">
-							<div class="mb-2">
-								<a href="#" class="h6 btn-link">John Doe</a>
-								<small class="ms-2 text-body-secondary">25min ago</small>
-								<button class="btn btn-icon btn-sm btn-hover btn-primary dropdown" data-bs-toggle="dropdown"
-										aria-expanded="false" style="float: right">
-									<i class="demo-pli-dot-horizontal fs-4"></i>
-									<span class="visually-hidden">Toggle Dropdown</span>
-								</button>
-								<ul class="dropdown-menu dropdown-menu-end">
-									<li>
-										<a href="#" class="dropdown-item">
-											<i class="demo-pli-pen-5 fs-5 me-2"></i> Edit
-										</a>
-									</li>
-									<li>
-										<a href="#" class="dropdown-item text-danger fw-semibold">
-											<i class="demo-psi-recycling fs-5 me-2"></i> Remove
-										</a>
-									</li>
-									<li>
-										<hr class="dropdown-divider">
-									</li>
-								</ul>
-							</div>
-
-							<p>The quick, brown fox jumps over a lazy dog.</p>
-							<a class="btn btn-xs btn-outline-light">Reply</a>
-
-							<div class="pt-4">
-								<!-- Reply comment -->
-								<div class="d-flex mb-3" id="replycomments">
-									<div class="flex-shrink-0">
-										<img class="img-sm rounded-circle" th:src="@{/img/profile-photos/5.png}" alt="Profile Picture" loading="lazy">
-									</div>
-									<div class="flex-grow-1 ms-3">
-										<div class="mb-2">
-											<a href="#" class="h6 btn-link">Bobby Marz</a>
-											<small class="ms-2 text-body-secondary">27min ago</small>
-											<button class="btn btn-icon btn-sm btn-hover btn-primary dropdown" data-bs-toggle="dropdown"
-													aria-expanded="false" style="float: right">
-												<i class="demo-pli-dot-horizontal fs-4"></i>
-												<span class="visually-hidden">Toggle Dropdown</span>
-											</button>
-											<ul class="dropdown-menu dropdown-menu-end">
-												<li>
-													<a href="#" class="dropdown-item">
-														<i class="demo-pli-pen-5 fs-5 me-2"></i> Edit
-													</a>
-												</li>
-												<li>
-													<a href="#" class="dropdown-item text-danger fw-semibold">
-														<i class="demo-psi-recycling fs-5 me-2"></i> Remove
-													</a>
-												</li>
-												<li>
-													<hr class="dropdown-divider">
-												</li>
-											</ul>
-										</div>
-
-										<p>Sed diam nonummy nibh euismod.</p>
-										<a class="btn btn-xs btn-outline-light">Reply</a>
-
-									</div>
-								</div>
-								<!-- END : Reply comment -->
-
-								<!-- Reply comment -->
-								<div class="d-flex mb-3">
-									<div class="flex-shrink-0">
-										<img class="img-sm rounded-circle" th:src="@{/img/profile-photos/7.png}" alt="Profile Picture" loading="lazy">
-									</div>
-									<div class="flex-grow-1 ms-3">
-										<div class="mb-2">
-											<a href="#" class="h6 btn-link">Lucy Moon</a>
-											<small class="ms-2 text-body-secondary">35min ago</small>
-											<button class="btn btn-icon btn-sm btn-hover btn-primary dropdown" data-bs-toggle="dropdown"
-													aria-expanded="false" style="float: right">
-												<i class="demo-pli-dot-horizontal fs-4"></i>
-												<span class="visually-hidden">Toggle Dropdown</span>
-											</button>
-											<ul class="dropdown-menu dropdown-menu-end">
-												<li>
-													<a href="#" class="dropdown-item">
-														<i class="demo-pli-pen-5 fs-5 me-2"></i> Edit
-													</a>
-												</li>
-												<li>
-													<a href="#" class="dropdown-item text-danger fw-semibold">
-														<i class="demo-psi-recycling fs-5 me-2"></i> Remove
-													</a>
-												</li>
-												<li>
-													<hr class="dropdown-divider">
-												</li>
-											</ul>
-										</div>
-										<p>Duis autem vel eum iriure dolor in vulputate ?</p>
-										<a class="btn btn-xs btn-outline-light">Reply</a>
-
-									</div>
-								</div>
-								<!-- END : Reply comment -->
-
-							</div>
-						</div>
-					</div>
-					<!-- END : Comment -->
-
-					<hr>
 
 					<!-- Submit comment form -->
 					<div class="card mb-3">
