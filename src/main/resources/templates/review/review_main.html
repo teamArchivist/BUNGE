@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>리뷰 둘러보기</title>
+    <links>
+        <script th:src="@{/js/reviewmain.js}"></script>
+        <script type="module" th:src="@{/vendors/ionicons/ionicons.js}"></script>
+    </links>
+</head>
+<body class="out-quart">
+<div id="root" class="root mn--max sb--stuck tm--expanded-hd">
+    <!-- CONTENTS -->
+    <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+    <section id="content" class="content">
+        <div class="content__header content__boxed">
+            <div class="content__wrap">
+
+                <!-- Breadcrumb -->
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a th:href="@{main}">Home</a></li>
+                        <li class="breadcrumb-item"><a th:href="@{mine}">기록 · 리뷰</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">리뷰 둘러보기</li>
+                    </ol>
+                </nav>
+                <!-- END : Breadcrumb -->
+
+                <!-- Title and information -->
+                <h1 class="page-title d-flex flex-wrap just justify-content-center mb-2 mt-4 mb-3">리뷰 검색</h1>
+                <p class="text-center lead mb-2">다양한 조건으로 리뷰를 검색할 수 있습니다</p>
+                <!-- END : Title and information -->
+
+                <!-- Search form -->
+                <div class="col-md-8 offset-md-2 mb-3">
+                    <form th:action="@{/searchresult}" id="searchForm" class="searchbox input-group">
+                        <input id="searchKeyword" name="keyword" class="searchbox__input form-control form-control-lg" type="search" placeholder="검색어를 입력하세요. . ." aria-label="Search">
+                        <div class="searchbox__btn-group">
+                            <button id="searchBtn" class="searchbox__btn btn btn-icon bg-transparent shadow-none border-0 btn-sm" type="submit">
+                                <i class="demo-pli-magnifi-glass"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <!-- END : Search form -->
+
+
+                <!-- Sort and categories filter -->
+                <div class="d-flex flex-wrap align-items-end justify-content-center gap-2 mb-3 pb-3">
+                    <div class="d-md-flex flex-wrap align-items-center gap-2 mb-3 mb-sm-0">
+                        <div class="text-center mb-2 mb-md-0">검색 조건</div>
+                        <select id="searchType" class="form-select w-auto" aria-label="Categories">
+                            <option value="booktitle">책제목</option>
+                            <option value="id">글쓴이</option>
+                            <option value="linetitle">한줄평</option>
+                            <option value="content">리뷰내용</option>
+                            <option value="score">평점</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- END : Sort and categories filter -->
+
+                <div class="row">
+                    <div th:each="review:${reviewList}" class="col-sm-6 col-xl-2 mb-3">
+                        <div class="card mb-3 hv-grow-parent h-100 bg-dark text-white">
+                            <img class="card-img-top opacity-30" th:src="${review.cover}" loading="lazy" height="350px">
+                            <div class="card-img-overlay text-center fw-bold"
+                                 style="position:absolute;top:120px;font-size:large;height:30%">
+                                "[[${review.linetitle}]]"
+                            </div>
+                            <div class="card-body mt-2">
+                                <div class="d-flex flex-wrap justify-content-center gap-3 mb-4">
+                                    <button th:if="${#strings.equals(review.id, loginId)}"
+                                            type="button" class="btn btn-success btn-sm rounded-pill modifyBtn"
+                                            data-bs-toggle="modal" data-bs-target="#verticalWithScrollbar2"
+                                            th:data-no="${review.no}"
+                                            th:data-isbn13="${review.isbn13}"
+                                            th:data-cover="${review.cover}"
+                                            th:data-linetitle="${review.linetitle}"
+                                            th:data-content="${review.content}"
+                                            th:data-score="${review.score}"
+                                            th:data-created="${review.created}"
+                                            th:data-challengeperiod="${review.challengeperiod}">
+                                        수정</button>
+                                    <button th:if="${#strings.equals(review.id, loginId)}"
+                                            type="button" class="btn btn-danger btn-sm rounded-pill deleteBtn"
+                                            th:data-deleteno="${review.no}">
+                                        삭제</button>
+                                </div>
+
+                                <!-- Modal -->
+                                <div class="modal fade" id="verticalWithScrollbar2" tabindex="-1" aria-labelledby="verticalWithScrollbarLabel2" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h1 style="color:black" class="modal-title fs-5" id="verticalWithScrollbarLabel2">리뷰 수정</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body align-content-center">
+                                                <div class="row mb-4">
+
+                                                    <div class="col-md-4 text-center">
+                                                        <img th:src="@{/img/sample-img/bookcover1.jpg}" id="modalcover" class="img-fluid w-100 h-100">
+                                                    </div>
+
+                                                    <div class="col-md-8 align-content-center border-bottom">
+                                                        <dl class="row mb-0" style="color:black">
+                                                            <dt class="col-sm-4">제목</dt>
+                                                            <dd class="col-sm-8 text-start" id="reviewModalBookTitle">"다 된 밥에 재뿌리기"의 사회학적...</dd>
+
+                                                            <dt class="col-sm-4">저자</dt>
+                                                            <dd class="col-sm-8 text-start" id="reviewModalAuthor">코레오 오르날도</dd>
+
+                                                            <dt class="col-sm-4">카테고리</dt>
+                                                            <dd class="col-sm-8 text-start" id="reviewModalCategoryName">eBook > 인문학 > 교양 인문학</dd>
+
+                                                            <dt class="col-sm-4">평점</dt>
+                                                            <dd class="col-sm-8 text-start" id="reviewModalScore">5점</dd>
+
+                                                            <dt class="col-sm-4">페이지</dt>
+                                                            <dd class="col-sm-8 text-start" id="reviewModalPage">416</dd>
+                                                        </dl>
+                                                    </div>
+
+                                                </div>
+
+                                                <!-- Block styled form -->
+                                                <form th:action="@{/review/modify-review}" method="post" class="row" style="color:black">
+
+                                                    <div class="col-md-12 mb-3">
+                                                        <label class="form-label">작성자</label>
+                                                        <input name="id" type="text" class="form-control" value="" id="reviewModalId" readonly>
+                                                    </div>
+
+                                                    <div class="col-md-12 mb-3">
+                                                        <label class="form-label">평점</label>
+                                                        <input id="reviewScore" name="score" type="text" class="form-control" placeholder="점수를 입력해주세요 1~5 사이 정수만 가능합니다 (1, 2, 3, 4, 5)" required>
+                                                    </div>
+
+                                                    <div class="col-md-12 mb-3">
+                                                        <label class="form-label">한줄평</label>
+                                                        <input name="linetitle" type="text" class="form-control" placeholder="한줄평을 입력해주세요 (최대 50자)" required>
+                                                        <p class="float-end mb-0" id="countLineTitle"></p>
+                                                    </div>
+
+                                                    <div class="col-md-12">
+                                                        <label class="form-label">리뷰</label>
+                                                        <textarea name="content" class="form-control" placeholder="내용을 입력해주세요 (최대 200자)" rows="14" required></textarea>
+                                                        <p class="float-end mb-0" id="countReviewContent"></p>
+                                                    </div>
+
+                                                    <input type="hidden" name="no" id="modalInputNo">
+                                                    <input type="hidden" name="isbn13" id="modalInputIsbn13">
+                                                    <input type="hidden" name="cover" id="modalInputCover">
+
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                                                        <button type="submit" class="btn btn-primary">등록</button>
+                                                    </div>
+
+                                                </form>
+                                                <!-- END : Block styled form -->
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- END : Vertical centered scrollable modal -->
+
+                                <p class="card-text">작성자 : [[${review.id}]]</p>
+                                <p class="card-text">평점 : [[${review.score}]]</p>
+                                <p class="card-text">도전기간 : [[${review.challengeperiod}]]일</p>
+                                <p class="card-text">[[${review.content}]]</p>
+
+                            </div>
+
+                            <div class="card-footer mt-4 pt-3 border-top d-flex align-items-center">
+                                <div class="d-flex g-2">
+                                    <button type="button" class="btn btn-icon btn-sm btn-link px-2 py-0 likeBtn" th:data-review-no="${review.no}">
+                                        <ion-icon name="heart-outline" class="fs-5 me-2" th:id="${#strings.append('heart', review.no)}"></ion-icon>
+                                        <span th:id="${#strings.append('likeCount', review.no)}">[[${review.countlike}]]</span>
+                                    </button>
+                                    <button type="button" class="btn btn-icon btn-sm btn-link px-2 py-0 comment-toggle" th:data-review-no="${review.no}">
+                                        <ion-icon name="chatbubble-outline" class="fs-5 me-2"></ion-icon><span th:id="${#strings.append('commentListCount', review.no)}">[[${review.countcomment}]]</span>
+                                    </button>
+                                </div>
+                                <small class="text-body-secondary ms-auto">[[${review.created}]]</small>
+                            </div>
+
+                            <div class="reviewComment-section bg-dark" th:id="${#strings.append('commentSection', review.no)}" style="display:none;">
+                                <div class="card card-body mt-2 bg-dark">
+                                    <!-- 댓글 리스트 -->
+                                    <div class="reviewComment-list" th:id="${#strings.append('commentList', review.no)}">
+
+                                        <div class="row align-items-start mb-3">
+                                            <div class="col-sm-2 text-center" style="font-size:8px">
+                                                <img th:src="@{/img/profile-photos/1.png}" class="img-xs rounded-circle">
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <div class="row align-items-center" style="font-size:8px">
+                                                    admin (24-06-04) &nbsp; &nbsp;
+                                                    <button type="button" class="btn btn-icon btn-outline-light rounded-circle btn-xs ml">
+                                                        <i class="demo-pli-pencil"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-icon btn-outline-danger rounded-circle btn-xs ml">
+                                                        <i class="demo-pli-trash"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="row">
+                                                    안녕하세요 최대 100글자 까지 가능합니다.ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇ
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row align-items-start mb-3">
+                                            <div class="col-sm-2 text-center" style="font-size:8px">
+                                                <img th:src="@{/img/profile-photos/1.png}" class="img-xs rounded-circle">
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <div class="row align-items-center" style="font-size:8px">
+                                                    admin (24-06-04) &nbsp; &nbsp;
+                                                    <button type="button" class="btn btn-icon btn-outline-light rounded-circle btn-xs ml">
+                                                        <i class="demo-pli-pencil"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-icon btn-outline-danger rounded-circle btn-xs ml">
+                                                        <i class="demo-pli-trash"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="row">
+                                                    안녕하세요 최대 100글자 까지 가능합니다.ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇ
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row align-items-start mb-3">
+                                            <div class="col-sm-2 text-center" style="font-size:8px">
+                                                <img th:src="@{/img/profile-photos/1.png}" class="img-xs rounded-circle">
+                                            </div>
+                                            <div class="col-sm-9">
+                                                <div class="row align-items-center" style="font-size:8px">
+                                                    admin (24-06-04) &nbsp; &nbsp;
+                                                    <button type="button" class="btn btn-icon btn-outline-light rounded-circle btn-xs ml">
+                                                        <i class="demo-pli-pencil"></i>
+                                                    </button>
+                                                    &nbsp;
+                                                    <button type="button" class="btn btn-icon btn-outline-danger rounded-circle btn-xs ml">
+                                                        <i class="demo-pli-trash"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="row">
+                                                    안녕하세요 최대 100글자 까지 가능합니다.ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇ
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="input-group mt-3 d-flex gap-2 align-items-center">
+                                        <textarea class="form-control reviewComment-input" th:id="${#strings.append('commentInput', review.no)}" placeholder="댓글을 입력하세요" rows="3"></textarea>
+                                        <button class="btn btn-icon btn-primary btn-xs rounded-circle flex-shrink-0"
+                                                type="button" th:data-review-no="${review.no}" onclick="addComment(this)"
+                                                id="comment-add-btn">
+                                            <i class="demo-pli-add"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div> <!-- <div class="card mb-3 hv-grow-parent h-100 bg-dark text-white"> end -->
+                    </div> <!--div th:each="review:${reviewList}" end -->
+                </div> <!-- row end -->
+
+            </div>
+        </div>
+
+        <nav th:if="${reviewList.size()} != 0" class="text-align-center mt-5" aria-label="Page navigation" id="reviewpagenation">
+            <ul class="pagination justify-content-center">
+
+                <li th:if="${currentPage <= 1}" class="page-item">
+                    <a class="page-link disabled">이전</a>
+                </li>
+
+                <li th:if="${currentPage > 1}" class="page-item">
+                    <a th:href="@{'/review/main?page=' + ${currentPage - 1}}" class="page-link">이전</a>
+                </li>
+
+                <li th:each="pageNum : ${#numbers.sequence(1, maxPage)}" th:classappend="${pageNum == currentPage} ? 'active'">
+                    <a th:href="@{'/review/main?page=' + ${pageNum}}" class="page-link" th:text="${pageNum}">1</a>
+                </li>
+
+                <li th:if="${currentPage < maxPage}" class="page-item">
+                    <a th:href="@{'/review/main?page=' + ${currentPage + 1}}" class="page-link">다음</a>
+                </li>
+
+                <li th:if="${currentPage >= maxPage}" class="page-item">
+                    <a class="page-link disabled">다음</a>
+                </li>
+
+            </ul>
+        </nav>
+    </section>
+</div>
+</body>
+</html>

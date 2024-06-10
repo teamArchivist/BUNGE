@@ -4,6 +4,48 @@ let header = $("meta[name='_csrf_header']").attr("content");
 $(function() {
     let loginId = $("#loginId").text();
     //console.log(loginId);
+    let reviewIsbn13List = [];
+
+    $.ajax({
+        url: "/review/get-all-reviews",
+        method: "post",
+        cache: false,
+        beforeSend: function (xhr) {
+            if (header && token) {
+                xhr.setRequestHeader(header, token);
+            }
+        },
+        success: function (rdata) {
+            //console.log(rdata)
+            for (let i=0; i<rdata.length; i++) {
+                reviewIsbn13List.push(rdata[i].isbn13)
+            }
+            //console.log(reviewIsbn13List);
+            showButtons(reviewIsbn13List);
+        }
+    });
+
+    function showButtons(reviewIsbn13List) {
+        $("button#addReview").each(function() {
+            let reviewIsbn13 = $(this).attr("data-reviewisbn13");
+            //console.log(reviewIsbn13)
+            if (reviewIsbn13List.includes(reviewIsbn13)) {
+                //console.log("hi");
+                $(this).hide();
+
+                let reviewModifyBtn = $("<button>", {
+                    type: 'button',
+                    class: 'btn btn-warning rounded-pill',
+                    text: '수정하기',
+                    click: function() {
+                        location.href = "/review/main"
+                    }
+                });
+
+                $(this).parent().append(reviewModifyBtn);
+            }
+        })
+    }
 
     $("body").on("click", ".updateMemo", function() {
         let thisno = $(this).data("thisno")
@@ -71,7 +113,7 @@ $(function() {
        }
     })
 
-    $("body").on("click", "#writeMemo", function() {
+    $("body").on("click", "#addMemo", function() {
         let cover = $(this).data("cover")
         let isbn13 = $(this).data("isbn13")
         let title = $(this).data("title")
@@ -104,7 +146,7 @@ $(function() {
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(checkRemainData),
             dataType: "json",
-            chche: false,
+            cache: false,
             beforeSend : function (xhr) {
                 if (header && token) {
                     xhr.setRequestHeader(header, token);
@@ -123,9 +165,45 @@ $(function() {
     }) //$("body").on(click) end ...
 
     $("body").on("keyup", "#_dm-inputPages", function() {
-        if (parseInt($("#modalremainpage").text()) - parseInt($("#_dm-inputPages").val()) < 0) {
+        let input = $(this).val();
+        let regulation = /^[1-9][0-9]{0,2}$/
+
+        if (!regulation.test(input)) {
+            alert("0 ~ 999 양의 정수만 입력할 수 있습니다.");
+            $(this).val("");
+        } else if (parseInt($("#modalremainpage").text()) - parseInt(input) < 0) {
             alert("남아 있는 페이지보다 클 수 없습니다.");
-            $("#_dm-inputPages").val("");
+            $(this).val("");
+        }
+    })
+
+    $("body").on("keyup", "#_dm-Title", function() {
+        let input = $(this).val()
+        //console.log(input)
+        let maxLength = 30
+        //console.log(lineTitleValue);
+
+        $("#countMemoTitle").text(input.length + " / " + maxLength)
+
+        if (input.length > maxLength) {
+            alert("최대 " + maxLength + "자까지만 가능합니다")
+            $(this).val(input.substring(0, maxLength))
+            $("#countMemoTitle").text(maxLength + " / " + maxLength)
+        }
+    })
+
+    $("body").on("keyup", "#memoContent", function() {
+        let input = $(this).val()
+        //console.log(input)
+        let maxLength = 500
+        //console.log(lineTitleValue);
+
+        $("#countMemoContent").text(input.length + " / " + maxLength)
+
+        if (input.length > maxLength) {
+            alert("최대 " + maxLength + "자까지만 가능합니다")
+            $(this).val(input.substring(0, maxLength))
+            $("#countMemoContent").text(maxLength + " / " + maxLength)
         }
     })
 

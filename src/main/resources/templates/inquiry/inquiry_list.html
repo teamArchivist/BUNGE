@@ -52,11 +52,11 @@
 
                      <input id="_dm-filterValue" class="form-control" type="text" placeholder="value to filter">
                      <button id="_dm-filterClear" class="btn btn-primary text-nowrap">Clear Filter</button>
-                     <button class="btn btn-primary text-nowrap" id="inquiry_add">
-                        <i class="demo-psi-add fs-5"></i>
-                        <span class="vr"></span>
-                        Add New
-                     </button>
+                        <button class="btn btn-primary text-nowrap" id="inquiry_add">
+                           <i class="demo-psi-add fs-5"></i>
+                           <span class="vr"></span>
+                           Add New
+                        </button>
                   </div>
                   <!-- END : Toolbar -->
 
@@ -81,7 +81,8 @@
                               <td th:text="${inquiry.inquiryId}"></td>
                               <td th:text="${inquiry.typeName}"></td>
                               <td>
-                                 <img th:if="${!inquiry.isPublic}" th:src="@{/img/inquiry/private.png}" alt="Private" style="width: 16px; height: 16px;"/>
+                                 <img th:if="${inquiry.isPrivate}" th:src="@{/img/inquiry/private.png}" alt="Private"
+                                      style="width: 16px; height: 16px;"/>
                                  <a th:href="@{/inquiry/view(inquiryId=${inquiry.inquiryId})}" th:text="${inquiry.title}"></a>
                               </td>
                               <td th:text="${inquiry.isAnswered ? '답변완료' : '답변 중'}"></td>
@@ -100,7 +101,7 @@
                      <ul class="pagination justify-content-center">
                         <li class="page-item" th:classappend="${page <= 1} ? ' disabled' : ''">
                            <a class="page-link" th:href="${page > 1} ? '/inquiry/list?page=' + ${previousPage} : ''" th:if="${page > 1}">Previous</a>
-                           <a class="page-link" th:if="${page <= 1}">Previous</a>
+                           <a class="page-link" th:if="${page <= 1}">이전</a>
                         </li>
                         <li th:each="a : ${#numbers.sequence(startpage, endpage)}"
                             th:classappend="${a == page} ? ' active' : ''">
@@ -108,7 +109,7 @@
                         </li>
                         <li class="page-item" th:classappend="${page >= maxpage} ? ' disabled' : ''">
                            <a class="page-link" th:href="${page < maxpage} ? '/inquiry/list?page=' + ${nextPage} : ''" th:if="${page < maxpage}">Next</a>
-                           <a class="page-link" th:if="${page >= maxpage}">Next</a>
+                           <a class="page-link" th:if="${page >= maxpage}">다음</a>
                         </li>
                      </ul>
                   </nav>
@@ -117,7 +118,7 @@
 
             </div>
          </div>
-         <!-- FOOTER -->inquiry_comment
+         <!-- FOOTER -->
 
          <footer class="mt-auto">
             <div class="content__boxed">

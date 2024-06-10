@@ -25,6 +25,10 @@
                             </div>
 
                             <form class="mt-4" name="loginform" th:action="@{/member/loginProcess}" method="post">
+                                <!-- 성공 메시지 -->
+                                <input type="hidden" name="successmessage" th:value="${successmessage}">
+                                <!-- 실패 메시지 -->
+                                <input type="hidden" name="loginfail" th:value="${loginfail}">
                                 <div class="mb-3">
                                     <input type="text" name="id" class="form-control" placeholder="Username" autofocus>
                                 </div>

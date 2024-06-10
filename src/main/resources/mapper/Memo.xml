@@ -48,13 +48,19 @@
         update readstate
         set readpage = readpage - #{readpage}
         where isbn13 = #{isbn13}
-        and id = #{loginId}
+        and id = #{id}
     </update>
 
     <select id="getMemoListCount" parameterType="com.bunge.memo.filter.MemoFilter" resultType="int">
         select count(*)
         from memo
         where id = #{loginId}
+    </select>
+
+    <select id="countMemoRecord" parameterType="String" resultType="int">
+        select count(*)
+        from memo
+        where DATE_FORMAT(lastmodified, '%Y/%c') = #{formattedDate}
     </select>
 
 </mapper>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Trade Detail</title>
+    <links>
+        <style>
+            .banner-container {
+                height: 350px; /* 컨테이너의 높이를 350px로 설정 */
+                overflow: hidden; /* 넘치는 부분을 숨김 */
+                position: relative;
+                width: 100%;
+            }
+
+            .banner-image {
+                width: 100%;
+                height: 100%;
+                object-fit: cover; /* 이미지의 비율을 유지하며 크기 조절 */
+            }
+
+            .banner-text {
+                font-family: Arial, sans-serif;
+                color: white;
+            }
+
+            .card_container {
+                padding: 15px;
+                margin: 10px 0;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+            }
+
+            .product_title {
+                font-size: 1.5em;
+                font-weight: bold;
+            }
+
+            .product_cost {
+                font-size: 1.2em;
+                color: #ff4500;
+            }
+
+            .product_upload_time {
+                font-size: 0.9em;
+                color: #555;
+            }
+
+            .product_image {
+                width: 400px; /* 이미지의 가로 크기를 400px로 지정 */
+                height: 400px; /* 이미지의 세로 크기를 400px로 지정 */
+                object-fit: cover; /* 이미지가 요소에 맞게 채워지도록 설정 */
+                border-radius: 5px; /* 이미지에 둥근 모서리를 적용 */
+            }
+
+        </style>
+    </links>
+</head>
+<body>
+<section>
+    <div>
+        <div class="position-relative banner-container">
+            <img th:src="@{/img/trade/img.png}" alt="Banner" class="img-fluid banner-image">
+            <div class="position-absolute top-50 start-50 translate-middle text-center banner-text">
+                <br><br>
+            </div>
+        </div>
+    </div>
+
+    <main class="container">
+        <div class="wrap">
+            <br>
+            <h4>상품 상세 정보</h4>
+            <br>
+            <div class="card_container">
+                <!-- 이미지 표시 -->
+                <p class="product_images">이미지:</p>
+                <div th:each="imagePath : ${tradeImages}">
+                    <img th:src="${imagePath}" alt="상품 이미지" class="product_image">
+                </div>
+
+
+                <!-- 상품 정보 표시 -->
+                <p th:text="${trade.tradeNo}" class="product_title">상품 번호: </p>
+                <p th:text="|${trade.title}|">상품 제목: </p>
+                <p th:text="|${trade.price}원|" class="product_cost">상품 가격: </p>
+                <p th:text="|${trade.categoryID}|">카테고리: </p>
+                <p th:text="${trade.description}" class="product_description">상품 설명: </p>
+                <p th:text="${trade.status}" class="product_status">상태: </p>
+                <p th:text="${trade.conditions}" class="product_conditions">조건: </p>
+                <p th:text="${trade.tradeMethod}" class="product_trade_method">거래 방법: </p>
+                <p th:text="${trade.locations}" class="product_locations">거래 위치: </p>
+
+                <!-- 수정 버튼 -->
+                <a th:href="@{/trade/update/{tradeNo}(tradeNo=${trade.tradeNo})}" class="btn btn-primary">수정</a>
+
+                <!-- 삭제 버튼 -->
+                <form th:action="@{/trade/delete/{tradeNo}(tradeNo=${trade.tradeNo})}" method="post">
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('정말로 삭제하시겠습니까?')">삭제</button>
+                </form>
+
+                <!-- 신고 버튼 -->
+                <button id="reportButton" class="btn btn-warning">신고</button>
+
+
+
+            </div>
+            <br>
+            <!-- 이전 페이지로 돌아가는 버튼 -->
+            <a onclick="history.back();" class="btn btn-primary">목록으로 돌아가기</a>
+        </div>
+    </main>
+
+</section>
+
+<script>
+    // 신고 버튼 클릭 시 팝업 열기
+    document.getElementById("reportButton").addEventListener("click", function() {
+        var tradeNo = [[${trade.tradeNo}]]
+        openReportPopup(tradeNo);
+    });
+
+    // 신고 팝업 열기
+    function openReportPopup(tradeNo) {
+        window.open("/reportPopup.html?tradeNo=" + tradeNo, "신고", "width=600,height=400");
+    }
+</script>
+</body>
+</html>

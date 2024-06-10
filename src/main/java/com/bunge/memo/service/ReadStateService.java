@@ -1,5 +1,6 @@
 package com.bunge.memo.service;
 
+import com.bunge.memo.domain.Memo;
 import com.bunge.memo.domain.ReadState;
 
 import java.util.List;
@@ -13,7 +14,10 @@ public interface ReadStateService {
     public int countReadState(ReadState readState);
 
     //로그인한 사용자의 모든 독서상태
-    List<ReadState> getAllReadState(String loginId);
+    public List<ReadState> getAllReadState(String loginId);
+
+    //기록에 대응되는 독서상태 조회
+    public ReadState getReadState(Memo memo);
 
     //메모 기록 후 남은 페이지 카운트
     public int countRemainPage(ReadState readState);

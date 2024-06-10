@@ -2,6 +2,7 @@ package com.bunge.member.controller;
 
 import com.bunge.member.domain.Mail;
 import com.bunge.member.domain.Member;
+import com.bunge.member.service.JoinSendMail;
 import com.bunge.member.service.MemberService;
 import com.bunge.member.service.SendMail;
 import com.mysql.cj.Session;
@@ -12,6 +13,8 @@ import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -32,12 +35,15 @@ public class MemberController {
     private MemberService   memberservice;
     private PasswordEncoder passwordEncoder;
     private SendMail sendmail;
+    private JoinSendMail joinsendmail;
 
     @Autowired
-    public MemberController(MemberService memberservice, PasswordEncoder passwordEncoder, SendMail sendmail) {
+    public MemberController(MemberService memberservice, PasswordEncoder passwordEncoder, SendMail sendmail,
+                            JoinSendMail joinsendmail) {
         this.memberservice=memberservice;
         this.passwordEncoder=passwordEncoder;
         this.sendmail=sendmail;
+        this.joinsendmail=joinsendmail;
     }
     //임시페이지
     @PreAuthorize("isAnonymous()")
@@ -84,6 +90,14 @@ public class MemberController {
     public boolean checkemail(@RequestParam("email") String email){
         return memberservice.checkemail(email);
     }
+    //이메일 인증코드 전송
+    @GetMapping(value = "/maildelivery")
+    public ResponseEntity<String> maildelivery(@RequestParam("email") String email){
+        Mail mail = new Mail();
+        mail.setTo(email);
+        joinsendmail.joinsendmail(mail);
+        return ResponseEntity.ok(mail.getRandom());
+    }
     //회원가입 폼 이동
     @GetMapping(value="/join")
     public String join() {
@@ -98,7 +112,8 @@ public class MemberController {
         String encPassword = passwordEncoder.encode(member.getPwd());
         logger.info(encPassword);
         member.setPwd(encPassword);
-
+        try{
+            int result = memberservice.insert(member);
         int result = memberservice.insert(member);
 
         // 삽입이 된 경우
@@ -144,8 +159,7 @@ public class MemberController {
     public String findpwdProcess(@RequestParam("id") String id ,
                                        @RequestParam("name") String name ,
                                        @RequestParam("email") String email, Model model,
-                                       HttpServletResponse response , HttpSession session ,
-                                 Member member) {
+                                        HttpSession session , Member member) {
        session.setAttribute("findid", id);
         boolean pwdset = memberservice.findpwd(id, name , email);
         if (!pwdset) {

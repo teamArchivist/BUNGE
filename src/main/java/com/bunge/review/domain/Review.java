@@ -12,6 +12,9 @@ public class Review {
     private String lastmodified;
     private int challengeperiod;
 
+    private int countcomment;
+    private int countlike;
+
     public int getNo() {
         return no;
     }
@@ -92,6 +95,22 @@ public class Review {
         this.challengeperiod = challengeperiod;
     }
 
+    public int getCountcomment() {
+        return countcomment;
+    }
+
+    public void setCountcomment(int countcomment) {
+        this.countcomment = countcomment;
+    }
+
+    public int getCountlike() {
+        return countlike;
+    }
+
+    public void setCountlike(int countlike) {
+        this.countlike = countlike;
+    }
+
     @Override
     public String toString() {
         return "Review{" +
@@ -105,6 +124,8 @@ public class Review {
                 ", created='" + created + '\'' +
                 ", lastmodified='" + lastmodified + '\'' +
                 ", challengeperiod=" + challengeperiod +
+                ", countcomment=" + countcomment +
+                ", countlike=" + countlike +
                 '}';
     }
 }

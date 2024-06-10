@@ -41,7 +41,31 @@
 
             </div>
          </div>
+
       </div>
+
+   <main class="container">
+      <div class="wrap">
+         <br>
+         <h4>최근 등록된 상품</h4>
+         <br>
+         <ul class="trade_list">
+            <li th:each="t : ${trades}">
+               <a th:href="@{'detail?tradeNo=' + ${t.tradeNo}}">
+
+                  <div class="card_container">
+                     <p th:text="${t?.tradeNo}" class="product_title">제품 이름입니다</p>
+                     <p th:text="|${t.price}원|" class="product_cost"><b>제품 가격입니다.</b></p>
+                     <p th:text="${t.categoryID}" class="product_upload_time">올린 시간 입니다.</p>
+                  </div>
+               </a>
+            </li>
+         </ul>
+         <br>
+
+      </div>
+   </main>
+
 
 
 </section>

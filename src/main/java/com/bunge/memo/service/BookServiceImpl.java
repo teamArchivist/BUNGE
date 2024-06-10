@@ -26,18 +26,18 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public int getBookListCount(BookFilter filter) {
-        return bookMapper.getBookListCount(filter);
+    public int getBookListCount(BookFilter bookFilter) {
+        return bookMapper.getBookListCount(bookFilter);
     }
 
     @Override
-    public List<Book> getBookList(BookFilter filter) {
-        return bookMapper.getBookList(filter);
+    public List<Book> getBookList(BookFilter bookFilter) {
+        return bookMapper.getBookList(bookFilter);
     }
 
     @Override
-    public Book getBookDetail(BookFilter filter) {
-        return bookMapper.getBookDetail(filter);
+    public Book getBookDetail(BookFilter bookFilter) {
+        return bookMapper.getBookDetail(bookFilter);
     }
 
     @Override
@@ -45,10 +45,10 @@ public class BookServiceImpl implements BookService {
         List<Book> newBooks = new ArrayList<>();
 
         for (Book book : books) {
-            BookFilter filter = new BookFilter();
-            filter.setIsbn13(book.getIsbn13());
+            BookFilter bookFilter = new BookFilter();
+            bookFilter.setIsbn13(book.getIsbn13());
 
-            if(bookMapper.getBookDetail(filter) == null) {
+            if(bookMapper.getBookDetail(bookFilter) == null) {
                 newBooks.add(book);
             }
         }

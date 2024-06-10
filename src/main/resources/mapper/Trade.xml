@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bunge.trade.mapper.TradeMapper">
+    <select id="getListCount" resultType="int">
+        SELECT COUNT(*) FROM trade
+    </select>
+
+    <select id="getTradeList" parameterType="java.util.HashMap" resultType="com.bunge.trade.domain.Trade">
+        SELECT * FROM trade
+        ORDER BY tradeNo DESC limit 5;
+    </select>
+
+    <insert id="insertTrade" parameterType="com.bunge.trade.domain.Trade" useGeneratedKeys="true" keyProperty="tradeNo">
+        INSERT INTO trade (sellerID, title, description, price, categoryID, selling, status, conditions, tradeMethod, locations)
+        VALUES (#{sellerID}, #{title}, #{description}, #{price}, #{categoryID}, #{selling}, #{status}, #{conditions}, #{tradeMethod}, #{locations})
+    </insert>
+
+    <insert id="insertTradeImage" parameterType="com.bunge.trade.domain.TradeImage">
+        INSERT INTO trade_images (tradeNo, imagePath)
+        VALUES (#{tradeNo}, #{imagePath})
+    </insert>
+
+    <select id="getTradeImages" parameterType="int" resultType="com.bunge.trade.domain.TradeImage">
+        SELECT * FROM trade_images WHERE tradeNo = #{tradeNo}
+    </select>
+
+    <select id="selectTradeByCategoryID" parameterType="String" resultType="com.bunge.trade.domain.Trade">
+        SELECT * FROM trade
+        WHERE categoryID = #{categoryID}
+        ORDER BY tradeNo DESC;
+    </select>
+
+    <select id="getDetail" parameterType="int" resultType="com.bunge.trade.domain.Trade">
+        SELECT * FROM trade WHERE tradeNo = #{tradeNo}
+    </select>
+
+    <update id="setReadCountUpdate" parameterType="int">
+        UPDATE trade
+        SET readCount = readCount + 1
+        WHERE tradeNo = #{tradeNo}
+    </update>
+
+    <!-- Trade 업데이트 매핑 -->
+    <update id="updateTrade" parameterType="com.bunge.trade.domain.Trade">
+        UPDATE trade
+        SET sellerID = #{sellerID},
+            title = #{title},
+            description = #{description},
+            price = #{price},
+            categoryID = #{categoryID},
+            selling = #{selling},
+            status = #{status},
+            conditions = #{conditions},
+            tradeMethod = #{tradeMethod},
+            locations = #{locations}
+        WHERE tradeNo = #{tradeNo}
+    </update>
+
+    <!-- Trade 삭제 매핑 -->
+    <delete id="deleteTrade" parameterType="int">
+        DELETE FROM trade
+        WHERE tradeNo = #{tradeNo}
+    </delete>
+
+    <select id="getTrade" parameterType="int" resultType="com.bunge.trade.domain.Trade">
+        SELECT * FROM trade WHERE tradeNo = #{tradeNo}
+    </select>
+
+    <insert id="insertReport" parameterType="com.bunge.trade.domain.Report">
+        INSERT INTO report (tradeNo, reason, details)
+        VALUES (#{tradeNo}, #{reason}, #{details})
+    </insert>
+
+
+
+</mapper>

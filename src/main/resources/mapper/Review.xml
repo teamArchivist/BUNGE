@@ -11,7 +11,140 @@
     </insert>
 
     <select id="getAllReviews" resultType="com.bunge.review.domain.Review">
-        select * from review
+        select *
+        from review
+        order by no desc
     </select>
+
+    <select id="getBookByReview" parameterType="com.bunge.review.domain.Review" resultType="com.bunge.memo.domain.Book">
+        select *
+        from book
+        where isbn13 = #{isbn13}
+    </select>
+
+    <update id="updateReview">
+        update review
+        set score = #{score}, linetitle = #{linetitle}, content = #{content}, lastmodified = now()
+        where no = #{no}
+    </update>
+
+    <delete id="deleteReview">
+        delete from review
+        where no = #{no}
+    </delete>
+
+    <insert id="addReviewComment">
+        insert into reviewcomm
+        (id, reviewno, content, created)
+        values
+        (#{id}, #{reviewno}, #{content}, now())
+    </insert>
+
+    <select id="getReviewListCount" parameterType="com.bunge.review.filter.ReviewFilter" resultType="int">
+        select count(*)
+        from review
+        where 1=1
+        <if test="booktitle != null and booktitle != ''">
+            and booktitle like concat('%', #{booktitle}, '%')
+        </if>
+        <if test="id != null and id != ''">
+            and id like concat('%', #{id}, '%')
+        </if>
+        <if test="linetitle != null and linetitle != ''">
+            and linetitle like concat('%', #{linetitle}, '%')
+        </if>
+        <if test="content != null and content != ''">
+            and content like concat('%', #{content}, '%')
+        </if>
+        <if test="score != 0">
+            and score >= #{score}
+        </if>
+    </select>
+
+    <select id="getReviewList" parameterType="com.bunge.review.filter.ReviewFilter" resultType="com.bunge.review.domain.Review">
+        select *
+        from review
+        where 1=1
+        <if test="booktitle != null and booktitle != ''">
+            and booktitle like concat('%', #{booktitle}, '%')
+        </if>
+        <if test="id != null and id != ''">
+            and id like concat('%', #{id}, '%')
+        </if>
+        <if test="linetitle != null and linetitle != ''">
+            and linetitle like concat('%', #{linetitle}, '%')
+        </if>
+        <if test="content != null and content != ''">
+            and content like concat('%', #{content}, '%')
+        </if>
+        <if test="score != 0">
+            and score >= #{score}
+        </if>
+        order by no desc
+        limit #{limit} offset #{offset}
+    </select>
+
+    <select id="getReviewCommList" parameterType="com.bunge.review.domain.Review" resultType="com.bunge.review.domain.ReviewComm">
+        select *
+        from reviewcomm
+        where reviewno = #{no}
+        order by no desc
+    </select>
+
+    <select id="getReviewCommListCount" parameterType="com.bunge.review.domain.Review" resultType="int">
+        select count(*)
+        from reviewcomm
+        where reviewno = #{no}
+    </select>
+
+    <select id="checkReviewLike" parameterType="com.bunge.review.parameter.ReviewLikeRequest" resultType="com.bunge.review.domain.ReviewLike">
+        select *
+        from reviewlike
+        where reviewno = #{reviewno}
+        and id = #{id}
+    </select>
+
+    <insert id="addReviewLike" parameterType="com.bunge.review.parameter.ReviewLikeRequest">
+        insert into reviewlike
+        (reviewno, id)
+        values
+        (#{reviewno}, #{id})
+    </insert>
+
+    <delete id="deleteReviewLike" parameterType="com.bunge.review.parameter.ReviewLikeRequest">
+        delete from reviewlike
+        where reviewno = #{reviewno}
+        and id = #{id}
+    </delete>
+
+    <select id="countReviewLike" parameterType="com.bunge.review.parameter.ReviewLikeRequest" resultType="int">
+        select count(*)
+        from reviewlike
+        where reviewno = #{reviewno}
+    </select>
+
+    <select id="countReviewLikeByReview" parameterType="com.bunge.review.domain.Review" resultType="int">
+        select count(*)
+        from reviewlike
+        where reviewno = #{no}
+    </select>
+
+    <select id="checkReviewLikeList" parameterType="com.bunge.review.parameter.ReviewLikeRequest" resultType="com.bunge.review.domain.ReviewLike">
+        select reviewno
+        from reviewlike
+        where id = #{id}
+    </select>
+
+    <update id="updateReviewComm" parameterType="com.bunge.review.parameter.ReviewCommUpdateRequest">
+        update reviewcomm
+        set content = #{content}
+        where no = #{no}
+    </update>
+
+    <delete id="deleteReviewComm" parameterType="com.bunge.review.parameter.ReviewCommDeleteRequest">
+        delete from reviewcomm
+        where no = #{no}
+    </delete>
+
 
 </mapper>
