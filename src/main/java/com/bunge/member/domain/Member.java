@@ -34,7 +34,6 @@ public class Member implements UserDetails {
 
     private MultipartFile uploadfile;
 
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<SimpleGrantedAuthority> role = new ArrayList<SimpleGrantedAuthority>();

@@ -29,10 +29,13 @@
         update member set pwd = #{pwd} where id = #{id};
     </update>
     <update id="update">
-        update member set name = #{name} ,nick = #{nick},
-                          zipcode = #{zipcode} ,addr1 = #{addr1},
-                          addr2 = #{addr2} ,phone = #{phone},
-                          email = #{email} ,profile=#{profile} where id = #{id};
+        update member
+        set name = #{name}, nick = #{nick},
+            zipcode = #{zipcode}, addr1 = #{addr1},
+            addr2 = #{addr2}, phone = #{phone},
+            email = #{email}, profile = #{profile},
+            profile_original = #{profile_original}
+        where id = #{id};
     </update>
     <select id="getMyReviewList" parameterType="String" resultType="com.bunge.review.domain.Review">
         select * from review where id = #{id};
