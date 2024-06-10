@@ -58,7 +58,7 @@ public class MemoController {
                               @RequestParam(value = "page", defaultValue = "1") Integer page,
                               Model model) {
 
-        logger.info(bookFilter.toString());
+        //logger.info(bookFilter.toString());
         int pageSize = 12;
         int offset = (page - 1) * pageSize;
 
@@ -99,7 +99,7 @@ public class MemoController {
         bookFilter.setLimit(pageSize);
 
         List<Book> books = bookService.getBookList(bookFilter);
-        logger.info("books : " + books.toString());
+        //logger.info("books : " + books.toString());
 
         int totalBooks = bookService.getBookListCount(bookFilter);
 
@@ -154,49 +154,19 @@ public class MemoController {
         return bookService.filterNewBooks(books);
     }
 
-    @PostMapping("/addreadstate")
-    public ResponseEntity<String> addReadState(@RequestBody ReadState readState) {
-
-        //logger.info(readState.toString());
-        bookService.updatePage(readState);
-
-        if (readState.getState().equals("목표")) {
-            try {
-                readStateService.addReadState(readState);
-                return ResponseEntity.status(HttpStatus.OK).body("{\"message\":\"goal success\"}");
-            } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"message\":\"goal failed\"}");
-            }
-        } else if (readState.getState().equals("도전")) {
-            try {
-                //logger.info(readState.toString());
-                readStateService.addReadState(readState);
-                return ResponseEntity.status(HttpStatus.OK).body("{\"message\":\"challenge success\"}");
-            } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"message\":\"challenge failed\"}");
-            }
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"message\":\"state error\"}");
-        }
-    }
-
     @GetMapping("/mine")
-    public ModelAndView memoMain(ModelAndView mv,
-                                 @RequestParam(value="page", required=false, defaultValue="1") Integer page) {
+    public String memoMain(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String loginId = authentication.getName();
         //logger.info("loginId : " + loginId);
 
 
         List<ReadState> readStates = readStateService.getAllReadState(loginId);
-        //logger.info("readStates : " + readStates.toString());
+        logger.info("readStates : " + readStates.toString());
 
         List<Book> myGoalList = new ArrayList<>();
         List<Book> myChallengeList = new ArrayList<>();
         List<Book> myCompleteList = new ArrayList<>();
-
-        int pageSize = 3;
-        int offset = (page - 1) * pageSize;
 
         for (ReadState readState : readStates) {
             if (readState.getState().equals("목표")) {
@@ -220,8 +190,6 @@ public class MemoController {
 
         MemoFilter memoFilter = new MemoFilter();
         memoFilter.setLoginId(loginId);
-        memoFilter.setOffset(offset);
-        memoFilter.setLimit(pageSize);
 
         List<Memo> myMemoList = memoService.getMyMemoList(memoFilter);
         //logger.info("myMemoList: " + myMemoList.toString());
@@ -229,24 +197,13 @@ public class MemoController {
         int totalMemos = memoService.getMemoListCount(memoFilter);
         //logger.info("totalMemos: " + totalMemos);
 
-        int maxPage = (int) Math.ceil((double) totalMemos / pageSize);
-        int startPage = Math.max(1, page - 5);
-        int endPage = Math.min(maxPage, page + 5);
+        model.addAttribute("loginId", loginId);
+        model.addAttribute("myGoalList", myGoalList);
+        model.addAttribute("myChallengeList", myChallengeList);
+        model.addAttribute("myCompleteList", myCompleteList);
+        model.addAttribute("myMemoList", myMemoList);
 
-        mv.addObject("loginId", loginId);
-        mv.addObject("myGoalList", myGoalList);
-        mv.addObject("myChallengeList", myChallengeList);
-        mv.addObject("myCompleteList", myCompleteList);
-
-        mv.addObject("myMemoList", myMemoList);
-        mv.addObject("currentPage", page);
-        mv.addObject("maxPage", maxPage);
-        mv.addObject("startPage", startPage);
-        mv.addObject("endPage", endPage);
-
-        mv.setViewName("memo/memo_mine");
-
-        return mv;
+        return "memo/memo_mine";
     }
 
     @PostMapping("/add-memo")
@@ -278,6 +235,32 @@ public class MemoController {
         memoService.updateMemo(memo);
 
         return "redirect:mine";
+    }
+
+    @PostMapping("/addreadstate")
+    public ResponseEntity<String> addReadState(@RequestBody ReadState readState) {
+
+        //logger.info(readState.toString());
+        bookService.updatePage(readState);
+
+        if (readState.getState().equals("목표")) {
+            try {
+                readStateService.addReadState(readState);
+                return ResponseEntity.status(HttpStatus.OK).body("{\"message\":\"goal success\"}");
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"message\":\"goal failed\"}");
+            }
+        } else if (readState.getState().equals("도전")) {
+            try {
+                //logger.info(readState.toString());
+                readStateService.addReadState(readState);
+                return ResponseEntity.status(HttpStatus.OK).body("{\"message\":\"challenge success\"}");
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"message\":\"challenge failed\"}");
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"message\":\"state error\"}");
+        }
     }
 
     @ResponseBody

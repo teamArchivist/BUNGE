@@ -31,4 +31,7 @@ public interface ReadStateMapper {
     //독서상태 변경
     public int changeReadState(ReadState readState);
 
+    //독서상태 조회
+    public ReadState getReadState(ReadState readState);
+
 }
