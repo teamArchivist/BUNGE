@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>내 물건 올리기</title>
+    <links>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f9;
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
+            .wrap-contact100 {
+                width: 100%;
+                max-width: 600px;
+                background: #fff;
+                border-radius: 10px;
+                overflow: hidden;
+                padding: 50px 55px 50px 55px;
+                box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.1);
+                margin: 50px auto;
+            }
+
+            .contact100-form {
+                width: 100%;
+            }
+
+            .contact100-form-title {
+                display: block;
+                font-family: Poppins-Bold;
+                font-size: 24px;
+                color: #333;
+                line-height: 1.2;
+                text-align: center;
+                margin-bottom: 30px;
+            }
+
+            .wrap-input100 {
+                width: 100%;
+                position: relative;
+                border-bottom: 2px solid #d9d9d9;
+                margin-bottom: 30px;
+            }
+
+            .input100 {
+                font-family: Poppins-Regular;
+                font-size: 15px;
+                color: #333;
+                line-height: 1.2;
+                display: block;
+                width: 100%;
+                background: transparent;
+                padding: 10px 5px;
+                border: none;
+                outline: none;
+            }
+
+            .input100:focus + .focus-input100::after {
+                width: 100%;
+            }
+
+            .focus-input100::after {
+                content: '';
+                display: block;
+                position: absolute;
+                bottom: -2px;
+                left: 0;
+                width: 0;
+                height: 2px;
+                background: #6c7ae0;
+                transition: width 0.4s;
+            }
+
+            select {
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 30px;
+                border: 2px solid #d9d9d9;
+                border-radius: 5px;
+                font-size: 15px;
+                color: #333;
+                outline: none;
+                transition: border-color 0.4s;
+            }
+
+            select:focus {
+                border-color: #6c7ae0;
+            }
+
+            .insert {
+                margin-bottom: 30px;
+            }
+
+            .insert label {
+                display: block;
+                margin-bottom: 10px;
+                font-size: 15px;
+                color: #333;
+            }
+
+            .insert input[type="file"] {
+                display: block;
+                width: 100%;
+                padding: 10px;
+                border: 2px solid #d9d9d9;
+                border-radius: 5px;
+                font-size: 15px;
+                outline: none;
+                transition: border-color 0.4s;
+            }
+
+            .insert input[type="file"]:focus {
+                border-color: #6c7ae0;
+            }
+
+            .file-list {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .file-list img {
+                max-width: 100px;
+                max-height: 100px;
+                object-fit: cover;
+                border: 2px solid #d9d9d9;
+                border-radius: 5px;
+            }
+
+            .container-contact100-form-btn {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .contact100-form-btn {
+                font-family: Poppins-Medium;
+                font-size: 16px;
+                color: #fff;
+                background-color: #6c7ae0;
+                border: none;
+                border-radius: 5px;
+                padding: 10px 20px;
+                cursor: pointer;
+                transition: background-color 0.4s;
+            }
+
+            .contact99-form-btn {
+                font-family: Poppins-Medium;
+                font-size: 16px;
+                color: #fff;
+                background-color: #da092f;
+                border: none;
+                border-radius: 5px;
+                padding: 10px 20px;
+                cursor: pointer;
+                transition: background-color 0.4s;
+            }
+
+            .contact100-form-btn:hover {
+                background-color: #5a68d0;
+            }
+        </style>
+    </links>
+</head>
+<body>
+<h1>Trade 정보 수정</h1>
+<form action="/trade/update" method="post">
+    <input type="hidden" name="tradeNo" th:value="${trade.tradeNo}" />
+    <label for="sellerID">판매자 ID:</label><br>
+    <input type="text" id="sellerID" name="sellerID" th:value="${trade.sellerID}" /><br>
+    <label for="title">상품 제목:</label><br>
+    <input type="text" id="title" name="title" th:value="${trade.title}" /><br>
+    <label for="description">상품 설명:</label><br>
+    <textarea id="description" name="description">${trade.description}</textarea><br>
+    <label for="price">가격:</label><br>
+    <input type="text" id="price" name="price" th:value="${trade.price}" /><br>
+    <!-- 나머지 필드들도 동일하게 추가 -->
+    <button type="submit">수정</button>
+</form>
+</body>
+</html>

@@ -31,4 +31,7 @@ public interface MemoMapper {
     //작성한 총 메모의 수
     public int getMemoListCount(MemoFilter memoFilter);
 
+    //월별 작성한 메모 수
+    public int countMemoRecord(String formattedDate);
+
 }

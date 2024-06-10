@@ -4,35 +4,27 @@
 
 <mapper namespace="com.bunge.inquiry.mapper.InquiryCommentMapper">
 
-    <!-- 댓글 삽입 -->
-    <insert id="insertComment">
-        INSERT INTO inquiry_comment (inquiry_id, author_id, is_admin, content)
-        VALUES (#{inquiryId}, #{authorId}, #{isAdmin}, #{content})
-    </insert>
-
-    <!-- 댓글 조회 -->
-    <select id="selectCommentsByInquiryId" resultType="com.bunge.inquiry.domain.InquiryComment">
-        SELECT
-            comment_id AS commentId,
-            inquiry_id AS inquiryId,
-            author_id AS authorId,
-            is_admin AS isAdmin,
-            content,
-            created_at AS createdAt
-        FROM inquiry_comment
-        WHERE inquiry_id = #{inquiryId}
+    <select id="findCommentsByInquiryId" resultType="InquiryComment">
+        SELECT * FROM inquiry_comment WHERE inquiryId = #{inquiryId} AND parentCommentId IS NULL
     </select>
 
-    <!-- 댓글 삭제 -->
+    <select id="findRepliesByCommentId" resultType="InquiryComment">
+        SELECT * FROM inquiry_comment WHERE parentCommentId = #{parentCommentId}
+    </select>
+
+    <insert id="insertComment" parameterType="InquiryComment">
+        INSERT INTO inquiry_comment (inquiryId, memberId, parentCommentId, content, createdAt, updatedAt, isNotified)
+        VALUES (#{inquiryId}, #{memberId}, #{parentCommentId}, #{content}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, #{isNotified})
+    </insert>
+
     <delete id="deleteComment">
-        DELETE FROM inquiry_comment WHERE comment_id = #{commentId} AND author_id = #{authorId}
+        DELETE FROM inquiry_comment WHERE commentId = #{commentId}
     </delete>
 
-    <!-- 댓글 수정 -->
     <update id="updateComment">
         UPDATE inquiry_comment
-        SET content = #{content}
-        WHERE comment_id = #{commentId} AND author_id = #{authorId}
+        SET content = #{content}, updatedAt = CURRENT_TIMESTAMP, isNotified = #{isNotified}
+        WHERE commentId = #{commentId}
     </update>
 
 </mapper>

@@ -23,6 +23,25 @@
             color: white;
          }
 
+         .trade_list {
+            display: flex;
+            flex-wrap: wrap; /* 필요에 따라 줄 바꿈을 설정합니다. */
+            gap: 10px; /* 각 요소 사이의 간격을 설정합니다. */
+         }
+
+         .card_container {
+            flex: 1 1 calc(20% - 10px); /* 최대 5개가 한 줄에 나오도록 20% 너비를 설정합니다. 간격을 고려하여 10px을 빼줍니다. */
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+         }
+
+         .product_image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 5px;
+         }
 
       </style>
 
@@ -32,51 +51,69 @@
 </head>
 <body>
 <section>
-      <div>
-         <div class="position-relative banner-container">
-            <img th:src="@{/img/trade/banner.jpg}" alt="Banner" class="img-fluid banner-image">
-            <div class="position-absolute top-50 start-50 translate-middle text-center banner-text">
-               <h1 class="text-white">다양한 사람들과 함께 지식을 공유해 보아요!</h1>
-               <br><br>
+   <div>
+      <div class="position-relative banner-container">
+         <img th:src="@{/img/trade/banner.jpg}" alt="Banner" class="img-fluid banner-image">
+         <div class="position-absolute top-50 start-50 translate-middle text-center banner-text">
+            <h1 class="text-white">다양한 사람들과 함께 지식을 공유해 보아요!</h1>
+            <br><br>
 
-               <div class="col-md-8 offset-md-2 mb-3">
+            <div class="col-md-8 offset-md-2 mb-3">
 
-                  <form class="searchbox input-group">
-                     <input class="searchbox__input form-control form-control-lg" type="search" placeholder="검색어를 입력하세요..." aria-label="Search">
-                     <div class="searchbox__btn-group">
-                        <button class="searchbox__btn btn btn-icon bg-transparent shadow-none border-0 btn-sm" type="submit">
-                           <i class="demo-pli-magnifi-glass"></i>
-                        </button>
-                     </div>
-                  </form>
-               </div>
-
-               <div class="d-flex flex-wrap align-items-end justify-content-center gap-2 mb-3 pb-3">
-                  <div class="d-md-flex flex-wrap align-items-center gap-2 mb-3 mb-sm-0">
-                     <div class="text-center mb-2 mb-md-0">검색 조건</div>
-                     <select class="form-select w-auto" aria-label="Categories">
-                        <option value="musics">책 제목</option>
-                        <option value="photos">작성자</option>
-                        <option value="internet">내용</option>
-                     </select>
+               <form class="searchbox input-group">
+                  <input class="searchbox__input form-control form-control-lg" type="search" placeholder="검색어를 입력하세요..." aria-label="Search">
+                  <div class="searchbox__btn-group">
+                     <button class="searchbox__btn btn btn-icon bg-transparent shadow-none border-0 btn-sm" type="submit">
+                        <i class="demo-pli-magnifi-glass"></i>
+                     </button>
                   </div>
-               </div>
-
-               <button id="tradeWriteBtn">글쓰기</button>
-
-               <script>
-                  document.getElementById("tradeWriteBtn").addEventListener("click",function() {
-                     window.location.href="/trade/write";
-                  });
-               </script>
-
+               </form>
             </div>
-         </div>
-         <h1>최신글</h1>
-         <h1>문학/소설</h1>
 
-         <h1>논픽션</h1>
+            <div class="d-flex flex-wrap align-items-end justify-content-center gap-2 mb-3 pb-3">
+               <div class="d-md-flex flex-wrap align-items-center gap-2 mb-3 mb-sm-0">
+                  <div class="text-center mb-2 mb-md-0">검색 조건</div>
+                  <select class="form-select w-auto" aria-label="Categories">
+                     <option value="musics">책 제목</option>
+                     <option value="photos">작성자</option>
+                     <option value="internet">내용</option>
+                  </select>
+               </div>
+            </div>
+
+            <button id="tradeWriteBtn">글쓰기</button>
+
+            <script>
+               document.getElementById("tradeWriteBtn").addEventListener("click",function() {
+                  window.location.href="/trade/write";
+               });
+            </script>
+
+         </div>
       </div>
+      <br>
+      <h4>최근 등록된 상품</h4>
+      <br>
+      <ul class="trade_list">
+         <li th:each="t : ${tradeList}">
+            <a th:href="@{'detail?tradeNo=' + ${t.tradeNo}}">
+               <div class="card_container">
+                  <!-- 이미지 출력 -->
+                  <!-- 제목 출력 -->
+                  <p th:text="${t.title}" class="product_title"></p>
+                  <!-- 카테고리 출력 -->
+                  <p th:text="${t.categoryID}" class="product_upload_time"></p>
+               </div>
+            </a>
+         </li>
+      </ul>
+      <br>
+
+      </tbody>
+      <h1>문학/소설</h1>
+
+      <h1>논픽션</h1>
+   </div>
 
 
 </section>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+   <meta name="description" content="WYSIWYG is a text editor for editing content, whether in text or graphics.">
+   <title>Inquiry Edit</title>
+   <links>
+      <!-- Quill [ OPTIONAL ] -->
+      <link th:href="@{/vendors/quill/quill.css}" rel="stylesheet">
+      <script th:src="@{/vendors/quill/quill.min.js}"></script>
+      <script th:src="@{/js/addform.js}"></script>
+      <!-- Initialize [ SAMPLE ] -->
+      <script th:src="@{/pages/text-editor.js}"></script>
+   </links>
+</head>
+<style>
+   .ql-container {
+      height: 300px;
+   }
+</style>
+<body class="out-quart">
+<section class="content">
+   <div class="content__boxed">
+      <div class="content__wrap">
+         <div class="card">
+            <div class="card-header">
+               <h3 class="h4 card-title">문의 수정</h3>
+               <hr>
+               <div class="card mb-3">
+                  <div class="card-body pb-0">
+                     <form method="post" th:action="@{/inquiry/update}" enctype="multipart/form-data" name="inquiryform">
+                        <div class="row mb-3" hidden>
+                           <label for="inquiryId" class="col-sm-2 col-form-label">문의글 ID</label>
+                           <div class="col-sm-10">
+                              <input type="text" class="form-control" id="inquiryId" name="inquiryId" th:value="${inquirydata.inquiryId}" readonly>
+                           </div>
+                        </div>
+
+                        <div class="row mb-3">
+                           <label for="memberId" class="col-sm-2 col-form-label">작성자</label>
+                           <div class="col-sm-10">
+                              <input type="text" class="form-control" id="memberId" name="memberId" th:value="${inquirydata.memberId}" readonly>
+                           </div>
+                        </div>
+
+                        <div class="row mb-3">
+                           <label for="typeId" class="col-sm-2 col-form-label">문의유형</label>
+                           <div class="col-sm-10">
+                              <select class="form-control" id="typeId" name="typeId" required>
+                                 <option value="" selected>문의 유형을 선택해주세요.</option>
+                                 <option value="1" th:selected="${inquirydata.typeId == 1}">반품 문의</option>
+                                 <option value="2" th:selected="${inquirydata.typeId == 2}">배송 문의</option>
+                                 <option value="3" th:selected="${inquirydata.typeId == 3}">결제 문의</option>
+                                 <option value="4" th:selected="${inquirydata.typeId == 4}">기타 문의</option>
+                              </select>
+                           </div>
+                        </div>
+
+                        <div class="row mb-3">
+                           <label class="col-sm-2 col-form-label">공개 여부</label>
+                           <div class="col-sm-10">
+                              <input type="radio" id="privateFalse" name="isPrivate" value="false" th:checked="${!inquirydata.isPrivate}">
+                              <label for="privateFalse">공개 &nbsp;</label>
+                              <input type="radio" id="privateTrue" name="isPrivate" value="true" th:checked="${inquirydata.isPrivate}">
+                              <label for="privateTrue">비공개</label>
+                           </div>
+                        </div>
+
+                        <div class="row mb-3">
+                           <label for="title" class="col-sm-2 col-form-label">제목</label>
+                           <div class="col-sm-10">
+                              <input type="text" class="form-control" id="title" name="title" placeholder="제목을 입력하세요"
+                                     th:value="${inquirydata.title}">
+                           </div>
+                        </div>
+
+                        <div class="row mb-3">
+                           <label for="_dm-quillCustomToolbar" class="col-sm-2 col-form-label">내용</label>
+                           <div class="col-sm-10">
+                              <div id="_dm-quillCustomToolbar" class="ql-container ql-snow" style="height: 300px;"></div>
+                              <textarea type="text" name="content" id="content" style="display:none;"
+                                        th:text="${inquirydata.content}"></textarea>
+
+                           </div>
+                        </div>
+
+                        <hr>
+                        <br>
+                        <h5 style="font-weight:bold">문의에 대한 답변 등록 시 알려드립니다.</h5><br>
+
+                        <div class="row mb-3">
+                           <label for="email" class="col-sm-2 col-form-label">이메일</label>
+                           <div class="col-sm-10">
+                              <input type="email" class="form-control" id="email" name="email" style="display:inline-block;width:400px;"
+                                     th:value="${inquirydata.email}">
+                           </div>
+                        </div>
+
+                        <div class="text-center">
+                           <button type="submit" class="btn btn-primary">Update</button>
+                           <button type="reset" class="btn btn-danger">Cancel</button>
+                        </div>
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                     </form>
+                     <hr>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <footer class="mt-auto">
+      <div class="content__boxed">
+         <div class="content__wrap py-3 py-md-1 d-flex flex-column flex-md-row align-items-md-center">
+            <div class="text-nowrap mb-4 mb-md-0">Copyright &copy; 2024 <a href="#" class="ms-1 btn-link fw-bold">My Company</a></div>
+            <nav class="nav flex-column gap-1 flex-md-row gap-md-3 ms-md-auto">
+               <a class="nav-link link-offset-3 link-underline-hover px-0" href="#">Policy Privacy</a>
+               <a class="nav-link link-offset-3 link-underline-hover px-0" href="#">Terms and conditions</a>
+               <a class="nav-link link-offset-3 link-underline-hover px-0" href="#">Contact Us</a>
+            </nav>
+         </div>
+      </div>
+   </footer>
+   <script>
+      // Quill 에디터 초기화
+      var quill = new Quill('#_dm-quillCustomToolbar', {
+         theme: 'snow'
+      });
+
+      // 기존 내용 로드
+      quill.root.innerHTML = document.querySelector('textarea[name=content]').value;
+
+      // 폼 제출 시 내용 갱신
+      $("button[type=submit]").click(function () {
+         submitForm();
+      });
+
+      function submitForm() {
+         document.querySelector('textarea[name=content]').value =
+                 document.querySelector('#_dm-quillCustomToolbar > .ql-editor').innerHTML;
+         console.log("로그" + document.querySelector('#_dm-quillCustomToolbar > .ql-editor').innerHTML);
+      }
+      </script>
+</section>
+</body>
+</html>
