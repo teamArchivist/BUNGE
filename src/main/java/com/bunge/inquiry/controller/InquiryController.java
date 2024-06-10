@@ -121,5 +121,25 @@ public class InquiryController {
         return mv;
     }
 
+    // 문의글 수정 처리
+    @PostMapping("/update")
+    public String updateInquiry(Inquiry inquiry,
+                                Model mv,
+                                HttpServletRequest request,
+                                RedirectAttributes rattr) throws Exception {
+        String url = "";
+        int result = inquiryService.updateInquiry(inquiry);
+
+        if (result == 0) {
+            mv.addAttribute("url", request.getRequestURL());
+            mv.addAttribute("message", "게시판 수정 실패");
+            url = "error/error";
+        }else {
+            url = "redirect:view";
+            rattr.addAttribute("inquiryId", inquiry.getInquiryId());
+        }
+        return url;
+    }
 }
+
 
