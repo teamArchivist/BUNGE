@@ -9,7 +9,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
@@ -53,7 +57,10 @@ public class SecurityConfig {
 							.hasAnyAuthority("member", "admin" ,"superadmin")
 						.requestMatchers("/admin/**")
 							.hasAnyAuthority("admin", "superadmin")
+						.requestMatchers("/inquiry/**","/comment/**")
+							.hasAnyAuthority("member","admin","superadmin")
 						.requestMatchers("/**").permitAll()
+
 		);
 
 		//로그인
@@ -102,3 +109,5 @@ public class SecurityConfig {
 	}
 
 }
+
+

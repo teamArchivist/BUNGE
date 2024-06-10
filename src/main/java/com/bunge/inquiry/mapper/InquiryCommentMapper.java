@@ -8,8 +8,16 @@ import java.util.List;
 
 @Mapper
 public interface InquiryCommentMapper {
-    void insertComment(InquiryComment comment);
-    List<InquiryComment> selectCommentsByInquiryId(int inquiryId);
-    void deleteComment(@Param("commentId") int commentId, @Param("authorId") String authorId);
-    void updateComment(InquiryComment comment);
+    List<InquiryComment> findCommentsByInquiryId(Long inquiryId);
+
+    List<InquiryComment> findRepliesByCommentId(Integer parentCommentId); // 대댓글 조회 메서드 추가
+
+    InquiryComment findCommentById(Long commentId); // 특정 댓글 조회 메서드 추가
+
+    int insertComment(InquiryComment comment);
+
+    void deleteComment(Long commentId);
+
+    InquiryComment updateComment(InquiryComment comment);
+
 }
