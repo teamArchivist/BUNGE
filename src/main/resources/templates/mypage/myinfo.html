@@ -24,7 +24,7 @@
                         </div>
                             <div class="w-md-400px d-inline-flex row g-3 mb-4">
                                 <div class="mt-4 col-9">
-                                    <img class="hv-oc img-xl rounded-circle border" th:src="@{${memberinfo.profile}}" alt="Profile">
+                                    <img class="hv-oc img-xl rounded-circle border" id="profile-img" th:src="|/upload${memberinfo.profile}|" alt="" >
                                 </div>
                                 <div class="mt-4 col-3">
                                     <!-- Vertical centered modal -->
@@ -36,26 +36,26 @@
                                     <div class="modal fade" id="modalprofile" tabindex="-1" aria-labelledby="modelprofileLabel" style="display: none;" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content">
-                                                <form th:action="@{/mypage/update-process}" method="post">
-                                                <div class="modal-header">
-                                                    <h1 class="modal-title fs-5" id="modelprofileLabel"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">프로필 변경</font></font></h1>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫다"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <input type="file" name="profile" class="form-control" accept="image/*">
-                                                    <input type="hidden" name="id" class="form-control" th:value="${memberinfo.id}">
-                                                    <input type="hidden" name="nick" class="form-control" th:value="${memberinfo.nick}">
-                                                    <input type="hidden" name="name" class="form-control" th:value="${memberinfo.name}">
-                                                    <input type="hidden" name="zipcode" class="form-control" th:value="${memberinfo.zipcode}">
-                                                    <input type="hidden" name="addr1" class="form-control" th:value="${memberinfo.addr1}">
-                                                    <input type="hidden" name="addr2" class="form-control" th:value="${memberinfo.addr2}">
-                                                    <input type="hidden" name="phone" class="form-control" th:value="${memberinfo.phone}">
-                                                    <input type="hidden" name="email" class="form-control" th:value="${memberinfo.email}">
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="submit" class="btn btn-primary">변경하기</button>
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">돌아가기</button>
-                                                </div>
+                                                <form th:action="@{/mypage/update-process}" method="post" enctype="multipart/form-data">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="modelprofileLabel"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">프로필 변경</font></font></h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫다"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <input type="file" name="uploadfile" class="form-control" accept="image/*">
+                                                        <input type="hidden" name="id" class="form-control" th:value="${memberinfo.id}">
+                                                        <input type="hidden" name="nick" class="form-control" th:value="${memberinfo.nick}">
+                                                        <input type="hidden" name="name" class="form-control" th:value="${memberinfo.name}">
+                                                        <input type="hidden" name="zipcode" class="form-control" th:value="${memberinfo.zipcode}">
+                                                        <input type="hidden" name="addr1" class="form-control" th:value="${memberinfo.addr1}">
+                                                        <input type="hidden" name="addr2" class="form-control" th:value="${memberinfo.addr2}">
+                                                        <input type="hidden" name="phone" class="form-control" th:value="${memberinfo.phone}">
+                                                        <input type="hidden" name="email" class="form-control" th:value="${memberinfo.email}">
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="submit" class="btn btn-primary">변경하기</button>
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">돌아가기</button>
+                                                    </div>
                                                 </form>
                                             </div>
                                         </div>

@@ -57,8 +57,8 @@ public class MemberController {
     @PreAuthorize("isAnonymous()")
     @GetMapping (value ="/login")
     public ModelAndView login(ModelAndView mav,
-                        @CookieValue(value = "remember-me", required = false) Cookie readCookie,
-                        HttpSession session,
+                              @CookieValue(value = "remember-me", required = false) Cookie readCookie,
+                              HttpSession session,
                               RedirectAttributes redirectAttributes)  {
         if (readCookie != null) {
             redirectAttributes.addFlashAttribute("message" , "로그인에 성공하셨습니다.");
@@ -140,7 +140,7 @@ public class MemberController {
     @PreAuthorize("isAnonymous()")
     @PostMapping(value = "/findidProcess")
     public String findidProcess(@RequestParam("name") String name,
-                                      @RequestParam("email") String email, Model model, RedirectAttributes redirectAttributes) {
+                                @RequestParam("email") String email, Model model, RedirectAttributes redirectAttributes) {
         String sendid = memberservice.findid(name, email);
         if (sendid != null) {
             model.addAttribute("message","아이디 찾기에 성공하셨습니다.");
@@ -160,14 +160,14 @@ public class MemberController {
     @PreAuthorize("isAnonymous()")
     @PostMapping(value = "/findpwdProcess")
     public String findpwdProcess(@RequestParam("id") String id ,
-                                       @RequestParam("name") String name ,
-                                       @RequestParam("email") String email, Model model,
-                                        HttpSession session , Member member) {
-       session.setAttribute("findid", id);
+                                 @RequestParam("name") String name ,
+                                 @RequestParam("email") String email, Model model,
+                                 HttpSession session , Member member) {
+        session.setAttribute("findid", id);
         boolean pwdset = memberservice.findpwd(id, name , email);
         if (!pwdset) {
             model.addAttribute("message","아이디, 이름, 이메일 정보 중 일치하지 않습니다.");
-           return "member/findpwd";
+            return "member/findpwd";
         } else {
             Mail mail = new Mail();
             mail.setTo(member.getEmail());
@@ -199,7 +199,7 @@ public class MemberController {
         String findid = (String) session.getAttribute("findid");
         //비밀번호 암호화 추가
         String encPassword = passwordEncoder.encode(member.getPwd());
-      
+
         member.setPwd(encPassword);
         member.setId(findid);
 

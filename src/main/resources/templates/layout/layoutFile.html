@@ -178,7 +178,7 @@
                         <!-- User dropdown header -->
                         <div class="d-flex align-items-center border-bottom px-3 py-2">
                            <div class="flex-shrink-0">
-                              <img class="img-sm rounded-circle" sec:authentication="principal.profile" alt="Profile Picture" loading="lazy">
+                              <img class="img-sm rounded-circle" th:src="|/upload${memberinfo.profile}|" alt="Profile Picture" loading="lazy">
                            </div>
                            <div class="flex-grow-1 ms-3">
                               <h5 class="mb-0" sec:authentication="name"></h5>
@@ -203,7 +203,7 @@
 
                               <!-- User menu link -->
                               <div class="list-group list-group-borderless h-100 py-3">
-                                 <a th:href="@{/mypage/mypage}" class="list-group-item list-group-item-action">
+                                 <a th:href="@{/mypage/main}" class="list-group-item list-group-item-action">
                                     <i class="demo-pli-male fs-5 me-2"></i> 마이페이지
                                  </a>
                                  <form th:action="@{/member/logout}" method="post" style="margin-bottom:0px" name="logout">
@@ -264,7 +264,7 @@
 
                   <!-- Profile picture  -->
                   <div class="mininav-toggle text-center py-2">
-                     <img class="mainnav__avatar img-md rounded-circle hv-oc" sec:authentication="principal.profile" alt="Profile Picture">
+                     <img class="mainnav__avatar img-md rounded-circle hv-oc" th:src="|/upload${memberinfo.profile}|" alt="Profile Picture">
                   </div>
 
 
@@ -282,7 +282,7 @@
 
                         <!-- Collapsed user menu -->
                         <div id="usernav" class="nav flex-column collapse">
-                           <a th:href="@{/mypage/mypage}" class="nav-link">
+                           <a th:href="@{/mypage/main}" class="nav-link">
                               <i class="demo-pli-male fs-5 me-2"></i>
                               <span class="ms-1">마이페이지</span>
                            </a>
