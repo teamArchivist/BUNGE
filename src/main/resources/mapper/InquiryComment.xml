@@ -5,7 +5,7 @@
 <mapper namespace="com.bunge.inquiry.mapper.InquiryCommentMapper">
 
     <select id="findCommentsByInquiryId" resultType="InquiryComment">
-        SELECT * FROM inquiry_comment WHERE inquiryId = #{inquiryId} AND parentCommentId IS NULL
+        SELECT * FROM inquiry_comment WHERE inquiryId = #{inquiryId} ORDER BY createdAt ASC
     </select>
 
     <select id="findRepliesByCommentId" resultType="InquiryComment">
