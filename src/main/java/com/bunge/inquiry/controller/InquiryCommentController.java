@@ -4,6 +4,8 @@ import com.bunge.inquiry.domain.InquiryComment;
 import com.bunge.inquiry.service.InquiryCommentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,8 +43,13 @@ public class InquiryCommentController {
     }
 
     @PutMapping
-    public InquiryComment updateComment(@RequestBody InquiryComment comment) {
-        return commentService.updateComment(comment);
+    public ResponseEntity<String> updateComment(@RequestBody InquiryComment comment) {
+        int updated = commentService.updateComment(comment);
+        if (updated > 0) {
+            return ResponseEntity.ok("Comment updated successfully");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED).body("Failed to update comment");
+        }
     }
 }
 

@@ -48,7 +48,7 @@ $(document).ready(function() {
 							+ '                </li>'
 							+ '            </ul>'
 							+ '        </div>'
-							+ '        <p>' + comment.content + '</p>'
+							+ '        <p class="comment-content" id="content-'+ comment.commentId +'">' + comment.content + '</p>'
 							+ '        <a class="btn btn-xs btn-outline-light replyComment" data-id="' + comment.commentId + '">Reply</a>'
 							+ '        <div class="replies ms-4" id="replies-' + comment.commentId + '">'
 							+ '        </div>'
@@ -90,7 +90,7 @@ $(document).ready(function() {
 							+ '                </li>'
 							+ '            </ul>'
 							+ '        </div>'
-							+ '        <p>' + comment.content + '</p>'
+							+ '        <p id="content'+ comment.commentId +'">' + comment.content + '</p>'
 							+ '    </div>'
 							+ '</div>';
 						$(`#replies-${comment.parentCommentId}`).append(replyOutput);
@@ -171,5 +171,65 @@ $(document).ready(function() {
 				}
 			});
 		}
+	});
+
+	// 댓글 수정
+	$(document).on('click', '.editComment', function(e) {
+		e.preventDefault(); // 기본 동작 방지
+		let commentId = $(this).data('id');
+		let contentElement = $('#content-' + commentId);
+		let originalContent = contentElement.text().trim();
+
+		let textarea = $('<textarea class="form-control" rows="3" style="resize: none;"></textarea>').val(originalContent);
+		let saveButton = $('<button class="btn btn-primary btn-sm mt-2" style="float:right">등록</button>');
+		let cancelButton = $('<button class="btn btn-secondary btn-sm mt-2" style="float:right">취소</button>');
+
+		contentElement.replaceWith(textarea);
+		textarea.after(saveButton).after(cancelButton);
+
+		saveButton.on('click', function() {
+			let newContent = textarea.val().trim();
+			if (newContent !== originalContent) {
+				let commentData = {
+					commentId: commentId,
+					content: newContent
+				};
+
+				$.ajax({
+					url: '/comments',
+					type: 'PUT',
+					contentType: 'application/json',
+					data: JSON.stringify(commentData),
+					beforeSend: function(xhr) {
+						xhr.setRequestHeader(header, token); // CSRF 토큰을 헤더에 추가
+					},
+					success: function(response) {
+						let newContentElement = $('<p class="comment-content" id="content-' + commentId + '"></p>').text(newContent);
+						textarea.replaceWith(newContentElement);
+						saveButton.remove();
+						cancelButton.remove();
+					},
+					error: function(error) {
+						console.error('Error:', error);
+						let originalContentElement = $('<p class="comment-content" id="content-' + commentId + '"></p>').text(originalContent);
+						textarea.replaceWith(originalContentElement);
+						saveButton.remove();
+						cancelButton.remove();
+					}
+				});
+			} else {
+				let originalContentElement = $('<p class="comment-content" id="content-' + commentId + '"></p>').text(originalContent);
+				textarea.replaceWith(originalContentElement);
+				saveButton.remove();
+				cancelButton.remove();
+			}
+		});
+
+		cancelButton.on('click', function() {
+			let originalContentElement = $('<p class="comment-content" id="content-' + commentId + '"></p>').text(originalContent);
+			textarea.replaceWith(originalContentElement);
+			saveButton.remove();
+			cancelButton.remove();
+		});
 	});
 });

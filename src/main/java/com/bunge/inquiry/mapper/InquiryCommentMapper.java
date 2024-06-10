@@ -18,6 +18,6 @@ public interface InquiryCommentMapper {
 
     void deleteComment(Long commentId);
 
-    InquiryComment updateComment(InquiryComment comment);
+    int updateComment(InquiryComment comment);
 
 }
