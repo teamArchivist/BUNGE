@@ -28,6 +28,7 @@ $(function() {
 		$("#_dm-quillCustomToolbar").focus();
 		return false;
 	}
+			return false;
 	
 	if($.trim($("#email").val()) == "") {
 		alert("이메일을 입력하세요.");

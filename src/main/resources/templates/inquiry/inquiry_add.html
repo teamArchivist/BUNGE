@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}"
-      xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+      xmlns:th="http://www.thymeleaf.org">
 <head>
    <meta name="description" content="WYSIWYG is a text editor for editing content, whether in text or graphics.">
    <title>Inquiry Add</title>
@@ -52,10 +52,10 @@
                         <div class="row mb-3">
                            <label class="col-sm-2 col-form-label">공개 여부</label>
                            <div class="col-sm-10">
-                              <input type="radio" id="publicTrue" name="isPublic" value="true" checked>
-                              <label for="publicTrue">공개 &nbsp;</label>
-                              <input type="radio" id="publicFalse" name="isPublic" value="false">
-                              <label for="publicFalse">비공개</label>
+                              <input type="radio" id="privateFalse" name="isPrivate" value="false" checked>
+                              <label for="privateFalse">공개 &nbsp;</label>
+                              <input type="radio" id="privateTrue" name="isPrivate" value="true">
+                              <label for="privateTrue">비공개</label>
                            </div>
                         </div>
 
@@ -97,7 +97,7 @@
                            <label for="email" class="col-sm-2 col-form-label">이메일</label>
                            <div class="col-sm-10">
                               <input type="email" class="form-control" id="email" name="email"
-                                     style="display:inline-block;width:400px;">
+                                     style="display:inline-block;width:400px;" th:value="${memberInfo.email}">
                            </div>
                         </div>
 
@@ -127,25 +127,28 @@
       </div>
    </footer>
    <script>
-     // var quill;
 
-      // document.addEventListener("DOMContentLoaded", () => {
-      //    quill = new Quill("#_dm-quillCustomToolbar", {
-      //       theme: "snow"
-      //    });
-      // });
 
+     // // var quill;
+     //
+     //  // document.addEventListener("DOMContentLoaded", () => {
+     //  //    quill = new Quill("#_dm-quillCustomToolbar", {
+     //  //       theme: "snow"
+     //  //    });
+     //  // });
+     //
       $("button[type=submit]").click(function () {
          submitForm();
       });
 
-      function submitForm() {
+       function submitForm() {
          // Quill 에디터의 내용을 숨겨진 textarea에 저장
+         //  document.querySelector('textarea[name=content]').value = quill.root.innerHTML;
          document.querySelector('textarea[name=content]').value =
-                 document.querySelector('#_dm-quillCustomToolbar > .ql-editor > p').innerHTML;
-         console.log("로그" + document.querySelector('#_dm-quillCustomToolbar > .ql-editor > p').innerHTML);
-         // $("#content").text()$("#_dm-quillCustomToolbar > .ql-editor > p").text()
-      }
+                 document.querySelector('#_dm-quillCustomToolbar > .ql-editor').innerHTML;
+         console.log("로그" + document.querySelector('#_dm-quillCustomToolbar > .ql-editor').innerHTML);
+     //    // $("#content").text($("#_dm-quillCustomToolbar > .ql-editor").text())
+       }
    </script>
 </section>
 </body>

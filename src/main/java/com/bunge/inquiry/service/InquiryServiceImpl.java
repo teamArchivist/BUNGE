@@ -37,7 +37,7 @@ public class InquiryServiceImpl implements InquiryService {
     }
 
     @Override
-    public Inquiry getInquiry(Long inquiryId) {
+    public Inquiry getInquiryById(Long inquiryId) {
         return inquiryMapper.selectInquiry(inquiryId);
     }
 
