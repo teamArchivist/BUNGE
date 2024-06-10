@@ -114,16 +114,19 @@ public class MemberController {
         member.setPwd(encPassword);
         try{
             int result = memberservice.insert(member);
-        int result = memberservice.insert(member);
 
-        // 삽입이 된 경우
-        if (result == 1) {
-            rattr.addFlashAttribute("message","회원가입에 축하드립니다.");
-            return "redirect:login";
-        }else {
-            model.addAttribute("message", "회원 가입 실패");
-            model.addAttribute("url", request.getRequestURL());
-            return "error/erorr";
+            // 삽입이 된 경우
+            if (result == 1) {
+                rattr.addFlashAttribute("result","joinSuccess");
+                return "redirect:login";
+            }else {
+                model.addAttribute("message", "회원 가입 실패");
+                model.addAttribute("url", request.getRequestURL());
+                return "error/500";
+            }
+        } catch (DuplicateKeyException e) {
+            model.addAttribute("message", e.getMessage());
+            return "error/500";
         }
     }
     //아이디 찾기 폼 접속
