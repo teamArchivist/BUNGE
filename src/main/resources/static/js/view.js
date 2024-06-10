@@ -150,4 +150,26 @@ $(document).ready(function() {
 			}
 		});
 	});
+
+	// 댓글 삭제
+	$(document).on('click', '.deleteComment', function(e) {
+		e.preventDefault(); // 기본 동작 방지
+		let commentId = $(this).data('id');
+
+		if (confirm("정말 이 댓글을 삭제하시겠습니까?")) {
+			$.ajax({
+				url: '/comments/delete' + commentId,
+				type: 'DELETE',
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader(header, token); // CSRF 토큰을 헤더에 추가
+				},
+				success: function(response) {
+					loadComments(); // 댓글 목록 다시 로드
+				},
+				error: function(error) {
+					console.error('Error:', error);
+				}
+			});
+		}
+	});
 });
