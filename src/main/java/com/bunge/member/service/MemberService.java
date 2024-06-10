@@ -9,15 +9,15 @@ public interface MemberService {
 
     public  Member memberinfo(String id);
 
-    public boolean idcheck(String id);
+    public boolean checkid(String id);
 
-    public boolean nickcheck(String nick);
+    public boolean checknick(String nick);
 
-    public boolean emailcheck(String email);
+    public boolean checkemail(String email);
 
-    String findid(String name, String email);
+    public String findid(String name, String email);
 
-    boolean findpwd(String id, String name, String email);
+    public boolean findpwd(String id, String name, String email);
 
-    boolean pwdset(Member member);
+    public boolean pwdset(Member member);
 }

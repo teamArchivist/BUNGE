@@ -203,7 +203,7 @@
 
                               <!-- User menu link -->
                               <div class="list-group list-group-borderless h-100 py-3">
-                                 <a href="#" class="list-group-item list-group-item-action">
+                                 <a th:href="@{mypage/mypage}" class="list-group-item list-group-item-action">
                                     <i class="demo-pli-male fs-5 me-2"></i> 마이페이지
                                  </a>
                                  <form th:action="@{/member/logout}" method="post" style="margin-bottom:0px" name="logout">
@@ -282,7 +282,7 @@
 
                         <!-- Collapsed user menu -->
                         <div id="usernav" class="nav flex-column collapse">
-                           <a th:href="@{member/update}" class="nav-link">
+                           <a th:href="@{mypage/mypage}" class="nav-link">
                               <i class="demo-pli-male fs-5 me-2"></i>
                               <span class="ms-1">마이페이지</span>
                            </a>
@@ -347,10 +347,10 @@
                         <ul class="mininav-content nav collapse">
                            <li data-popper-arrow class="arrow"></li>
                            <li class="nav-item">
-                              <a th:href="@{/memo/searchmain}" class="nav-link">책 검색</a>
+                              <a th:href="@{/memo/search-main}" class="nav-link">책 검색</a>
                            </li>
                            <li class="nav-item">
-                              <a href="#" class="nav-link">리뷰 둘러보기</a>
+                              <a th:href="@{/review/main}" class="nav-link">리뷰 둘러보기</a>
                            </li>
                            <li class="nav-item">
                               <a th:href="@{/memo/mine}" class="nav-link">나의 기록</a>

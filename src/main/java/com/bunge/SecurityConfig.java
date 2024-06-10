@@ -65,7 +65,7 @@ public class SecurityConfig {
 
 		//로그인
 		//내가 만든 로그인 페이지로 이동한다.
-		http.formLogin((formLogin) -> formLogin.loginPage("/templates/member/login")
+		http.formLogin((formLogin) -> formLogin.loginPage("/member/login")
 				.loginProcessingUrl("/member/loginProcess")
 				.usernameParameter("id")
 				.passwordParameter("pwd")

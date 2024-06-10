@@ -27,7 +27,7 @@ $(function() {
             //console.log(rdata)
             //console.log(rdata.item[0].subInfo.itemPage)
             let itemPage = rdata.item[0].subInfo.itemPage
-            $("#itemPage").text(itemPage + " page")
+            $("#itemPage").text(itemPage)
         }
 
     })
@@ -37,7 +37,8 @@ $(function() {
         const goalData = {
             isbn13 : isbn13,
             id : loginId,
-            state : "목표"
+            state : "목표",
+            totalpage : parseInt($("#itemPage").text(), 10)
         };
 
         let answer = confirm("목표로 추가하시겠습니까?")
@@ -81,7 +82,8 @@ $(function() {
         const challengeData = {
             isbn13 : isbn13,
             id : loginId,
-            state : "도전"
+            state : "도전",
+            totalpage : parseInt($("#itemPage").text(), 10)
         };
 
         let answer = confirm("도전으로 추가하시겠습니까?")
@@ -113,7 +115,7 @@ $(function() {
                     }
                 },
                 error : function(error) {
-                    alert("부적절한 요청입니다. 도전 목록을 확인해주세요.");
+                    alert("부적절한 요청입니다. 목표 / 도전 중 하나의 상태만 가능합니다");
                     console.error("도전 추가 중 오류 발생:", error);
                 }
             }) //ajax end

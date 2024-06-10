@@ -6,9 +6,9 @@
 
     <insert id="addReadState" parameterType="com.bunge.memo.domain.ReadState">
         insert into readstate
-        (isbn13, id, state)
+        (isbn13, id, state, totalpage, readpage, startdate, enddate)
         values
-        (#{isbn13}, #{id}, #{state})
+        (#{isbn13}, #{id}, #{state}, #{totalpage}, 0, now(), now())
     </insert>
 
     <select id="countReadState" parameterType="com.bunge.memo.domain.ReadState" resultType="int">
@@ -17,5 +17,45 @@
         where isbn13 = #{isbn13}
         and state = #{state}
     </select>
+
+    <select id="getAllReadState" parameterType="com.bunge.memo.domain.ReadState" resultType="com.bunge.memo.domain.ReadState">
+        select *
+        from readstate
+        where id = #{id}
+    </select>
+
+    <select id="getReadState" parameterType="com.bunge.memo.domain.Memo" resultType="com.bunge.memo.domain.ReadState">
+        select *
+        from readstate
+        where id = #{id}
+        and isbn13 = #{isbn13}
+    </select>
+
+    <select id="countTotalPage" parameterType="map" resultType="int">
+        select totalpage
+        from readstate
+        where isbn13 = #{isbn13}
+        and id = #{id}
+    </select>
+
+    <select id="countReadPage" parameterType="map" resultType="int">
+        select readpage
+        from readstate
+        where isbn13 = #{isbn13}
+        and id = #{id}
+    </select>
+
+    <update id="updateReadState">
+        update readstate
+        set state = '완독', enddate = now()
+        where totalpage = readpage
+    </update>
+
+    <update id="changeReadState" parameterType="com.bunge.memo.domain.ReadState">
+        update readstate
+        set state = #{state}
+        where isbn13 = #{isbn13}
+        and id = #{id}
+    </update>
 
 </mapper>
