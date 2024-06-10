@@ -13,7 +13,7 @@ public interface InquiryMapper {
     List<Inquiry> selectAllInquiries(@Param("limit") int limit, @Param("offset") int offset);
     Inquiry selectInquiry(@Param("inquiryId") Long inquiryId);
     void insertInquiry(Inquiry inquiry);
-    void updateInquiry(Inquiry inquiry);
+    int updateInquiry(Inquiry inquiry);
     void deleteInquiry(@Param("inquiryId") Long inquiryId);
     Inquiry getView(Long inquiryId);
 }

@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface InquiryService {
     void addInquiry(Inquiry inquiry);
-    void updateInquiry(Inquiry inquiry);
+    int updateInquiry(Inquiry inquiry);
     void deleteInquiry(Long inquiryId);
     Inquiry getInquiryById(Long inquiryId);
     List<Inquiry> getAllInquiries(int limit, int offset);

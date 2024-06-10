@@ -1,7 +1,5 @@
 package com.bunge.inquiry.service;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 import com.bunge.inquiry.domain.Inquiry;
@@ -9,7 +7,7 @@ import com.bunge.inquiry.mapper.InquiryMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
+
 
 @Service
 public class InquiryServiceImpl implements InquiryService {
@@ -26,8 +24,9 @@ public class InquiryServiceImpl implements InquiryService {
 
     @Transactional
     @Override
-    public void updateInquiry(Inquiry inquiry) {
-        inquiryMapper.updateInquiry(inquiry);
+    public int updateInquiry(Inquiry inquiry) {
+       int result =  inquiryMapper.updateInquiry(inquiry);
+        return result;
     }
 
     @Transactional
