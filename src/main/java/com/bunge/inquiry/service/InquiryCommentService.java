@@ -9,5 +9,5 @@ public interface InquiryCommentService {
     List<InquiryComment> findRepliesByCommentId(Integer parentCommentId); // 대댓글 조회 메서드 추가
     int insertComment(InquiryComment comment);
     void deleteComment(Long commentId);
-    InquiryComment updateComment(InquiryComment comment);
+    int updateComment(InquiryComment comment);
 }

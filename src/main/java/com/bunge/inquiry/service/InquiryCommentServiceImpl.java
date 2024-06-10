@@ -43,9 +43,8 @@ public class InquiryCommentServiceImpl implements InquiryCommentService {
         }
 
         @Override
-        public InquiryComment updateComment(InquiryComment comment) {
-            commentMapper.updateComment(comment);
-            return commentMapper.findCommentById(comment.getCommentId()); // 수정된 댓글 객체를 반환
+        public int updateComment(InquiryComment comment) {
+            return commentMapper.updateComment(comment);
         }
 
 //        @Override
