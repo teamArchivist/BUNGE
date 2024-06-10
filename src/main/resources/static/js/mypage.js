@@ -1,17 +1,21 @@
 let token = $("meta[name='_csrf']").attr("content");
 let header = $("meta[name='_csrf_header']").attr("content");
 
-$(function (){
+$(function () {
+
+    let generatedCode = '';
+
     //이메일 인증코드 발송
     $('#emailVerifyButton').click(function () {
-        const email = $('input[name="email"]').val().trim();
+        const email = $('#changeemail1').val().trim();
+        console.log(email+"이메일");
         if (email !== "") {
             $.ajax({
                 url: "mymaildelivery",
                 type: "get",
-                data: { email: email},
+                data: { email: email },
                 success: function (response) {
-                    console.log("인증코드"+response);
+                    console.log("인증코드" + response);
                     generatedCode = response;
                     $("#emailCode").attr('type', 'text').val('');
                     $("#emailcode_message").text("인증코드가 발송되었습니다.");
@@ -25,39 +29,36 @@ $(function (){
             $('#emailCode').hide();
         }
     });
-    //이메일인증 코드 비교
+
+    //이메일 인증 코드 비교
     $("input[name=emailcode]").on('keyup', function () {
         const emailcode = $(this).val().trim();
         if (emailcode === generatedCode) {
             $("#emailcode_message").css('color', 'green').text("인증되었습니다.");
-            return true;
         } else {
             $("#emailcode_message").css('color', 'red').text("인증코드가 일치하지 않습니다.");
-            return false;
         }
     });
 
+    // Example AJAX request (not directly related to email verification)
     console.log($("#loginId").text());
-    let id=$("#loginId").text();
+    let id = $("#loginId").text();
     $.ajax({
         url: "myreview",
-        data: id ,
-        method: "post" ,
-        cache: false ,
-        beforeSend : function (xhr) {
+        data: id,
+        method: "post",
+        cache: false,
+        beforeSend: function (xhr) {
             if (header && token) {
                 xhr.setRequestHeader(header, token);
             }
         },
         success: function (rdata) {
-            //console.log("성공")
-            //console.log(rdata)
             console.log(rdata.list);
             console.log(rdata.listcount);
-            $(rdata.list).each(function (){
+            $(rdata.list).each(function () {
                 console.log(this.cover);
-
-            })
+            });
         }
-    })
+    });
 });

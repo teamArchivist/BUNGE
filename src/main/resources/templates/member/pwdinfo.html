@@ -18,6 +18,11 @@
         </form>
             </div>
         </div>
+        <script th:inline="javascript">
+            let result = [[${message}]];
+            if(result != null)
+                alert(result);
+        </script>
     </section>
 </th:block>
 </body>

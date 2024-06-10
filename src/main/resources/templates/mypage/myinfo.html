@@ -25,25 +25,25 @@
                         </div>
                             <div class="w-md-400px d-inline-flex row g-3 mb-4">
                                 <div class="mt-4 col-9">
-                                    <img class="hv-oc img-xl rounded-circle border" th:value="${memberinfo.profile}" alt="Profile">
+                                    <img class="hv-oc img-xl rounded-circle border" th:src="@{${memberinfo.profile}}" alt="Profile">
                                 </div>
                                 <div class="mt-4 col-3">
                                     <!-- Vertical centered modal -->
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changeprofile"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalprofile"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
                                         변경
                                     </font></font></button>
 
                                     <!-- Modal -->
-                                    <div class="modal fade" id="changeprofile" tabindex="-1" aria-labelledby="changeprofileLabel" style="display: none;" aria-hidden="true">
+                                    <div class="modal fade" id="modalprofile" tabindex="-1" aria-labelledby="modelprofileLabel" style="display: none;" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content">
                                                 <form th:action="@{/mypage/update-process}" method="post">
                                                 <div class="modal-header">
-                                                    <h1 class="modal-title fs-5" id="changeprofileLabel"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">프로필 변경</font></font></h1>
+                                                    <h1 class="modal-title fs-5" id="modelprofileLabel"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">프로필 변경</font></font></h1>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫다"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <input type="file" name="profile" class="form-control" accept="image/*" >
+                                                    <input type="file" name="profile" class="form-control" accept="image/*">
                                                     <input type="hidden" name="id" class="form-control" th:value="${memberinfo.id}">
                                                     <input type="hidden" name="nick" class="form-control" th:value="${memberinfo.nick}">
                                                     <input type="hidden" name="name" class="form-control" th:value="${memberinfo.name}">
@@ -244,13 +244,13 @@
                                 </div>
                                 <div class="mt-2 col-9">
                                     <font style="vertical-align: inherit;">이메일</font>
-                                    <input type="email" name="email" class="form-control" aria-label="Email" th:value="${memberinfo.email}">
+                                    <input type="email" class="form-control" aria-label="Email" th:value="${memberinfo.email}">
                                 </div>
                                 <div class="mt-4 col-3">
                                     <!-- Vertical centered modal -->
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changeemail"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
-                                        변경
-                                    </font></font></button>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changeemail">
+                                        <font style="vertical-align: inherit;">변경</font>
+                                    </button>
 
                                     <!-- Modal -->
                                     <div class="modal fade" id="changeemail" tabindex="-1" aria-labelledby="changeemailLabel" style="display: none;" aria-hidden="true">
@@ -258,32 +258,34 @@
                                             <div class="modal-content">
                                                 <form th:action="@{/mypage/update-process}" method="post">
                                                     <div class="modal-header">
-                                                        <h1 class="modal-title fs-5" id="changeemailLabel"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">이메일 변경</font></font></h1>
+                                                        <h1 class="modal-title fs-5" id="changeemailLabel">
+                                                            <font style="vertical-align: inherit;">이메일 변경</font>
+                                                        </h1>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫다"></button>
                                                     </div>
                                                     <div class="modal-body">
                                                         <div class="d-inline-flex">
-                                                            <div class="col-7 mt-2">
-                                                                <input type="email" name="email" class="form-control" placeholder="Email" aria-label="Email"required>
+                                                            <div class="col-12 mt-2">
+                                                                <input id="changeemail1" type="email" name="email" class="form-control" placeholder="Email" aria-label="Email" required>
                                                             </div>
                                                             <div class="col-4 mt-2" style="margin-left: 10px;">
                                                                 <button type="button" class="btn btn-primary" id="emailVerifyButton" name="checkemail">이메일 인증</button>
                                                             </div>
                                                         </div>
-                                                        <div class="col-12 mt-2">
-
+                                                        <div class="col-10 mt-2">
                                                             <div class="col-6 mt-1">
-                                                                <input type="hidden" id="emailCode" name="emailcode" class="form-control" placeholder="인증코드 입력" required>
+                                                                <input type="hidden" id="emailCode" name="emailcode" class="form-control" placeholder="인증코드 입력" maxlength="6" required>
                                                                 <span id="emailcode_message"></span>
                                                             </div>
-                                                        <input type="hidden" name="id" class="form-control" th:value="${memberinfo.id}">
-                                                        <input type="hidden" name="name" class="form-control" th:value="${memberinfo.name}">
-                                                        <input type="hidden" name="nick" class="form-control" th:value="${memberinfo.nick}">
-                                                        <input type="hidden" name="zipcode" class="form-control" th:value="${memberinfo.zipcode}">
-                                                        <input type="hidden" name="addr1" class="form-control" th:value="${memberinfo.addr1}">
-                                                        <input type="hidden" name="addr2" class="form-control" th:value="${memberinfo.addr2}">
-                                                        <input type="hidden" name="phone" class="form-control" th:value="${memberinfo.phone}">
-                                                        <input type="hidden" name="profile" class="form-control" th:value="${memberinfo.profile}">
+                                                            <input type="hidden" name="id" class="form-control" th:value="${memberinfo.id}">
+                                                            <input type="hidden" name="name" class="form-control" th:value="${memberinfo.name}">
+                                                            <input type="hidden" name="nick" class="form-control" th:value="${memberinfo.nick}">
+                                                            <input type="hidden" name="zipcode" class="form-control" th:value="${memberinfo.zipcode}">
+                                                            <input type="hidden" name="addr1" class="form-control" th:value="${memberinfo.addr1}">
+                                                            <input type="hidden" name="addr2" class="form-control" th:value="${memberinfo.addr2}">
+                                                            <input type="hidden" name="phone" class="form-control" th:value="${memberinfo.phone}">
+                                                            <input type="hidden" name="profile" class="form-control" th:value="${memberinfo.profile}">
+                                                        </div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="submit" class="btn btn-primary">변경하기</button>
@@ -293,7 +295,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- END : Vertical centered modal -->
+                                </div>
+
+                                <!-- END : Vertical centered modal -->
                                 </div>
                             </div>
                             <div class="d-grid mt-4">
@@ -308,7 +312,13 @@
 
             </div>
         </div>
+        <script th:inline="javascript">
+        let result = [[${message}]];
+        if(result != null)
+        alert(result);
+    </script>
     </section>
+
 </th:block>
 </body>
 </html>

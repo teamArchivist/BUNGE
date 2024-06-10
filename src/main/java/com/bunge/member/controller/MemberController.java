@@ -55,12 +55,10 @@ public class MemberController {
                         HttpSession session,
                         Principal userPrincipal)  {
         if (readCookie != null) {
-            String message = "로그인에 성공하셨습니다.";
-            mav.addObject("message" , message);
+            mav.addObject("message" , "로그인에 성공하셨습니다.");
             mav.setViewName("redirect:member/index");
         } else {
-            String message = "아이디나 비밀번호가 틀렸습니다.";
-            mav.addObject("message" , message);
+            mav.addObject("message" , "아이디나 비밀번호가 틀렸습니다.");
             mav.setViewName("member/login");
 
             mav.addObject("loginfail", session.getAttribute("loginfail"));
@@ -105,7 +103,7 @@ public class MemberController {
 
         // 삽입이 된 경우
         if (result == 1) {
-            rattr.addFlashAttribute("result","joinSuccess");
+            rattr.addFlashAttribute("message","회원가입에 축하드립니다.");
             return "redirect:login";
         }else {
             model.addAttribute("message", "회원 가입 실패");
@@ -163,7 +161,7 @@ public class MemberController {
             return "member/pwdinfo";
         }
     }
-    //
+    //비밀번호 재설정 폼이동
     @GetMapping(value = "/pwdset")
     public String pwdset(String email, String random , HttpSession session){
         logger.info(email);
