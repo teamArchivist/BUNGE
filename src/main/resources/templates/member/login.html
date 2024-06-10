@@ -3,15 +3,8 @@
       xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>로그인</title>
-    <script th:inline="javascript">
-        let message = [[${message}]];
-        let url  =[[${url}]];
-        alert(message);
-        document.location.href=url;
-    </script>
     <links>
         <!--/* link, script 태그 영역 */-->
-        <script th:src="@{/js/message.js}"></script>
     </links>
 </head>
 <body>
@@ -56,30 +49,6 @@
                                 <a th:href="@{findpwd}" class="btn-link text-decoration-none">비밀번호찾기</a>
                                 <a th:href="@{join}" class="btn-link text-decoration-none">새계정 생성</a>
                             </div>
-                            <!--
-                                <div class="d-flex align-items-center justify-content-between border-top pt-3 mt-3">
-                                    <h5 class="m-0">Login with</h5>
-
-                                   Social media buttons
-                                <div class="ms-3">
-                                    <a href="#" class="btn btn-sm btn-icon btn-hover btn-primary text-inherit">
-                                        <i class="psi-facebook fs-5"></i>
-                                    </a>
-                                    <a href="#" class="btn btn-sm btn-icon btn-hover btn-info text-inherit">
-                                        <i class="psi-twitter fs-5"></i>
-                                    </a>
-                                    <a href="#" class="btn btn-sm btn-icon btn-hover btn-danger text-inherit">
-                                        <i class="psi-google-plus fs-5"></i>
-                                    </a>
-                                    <a href="#" class="btn btn-sm btn-icon btn-hover btn-warning text-inherit">
-                                        <i class="psi-instagram fs-5"></i>
-                                    </a>
-                                </div>
-                                 END : Social media buttons
-
-                            </div>
-                        -->
-
                         </div>
                     </div>
 
@@ -93,20 +62,17 @@
                             <span class="vr"></span>
                             뒤로가기
                         </button>
-                        <!--
-                        <a href="./" class="btn btn-primary hstack gap-2">
-                            <i class="psi-home fs-5"></i>
-                            <span class="vr"></span>
-                            Return home
-                        </a>
-                        -->
                     </div>
                     <!-- END : Action buttons -->
 
 
                 </div>
             </div>
-
+        <script th:inline="javascript">
+            let result = [[${message}]];
+            if(result != null)
+                alert(result);
+        </script>
     </section>
 </th:block>
 <div sec:authorize="isAuthenticated()">

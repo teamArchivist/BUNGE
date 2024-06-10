@@ -53,12 +53,12 @@ public class MemberController {
     public ModelAndView login(ModelAndView mav,
                         @CookieValue(value = "remember-me", required = false) Cookie readCookie,
                         HttpSession session,
-                        Principal userPrincipal)  {
+                              RedirectAttributes redirectAttributes)  {
         if (readCookie != null) {
-            mav.addObject("message" , "로그인에 성공하셨습니다.");
+            redirectAttributes.addFlashAttribute("message" , "로그인에 성공하셨습니다.");
             mav.setViewName("redirect:member/index");
         } else {
-            mav.addObject("message" , "아이디나 비밀번호가 틀렸습니다.");
+            redirectAttributes.addFlashAttribute("message" , "아이디나 비밀번호가 틀렸습니다.");
             mav.setViewName("member/login");
 
             mav.addObject("loginfail", session.getAttribute("loginfail"));
@@ -122,7 +122,7 @@ public class MemberController {
     @PreAuthorize("isAnonymous()")
     @PostMapping(value = "/findidProcess")
     public String findidProcess(@RequestParam("name") String name,
-                                      @RequestParam("email") String email, Model model, HttpServletResponse response) {
+                                      @RequestParam("email") String email, Model model, RedirectAttributes redirectAttributes) {
         String sendid = memberservice.findid(name, email);
         if (sendid != null) {
             model.addAttribute("message","아이디 찾기에 성공하셨습니다.");
