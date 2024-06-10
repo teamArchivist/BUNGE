@@ -3,8 +3,12 @@ package com.bunge.review.service;
 import com.bunge.memo.domain.Book;
 import com.bunge.review.domain.Review;
 import com.bunge.review.domain.ReviewComm;
+import com.bunge.review.domain.ReviewLike;
 import com.bunge.review.filter.ReviewFilter;
 import com.bunge.review.mapper.ReviewMapper;
+import com.bunge.review.parameter.ReviewCommDeleteRequest;
+import com.bunge.review.parameter.ReviewCommUpdateRequest;
+import com.bunge.review.parameter.ReviewLikeRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,12 +32,19 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    public List<Review> getAllReviews() {
+        return reviewMapper.getAllReviews();
+    }
+
+    @Override
     public List<Review> getReviewList(ReviewFilter reviewFilter) {
-        List<Review> result = new ArrayList<Review>();
         List<Review> reviews = reviewMapper.getReviewList(reviewFilter);
+        List<Review> result = new ArrayList<Review>();
 
         for (Review review : reviews) {
             review.setCountcomment(reviewMapper.getReviewCommListCount(review));
+            review.setCountlike(reviewMapper.countReviewLikeByReview(review));
+
             result.add(review);
         }
 
@@ -75,5 +86,34 @@ public class ReviewServiceImpl implements ReviewService {
         return reviewMapper.getReviewCommListCount(review);
     }
 
+    @Override
+    public int controlReviewLike(ReviewLikeRequest reviewLikeRequest) {
+        ReviewLike checkedReviewLike = reviewMapper.checkReviewLike(reviewLikeRequest);
+        if (checkedReviewLike == null) {
+           return reviewMapper.addReviewLike(reviewLikeRequest);
+        } else {
+            return (reviewMapper.deleteReviewLike(reviewLikeRequest)-1);
+        }
+    }
+
+    @Override
+    public int countReviewLike(ReviewLikeRequest reviewLikeRequest) {
+        return reviewMapper.countReviewLike(reviewLikeRequest);
+    }
+
+    @Override
+    public List<ReviewLike> checkReviewLikeList(ReviewLikeRequest reviewLikeRequest) {
+        return reviewMapper.checkReviewLikeList(reviewLikeRequest);
+    }
+
+    @Override
+    public int updateReviewComm(ReviewCommUpdateRequest reviewCommUpdateRequest) {
+        return reviewMapper.updateReviewComm(reviewCommUpdateRequest);
+    }
+
+    @Override
+    public int deleteReviewComm(ReviewCommDeleteRequest reviewCommDeleteRequest) {
+        return reviewMapper.deleteReviewComm(reviewCommDeleteRequest);
+    }
 
 }

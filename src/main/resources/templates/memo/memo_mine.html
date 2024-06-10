@@ -5,10 +5,10 @@
     <title>나의 기록</title>
     <links>
         <script th:src="@{/vendors/chart.js/chart.umd.min.js}"></script>
-        <script th:src="@{/pages/chart.js}"></script>
         <script type="module" th:src="@{/pages/forms-tags-bootstrap5.js}"></script>
         <link rel="stylesheet" th:href="@{/vendors/bootstrap5-tags/bootstrap5-tags.css}">
         <script th:src="@{/js/memomine.js}"></script>
+        <script th:src="@{/js/memochart.js}"></script>
     </links>
 </head>
 <body class="out-quart">
@@ -139,7 +139,7 @@
                                                                 <input type="hidden" name="isbn13" id="thisisbn13">
                                                                 <input type="hidden" name="cover" id="thiscover">
                                                                 <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                                                                    <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
                                                                     <button type="submit" class="btn btn-primary">등록</button>
                                                                 </div>
                                                             </form>
@@ -308,7 +308,7 @@
                                                             <input type="hidden" name="cover" id="modalInputCover">
 
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                                                                <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
                                                                 <button type="submit" class="btn btn-primary">등록</button>
                                                             </div>
 
@@ -331,7 +331,7 @@
                                             <img th:src="${myChallenge.cover}" width="150px" height="200px">
                                             <button type="button" class="btn btn-success rounded-pill" data-bs-toggle="modal"
                                                     data-bs-target="#verticalWithScrollbar"
-                                                    id="writeMemo"
+                                                    id="addMemo"
                                                     th:data-isbn13="${myChallenge.isbn13}"
                                                     th:data-title="${myChallenge.title}"
                                                     th:data-author="${myChallenge.author}"
@@ -409,18 +409,20 @@
                                                             <div class="col-md-12 mb-3">
                                                                 <label for="_dm-Title" class="form-label">제목</label>
                                                                 <input name="title" id="_dm-Title" type="text" class="form-control" placeholder="제목을 입력해주세요 (최대 100자)" required>
+                                                                <p class="float-end mb-0" id="countMemoTitle"></p>
                                                             </div>
 
                                                             <div class="col-md-12">
                                                                 <label class="form-label">내용</label>
-                                                                <textarea name="content" class="form-control" placeholder="내용을 입력해주세요 (최대 500자)" rows="14" required></textarea>
+                                                                <textarea name="content" class="form-control" placeholder="내용을 입력해주세요 (최대 500자)" rows="14" id="memoContent"></textarea>
+                                                                <p class="float-end mb-0" id="countMemoContent"></p>
                                                             </div>
 
                                                             <input type="hidden" name="isbn13" id="isbn13">
                                                             <input type="hidden" name="cover" id="cover">
 
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                                                                <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
                                                                 <button type="submit" class="btn btn-primary">등록</button>
                                                             </div>
 

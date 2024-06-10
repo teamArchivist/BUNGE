@@ -3,15 +3,8 @@
       xmlns:th="http://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>로그인</title>
-    <script th:inline="javascript">
-        let message = [[${message}]];
-        let url  =[[${url}]];
-        alert(message);
-        document.location.href=url;
-    </script>
     <links>
-        <!--/* link, script 태그 영역 */-->
-        <script th:src="@{/js/message.js}"></script>
+        <script th:src="@{/js/login.js}"></script>
     </links>
 </head>
 <body>
@@ -32,6 +25,10 @@
                             </div>
 
                             <form class="mt-4" name="loginform" th:action="@{/member/loginProcess}" method="post">
+                                <!-- 성공 메시지 -->
+                                <input type="hidden" name="successmessage" th:value="${successmessage}">
+                                <!-- 실패 메시지 -->
+                                <input type="hidden" name="loginfail" th:value="${loginfail}">
                                 <div class="mb-3">
                                     <input type="text" name="id" class="form-control" placeholder="Username" autofocus>
                                 </div>

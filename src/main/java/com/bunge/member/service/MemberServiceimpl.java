@@ -2,6 +2,7 @@ package com.bunge.member.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import com.bunge.member.domain.Member;
 import com.bunge.member.mapper.MemberMapper;
@@ -20,9 +21,14 @@ public class MemberServiceimpl implements MemberService{
 
     }
     @Override
-    public int insert(Member member) {
-        return memberMapper.insert(member);
+    public int insert(Member member) throws DuplicateKeyException {
+        try{
+            return memberMapper.insert(member);
+        }catch (DuplicateKeyException e) {
+            throw new DuplicateKeyException("중복된 아이디입니다. 다시 가입해주세요", e);
+        }
     }
+
     @Override
     public Member memberinfo(String id) {
         return memberMapper.checkid(id);

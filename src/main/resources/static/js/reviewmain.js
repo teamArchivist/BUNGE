@@ -3,7 +3,7 @@ let header = $("meta[name='_csrf_header']").attr("content");
 
 $(function() {
 
-    let loginId = $("#loginId").text();
+    let id = $("#loginId").text();
     let page = 1;
 
     $("body").on("click", ".modifyBtn", function() {
@@ -41,7 +41,7 @@ $(function() {
                 $("#reviewModalScore").text(rdata.score);
                 $("#reviewModalPage").text(rdata.page);
 
-                $("#reviewModalId").attr("value", loginId)
+                $("#reviewModalId").attr("value", id)
                 $("#reviewScore").attr("value", score)
                 $("input[name='linetitle']").attr("value", linetitle)
                 $("textarea[name='content']").text(content)
@@ -126,6 +126,7 @@ $(function() {
         let commentSection = $("#commentSection" + reviewno);
 
         if (commentSection.is(":visible")) {
+            $("#commnetInput" + reviewno).val("")
             commentSection.hide()
         } else {
             commentSection.show()
@@ -145,7 +146,7 @@ $(function() {
                 url: '/review/add-comment',  // 서버의 댓글 추가 엔드포인트
                 method: 'post',
                 data: {
-                    id : loginId,
+                    id : id,
                     reviewno: reviewno,
                     content: content
                 },
@@ -188,21 +189,26 @@ $(function() {
             success: function(rdata) {
                 $("#commentListCount" + reviewno).text(rdata.listcount)
                 $(".reviewComment-list").empty()
+                //console.log(rdata.list)
                 if (rdata.listcount > 0) {
                     $(rdata.list).each(function () {
                         let output = ''
                         let button = ''
 
-                        if (loginId == this.id) {
-                            button  = "<button type='button' class='btn btn-icon btn-outline-light rounded-circle btn-xs ml'>"
+                        if (id == this.id) {
+                            button  = "<button type='button' class='btn btn-icon btn-outline-light rounded-circle btn-xs ml update-comm-btn'"
+                                + "            data-updatecommno='" + this.no + "' data-updatecommcontent='" + this.content + "'"
+                                + "            data-reviewno='" + this.reviewno + "'>"
                                 + "<i class='demo-pli-pencil'></i>"
                                 + "</button>"
-                                + "<button type='button' class='btn btn-icon btn-outline-danger rounded-circle btn-xs ml'>"
+                                + "&nbsp;&nbsp;"
+                                + "<button type='button' class='btn btn-icon btn-outline-danger rounded-circle btn-xs ml delete-comm-btn'" +
+                                "          data-deletecommno='" + this.no + "' data-reviewno='" + this.reviewno + "'>"
                                 + "<i class='demo-pli-trash'></i>"
                                 + "</button>"
                         }
 
-                        output += "<div class='row align-items-start mb-3'>"
+                        output += "<div class='row align-items-start mb-3' id='comment-area-" + this.no + "'>"
                             + "<div class='col-sm-2 text-center' style='font-size:8px'>"
                             + "<img src='../img/profile-photos/1.png' class='img-xs rounded-circle'>"
                             + "</div>"
@@ -211,7 +217,7 @@ $(function() {
                             + this.id + "(" + this.created + ")" + "&nbsp;&nbsp;"
                             + button
                             + "</div>"
-                            + "<div class='row'>"
+                            + "<div class='row' id='comm-content-area" + this.no +"'>"
                             + this.content
                             + "</div>"
 
@@ -224,6 +230,166 @@ $(function() {
             } //success end
         }) //ajax end
     } //function getCommList(reviewno, currentPage) end
+
+    $("body").on("click", ".likeBtn", function() {
+        //console.log($(this).data("review-no"))
+        let reviewno = $(this).data("review-no");
+
+        $.ajax({
+            url: "review-like",
+            method: "post",
+            data: {reviewno, id},
+            cache: false,
+            beforeSend : function (xhr) {
+                if (header && token) {
+                    xhr.setRequestHeader(header, token);
+                }
+            },
+            success: function (rdata) {
+                //console.log("성공")
+                //console.log(rdata)
+                $("#likeCount" + reviewno).text(rdata.likeCount)
+                if (rdata.result == 1) {
+                    $("#heart" + reviewno).attr("name", "heart")
+                } else if (rdata.result == 0) {
+                    $("#heart" + reviewno).attr("name", "heart-outline")
+                }
+            },
+            error: function(status, error) {
+                console.log("ajax 요청 실패")
+                console.log("상태:" + status)
+                console.log("오류:" + error)
+                alert("좋아요 처리 중 오류가 발생했습니다. 다시 시도해주세요")
+            }
+        }) //ajax end
+    }) //likeBtn click end
+
+    $.ajax({
+        url: "check-review-like-list",
+        method: "post",
+        data: {id},
+        cache: false,
+        beforeSend : function (xhr) {
+            if (header && token) {
+                xhr.setRequestHeader(header, token);
+            }
+        },
+        success: function (rdata) {
+            //console.log(rdata)
+            $(rdata).each(function () {
+                //console.log(this.reviewno)
+                $("#heart" + this.reviewno).attr("name", "heart")
+            })
+        },
+        error: function(status, error) {
+            console.log("ajax 요청 실패")
+            console.log("상태:" + status)
+            console.log("오류:" + error)
+        }
+    })
+
+    $("body").on("click", ".update-comm-btn", function() {
+        //console.log($(this).data("updatecommno"))
+        //console.log($(this).data("updatecommcontent"))
+        let no = $(this).data("updatecommno")
+        let content = $(this).data("updatecommcontent")
+        let reviewno = $(this).data("reviewno")
+        let inputValue = "";
+
+        $(".update-comm-btn").attr("disabled", "disabled")
+        $("#commentInput" + reviewno).val(content);
+        $("#comment-area-" + no).css("border", "dotted");
+        $("#comment-add-btn").hide();
+        $("button[data-deletecommno='" + no + "']").after("<span style='display:contents;'>(수정중)</span>");
+        $("#commentInput" + reviewno).after("<button class='btn btn-icon btn-danger btn-xs rounded-circle flex-shrink-0 updateCancelBtn' type='button'><ion-icon name='close-outline'></ion-icon>")
+        $("#commentInput" + reviewno).after("<button class='btn btn-icon btn-success btn-xs rounded-circle flex-shrink-0 updateSubmitBtn' type='button'><ion-icon name='checkmark-outline'></ion-icon>")
+
+        $(".reviewComment-input").keyup(function(event) {
+            inputValue = $(this).val()
+            $("#comm-content-area" + no).text(inputValue)
+        })
+
+        $("body").on("click", ".updateCancelBtn", function() {
+            $(".update-comm-btn").attr("disabled", false)
+            $("#comment-area-" + no).css("border", "none")
+            $("#comm-content-area" + no).text(content)
+            $(".reviewComment-input").val("")
+            $("#comment-add-btn").show();
+            $(".delete-comm-btn").next().css("display","none")
+            $(".updateCancelBtn").hide();
+            $(".updateSubmitBtn").hide();
+        })
+
+        $(".updateSubmitBtn").click(function () {
+            let content = inputValue
+            console.log(content)
+
+            $.ajax ({
+                url: "update-comm",
+                method: "post",
+                data: {no, content},
+                cache: false,
+                beforeSend: function (xhr) {
+                    if (header && token) {
+                        xhr.setRequestHeader(header, token);
+                    }
+                },
+                success: function (rdata) {
+                    if (rdata == 1) {
+                        $(".reviewComment-input").val("")
+                        $("#comment-add-btn").show();
+                        $(".delete-comm-btn").next().css("display","none")
+                        $(".updateCancelBtn").hide();
+                        $(".updateSubmitBtn").hide();
+                        $(".reviewComment-input").off("keyup");
+                    } else {
+                        alert("댓글 내용 수정 중 오류가 발생했습니다. 다시 시도해주세요");
+                    }
+
+                },
+                error: function(status, error) {
+                    console.log("ajax 요청 실패");
+                    console.log("상태:" + status);
+                    console.log("오류:" + error);
+                    alert("댓글 내용 수정 중 오류가 발생했습니다. 다시 시도해주세요");
+                }
+            }) // ajax end
+        }) //$(".updateSubmitBtn").click end
+    })
+
+    $("body").on("click", ".delete-comm-btn", function() {
+        let reviewno = $(this).data("reviewno")
+        let no = $(this).data("deletecommno")
+        let answer = confirm("정말 삭제 하시겠습니까?");
+        if (answer) {
+            $.ajax({
+                url: "delete-comm",
+                method: "post",
+                data: {no},
+                cache: false,
+                beforeSend: function (xhr) {
+                    if (header && token) {
+                        xhr.setRequestHeader(header, token);
+                    }
+                },
+                success: function (rdata) {
+                    //console.log(rdata)
+                    if (rdata == 1) {
+                        alert("댓글 삭제 성공");
+                        getCommList(reviewno, page)
+                    } else {
+                        alert("댓글 삭제 실패, 다시 한번 시도해주세요")
+                    }
+                },
+                error: function(status, error) {
+                    console.log("ajax 요청 실패")
+                    console.log("상태:" + status)
+                    console.log("오류:" + error)
+                    alert("댓글 삭제 중 오류가 발생했습니다. 다시 시도해주세요")
+                }
+            }) // ajax end
+        } // if end
+    }) // $("body").on("click", ".delete-comm-btn", function() end
 
 
 }) //ready end
