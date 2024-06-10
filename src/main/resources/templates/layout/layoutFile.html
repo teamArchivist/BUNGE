@@ -451,7 +451,7 @@
                      <li class="nav-item">
 
 
-                        <a href="#" class="mininav-toggle nav-link collapsed"><i class="demo-pli-split-vertical-2 fs-5 me-2"></i>
+                        <a th:href="@{/chat}" class="mininav-toggle nav-link collapsed"><i class="demo-pli-split-vertical-2 fs-5 me-2"></i>
                            <span class="nav-label ms-1">채팅</span>
                         </a>
 
@@ -497,101 +497,6 @@
       <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
       <!-- END - MAIN NAVIGATION -->
 
-
-      <!-- SIDEBAR -->
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <aside class="sidebar">
-         <div class="sidebar__inner scrollable-content">
-
-
-            <!-- This element is only visible when sidebar Stick mode is active. -->
-            <div class="sidebar__stuck align-items-center mb-3 px-3">
-               <button type="button" class="sidebar-toggler btn-close btn-lg rounded-circle" aria-label="Close"></button>
-               <p class="m-0 text-danger fw-bold">닫기</p>
-            </div>
-
-
-            <!-- Sidebar tabs nav -->
-            <div class="sidebar__wrap">
-               <nav>
-                  <div class="nav nav-underline nav-fill nav-component flex-nowrap border-bottom" id="nav-tab" role="tablist">
-                     <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#nav-chat" type="button" role="tab" aria-controls="nav-chat" aria-selected="true">
-                        <i class="d-block demo-pli-speech-bubble-5 fs-3 mb-2"></i>
-                        <span>채팅</span>
-                     </button>
-
-                  </div>
-               </nav>
-            </div>
-            <!-- End - Sidebar tabs nav -->
-
-
-            <!-- Sideabar tabs content -->
-            <div class="tab-content sidebar__wrap" id="nav-tabContent">
-
-               <!-- Chat tab Content -->
-               <div id="nav-chat" class="tab-pane fade py-4 show active" role="tabpanel" aria-labelledby="nav-chat-tab">
-
-                  <!-- Family list group -->
-                  <h5 class="px-3">최근 채팅</h5>
-                  <div class="list-group list-group-borderless">
-
-                     <div class="list-group-item list-group-item-action d-flex align-items-start mb-2">
-                        <div class="flex-shrink-0 me-3">
-                           <img class="img-xs rounded-circle" th:src="@{/img/profile-photos/2.png}" alt="Profile Picture" loading="lazy">
-                        </div>
-                        <div class="flex-grow-1 ">
-                           <a href="#" class="h6 d-block mb-0 stretched-link text-decoration-none">고라니</a>
-                           <small class="text-body-secondary">좀 비싸요</small>
-                        </div>
-                     </div>
-
-
-                     <div class="list-group-item list-group-item-action d-flex align-items-start mb-2">
-                        <div class="flex-shrink-0 me-3">
-                           <img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">
-                        </div>
-                        <div class="flex-grow-1 ">
-                           <a href="#" class="h6 d-block mb-0 stretched-link text-decoration-none">삼차선</a>
-                           <small class="text-body-secondary">그 가격은 좀...</small>
-                        </div>
-                     </div>
-
-
-                     <div class="list-group-item list-group-item-action d-flex align-items-start mb-2">
-                        <div class="flex-shrink-0 me-3">
-                           <img class="img-xs rounded-circle" th:src="@{/img/profile-photos/7.png}" alt="Profile Picture" loading="lazy">
-                        </div>
-                        <div class="flex-grow-1 ">
-                           <a href="#" class="h6 d-block mb-0 stretched-link text-decoration-none">게슴츠레</a>
-                           <small class="text-body-secondary">한글 이거 맞음?</small>
-                        </div>
-                     </div>
-
-
-                     <div class="list-group-item list-group-item-action d-flex align-items-start mb-2">
-                        <div class="flex-shrink-0 me-3">
-                           <img class="img-xs rounded-circle" th:src="@{/img/profile-photos/4.png}" alt="Profile Picture" loading="lazy">
-                        </div>
-                        <div class="flex-grow-1 ">
-                           <a href="#" class="h6 d-block mb-0 stretched-link text-decoration-none">산림청</a>
-                           <small class="text-body-secondary">자연을 사랑하자</small>
-                        </div>
-                     </div>
-
-                  </div>
-                  <!-- End - Family list group -->
-
-               </div>
-               <!-- End - Chat tab content -->
-
-            </div>
-            <!-- End - Sidebar tabs content -->
-
-         </div>
-      </aside>
-      <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-      <!-- END - SIDEBAR -->
 
       <div th:replace="${content}">레이아웃 컨텐츠</div>
 
