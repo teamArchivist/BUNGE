@@ -2,9 +2,11 @@ package com.bunge.member.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -25,9 +27,13 @@ public class Member implements UserDetails {
     private String phone;
     private String email;
     private Date   birthdate;
-    private String profile;
+    private String profile; //첨부될 파일의 이름
     private String role;
     private int readpoint;
+    private String profile_original; //첨부될 파일의 이름
+
+    private MultipartFile uploadfile;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -57,9 +63,7 @@ public class Member implements UserDetails {
     }
 
     @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
+    public boolean isCredentialsNonExpired() {return true;}
 
     @Override
     public boolean isEnabled() {

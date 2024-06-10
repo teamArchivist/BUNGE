@@ -203,7 +203,7 @@
 
                               <!-- User menu link -->
                               <div class="list-group list-group-borderless h-100 py-3">
-                                 <a th:href="@{mypage/mypage}" class="list-group-item list-group-item-action">
+                                 <a th:href="@{/mypage/mypage}" class="list-group-item list-group-item-action">
                                     <i class="demo-pli-male fs-5 me-2"></i> 마이페이지
                                  </a>
                                  <form th:action="@{/member/logout}" method="post" style="margin-bottom:0px" name="logout">
@@ -282,7 +282,7 @@
 
                         <!-- Collapsed user menu -->
                         <div id="usernav" class="nav flex-column collapse">
-                           <a th:href="@{mypage/mypage}" class="nav-link">
+                           <a th:href="@{/mypage/mypage}" class="nav-link">
                               <i class="demo-pli-male fs-5 me-2"></i>
                               <span class="ms-1">마이페이지</span>
                            </a>
@@ -471,7 +471,7 @@
             <div class="mainnav__bottom-content border-top pb-2"  sec:authorize="isAuthenticated()">
                <ul id="mainnav" class="mainnav__menu nav flex-column">
                   <li class="nav-item has-sub">
-                      <form th:action="@{/member/logout}" method="post" style="margin-bottom:0px" name="logout">
+                      <form th:action="@{/member/logout}" method="post" name="logout">
                         <a th:href="@{logout}" class="list-group-item list-group-item-action logout">
                            <i class="demo-pli-unlock fs-5 me-2"></i> Logout</a>
                      </form>

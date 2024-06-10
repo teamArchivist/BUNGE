@@ -53,7 +53,7 @@ public class SecurityConfig {
 				(au) -> au
 						.requestMatchers("/admin/memberlist" ,"/admin/info", "/admin/delete")
 							.hasAuthority("superadmin")
-						.requestMatchers("member/update")
+						.requestMatchers("/member/update", "/mypage/update-process")
 							.hasAnyAuthority("member", "admin" ,"superadmin")
 						.requestMatchers("/admin/**")
 							.hasAnyAuthority("admin", "superadmin")

@@ -59,12 +59,12 @@ public class MemberController {
     public ModelAndView login(ModelAndView mav,
                         @CookieValue(value = "remember-me", required = false) Cookie readCookie,
                         HttpSession session,
-                        Principal userPrincipal)  {
+                              RedirectAttributes redirectAttributes)  {
         if (readCookie != null) {
-            String successmessage = "로그인에 성공하셨습니다.";
-            mav.addObject("successmessage" , successmessage);
+            redirectAttributes.addFlashAttribute("message" , "로그인에 성공하셨습니다.");
             mav.setViewName("redirect:member/index");
         } else {
+            redirectAttributes.addFlashAttribute("message" , "아이디나 비밀번호가 틀렸습니다.");
             mav.setViewName("member/login");
 
             mav.addObject("loginfail", session.getAttribute("loginfail"));
@@ -114,19 +114,16 @@ public class MemberController {
         member.setPwd(encPassword);
         try{
             int result = memberservice.insert(member);
+        int result = memberservice.insert(member);
 
-            // 삽입이 된 경우
-            if (result == 1) {
-                rattr.addFlashAttribute("result","joinSuccess");
-                return "redirect:login";
-            }else {
-                model.addAttribute("message", "회원 가입 실패");
-                model.addAttribute("url", request.getRequestURL());
-                return "error/500";
-            }
-        } catch (DuplicateKeyException e) {
-            model.addAttribute("message", e.getMessage());
-            return "error/500";
+        // 삽입이 된 경우
+        if (result == 1) {
+            rattr.addFlashAttribute("message","회원가입에 축하드립니다.");
+            return "redirect:login";
+        }else {
+            model.addAttribute("message", "회원 가입 실패");
+            model.addAttribute("url", request.getRequestURL());
+            return "error/erorr";
         }
     }
     //아이디 찾기 폼 접속
@@ -140,7 +137,7 @@ public class MemberController {
     @PreAuthorize("isAnonymous()")
     @PostMapping(value = "/findidProcess")
     public String findidProcess(@RequestParam("name") String name,
-                                      @RequestParam("email") String email, Model model, HttpServletResponse response) {
+                                      @RequestParam("email") String email, Model model, RedirectAttributes redirectAttributes) {
         String sendid = memberservice.findid(name, email);
         if (sendid != null) {
             model.addAttribute("message","아이디 찾기에 성공하셨습니다.");
@@ -178,7 +175,7 @@ public class MemberController {
             return "member/pwdinfo";
         }
     }
-    //
+    //비밀번호 재설정 폼이동
     @GetMapping(value = "/pwdset")
     public String pwdset(String email, String random , HttpSession session){
         logger.info(email);
