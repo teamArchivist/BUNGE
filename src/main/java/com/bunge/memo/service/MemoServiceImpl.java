@@ -29,6 +29,18 @@ public class MemoServiceImpl implements MemoService {
     public void addMemo(Memo memo) {
         memoMapper.updateReadPage(memo);
         memoMapper.addMemo(memo);
+
+        ReadState readState = new ReadState();
+        String isbn13 = memo.getIsbn13();
+        String id = memo.getId();
+
+        readState.setIsbn13(isbn13);
+        readState.setId(id);
+
+        ReadState getReadState = readStateMapper.getReadState(readState);
+        if (getReadState.getReadpage() == getReadState.getTotalpage()) {
+            readStateMapper.updateReadState(readState);
+        }
     }
 
     @Override
