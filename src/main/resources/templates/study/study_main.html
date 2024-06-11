@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Title</title>
+    <links>
+        <script th:src="@{/js/studymain.js}"></script>
+    </links>
+</head>
+<body>
+<!-- CONTENTS -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<section id="content" class="content">
+    <div class="content__header content__boxed overlapping">
+        <div class="content__wrap">
+
+
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="./index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="./blog-apps.html">스터디</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">스터디 모아보기</li>
+                </ol>
+            </nav>
+            <!-- END : Breadcrumb -->
+
+
+            <!-- Title and information -->
+            <h1 class="page-title d-flex flex-wrap just justify-content-center mb-2 mt-4">스터디</h1>
+            <p class="text-center lead mb-5">현재 진행 중인 스터디를 모아볼 수 있습니다</p>
+            <!-- END : Title and information -->
+
+
+            <!-- Search form -->
+            <div class="col-md-8 offset-md-2 mb-3">
+                <form class="searchbox input-group">
+                    <input class="searchbox__input form-control form-control-lg" type="search" placeholder="검색어를 입력하세요. . ." aria-label="Search">
+                    <div class="searchbox__btn-group">
+                        <button class="searchbox__btn btn btn-icon bg-transparent shadow-none border-0 btn-sm" type="submit">
+                            <i class="demo-pli-magnifi-glass"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <!-- END : Search form -->
+
+
+            <!-- Sort and categories filter -->
+            <div class="d-flex flex-wrap align-items-end justify-content-center gap-2 mb-3 pb-3">
+                <div class="d-md-flex flex-wrap align-items-center gap-2 mb-3 mb-sm-0">
+                    <div class="text-center mb-2 mb-md-0">검색 조건</div>
+                    <select class="form-select w-auto" aria-label="Categories">
+                        <option value="musics">책 제목</option>
+                        <option value="photos">스터디장 ID</option>
+                        <option value="internet">스터디 기간</option>
+                        <option value="internet">모집 중</option>
+                    </select>
+                </div>
+
+
+                <div class="d-md-flex flex-wrap align-items-center gap-2 mb-3 mb-sm-0">
+                    <div class="text-center mb-2 mb-md-0">정렬</div>
+                    <select class="form-select w-auto" aria-label="Sort options">
+                        <option value="date-created" selected="">마감일</option>
+                        <option value="date-modified">제목</option>
+                        <option value="frequency-used">조회수</option>
+                        <option value="alpabetically">찜</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-light mb-3 mb-sm-0">검색</button>
+            </div>
+            <!-- END : Sort and categories filter -->
+        </div>
+
+    </div>
+
+
+    <div class="content__boxed">
+        <div class="content__wrap">
+            <div class="card">
+                <div class="card-body">
+
+
+                    <!-- Blog post lists -->
+                    <div class="table-responsive">
+                        <table class="table table-striped align-middle">
+                            <thead>
+                                <tr>
+                                    <th>스터디 번호</th>
+                                    <th>스터디 제목(목표 도서)</th>
+                                    <th class="text-nowrap">모집 기간</th>
+                                    <th>도전 기간</th>
+                                    <th>참여(목표)</th>
+                                    <th>스터디 리더</th>
+                                    <th class="text-center">모집 상태</th>
+                                    <th class="text-center">조회수</th>
+                                    <th class="text-center">찜</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#8</td>
+                                    <td>
+                                        <a class="btn-link text-body-emphasis text-decoration-underline text-truncate mb-0" href="#">이번엔 성공하자 30일 모임!(나를 소모하지 않는 현명한 태도에 관하여)</a>
+                                    </td>
+                                    <td>
+                                        <span class="text-nowrap text-body-secondary">24.04.22 ~ 24.04.29</span>
+                                    </td>
+                                    <td>
+                                        <span class="text-nowrap text-body-secondary">30일</span>
+                                    </td>
+                                    <td>3/5</td>
+                                    <td>
+                                        <a href="#" class="btn-link text-nowrap">Betty Murphy</a>
+                                    </td>
+                                    <td class="h5">
+                                        <div class="d-block badge bg-success">모집중</div>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="btn btn-icon btn-sm btn-hover btn-primary"><i class="demo-pli-pen-5 fs-5"></i>200</a>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="btn btn-icon btn-sm btn-hover btn-danger"><i class="demo-pli-heart-2 fs-5"></i>9</a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>#8</td>
+                                    <td>
+                                        <a class="btn-link text-body-emphasis text-decoration-underline text-truncate mb-0" href="#">이번엔 성공하자 30일 모임!(나를 소모하지 않는 현명한 태도에 관하여)</a>
+                                    </td>
+                                    <td>
+                                        <span class="text-nowrap text-body-secondary">24.04.22 ~ 24.04.29</span>
+                                    </td>
+                                    <td>
+                                        <span class="text-nowrap text-body-secondary">30일</span>
+                                    </td>
+                                    <td>3/5</td>
+                                    <td>
+                                        <a href="#" class="btn-link text-nowrap">Betty Murphy</a>
+                                    </td>
+                                    <td class="h5">
+                                        <div class="d-block badge bg-success">모집중</div>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="btn btn-icon btn-sm btn-hover btn-primary"><i class="demo-pli-pen-5 fs-5"></i>200</a>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="btn btn-icon btn-sm btn-hover btn-danger"><i class="demo-pli-heart-2 fs-5"></i>9</a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>#8</td>
+                                    <td>
+                                        <a class="btn-link text-body-emphasis text-decoration-underline text-truncate mb-0" href="#">이번엔 성공하자 30일 모임!(나를 소모하지 않는 현명한 태도에 관하여)</a>
+                                    </td>
+                                    <td>
+                                        <span class="text-nowrap text-body-secondary">24.04.22 ~ 24.04.29</span>
+                                    </td>
+                                    <td>
+                                        <span class="text-nowrap text-body-secondary">30일</span>
+                                    </td>
+                                    <td>3/5</td>
+                                    <td>
+                                        <a href="#" class="btn-link text-nowrap">Betty Murphy</a>
+                                    </td>
+                                    <td class="h5">
+                                        <div class="d-block badge bg-success">모집중</div>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="btn btn-icon btn-sm btn-hover btn-primary"><i class="demo-pli-pen-5 fs-5"></i>200</a>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="btn btn-icon btn-sm btn-hover btn-danger"><i class="demo-pli-heart-2 fs-5"></i>9</a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>#8</td>
+                                    <td>
+                                        <a class="btn-link text-body-emphasis text-decoration-underline text-truncate mb-0" href="#">이번엔 성공하자 30일 모임!(나를 소모하지 않는 현명한 태도에 관하여)</a>
+                                    </td>
+                                    <td>
+                                        <span class="text-nowrap text-body-secondary">24.04.22 ~ 24.04.29</span>
+                                    </td>
+                                    <td>
+                                        <span class="text-nowrap text-body-secondary">30일</span>
+                                    </td>
+                                    <td>3/5</td>
+                                    <td>
+                                        <a href="#" class="btn-link text-nowrap">Betty Murphy</a>
+                                    </td>
+                                    <td class="h5">
+                                        <div class="d-block badge bg-success">모집중</div>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="btn btn-icon btn-sm btn-hover btn-primary"><i class="demo-pli-pen-5 fs-5"></i>200</a>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="btn btn-icon btn-sm btn-hover btn-danger"><i class="demo-pli-heart-2 fs-5"></i>9</a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>#8</td>
+                                    <td>
+                                        <a class="btn-link text-body-emphasis text-decoration-underline text-truncate mb-0" href="#">이번엔 성공하자 30일 모임!(나를 소모하지 않는 현명한 태도에 관하여)</a>
+                                    </td>
+                                    <td>
+                                        <span class="text-nowrap text-body-secondary">24.04.22 ~ 24.04.29</span>
+                                    </td>
+                                    <td>
+                                        <span class="text-nowrap text-body-secondary">30일</span>
+                                    </td>
+                                    <td>3/5</td>
+                                    <td>
+                                        <a href="#" class="btn-link text-nowrap">Betty Murphy</a>
+                                    </td>
+                                    <td class="h5">
+                                        <div class="d-block badge bg-success">모집중</div>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="btn btn-icon btn-sm btn-hover btn-primary"><i class="demo-pli-pen-5 fs-5"></i>200</a>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="btn btn-icon btn-sm btn-hover btn-danger"><i class="demo-pli-heart-2 fs-5"></i>9</a>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>#8</td>
+                                    <td>
+                                        <a class="btn-link text-body-emphasis text-decoration-underline text-truncate mb-0" href="#">이번엔 성공하자 30일 모임!(나를 소모하지 않는 현명한 태도에 관하여)</a>
+                                    </td>
+                                    <td>
+                                        <span class="text-nowrap text-body-secondary">24.04.22 ~ 24.04.29</span>
+                                    </td>
+                                    <td>
+                                        <span class="text-nowrap text-body-secondary">30일</span>
+                                    </td>
+                                    <td>3/5</td>
+                                    <td>
+                                        <a href="#" class="btn-link text-nowrap">Betty Murphy</a>
+                                    </td>
+                                    <td class="h5">
+                                        <div class="d-block badge bg-success">모집중</div>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="btn btn-icon btn-sm btn-hover btn-primary"><i class="demo-pli-pen-5 fs-5"></i>200</a>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="btn btn-icon btn-sm btn-hover btn-danger"><i class="demo-pli-heart-2 fs-5"></i>9</a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- END : Blog post lists -->
+
+                    <!-- Scrollable modal -->
+                    <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#scrollableModal">
+                        스터디 생성하기
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="scrollableModal" tabindex="-1" aria-labelledby="scrollableModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="scrollableModalLabel">스터디 생성하기</h1>
+                                    <button type="reset" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+
+                                    <!-- Horizontal Form -->
+                                    <form id="createStudyForm">
+
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label">스터디리더</label>
+                                            <div class="col-sm-10">
+                                                <input th:name="id" type="text" class="form-control" id="studyLeader" readonly>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label">스터디이름</label>
+                                            <div class="col-sm-10">
+                                                <div class="input-group mb-2">
+                                                    <input th:name="title" type="text" class="form-control" required>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label">목표도서</label>
+                                            <div class="col-sm-10">
+                                                <div class="input-group mb-2">
+                                                    <textarea class="form-control" placeholder="책 제목(최대 20글자)" id="inputBookTitle"
+                                                              maxlength="20" style="resize:none;" rows="1" required></textarea>
+                                                    <textarea class="form-control" placeholder="지은이(최대 10글자)" id="inputAuthor"
+                                                              maxlength="10" style="resize:none;" rows="1"></textarea>
+                                                    <button type="button" class="btn btn-primary" id="searchBook">검색</button>
+                                                </div>
+                                                <select class="form-select" id="searchCondition">
+
+                                                </select>
+                                                <img id="bookCover" src="" alt="Book Cover" height="240px" style="display:none">
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label">모집기간</label>
+                                            <div class="col-sm-10">
+                                                <div class="input-group">
+                                                    <input th:name="startdate" type="date" class="form-control" id="startDate" required>
+                                                    <input th:name="enddate" type="date" class="form-control" id="endDate" required>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-2">
+                                            <label class="col-sm-2 col-form-label">모집인원</label>
+                                            <div class="col-sm-10">
+                                                <div class="form-floating mb-2">
+                                                    <select th:name="quota" class="form-select" id="floatingSelect" aria-label="Floating label select example" required>
+                                                        <option value="1" selected>1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                        <option value="6">6</option>
+                                                        <option value="7">7</option>
+                                                        <option value="8">8</option>
+                                                        <option value="9">9</option>
+                                                    </select>
+                                                    <label for="floatingSelect">최대 10명이 참여할 수 있습니다</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label">도전기간</label>
+                                            <div class="col-sm-10">
+                                                <div class="input-group">
+                                                    <input th:name="challengestart" type="date" class="form-control" id="studyStartDate">
+                                                    <input th:name="challengeend" type="date" class="form-control" id="studyEndDate">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label">소개</label>
+                                            <div class="col-sm-10">
+                                                <textarea th:name="content" class="form-control" rows="10" required></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">취소</button>
+                                            <button type="submit" class="btn btn-primary">생성</button>
+                                        </div>
+
+                                    </form>
+                                    <!-- END : Horizontal Form -->
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END : Scrollable modal -->
+
+
+                    <div class="mt-4 d-flex justify-content-center">
+
+                        <!-- Pagination - Disabled and active states -->
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                                </li>
+                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item active" aria-current="page">
+                                    <a class="page-link" href="#">2</a>
+                                </li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <!-- END : Pagination - Disabled and active states -->
+
+                    </div>
+
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</section>
+</body>
+</html>

@@ -127,7 +127,7 @@ $(function () {
                                 alert("검색된 모든 책이 이미 등록되어 있습니다.")
                             } else {
                                 response.forEach(subject => {
-                                    console.log(subject); // 데이터 확인을 위해 추가
+                                    //console.log(subject);
                                     let output = "<div class='col-sm-6 col-xl-2 mb-3'>" +
                                         "<div class='card mb-3 hv-grow-parent h-100'>" +
                                         "  <img class='card-img-top book-img' src='" + subject.cover +
