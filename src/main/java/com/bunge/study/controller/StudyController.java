@@ -1,18 +1,16 @@
-package com.bunge.study;
+package com.bunge.study.controller;
 
 import com.bunge.memo.domain.Book;
-import com.bunge.study.domain.Study;
+import com.bunge.study.filter.StudyBoardFilter;
+import com.bunge.study.domain.StudyBoard;
 import com.bunge.study.parameter.BookSearchRequest;
 import com.bunge.study.service.StudyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +30,22 @@ public class StudyController {
     }
 
     @GetMapping("/main")
-    public String studyMain(Model model) {
+    public String studyMain(StudyBoardFilter studyBoardFilter,
+                            @RequestParam(value = "page", defaultValue = "1") Integer page,
+                            Model model) {
+
+        logger.info(studyBoardFilter.toString());
+
+        int pageSize = 12;
+        int offset = (page - 1) * pageSize;
+        studyBoardFilter.setPage(page);
+        studyBoardFilter.setOffset(offset);
+        studyBoardFilter.setLimit(pageSize);
+
+        List<StudyBoard> studyBoardList = studyService.getStudyList(studyBoardFilter);
+        logger.info(studyBoardList.toString());
+
+        model.addAttribute("studyBoardList", studyBoardList);
 
         return "study/study_main";
     }
@@ -52,6 +65,6 @@ public class StudyController {
         logger.info("Received StudyBoard: " + studyBoard.toString());
         studyService.createStudyBoard(studyBoard);
 
-        return "study/study_main";
+        return "redirect:main";
     }
 }

@@ -41,6 +41,7 @@ $(function() {
                         //console.log(selectedCover)
                         if (selectedCover) {
                             $("#bookCover").attr("src", selectedCover).show()
+                            $("#inputBookCover").val(selectedCover);
                         } else {
                             $("#bookCover").hide();
                         }
@@ -110,5 +111,31 @@ $(function() {
             }
         }
     }) //$("body").on("change", "#endDate", function () end
+
+    $("input[name=title]").keyup(function () {
+        let input = $(this).val()
+        let maxLength = 50
+
+        $("#countStudyTitle").text(input.length + " / " + maxLength)
+
+        if (input.length > maxLength) {
+            alert("최대 " + maxLength + "까지만 가능합니다")
+            $(this).val(input.substring(0, maxLength))
+            $("#countStudyTitle").text(maxLength + " / " + maxLength)
+        }
+    })
+
+    $("textarea[name=content]").keyup(function () {
+        let input = $(this).val()
+        let maxLength = 200
+
+        $("#countStudyContent").text(input.length + " / " + maxLength)
+
+        if (input.length > maxLength) {
+            alert("최대 " + maxLength + "까지만 가능합니다")
+            $(this).val(input.substring(0, maxLength))
+            $("#countStudyContent").text(maxLength + " / " + maxLength)
+        }
+    })
 
 })

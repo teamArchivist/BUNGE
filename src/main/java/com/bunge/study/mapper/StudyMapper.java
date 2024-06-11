@@ -15,7 +15,8 @@ public interface StudyMapper {
     public List<Book> getSearchBook(BookSearchRequest bookSearchRequest);
 
     //스터디 글 생성
-    public void createStudyBoard(Study study);
     public void createStudyBoard(StudyBoard studyBoard);
 
+    //스터디 모집글 리스트
+    public List<StudyBoard> getStudyList(StudyBoardFilter studyBoardFilter);
 }

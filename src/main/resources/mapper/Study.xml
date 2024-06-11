@@ -17,9 +17,27 @@
 
     <insert id="createStudyBoard" parameterType="com.bunge.study.domain.StudyBoard">
         insert into studyboard
-        (id, booktitle, title, content, startdate, enddate, challengestart, challengeend, quota, state, readcount)
+        (id, booktitle, bookcover, title, content, startdate, enddate, challengestart, challengeend, quota, state, readcount)
         values
-        (#{id}, #{booktitle}, #{title}, #{content}, #{startdate}, #{enddate}, #{challengestart}, #{challengeend}, #{quota}, 0, 0)
+        (#{id}, #{booktitle}, #{bookcover}, #{title}, #{content}, #{startdate}, #{enddate}, #{challengestart}, #{challengeend}, #{quota}, 0, 0)
     </insert>
+
+    <select id="getStudyList" parameterType="com.bunge.study.filter.StudyBoardFilter" resultType="com.bunge.study.domain.StudyBoard">
+        select *
+        from studyboard
+        where 1=1
+        <if test="booktitle != null and booktitle != ''">
+            and booktitle like CONCAT('%', #{booktitle}, '%')
+        </if>
+        <if test="leader != null and leader != ''">
+            and leader like CONCAT('%', #{leader}, '%')
+        </if>
+        <if test="challengeperiod != null and challengeperiod != ''">
+            <![CDATA[ and DATEDIFF(challengeend, challengestart) < #{challengeperiod} ]]>
+        </if>
+        <if test="state != null and state != ''">
+            and state = #{state}
+        </if>
+    </select>
 
 </mapper>
