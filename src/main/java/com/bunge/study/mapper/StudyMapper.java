@@ -1,7 +1,8 @@
 package com.bunge.study.mapper;
 
 import com.bunge.memo.domain.Book;
-import com.bunge.study.domain.Study;
+import com.bunge.study.domain.StudyBoard;
+import com.bunge.study.filter.StudyBoardFilter;
 import com.bunge.study.parameter.BookSearchRequest;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -15,4 +16,6 @@ public interface StudyMapper {
 
     //스터디 글 생성
     public void createStudyBoard(Study study);
+    public void createStudyBoard(StudyBoard studyBoard);
+
 }
