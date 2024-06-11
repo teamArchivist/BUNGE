@@ -37,18 +37,22 @@
             profile_original = #{profile_original}
         where id = #{id};
     </update>
+
     <select id="getMyReviewList" parameterType="String" resultType="com.bunge.review.domain.Review">
-        select * from review where id = #{id};
-    </select>
-    <select id="getMyReviewListCount" parameterType="String" resultType="int">
-        select count(*) from review where id = #{id};
+        SELECT
+            r.*,
+            COALESCE(COUNT(DISTINCT rc.no), 0) AS countcomment,
+            COALESCE(COUNT(DISTINCT rl.no), 0) AS countlike
+        FROM
+            review r
+                LEFT JOIN
+            reviewcomm rc ON r.no = rc.reviewno
+                LEFT JOIN
+            reviewlike rl ON r.no = rl.reviewno
+        WHERE
+            r.id = #{id}
+        GROUP BY
+            r.no
     </select>
 
-    <select id="countReviewComm" parameterType="int" resultType="int">
-        select count(*) from reviewcomm where reviewno = #{no}
-    </select>
-
-    <select id="countReviewLike" parameterType="int" resultType="int">
-        select count(*) from reviewlike where reviewno = #{no}
-    </select>
 </mapper>
