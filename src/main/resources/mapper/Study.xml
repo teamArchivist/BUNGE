@@ -15,11 +15,11 @@
         </if>
     </select>
 
-    <insert id="createStudyBoard" parameterType="com.bunge.study.domain.Study">
+    <insert id="createStudyBoard" parameterType="com.bunge.study.domain.StudyBoard">
         insert into studyboard
-        (id, title, content, startdate, enddate, challengestart, challengeend, quota, state, readcount)
+        (id, booktitle, title, content, startdate, enddate, challengestart, challengeend, quota, state, readcount)
         values
-        (#{id}, #{title}, #{content}, #{startdate}, #{enddate}, #{challengestart}, #{challengeend}, #{quota}, #{state}, #{readcount})
+        (#{id}, #{booktitle}, #{title}, #{content}, #{startdate}, #{enddate}, #{challengestart}, #{challengeend}, #{quota}, 0, 0)
     </insert>
 
 </mapper>

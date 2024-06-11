@@ -31,12 +31,14 @@ $(function() {
                 if (rdata.length != 0) {
                     rdata.forEach(subject => {
                         //console.log(subject)
-                        let option = $("<option>").val(subject.cover).text(subject.title);
+                        let option = $("<option>").val(subject.title).text(subject.title).data("cover", subject.cover);
                         $("#searchCondition").append(option);
                     })
 
                     $("#searchCondition").change(function() {
-                        let selectedCover = $(this).val();
+                        let selectedOption = $(this).find("option:selected");
+                        let selectedCover = selectedOption.data("cover");
+                        //console.log(selectedCover)
                         if (selectedCover) {
                             $("#bookCover").attr("src", selectedCover).show()
                         } else {
@@ -108,56 +110,5 @@ $(function() {
             }
         }
     }) //$("body").on("change", "#endDate", function () end
-
-    $("#addRule").click(function() {
-        console.log(i)
-
-        if (i < 5) {
-            let output = "<div class='input-group mb-2'>"
-                                + "<input th:name='rule' type='text' class='form-control'>"
-                                + "<button type='button' class='btn btn-danger deleteBtn'>삭제</button>"
-                                + "</div>";
-
-            $("#ruleArea").append(output);
-            i++;
-        } else {
-            alert("규칙은 5개까지만 설정할 수 있습니다")
-        }
-
-    })
-
-    $("body").on("click", ".deleteBtn", function() {
-        $(this).parent().remove();
-        i--
-    })
-
-    document.addEventListener("DOMContentLoaded", function() {
-        document.getElementById("createStudyForm").addEventListener("submit", function (event) {
-            event.preventDefault();
-
-            let form = event.target;
-            let formData = new FormData(form);
-
-            fetch("/study/create-study", {
-                method: "post",
-                body: formData,
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                }
-            })
-                .then(response => response.json())
-                .then(data => {
-                    alert(data.message);
-                    if (data.status === "success") {
-                        form.reset();
-                        location.href = "/study/main";
-                    }
-                })
-                .catch(error => {
-                    console.error("Error:", error);
-                    alert("스터디 생성 중 오류가 발생했습니다. 다시 시도해주세요.");
-                });
-        })
-    })
 
 })

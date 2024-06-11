@@ -1,7 +1,7 @@
 package com.bunge.study.service;
 
 import com.bunge.memo.domain.Book;
-import com.bunge.study.domain.Study;
+import com.bunge.study.domain.StudyBoard;
 import com.bunge.study.mapper.StudyMapper;
 import com.bunge.study.parameter.BookSearchRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,8 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
-    public void createStudyBoard(Study study) {
-        studyMapper.createStudyBoard(study);
+    public void createStudyBoard(StudyBoard studyBoard) {
+        studyMapper.createStudyBoard(studyBoard);
+    }
     }
 }

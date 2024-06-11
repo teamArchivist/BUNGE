@@ -47,20 +47,11 @@ public class StudyController {
         return result;
     }
 
-    @ResponseBody
     @PostMapping("/create-study")
-    public Map<String, String> createStudy(Study study) {
-        //logger.info(study.toString());
-        Map<String, String> response = new HashMap<>();
-        try {
-            studyService.createStudyBoard(study);
-            response.put("status", "success");
-            response.put("message", "스터디 생성 성공");
-        } catch (Exception e) {
-            response.put("status", "error");
-            response.put("message", "스터디 생성 실패. 다시 시도해주세요.");
-        }
+    public String createStudy(@ModelAttribute StudyBoard studyBoard) {
+        logger.info("Received StudyBoard: " + studyBoard.toString());
+        studyService.createStudyBoard(studyBoard);
 
-        return response;
+        return "study/study_main";
     }
 }
