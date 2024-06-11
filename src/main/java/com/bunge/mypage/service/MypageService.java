@@ -14,8 +14,5 @@ public interface MypageService {
 
     boolean update(Member member);
 
-    List<Map<String, Object>> getMyReviewList(String id);
-
-    int getMyReviewListCount(String id);
-
+    List<Review> getMyReviewList(String id);
 }
