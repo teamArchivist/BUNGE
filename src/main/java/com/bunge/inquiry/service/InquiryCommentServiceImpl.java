@@ -27,19 +27,19 @@ public class InquiryCommentServiceImpl implements InquiryCommentService {
         }
 
         @Override
-        public List<InquiryComment> findRepliesByCommentId(Integer parentCommentId) {
-            return commentMapper.findRepliesByCommentId(parentCommentId);
-        }
-
-    @Override
         public int insertComment(InquiryComment comment) {
-//            notifyComment(comment.getInquiryId(), comment.getContent());
+    //      notifyComment(comment.getInquiryId(), comment.getContent());
             return commentMapper.insertComment(comment);
         }
 
         @Override
-        public void deleteComment(Long commentId) {
-            commentMapper.deleteComment(commentId);
+        public int deleteComment(Long commentId) {
+            return commentMapper.deleteComment(commentId);
+        }
+
+        @Override
+        public int deleteReplyComment(Long commentId) {
+            return commentMapper.deleteReplyComment(commentId);
         }
 
         @Override

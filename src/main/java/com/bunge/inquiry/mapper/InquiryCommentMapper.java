@@ -10,13 +10,11 @@ import java.util.List;
 public interface InquiryCommentMapper {
     List<InquiryComment> findCommentsByInquiryId(Long inquiryId);
 
-    List<InquiryComment> findRepliesByCommentId(Integer parentCommentId); // 대댓글 조회 메서드 추가
-
-    InquiryComment findCommentById(Long commentId); // 특정 댓글 조회 메서드 추가
-
     int insertComment(InquiryComment comment);
 
-    void deleteComment(Long commentId);
+    int deleteComment(Long commentId);
+
+    int deleteReplyComment(Long commentId);
 
     int updateComment(InquiryComment comment);
 
