@@ -8,7 +8,7 @@
     </links>
 </head>
 <body>
-<th:block sec:authorize="isAnonymous()">
+<th:block sec:authorize="isAuthenticated()">
 <section id="content" class="content">
     <div th:if="${welcomemsg != null}">
         <h1 th:text="${welcomemsg}"></h1>

@@ -178,7 +178,8 @@
                         <!-- User dropdown header -->
                         <div class="d-flex align-items-center border-bottom px-3 py-2">
                            <div class="flex-shrink-0">
-                              <img class="img-sm rounded-circle" th:src="|/upload${memberinfo.profile}|" alt="Profile Picture" loading="lazy">
+                              <!--타임리프 인증된 정보 가져오는 방법 #authentication.principal.컬럼명-->
+                              <img class="img-sm rounded-circle" th:src="|/upload${#authentication.principal.profile}|" alt="Profile Picture" loading="lazy">
                            </div>
                            <div class="flex-grow-1 ms-3">
                               <h5 class="mb-0" sec:authentication="name"></h5>
@@ -264,9 +265,8 @@
 
                   <!-- Profile picture  -->
                   <div class="mininav-toggle text-center py-2">
-                     <img class="mainnav__avatar img-md rounded-circle hv-oc" th:src="|/upload${memberinfo.profile}|" alt="Profile Picture">
+                     <img class="mainnav__avatar img-md rounded-circle hv-oc" th:src="|/upload${#authentication.principal.profile}|" alt="Profile Picture">
                   </div>
-
 
                   <div class="mininav-content collapse d-mn-max">
                      <span data-popper-arrow class="arrow"></span>
