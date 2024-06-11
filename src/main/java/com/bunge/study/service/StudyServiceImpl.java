@@ -34,4 +34,9 @@ public class StudyServiceImpl implements StudyService {
     public List<StudyBoard> getStudyList(StudyBoardFilter studyBoardFilter) {
         return studyMapper.getStudyList(studyBoardFilter);
     }
+
+    @Override
+    public int getStudyListCount(StudyBoardFilter studyBoardFilter) {
+        return studyMapper.getStudyListCount(studyBoardFilter);
+    }
 }

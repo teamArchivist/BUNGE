@@ -36,16 +36,27 @@ public class StudyController {
 
         logger.info(studyBoardFilter.toString());
 
-        int pageSize = 12;
+        int pageSize = 8;
         int offset = (page - 1) * pageSize;
         studyBoardFilter.setPage(page);
         studyBoardFilter.setOffset(offset);
         studyBoardFilter.setLimit(pageSize);
 
         List<StudyBoard> studyBoardList = studyService.getStudyList(studyBoardFilter);
-        logger.info(studyBoardList.toString());
+        //logger.info(studyBoardList.toString());
+
+        int totalStudyList = studyService.getStudyListCount(studyBoardFilter);
+        logger.info(String.valueOf(totalStudyList));
+
+        int maxPage = (int) Math.ceil((double) totalStudyList / pageSize);
+        int startPage = Math.max(1, page - 5);
+        int endPage = Math.min(maxPage, page + 4);
 
         model.addAttribute("studyBoardList", studyBoardList);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("maxPage", maxPage);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
 
         return "study/study_main";
     }

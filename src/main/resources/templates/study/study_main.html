@@ -109,7 +109,7 @@
                                         <span class="text-nowrap text-body-secondary">[[${list.startdate}]] ~ [[${list.enddate}]]</span>
                                     </td>
                                     <td class="text-center">
-                                        <span class="text-nowrap text-body-secondary">[[${list.challengestart}]] ~ [[${list.enddate}]]</span>
+                                        <span class="text-nowrap text-body-secondary">[[${list.challengestart}]] ~ [[${list.challengeend}]]</span>
                                     </td>
                                     <td class="text-center">
                                         [[${list.quota}]]명
@@ -134,7 +134,35 @@
                     </button>
 
                     </div>
+
+                    <div class="mt-4 d-flex justify-content-center">
+
+                        <!-- Pagination - Disabled and active states -->
+                        <nav th:if="${maxPage > 1 and studyBoardList.size() != 0}" class="text-align-center mt-5" aria-label="Page navigation" id="reviewPagination">
+                            <ul class="pagination justify-content-center">
+                                <li th:if="${currentPage == 1}" class="page-item">
+                                    <a class="page-link disabled">이전</a>
+                                </li>
+                                <li th:if="${currentPage > 1}" class="page-item">
+                                    <a th:href="@{'/study/main?page=' + ${currentPage - 1}}" class="page-link">이전</a>
+                                </li>
+                                <li th:each="pageNum : ${#numbers.sequence(startPage, endPage)}" th:classappend="${pageNum == currentPage} ? 'active'">
+                                    <a th:href="@{'/study/main?page=' + ${pageNum}}" class="page-link" th:text="${pageNum}">1</a>
+                                </li>
+                                <li th:if="${currentPage < maxPage}" class="page-item">
+                                    <a th:href="@{'/study/main?page=' + ${currentPage + 1}}" class="page-link">다음</a>
+                                </li>
+                                <li th:if="${currentPage >= maxPage}" class="page-item">
+                                    <a class="page-link disabled">다음</a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <!-- END : Pagination - Disabled and active states -->
+
+                    </div>
+
                     <!-- END : Blog post lists -->
+
 
                     <!-- Scrollable modal -->
 
@@ -249,31 +277,7 @@
                     <!-- END : Scrollable modal -->
 
 
-                    <div class="mt-4 d-flex justify-content-center">
 
-                        <!-- Pagination - Disabled and active states -->
-                        <nav th:if="${maxPage > 1 and books.size() != 0}" class="text-align-center mt-5" aria-label="Page navigation" id="reviewPagination">
-                            <ul class="pagination justify-content-center">
-                                <li th:if="${currentPage == 1}" class="page-item">
-                                    <a class="page-link disabled">이전</a>
-                                </li>
-                                <li th:if="${currentPage > 1}" class="page-item">
-                                    <a th:href="@{'/memo/search-main?page=' + ${currentPage - 1}}" class="page-link">이전</a>
-                                </li>
-                                <li th:each="pageNum : ${#numbers.sequence(startPage, endPage)}" th:classappend="${pageNum == currentPage} ? 'active'">
-                                    <a th:href="@{'/memo/search-main?page=' + ${pageNum}}" class="page-link" th:text="${pageNum}">1</a>
-                                </li>
-                                <li th:if="${currentPage < maxPage}" class="page-item">
-                                    <a th:href="@{'/memo/search-main?page=' + ${currentPage + 1}}" class="page-link">다음</a>
-                                </li>
-                                <li th:if="${currentPage >= maxPage}" class="page-item">
-                                    <a class="page-link disabled">다음</a>
-                                </li>
-                            </ul>
-                        </nav>
-                        <!-- END : Pagination - Disabled and active states -->
-
-                    </div>
 
 
                 </div>

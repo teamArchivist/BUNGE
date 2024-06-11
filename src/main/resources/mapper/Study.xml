@@ -38,6 +38,26 @@
         <if test="state != null and state != ''">
             and state = #{state}
         </if>
+        order by enddate desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="getStudyListCount" parameterType="com.bunge.study.filter.StudyBoardFilter" resultType="int">
+        select count(*)
+        from studyboard
+        where 1=1
+        <if test="booktitle != null and booktitle != ''">
+            and booktitle like CONCAT('%', #{booktitle}, '%')
+        </if>
+        <if test="leader != null and leader != ''">
+            and leader like CONCAT('%', #{leader}, '%')
+        </if>
+        <if test="challengeperiod != null and challengeperiod != ''">
+            <![CDATA[ and DATEDIFF(challengeend, challengestart) < #{challengeperiod} ]]>
+        </if>
+        <if test="state != null and state != ''">
+            and state = #{state}
+        </if>
     </select>
 
 </mapper>
