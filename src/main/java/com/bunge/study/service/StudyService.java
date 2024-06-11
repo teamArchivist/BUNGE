@@ -5,6 +5,8 @@ import com.bunge.study.domain.StudyBoard;
 import com.bunge.study.filter.StudyBoardFilter;
 import com.bunge.study.parameter.BookSearchRequest;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 public interface StudyService {
@@ -20,5 +22,8 @@ public interface StudyService {
 
     //스터디 모집글 갯수
     public int getStudyListCount(StudyBoardFilter studyBoardFilter);
+
+    //날짜 차이 계산 메소드
+    public long calculateDateDifference(LocalDate startDate, LocalDate endDate);
 
 }

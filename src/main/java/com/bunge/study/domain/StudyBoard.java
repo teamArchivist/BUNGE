@@ -18,6 +18,7 @@ public class StudyBoard {
     private String enddate;
     private String challengestart;
     private String challengeend;
+    private long challengeperiod;
     private int quota;
     private int state;
     private int readcount;

@@ -17,9 +17,9 @@
 
     <insert id="createStudyBoard" parameterType="com.bunge.study.domain.StudyBoard">
         insert into studyboard
-        (id, booktitle, bookcover, title, content, startdate, enddate, challengestart, challengeend, quota, state, readcount)
+        (id, booktitle, bookcover, title, content, startdate, enddate, challengestart, challengeend, challengeperiod, quota, state, readcount)
         values
-        (#{id}, #{booktitle}, #{bookcover}, #{title}, #{content}, #{startdate}, #{enddate}, #{challengestart}, #{challengeend}, #{quota}, 0, 0)
+        (#{id}, #{booktitle}, #{bookcover}, #{title}, #{content}, #{startdate}, #{enddate}, #{challengestart}, #{challengeend}, #{challengeperiod}, #{quota}, 0, 0)
     </insert>
 
     <select id="getStudyList" parameterType="com.bunge.study.filter.StudyBoardFilter" resultType="com.bunge.study.domain.StudyBoard">
