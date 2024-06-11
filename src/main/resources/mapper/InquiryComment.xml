@@ -8,17 +8,17 @@
         SELECT * FROM inquiry_comment WHERE inquiryId = #{inquiryId} ORDER BY createdAt ASC
     </select>
 
-    <select id="findRepliesByCommentId" resultType="InquiryComment">
-        SELECT * FROM inquiry_comment WHERE parentCommentId = #{parentCommentId}
-    </select>
-
-    <insert id="insertComment" parameterType="InquiryComment">
+    <insert id="insertComment" parameterType="InquiryComment" useGeneratedKeys="true" keyProperty="commentId">
         INSERT INTO inquiry_comment (inquiryId, memberId, parentCommentId, content, createdAt, updatedAt, isNotified)
         VALUES (#{inquiryId}, #{memberId}, #{parentCommentId}, #{content}, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, #{isNotified})
     </insert>
 
     <delete id="deleteComment">
         DELETE FROM inquiry_comment WHERE commentId = #{commentId}
+    </delete>
+
+    <delete id="deleteReplyComment">
+        DELETE FROM inquiry_comment WHERE commentId = #{commentId} AND parentCommentId IS NOT NULL
     </delete>
 
     <update id="updateComment">

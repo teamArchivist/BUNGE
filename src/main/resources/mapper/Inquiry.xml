@@ -105,4 +105,21 @@
         WHERE i.inquiryId = #{inquiryId}
     </select>
 
+    <!-- 로그인된 사용자 아이디로 문의글 조회 -->
+    <select id="selectInquiriesByMemberId" resultType="inquiry">
+        SELECT i.inquiryId AS inquiryId,
+               i.memberId AS memberId,
+               i.typeId AS typeId,
+               t.typeName AS typeName,
+               i.title,
+               i.content,
+               i.isPrivate AS isPrivate,
+               i.isAnswered AS isAnswered,
+               i.createdAt AS createdAt,
+               i.updatedAt AS updatedAt
+        FROM inquiry i
+                 JOIN inquiry_type t ON i.typeId = t.typeId
+        WHERE i.memberId = #{memberId}
+        ORDER BY i.inquiryId DESC
+    </select>
 </mapper>
