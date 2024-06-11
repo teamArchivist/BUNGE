@@ -75,185 +75,68 @@
                     <!-- Blog post lists -->
                     <div class="table-responsive">
                         <table class="table table-striped align-middle">
-                            <thead>
+                            <thead class="border">
                                 <tr>
-                                    <th>스터디 번호</th>
-                                    <th>스터디 제목(목표 도서)</th>
-                                    <th class="text-nowrap">모집 기간</th>
-                                    <th>도전 기간</th>
-                                    <th>참여(목표)</th>
-                                    <th>스터디 리더</th>
-                                    <th class="text-center">모집 상태</th>
-                                    <th class="text-center">조회수</th>
-                                    <th class="text-center">찜</th>
+                                    <th class="text-center fs-5">번호</th>
+                                    <th class="text-center fs-5">목표 도서</th>
+                                    <th class="text-center fs-5">스터디 제목</th>
+                                    <th class="text-center fs-5">스터디 소개</th>
+                                    <th class="text-center fs-5">모집 기간</th>
+                                    <th class="text-center fs-5">도전 기간</th>
+                                    <th class="text-center fs-5">참여</th>
+                                    <th class="text-center fs-5">리더</th>
+                                    <th class="text-center fs-5">상태</th>
+                                    <th class="text-center fs-5">조회수</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>#8</td>
-                                    <td>
-                                        <a class="btn-link text-body-emphasis text-decoration-underline text-truncate mb-0" href="#">이번엔 성공하자 30일 모임!(나를 소모하지 않는 현명한 태도에 관하여)</a>
+                                <tr th:each="list:${studyBoardList}">
+                                    <td class="text-center">
+                                        #[[${list.no}]]
                                     </td>
-                                    <td>
-                                        <span class="text-nowrap text-body-secondary">24.04.22 ~ 24.04.29</span>
+                                    <td class="text-center">
+                                        <img th:src="${list.bookcover}" width="50px">
+                                        <p th:text="${#strings.abbreviate(list.booktitle, 30)}"></p>
                                     </td>
-                                    <td>
-                                        <span class="text-nowrap text-body-secondary">30일</span>
+                                    <td class="text-center">
+                                        <a class="btn-link text-body-emphasis text-decoration-underline text-truncate mb-0 fs-5"
+                                           href="#" th:text="${#strings.abbreviate(list.title, 20)}"></a>
                                     </td>
-                                    <td>3/5</td>
-                                    <td>
-                                        <a href="#" class="btn-link text-nowrap">Betty Murphy</a>
+                                    <td class="text-center">
+                                        <span class="fs-5" th:text="${#strings.abbreviate(list.content, 25)}"></span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="text-nowrap text-body-secondary">[[${list.startdate}]] ~ [[${list.enddate}]]</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="text-nowrap text-body-secondary">[[${list.challengestart}]] ~ [[${list.enddate}]]</span>
+                                    </td>
+                                    <td class="text-center">
+                                        [[${list.quota}]]명
+                                    </td>
+                                    <td class="text-center">
+                                        <a class="btn-link text-nowrap">[[${list.id}]]</a>
                                     </td>
                                     <td class="h5">
-                                        <div class="d-block badge bg-success">모집중</div>
+                                        <div th:if="${list.state == 0}" class="d-block badge bg-success">모집중</div>
+                                        <div th:if="${list.state == 1}" class="d-block badge bg-danger">마감</div>
                                     </td>
-                                    <td>
-                                        <a href="#" class="btn btn-icon btn-sm btn-hover btn-primary"><i class="demo-pli-pen-5 fs-5"></i>200</a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="btn btn-icon btn-sm btn-hover btn-danger"><i class="demo-pli-heart-2 fs-5"></i>9</a>
+                                    <td class="text-center">
+                                        [[${list.readcount}]]
                                     </td>
                                 </tr>
 
-                                <tr>
-                                    <td>#8</td>
-                                    <td>
-                                        <a class="btn-link text-body-emphasis text-decoration-underline text-truncate mb-0" href="#">이번엔 성공하자 30일 모임!(나를 소모하지 않는 현명한 태도에 관하여)</a>
-                                    </td>
-                                    <td>
-                                        <span class="text-nowrap text-body-secondary">24.04.22 ~ 24.04.29</span>
-                                    </td>
-                                    <td>
-                                        <span class="text-nowrap text-body-secondary">30일</span>
-                                    </td>
-                                    <td>3/5</td>
-                                    <td>
-                                        <a href="#" class="btn-link text-nowrap">Betty Murphy</a>
-                                    </td>
-                                    <td class="h5">
-                                        <div class="d-block badge bg-success">모집중</div>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="btn btn-icon btn-sm btn-hover btn-primary"><i class="demo-pli-pen-5 fs-5"></i>200</a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="btn btn-icon btn-sm btn-hover btn-danger"><i class="demo-pli-heart-2 fs-5"></i>9</a>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>#8</td>
-                                    <td>
-                                        <a class="btn-link text-body-emphasis text-decoration-underline text-truncate mb-0" href="#">이번엔 성공하자 30일 모임!(나를 소모하지 않는 현명한 태도에 관하여)</a>
-                                    </td>
-                                    <td>
-                                        <span class="text-nowrap text-body-secondary">24.04.22 ~ 24.04.29</span>
-                                    </td>
-                                    <td>
-                                        <span class="text-nowrap text-body-secondary">30일</span>
-                                    </td>
-                                    <td>3/5</td>
-                                    <td>
-                                        <a href="#" class="btn-link text-nowrap">Betty Murphy</a>
-                                    </td>
-                                    <td class="h5">
-                                        <div class="d-block badge bg-success">모집중</div>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="btn btn-icon btn-sm btn-hover btn-primary"><i class="demo-pli-pen-5 fs-5"></i>200</a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="btn btn-icon btn-sm btn-hover btn-danger"><i class="demo-pli-heart-2 fs-5"></i>9</a>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>#8</td>
-                                    <td>
-                                        <a class="btn-link text-body-emphasis text-decoration-underline text-truncate mb-0" href="#">이번엔 성공하자 30일 모임!(나를 소모하지 않는 현명한 태도에 관하여)</a>
-                                    </td>
-                                    <td>
-                                        <span class="text-nowrap text-body-secondary">24.04.22 ~ 24.04.29</span>
-                                    </td>
-                                    <td>
-                                        <span class="text-nowrap text-body-secondary">30일</span>
-                                    </td>
-                                    <td>3/5</td>
-                                    <td>
-                                        <a href="#" class="btn-link text-nowrap">Betty Murphy</a>
-                                    </td>
-                                    <td class="h5">
-                                        <div class="d-block badge bg-success">모집중</div>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="btn btn-icon btn-sm btn-hover btn-primary"><i class="demo-pli-pen-5 fs-5"></i>200</a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="btn btn-icon btn-sm btn-hover btn-danger"><i class="demo-pli-heart-2 fs-5"></i>9</a>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>#8</td>
-                                    <td>
-                                        <a class="btn-link text-body-emphasis text-decoration-underline text-truncate mb-0" href="#">이번엔 성공하자 30일 모임!(나를 소모하지 않는 현명한 태도에 관하여)</a>
-                                    </td>
-                                    <td>
-                                        <span class="text-nowrap text-body-secondary">24.04.22 ~ 24.04.29</span>
-                                    </td>
-                                    <td>
-                                        <span class="text-nowrap text-body-secondary">30일</span>
-                                    </td>
-                                    <td>3/5</td>
-                                    <td>
-                                        <a href="#" class="btn-link text-nowrap">Betty Murphy</a>
-                                    </td>
-                                    <td class="h5">
-                                        <div class="d-block badge bg-success">모집중</div>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="btn btn-icon btn-sm btn-hover btn-primary"><i class="demo-pli-pen-5 fs-5"></i>200</a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="btn btn-icon btn-sm btn-hover btn-danger"><i class="demo-pli-heart-2 fs-5"></i>9</a>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>#8</td>
-                                    <td>
-                                        <a class="btn-link text-body-emphasis text-decoration-underline text-truncate mb-0" href="#">이번엔 성공하자 30일 모임!(나를 소모하지 않는 현명한 태도에 관하여)</a>
-                                    </td>
-                                    <td>
-                                        <span class="text-nowrap text-body-secondary">24.04.22 ~ 24.04.29</span>
-                                    </td>
-                                    <td>
-                                        <span class="text-nowrap text-body-secondary">30일</span>
-                                    </td>
-                                    <td>3/5</td>
-                                    <td>
-                                        <a href="#" class="btn-link text-nowrap">Betty Murphy</a>
-                                    </td>
-                                    <td class="h5">
-                                        <div class="d-block badge bg-success">모집중</div>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="btn btn-icon btn-sm btn-hover btn-primary"><i class="demo-pli-pen-5 fs-5"></i>200</a>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="btn btn-icon btn-sm btn-hover btn-danger"><i class="demo-pli-heart-2 fs-5"></i>9</a>
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
-                    </div>
 
-                    <!-- END : Blog post lists -->
-
-                    <!-- Scrollable modal -->
                     <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#scrollableModal">
                         스터디 생성하기
                     </button>
+
+                    </div>
+                    <!-- END : Blog post lists -->
+
+                    <!-- Scrollable modal -->
 
                     <!-- Modal -->
                     <div class="modal fade" id="scrollableModal" tabindex="-1" aria-labelledby="scrollableModalLabel" aria-hidden="true">
@@ -279,8 +162,9 @@
                                             <label class="col-sm-2 col-form-label">스터디이름</label>
                                             <div class="col-sm-10">
                                                 <div class="input-group mb-2">
-                                                    <input name="title" type="text" class="form-control" required>
+                                                    <input name="title" type="text" class="form-control" placeholder="최대 50자 까지 입력할 수 있습니다" required>
                                                 </div>
+                                                    <p class="float-end mb-0" id="countStudyTitle"></p>
                                             </div>
                                         </div>
 
@@ -298,6 +182,7 @@
 
                                                 </select>
                                                 <img id="bookCover" src="" alt="Book Cover" height="240px" style="display:none">
+                                                <input type="hidden" name="bookcover" id="inputBookCover">
                                             </div>
                                         </div>
 
@@ -315,7 +200,7 @@
                                             <label class="col-sm-2 col-form-label">모집인원</label>
                                             <div class="col-sm-10">
                                                 <div class="form-floating mb-2">
-                                                    <select th:name="quota" class="form-select" id="floatingSelect" aria-label="Floating label select example" required>
+                                                    <select name="quota" class="form-select" id="floatingSelect" aria-label="Floating label select example" required>
                                                         <option value="1" selected>1</option>
                                                         <option value="2">2</option>
                                                         <option value="3">3</option>
@@ -345,6 +230,7 @@
                                             <label class="col-sm-2 col-form-label">소개</label>
                                             <div class="col-sm-10">
                                                 <textarea name="content" class="form-control" rows="10" required></textarea>
+                                                <p class="float-end mb-0" id="countStudyContent"></p>
                                             </div>
                                         </div>
 
@@ -366,20 +252,22 @@
                     <div class="mt-4 d-flex justify-content-center">
 
                         <!-- Pagination - Disabled and active states -->
-                        <nav aria-label="Page navigation">
-                            <ul class="pagination">
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                        <nav th:if="${maxPage > 1 and books.size() != 0}" class="text-align-center mt-5" aria-label="Page navigation" id="reviewPagination">
+                            <ul class="pagination justify-content-center">
+                                <li th:if="${currentPage == 1}" class="page-item">
+                                    <a class="page-link disabled">이전</a>
                                 </li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item active" aria-current="page">
-                                    <a class="page-link" href="#">2</a>
+                                <li th:if="${currentPage > 1}" class="page-item">
+                                    <a th:href="@{'/memo/search-main?page=' + ${currentPage - 1}}" class="page-link">이전</a>
                                 </li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#">4</a></li>
-                                <li class="page-item"><a class="page-link" href="#">5</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">Next</a>
+                                <li th:each="pageNum : ${#numbers.sequence(startPage, endPage)}" th:classappend="${pageNum == currentPage} ? 'active'">
+                                    <a th:href="@{'/memo/search-main?page=' + ${pageNum}}" class="page-link" th:text="${pageNum}">1</a>
+                                </li>
+                                <li th:if="${currentPage < maxPage}" class="page-item">
+                                    <a th:href="@{'/memo/search-main?page=' + ${currentPage + 1}}" class="page-link">다음</a>
+                                </li>
+                                <li th:if="${currentPage >= maxPage}" class="page-item">
+                                    <a class="page-link disabled">다음</a>
                                 </li>
                             </ul>
                         </nav>
@@ -390,7 +278,6 @@
 
                 </div>
             </div>
-
 
         </div>
     </div>
