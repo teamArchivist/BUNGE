@@ -2,7 +2,7 @@
 <html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Title</title>
+    <title>스터디 메인페이지</title>
     <links>
         <script th:src="@{/js/studymain.js}"></script>
     </links>
@@ -100,7 +100,7 @@
                                     </td>
                                     <td class="text-center">
                                         <a class="btn-link text-body-emphasis text-decoration-underline text-truncate mb-0 fs-5"
-                                           href="#" th:text="${#strings.abbreviate(list.title, 20)}"></a>
+                                           th:href="@{'/study/detail?no=' + ${list.no}}" th:text="${#strings.abbreviate(list.title, 20)}"></a>
                                     </td>
                                     <td class="text-center">
                                         <span class="fs-5" th:text="${#strings.abbreviate(list.content, 25)}"></span>
@@ -109,7 +109,7 @@
                                         <span class="text-nowrap text-body-secondary">[[${list.startdate}]] ~ [[${list.enddate}]]</span>
                                     </td>
                                     <td class="text-center">
-                                        <span class="text-nowrap text-body-secondary">[[${list.challengestart}]] ~ [[${list.challengeend}]]</span>
+                                        <span class="text-nowrap text-body-secondary">[[${list.challengestart}]] ~ [[${list.challengeend}]] ([[${list.challengeperiod}]]일)</span>
                                     </td>
                                     <td class="text-center">
                                         [[${list.quota}]]명
