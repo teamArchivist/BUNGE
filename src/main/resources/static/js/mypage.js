@@ -84,6 +84,47 @@ $(function () {
             }
         }
     });
+    $.ajax({
+        url: "myinquiry",
+        data: id,
+        method: "post",
+        cache: false,
+        beforeSend: function (xhr) {
+            if (header && token) {
+                xhr.setRequestHeader(header, token);
+            }
+        },
+        success: function (rdata) {
+            console.log(rdata);
+            console.log(rdata.list);
+            console.log(rdata.listcount);
+            console.log(rdata.list[0].typeName)
+
+        for (let i = 0; i < rdata.list.length; i++) {
+        $.each(rdata.list[i], function(index, item) {
+            let output ="<div class='d-flex mb-4'>"
+                 + "<div class='flex-grow-1 ms-3'>"
+                 + "<div class='mb-1>'"
+                 + "<a class='h6 btn-link'>"+ +"</a>"
+                 + "</div>"
+                 + "<div class='d-flex align-items-center position-relative'>"
+                 + "<div class='flex-shrink-0'>"
+                 + ""
+                 + "</div>"
+                 + "<div class='flex-grow-1 ms-2'>"
+                 + ""
+                 + "</div>"
+                 + "</div>"
+                 + "<p>"+item.typeName+"</p>"
+                 + "</div>"
+                 + "</div>";
+
+            $("#_dm-tabs-inquiry").append(output);
+            });
+          }
+        }
+    });
+
     $("input[name=postcode]").click(function() {
         //window.open('post.html','post','width=500,height=200 ,scrollbars=yes');
         Postcode();

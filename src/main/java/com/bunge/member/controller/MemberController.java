@@ -46,7 +46,6 @@ public class MemberController {
         this.joinsendmail=joinsendmail;
     }
     //임시페이지
-    @PreAuthorize("isAnonymous()")
     @GetMapping(value = "/index")
     public String index(Model mv, HttpServletRequest request){
         String welcomemsg = (String) request.getSession().getAttribute("welcomemsg");

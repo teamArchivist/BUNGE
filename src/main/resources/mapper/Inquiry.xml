@@ -105,4 +105,22 @@
         WHERE i.inquiryId = #{inquiryId}
     </select>
 
+    <select id="selectinquiry" resultType="inquiry">
+        SELECT i.inquiryId AS inquiryId,
+               i.memberId AS memberId,
+               i.typeId AS typeId,
+               t.typeName AS typeName,
+               i.title,
+               i.content,
+               i.isPrivate AS isPrivate,
+               i.isAnswered AS isAnswered,
+               i.createdAt AS createdAt,
+               i.updatedAt AS updatedAt
+        FROM inquiry i
+                 JOIN inquiry_type t ON i.typeId = t.typeId
+        WHERE i.memberId = #{memberId}
+    </select>
+    <select id="getMyinquirtListCount" resultType="int">
+        select count(*) from inquiry where memberId = #{id}
+    </select>
 </mapper>

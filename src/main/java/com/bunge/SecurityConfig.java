@@ -7,6 +7,7 @@ import com.bunge.member.security.LoginSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -20,6 +21,7 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 
 import javax.sql.DataSource;
 
+@EnableMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity //Spring Security 활성화시켜서 모든 요청이 스프링 시큐리티의 제어를 받도록 한다.
 @Configuration //스프링 IOC Container에게 해당 클래스를 Bean 구성 Class임을 알려는 것이다.
 public class SecurityConfig {

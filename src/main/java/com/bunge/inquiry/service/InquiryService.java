@@ -14,5 +14,9 @@ public interface InquiryService {
     List<Inquiry> getInquiriesByType(int typeId, int limit, int offset);
     int getInquiryCount();
     Inquiry getView(Long inquiryId);
+
+    List<Inquiry> getmyinquiry(String id);
+
+    int getMyinquirtListCount(String id);
 }
 

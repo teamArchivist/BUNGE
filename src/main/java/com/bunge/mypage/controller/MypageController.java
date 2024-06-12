@@ -1,5 +1,7 @@
 package com.bunge.mypage.controller;
 
+import com.bunge.inquiry.domain.Inquiry;
+import com.bunge.inquiry.service.InquiryService;
 import com.bunge.member.domain.Mail;
 import com.bunge.member.domain.Member;
 import com.bunge.member.service.MemberService;
@@ -35,17 +37,19 @@ public class MypageController {
     private                MypageService mypageservice;
     private                PasswordEncoder passwordEncoder;
     private MypageSendEmail mypagesendemail;
-    private ProfileService  profileservice;
+    private ProfileService profileservice;
+    private InquiryService inquiryService;
 
     @Autowired
     public MypageController(MypageService  mypageservice, PasswordEncoder passwordEncoder,
                             MemberService memberservice, MypageSendEmail mypagesendemail,
-                            ProfileService profileservice) {
+                            ProfileService profileservice,InquiryService inquiryService) {
         this.mypageservice = mypageservice;
         this.passwordEncoder=passwordEncoder;
         this.memberservice=memberservice;
         this.mypagesendemail=mypagesendemail;
         this.profileservice=profileservice;
+        this.inquiryService=inquiryService;
     }
 
     //마이 페이지 폼 이동
@@ -143,6 +147,7 @@ public class MypageController {
     }
         return mav;
     }
+    //내 리뷰 글보기
     @ResponseBody
     @PostMapping(value = "/myreview")
     public Map<String, Object> myReview(Principal principal){
@@ -154,7 +159,19 @@ public class MypageController {
         int listcount = mypageservice.getMyReviewListCount(id);
         map.put("list", list);
         map.put("listcount", listcount);
+        return map;
+    }
+    //내 문의글
+    @ResponseBody
+    @PostMapping(value = "/myinquiry")
+    public Map<String, Object> myinquiry(Principal principal){
+        String id = principal.getName();
+        List<Inquiry> list = inquiryService.getmyinquiry(id);
+        int listcount = inquiryService.getMyinquirtListCount(id);
 
+        Map<String, Object> map = new HashMap<>();
+        map.put("list", list);
+        map.put("listcount", listcount);
         return map;
     }
 }

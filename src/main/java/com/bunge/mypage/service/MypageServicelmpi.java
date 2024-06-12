@@ -64,7 +64,6 @@ public class MypageServicelmpi implements MypageService {
 
             result.add(map);
         }
-
         return result;
     }
 
