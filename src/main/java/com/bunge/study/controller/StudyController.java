@@ -1,6 +1,7 @@
 package com.bunge.study.controller;
 
 import com.bunge.memo.domain.Book;
+import com.bunge.study.domain.StudyEvent;
 import com.bunge.study.filter.StudyBoardFilter;
 import com.bunge.study.domain.StudyBoard;
 import com.bunge.study.parameter.BookSearchRequest;
@@ -95,5 +96,21 @@ public class StudyController {
 
         return "study/study_detail";
 
+    }
+
+    @ResponseBody
+    @PostMapping("/add-event")
+    public Map<String, Object> addEvent(@RequestBody StudyEvent studyEvent) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            studyService.addStudyEvent(studyEvent);
+            response.put("status", "success");
+            response.put("message", "일정이 추가되었습니다");
+        } catch (Exception e) {
+            response.put("status", "error");
+            response.put("message", "일정 추가에 실패했습니다");
+        }
+
+        return response;
     }
 }

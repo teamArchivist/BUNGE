@@ -67,4 +67,11 @@
         where s.no = #{no};
     </select>
 
+    <insert id="addStudyEvent" parameterType="com.bunge.study.domain.StudyEvent">
+        insert into studyevent
+        (studyBoardNo, title, start, end, className)
+        values
+        (#{studyBoardNo}, #{title}, #{start}, #{end}, #{className})
+    </insert>
+
 </mapper>

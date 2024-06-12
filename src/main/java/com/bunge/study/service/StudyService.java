@@ -2,6 +2,7 @@ package com.bunge.study.service;
 
 import com.bunge.memo.domain.Book;
 import com.bunge.study.domain.StudyBoard;
+import com.bunge.study.domain.StudyEvent;
 import com.bunge.study.filter.StudyBoardFilter;
 import com.bunge.study.parameter.BookSearchRequest;
 
@@ -25,6 +26,9 @@ public interface StudyService {
 
     //날짜 차이 계산 메소드
     public long calculateDateDifference(LocalDate startDate, LocalDate endDate);
+
+    //스터디 모집글에서 설정한 일정 추가
+    public void addStudyEvent(StudyEvent studyEvent);
 
     //스터디 모집글 세부정보
     public StudyBoard getDetailStudy(int no);
