@@ -2,6 +2,7 @@ package com.bunge.study.service;
 
 import com.bunge.memo.domain.Book;
 import com.bunge.study.domain.StudyBoard;
+import com.bunge.study.domain.StudyEvent;
 import com.bunge.study.filter.StudyBoardFilter;
 import com.bunge.study.mapper.StudyMapper;
 import com.bunge.study.parameter.BookSearchRequest;
@@ -52,5 +53,15 @@ public class StudyServiceImpl implements StudyService {
     @Override
     public long calculateDateDifference(LocalDate startDate, LocalDate endDate) {
         return ChronoUnit.DAYS.between(startDate, endDate);
+    }
+
+    @Override
+    public StudyBoard getDetailStudy(int no) {
+        return studyMapper.getDetailStudy(no);
+    }
+
+    @Override
+    public void addStudyEvent(StudyEvent studyEvent) {
+        studyMapper.addStudyEvent(studyEvent);
     }
 }

@@ -22,4 +22,11 @@ public class StudyBoard {
     private int quota;
     private int state;
     private int readcount;
+    private String isbn13;
+    private String author;
+    private String pubDate;
+    private String categoryName;
+    private String description;
+    private int score;
+    private int page;
 }
