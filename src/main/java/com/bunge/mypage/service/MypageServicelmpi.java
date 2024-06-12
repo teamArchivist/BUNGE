@@ -54,4 +54,3 @@ public class MypageServicelmpi implements MypageService {
     }
 }
 
-

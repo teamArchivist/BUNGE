@@ -58,6 +58,16 @@ public class InquiryServiceImpl implements InquiryService {
     public Inquiry getView(Long inquiryId) {
         return inquiryMapper.getView(inquiryId);
     }
+
+    @Override
+    public List<Inquiry> getmyinquiry(String id) {
+        return inquiryMapper.selectinquiry(id);
+    }
+
+    @Override
+    public int getMyinquirtListCount(String id) {
+        return inquiryMapper.getMyinquirtListCount(id);
+    }
 }
 
 

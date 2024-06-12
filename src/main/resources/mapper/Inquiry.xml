@@ -105,8 +105,7 @@
         WHERE i.inquiryId = #{inquiryId}
     </select>
 
-    <!-- 로그인된 사용자 아이디로 문의글 조회 -->
-    <select id="selectInquiriesByMemberId" resultType="inquiry">
+    <select id="selectinquiry" resultType="inquiry">
         SELECT i.inquiryId AS inquiryId,
                i.memberId AS memberId,
                i.typeId AS typeId,
@@ -120,6 +119,8 @@
         FROM inquiry i
                  JOIN inquiry_type t ON i.typeId = t.typeId
         WHERE i.memberId = #{memberId}
-        ORDER BY i.inquiryId DESC
+    </select>
+    <select id="getMyinquirtListCount" resultType="int">
+        select count(*) from inquiry where memberId = #{id}
     </select>
 </mapper>

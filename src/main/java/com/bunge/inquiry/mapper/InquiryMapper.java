@@ -16,6 +16,8 @@ public interface InquiryMapper {
     int updateInquiry(Inquiry inquiry);
     void deleteInquiry(@Param("inquiryId") Long inquiryId);
     Inquiry getView(Long inquiryId);
+
+    List<Inquiry> selectinquiry(String id);
+
+    int getMyinquirtListCount(String id);
 }
-
-
