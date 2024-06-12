@@ -86,7 +86,6 @@
                                     <th class="text-center fs-5">참여</th>
                                     <th class="text-center fs-5">리더</th>
                                     <th class="text-center fs-5">상태</th>
-                                    <th class="text-center fs-5">조회수</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -121,9 +120,6 @@
                                     <td class="h5">
                                         <div th:if="${list.state == 0}" class="d-block badge bg-success">모집중</div>
                                         <div th:if="${list.state == 1}" class="d-block badge bg-danger">마감</div>
-                                    </td>
-                                    <td class="text-center">
-                                        [[${list.readcount}]]
                                     </td>
                                 </tr>
 

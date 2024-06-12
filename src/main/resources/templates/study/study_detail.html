@@ -154,28 +154,9 @@
                                     <div id="commentsSection" style="display:none;">
                                         <input type="hidden" th:value="${countStudyComm}" id="countStudyComm">
 
-                                        <!-- comment start -->
-                                        <div th:each="list:${studyCommList}" class="d-flex mb-2">
-                                            <div class="flex-shrink-0">
-                                                <img class="img-sm rounded-circle" th:src="@{/img/profile-photos/10.png}" alt="Profile" loading="lazy">
-                                            </div>
-                                            <div class="flex-grow-1 ms-3">
-                                                <div class="mb-1">
-                                                    <a class="h6 btn-link">[[${list.id}]]</a>
-                                                    <small class="ms-2 text-body-secondary mb-0">[[${list.created}]]</small>
-                                                    &nbsp;
-                                                    <button th:if="${#strings.equals(list.id, loginId)}" class="btn btn-icon btn-outline-primary btn-xs rounded-circle">
-                                                        <ion-icon name="settings-outline"></ion-icon>
-                                                    </button>
-                                                    <button th:if="${#strings.equals(list.id, loginId)}" class="btn btn-icon btn-outline-warning btn-xs rounded-circle">
-                                                        <ion-icon name="trash-outline"></ion-icon>
-                                                    </button>
-                                                </div>
-                                                <span>[[${list.content}]]</span>
-                                                <a class="btn btn-xs btn-outline-light">Reply</a>
-                                            </div>
+                                        <div id="commentList">
+
                                         </div>
-                                        <!-- comment end -->
 
                                         <div class="card-body">
                                             <textarea class="form-control" rows="4"
