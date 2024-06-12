@@ -161,14 +161,10 @@ public class MypageController {
     //내 문의글
     @ResponseBody
     @PostMapping(value = "/myinquiry")
-    public Map<String, Object> myinquiry(Principal principal){
+    public List<Inquiry> myinquiry(Principal principal){
         String id = principal.getName();
         List<Inquiry> list = inquiryService.getmyinquiry(id);
-        int listcount = inquiryService.getMyinquirtListCount(id);
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("list", list);
-        map.put("listcount", listcount);
-        return map;
+        logger.info(list.toString());
+        return list;
     }
 }
