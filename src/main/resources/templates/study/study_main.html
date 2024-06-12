@@ -101,6 +101,7 @@
                                     <td>
                                         <a class="btn-link text-body-emphasis text-decoration-underline text-truncate mb-0 fs-5"
                                            th:href="@{'/study/detail?no=' + ${list.no}}" th:text="${#strings.abbreviate(list.title, 20)}"></a>
+                                        <span>([[${list.countcomm}]])</span>
                                     </td>
                                     <td>
                                         <span class="fs-5" th:text="${#strings.abbreviate(list.content, 25)}"></span>

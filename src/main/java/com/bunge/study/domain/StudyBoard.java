@@ -29,5 +29,6 @@ public class StudyBoard {
     private String description;
     private int score;
     private int page;
+    private int countcomm;
 
 }

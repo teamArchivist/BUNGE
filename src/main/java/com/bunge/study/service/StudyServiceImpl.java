@@ -80,4 +80,9 @@ public class StudyServiceImpl implements StudyService {
     public List<StudyBoardComm> getStudyCommList(int no) {
         return studyMapper.getStudyCommList(no);
     }
+
+    @Override
+    public int getStudyCommListCount(int no) {
+        return studyMapper.getStudyCommListCount(no);
+    }
 }

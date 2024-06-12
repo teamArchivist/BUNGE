@@ -40,4 +40,7 @@ public interface StudyMapper {
 
     //스터디 모집글 댓글 리스트
     public List<StudyBoardComm> getStudyCommList(int no);
+
+    //스터디 모집글 댓글 총 리스트 수
+    public int getStudyCommListCount(int no);
 }

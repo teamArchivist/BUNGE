@@ -23,8 +23,10 @@
     </insert>
 
     <select id="getStudyList" parameterType="com.bunge.study.filter.StudyBoardFilter" resultType="com.bunge.study.domain.StudyBoard">
-        select *
-        from studyboard
+        select s.*, COUNT(c.no) AS countcomm
+        from studyboard s
+        left join studyboardcomm c
+        on s.no = c.studyboardno
         where 1=1
         <if test="booktitle != null and booktitle != ''">
             and booktitle like CONCAT('%', #{booktitle}, '%')
@@ -38,7 +40,8 @@
         <if test="state != null and state != ''">
             and state = #{state}
         </if>
-        order by enddate desc
+        group by s.no
+        order by enddate
         limit #{offset}, #{limit}
     </select>
 
@@ -89,6 +92,12 @@
 
     <select id="getStudyCommList" parameterType="int" resultType="com.bunge.study.domain.StudyBoardComm">
         select *
+        from studyboardcomm
+        where studyboardno = #{no}
+    </select>
+
+    <select id="getStudyCommListCount" parameterType="int" resultType="int">
+        select count(*)
         from studyboardcomm
         where studyboardno = #{no}
     </select>

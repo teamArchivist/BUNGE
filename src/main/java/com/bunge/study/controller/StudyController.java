@@ -47,7 +47,7 @@ public class StudyController {
         studyBoardFilter.setLimit(pageSize);
 
         List<StudyBoard> studyBoardList = studyService.getStudyList(studyBoardFilter);
-        //logger.info(studyBoardList.toString());
+        logger.info(studyBoardList.toString());
 
         int totalStudyList = studyService.getStudyListCount(studyBoardFilter);
         //logger.info(String.valueOf(totalStudyList));
@@ -92,11 +92,13 @@ public class StudyController {
         StudyBoard studyBoard = studyService.getDetailStudy(no);
         //logger.info(studyBoard.toString());
         List<StudyBoardComm> studyCommList = studyService.getStudyCommList(no);
-        logger.info(studyCommList.toString());
+        //logger.info(studyCommList.toString());
+        int countStudyComm = studyService.getStudyCommListCount(no);
 
         model.addAttribute("loginId", loginId);
         model.addAttribute("studyBoard", studyBoard);
         model.addAttribute("studyCommList", studyCommList);
+        model.addAttribute("countStudyComm", countStudyComm);
 
         return "study/study_detail";
 
@@ -131,6 +133,20 @@ public class StudyController {
             response.put("status", "error");
             response.put("message", "댓글 추가 중 오류가 발생했습니다. 다시 시도해주세요");
         }
+
+        return response;
+    }
+
+    @ResponseBody
+    @PostMapping("/get-board-comment")
+    public Map<String, Object> getBoardComment(@RequestParam("no") int no) {
+        Map<String, Object> response = new HashMap<>();
+
+        List<StudyBoardComm> studyCommList = studyService.getStudyCommList(no);
+        int studyCommListCount = studyService.getStudyCommListCount(no);
+
+        response.put("studyCommList", studyCommList);
+        response.put("studyCommListCount", studyCommListCount);
 
         return response;
     }
