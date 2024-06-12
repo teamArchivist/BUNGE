@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>스터디 모집글 세부정보</title>
+    <links>
+        <script th:src="@{/js/studydetail.js}"></script>
+        <script type="module" th:src="@{/vendors/ionicons/ionicons.js}"></script>
+        <!-- Fullcalendar Scripts [ OPTIONAL ] -->
+        <script th:src="@{/vendors/fullcalendar/index.global.min.js}"></script>
+        <!-- Initialize [ SAMPLE ] -->
+        <script th:src="@{/js/study_detail_calendar.js}"></script>
+    </links>
+</head>
+<body class="out-quart">
+<!-- CONTENTS -->
+<div id="root" class="root mn--max sb--stuck tm--expanded-hd">
+    <section id="content" class="content">
+        <div class="content__header content__boxed rounded-0">
+            <div class="content__wrap d-md-flex align-items-start hv-outline-parent hv-outline-inherit">
+                <figure class="m-0">
+                    <div class="d-inline-flex align-items-center position-relative pt-xl-3 mb-3">
+                        <div class="flex-shrink-0">
+                            <img class="hv-oc img-xl rounded-circle border" src="./assets/img/profile-photos/5.png" alt="Profile Picture" loading="lazy">
+                        </div>
+                        <div class="flex-grow-1 ms-4">
+                            <a href="#" class="h3 btn-link text-body-emphasis">[[${studyBoard.id}]]</a>
+                            <p class="m-0">활발한 책마니 3,933</p>
+                        </div>
+                    </div>
+                </figure>
+                <div class="d-inline-block justify-content-end pt-xl-3 gap-1 ms-auto">
+                    <button th:if="!${#strings.equals(studyBoard.id, loginId)}" class="btn btn-success text-nowrap" id="application">스터디 신청</button>
+                    <button th:if="${#strings.equals(studyBoard.id, loginId)}" class="btn btn-info text-nowrap" data-bs-toggle="modal" data-bs-target="#exampleModal">스터디 승인</button>
+                    <button th:if="${#strings.equals(studyBoard.id, loginId)}" class="btn btn-warning text-nowrap">스터디 수정</button>
+                    <button th:if="${#strings.equals(studyBoard.id, loginId)}" class="btn btn-danger text-nowrap" id="delete">스터디 삭제</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">스터디 신청 관리</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="table-responsive">
+                            <table class="table table-layout-fixed">
+                                <tbody>
+                                <tr>
+                                    <td><img src="/img/profile-photos/1.png" class="img-sm rounded-circle border">
+                                        <span>고라니</span>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-primary rounded-pill">승인</button>
+                                        &nbsp;<button class="btn btn-danger rounded-pill">거절</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><img src="/img/profile-photos/1.png" class="img-sm rounded-circle border">
+                                        <span>고라니</span>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-primary rounded-pill">승인</button>
+                                        &nbsp;<button class="btn btn-danger rounded-pill">거절</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><img src="/img/profile-photos/1.png" class="img-sm rounded-circle border">
+                                        <span>고라니</span>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-primary rounded-pill">승인</button>
+                                        &nbsp;<button class="btn btn-danger rounded-pill">거절</button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END : Basic Modal -->
+
+        <div class="content__boxed mt-4">
+            <div class="content__wrap">
+                <div class="d-md-flex gap-4">
+                    <div class="flex-fill">
+                        <div class="row">
+                            <div class="card col-md-5">
+                                <div class="card-body">
+                                    <div class="row mb-3 border-bottom">
+                                        <input type="hidden" th:value="${studyBoard.no}" id="studyBoardNo">
+                                        <div class="col-sm-3 fs-5">상태</div>
+                                        <div class="col-sm-2">
+                                            <div th:if="${studyBoard.state == 0}" class="d-block badge bg-success form-control-plaintext">모집중</div>
+                                            <div th:if="${studyBoard.state == 1}" class="d-block badge bg-danger form-control-plaintext">마감</div>
+                                            <p></p>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3 border-bottom">
+                                        <div class="col-sm-3 fs-5">리더</div>
+                                        <div class="col-sm-9">
+                                            <p th:text="${studyBoard.id}" readonly></p>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3 border-bottom">
+                                        <div class="col-sm-3 fs-5">목표</div>
+                                        <div class="col-sm-9">
+                                            <div class="row mb-3">
+                                                <div class="col-md-3">
+                                                    <img th:src="${studyBoard.bookcover}" width="100%" height="90%">
+                                                </div>
+                                                <div class="col-md-9">
+                                                    <p th:text="${studyBoard.booktitle}"></p>
+                                                    <p th:text="${studyBoard.author}"></p>
+                                                    <p>[[${studyBoard.page}]] page</p>
+                                                    <div class="col-md-2">
+                                                        <span class="d-block badge bg-warning">[[${studyBoard.score}]]점</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3 border-bottom">
+                                        <div class="col-sm-3 fs-5">도전기간</div>
+                                        <div class="col-sm-9">
+                                            <p>[[${studyBoard.challengeperiod}]]일 ([[${studyBoard.challengestart}]] ~ [[${studyBoard.challengeend}]])</p>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3 border-bottom">
+                                        <div class="col-sm-3 fs-5">참여인원</div>
+                                        <div class="col-sm-9 mb-3">
+                                            <img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">
+                                            <span>삼차선</span>
+                                            <img class="img-xs rounded-circle" th:src="@{/img/profile-photos/7.png}" alt="Profile Picture" loading="lazy">
+                                            <span>게슴츠레</span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3 border-bottom">
+                                        <div class="col-sm-3 fs-5">스터디 소개</div>
+                                        <div class="col-sm-9 mb-3">
+                                            <textarea class="form-control" th:text="${studyBoard.content}" rows="10" readonly style="resize:none"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <button id="toggleComments" class="btn btn-link fs-5">댓글 보기</button>
+                                    </div>
+                                    <div id="commentsSection" style="display:none;">
+                                        <div class="d-flex mb-4">
+                                            <div class="flex-shrink-0">
+                                                <img class="img-sm rounded-circle" src="./assets/img/profile-photos/10.png" alt="Profile Picture" loading="lazy">
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <div class="mb-1">
+                                                    <a href="#" class="h6 btn-link">Lisa D</a>
+                                                    <small class="ms-2 text-body-secondary mb-0">34분 전</small>
+                                                </div>
+                                                <p>벌금 같은 패널티도 있나요?</p>
+                                                <a class="btn btn-xs btn-outline-light"><i class="demo-pli-like fs-5 me-2"></i>Like</a>
+                                                <a class="btn btn-xs btn-outline-light">Reply</a>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <textarea class="form-control" rows="4" placeholder="궁금한 점을 댓글로 남겨보세요"></textarea>
+                                            <div class="d-flex align-items-center mt-3">
+                                                <button class="btn btn-sm btn-primary hstack gap-2 ms-auto" type="submit">
+                                                    <i class="demo-psi-right-4 fs-5"></i>
+                                                    <span class="vr"></span>
+                                                    Post
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <div class="d-md-flex gap-4">
+                                            <div class="w-md-160px w-xl-200px flex-shrink-0 mb-3">
+                                                <div class="d-grid">
+                                                    <button class="btn btn-primary" type="button">도전일정</button>
+                                                </div>
+                                                <h5 class="mt-3 mb-3">Upcoming event</h5>
+                                                <div class="list-group list-group-borderless">
+                                                    <a class="bg-info list-group-item list-group-item-action mb-2" href="#">
+                                                        <h6 class="mb-2 text-white">1차 정기 회의</h6>
+                                                        <div class="d-flex justify-content-between text-white">
+                                                            <small>09:30 - 11:59</small>
+                                                            <small>5.12</small>
+                                                        </div>
+                                                    </a>
+                                                    <a class="bg-warning list-group-item list-group-item-action mb-2" href="#">
+                                                        <h6 class="mb-2 text-white">오프라인 미팅</h6>
+                                                        <div class="d-flex justify-content-between text-white-50">
+                                                            <small>02:00 - 03:30</small>
+                                                            <small>5.13</small>
+                                                        </div>
+                                                    </a>
+                                                    <a class="bg-danger list-group-item list-group-item-action mb-2" href="#">
+                                                        <h6 class="mb-2 text-white">온라인 스터디</h6>
+                                                        <div class="d-flex justify-content-between text-white-50">
+                                                            <small>09:55 - 10:55</small>
+                                                            <small>5.17</small>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="flex-fill">
+                                                <div id="_dm-calendar" class="mb-3"></div>
+                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addEventModal">
+                                                    일정 추가
+                                                </button>
+                                                <div class="modal" id="addEventModal">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h4 class="modal-title">일정 추가</h4>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form id="addEventForm">
+                                                                    <div class="mb-3">
+                                                                        <label for="eventTitle" class="form-label">제목</label>
+                                                                        <input type="text" class="form-control" id="eventTitle" required>
+                                                                    </div>
+                                                                    <div class="mb-3">
+                                                                        <label for="eventStart" class="form-label">시작 날짜</label>
+                                                                        <input type="date" class="form-control" id="eventStart" required>
+                                                                    </div>
+                                                                    <div class="mb-3">
+                                                                        <label for="eventEnd" class="form-label">종료 날짜</label>
+                                                                        <input type="date" class="form-control" id="eventEnd" required>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                                                <button type="button" class="btn btn-primary" id="saveEventButton">저장</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- END : Full calendar container -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- 여기서 새로운 div 태그를 닫습니다 -->
+                            </div>
+                            <!-- 여기에 기존의 div 태그가 닫혀야 합니다 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

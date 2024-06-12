@@ -26,4 +26,7 @@ public interface StudyService {
     //날짜 차이 계산 메소드
     public long calculateDateDifference(LocalDate startDate, LocalDate endDate);
 
+    //스터디 모집글 세부정보
+    public StudyBoard getDetailStudy(int no);
+
 }
