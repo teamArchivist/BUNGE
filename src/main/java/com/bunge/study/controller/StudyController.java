@@ -47,7 +47,7 @@ public class StudyController {
         studyBoardFilter.setLimit(pageSize);
 
         List<StudyBoard> studyBoardList = studyService.getStudyList(studyBoardFilter);
-        logger.info(studyBoardList.toString());
+        //logger.info(studyBoardList.toString());
 
         int totalStudyList = studyService.getStudyListCount(studyBoardFilter);
         //logger.info(String.valueOf(totalStudyList));
@@ -139,7 +139,8 @@ public class StudyController {
 
     @ResponseBody
     @PostMapping("/get-board-comment")
-    public Map<String, Object> getBoardComment(@RequestParam("no") int no) {
+    public Map<String, Object> getBoardComment(@RequestParam int no) {
+        //logger.info(String.valueOf(no));
         Map<String, Object> response = new HashMap<>();
 
         List<StudyBoardComm> studyCommList = studyService.getStudyCommList(no);
