@@ -75,4 +75,9 @@ public class StudyServiceImpl implements StudyService {
         int lastInsertId = studyBoardComm.getNo();
         studyMapper.updateRefColumn(lastInsertId);
     }
+
+    @Override
+    public List<StudyBoardComm> getStudyCommList(int no) {
+        return studyMapper.getStudyCommList(no);
+    }
 }

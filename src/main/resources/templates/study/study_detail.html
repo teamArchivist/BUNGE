@@ -152,19 +152,29 @@
 
                                     <!-- commentsSection start -->
                                     <div id="commentsSection" style="display:none;">
-                                        <div class="d-flex mb-2">
+
+                                        <!-- comment start -->
+                                        <div th:each="list:${studyCommList}" class="d-flex mb-2">
                                             <div class="flex-shrink-0">
-                                                <img class="img-sm rounded-circle" th:src="@{/img/profile-photos/10.png}" alt="Profile Picture" loading="lazy">
+                                                <img class="img-sm rounded-circle" th:src="@{/img/profile-photos/10.png}" alt="Profile" loading="lazy">
                                             </div>
                                             <div class="flex-grow-1 ms-3">
                                                 <div class="mb-1">
-                                                    <a href="#" class="h6 btn-link">Lisa D</a>
-                                                    <small class="ms-2 text-body-secondary mb-0">34분 전</small>
+                                                    <a class="h6 btn-link">[[${list.id}]]</a>
+                                                    <small class="ms-2 text-body-secondary mb-0">[[${list.created}]]</small>
+                                                    &nbsp;
+                                                    <button th:if="${#strings.equals(list.id, loginId)}" class="btn btn-icon btn-outline-primary btn-xs rounded-circle">
+                                                        <ion-icon name="settings-outline"></ion-icon>
+                                                    </button>
+                                                    <button th:if="${#strings.equals(list.id, loginId)}" class="btn btn-icon btn-outline-warning btn-xs rounded-circle">
+                                                        <ion-icon name="trash-outline"></ion-icon>
+                                                    </button>
                                                 </div>
-                                                <p>띄어쓰기 포함 몇 글자 까지 적을 수 있을지... 한 줄 안에 들어가야 하고, 대댓글도 고려해야 합니다.</p>
+                                                <span>[[${list.content}]]</span>
                                                 <a class="btn btn-xs btn-outline-light">Reply</a>
                                             </div>
                                         </div>
+                                        <!-- comment end -->
 
                                         <div class="card-body">
                                             <textarea class="form-control" rows="4"

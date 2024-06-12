@@ -37,4 +37,7 @@ public interface StudyService {
     //스터디 모집글 댓글 추가
     public void addBoardComment(StudyBoardComm studyBoardComm);
 
+    //스터디 모집글 댓글 리스트
+    public List<StudyBoardComm> getStudyCommList(int no);
+
 }

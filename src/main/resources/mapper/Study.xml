@@ -87,4 +87,10 @@
         where no = #{no}
     </update>
 
+    <select id="getStudyCommList" parameterType="int" resultType="com.bunge.study.domain.StudyBoardComm">
+        select *
+        from studyboardcomm
+        where studyboardno = #{no}
+    </select>
+
 </mapper>
