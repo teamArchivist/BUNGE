@@ -19,12 +19,9 @@
             <div class="content__wrap d-md-flex align-items-start hv-outline-parent hv-outline-inherit">
                 <figure class="m-0">
                     <div class="d-inline-flex align-items-center position-relative pt-xl-3 mb-3">
-                        <div class="flex-shrink-0">
-                            <img class="hv-oc img-xl rounded-circle border" src="./assets/img/profile-photos/5.png" alt="Profile Picture" loading="lazy">
-                        </div>
                         <div class="flex-grow-1 ms-4">
-                            <a href="#" class="h3 btn-link text-body-emphasis">[[${studyBoard.id}]]</a>
-                            <p class="m-0">활발한 책마니 3,933</p>
+                            <span class="h3 text-body-emphasis fw-bold">[[${studyBoard.title}]]</span>
+                            <p class="m-0">[[${studyBoard.quota}]]명 모집 중</p>
                         </div>
                     </div>
                 </figure>
@@ -152,25 +149,32 @@
                                     <div class="row mb-3">
                                         <button id="toggleComments" class="btn btn-link fs-5">댓글 보기</button>
                                     </div>
+
+                                    <!-- commentsSection start -->
                                     <div id="commentsSection" style="display:none;">
-                                        <div class="d-flex mb-4">
+                                        <div class="d-flex mb-2">
                                             <div class="flex-shrink-0">
-                                                <img class="img-sm rounded-circle" src="./assets/img/profile-photos/10.png" alt="Profile Picture" loading="lazy">
+                                                <img class="img-sm rounded-circle" th:src="@{/img/profile-photos/10.png}" alt="Profile Picture" loading="lazy">
                                             </div>
                                             <div class="flex-grow-1 ms-3">
                                                 <div class="mb-1">
                                                     <a href="#" class="h6 btn-link">Lisa D</a>
                                                     <small class="ms-2 text-body-secondary mb-0">34분 전</small>
                                                 </div>
-                                                <p>벌금 같은 패널티도 있나요?</p>
-                                                <a class="btn btn-xs btn-outline-light"><i class="demo-pli-like fs-5 me-2"></i>Like</a>
+                                                <p>띄어쓰기 포함 몇 글자 까지 적을 수 있을지... 한 줄 안에 들어가야 하고, 대댓글도 고려해야 합니다.</p>
                                                 <a class="btn btn-xs btn-outline-light">Reply</a>
                                             </div>
                                         </div>
+
                                         <div class="card-body">
-                                            <textarea class="form-control" rows="4" placeholder="궁금한 점을 댓글로 남겨보세요"></textarea>
+                                            <textarea class="form-control" rows="4"
+                                                      placeholder="궁금한 점을 댓글로 남겨보세요"
+                                                      id="commentInput" style="resize:none;"></textarea>
                                             <div class="d-flex align-items-center mt-3">
-                                                <button class="btn btn-sm btn-primary hstack gap-2 ms-auto" type="submit">
+                                                <button class="btn btn-sm btn-primary hstack gap-2 ms-auto"
+                                                        type="button" th:data-studyboardno="${studyBoard.no}"
+                                                        onclick="addComment(this)"
+                                                        id="commentAddBtn">
                                                     <i class="demo-psi-right-4 fs-5"></i>
                                                     <span class="vr"></span>
                                                     Post
@@ -178,6 +182,8 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- commentsSection end -->
+
                                 </div>
                             </div>
                             <div class="col-md-7">
@@ -214,7 +220,9 @@
                                                 </div>
                                             </div>
                                             <div class="flex-fill">
-                                                <div id="_dm-calendar" class="mb-3"></div>
+                                                <div id="_dm-calendar" class="mb-3">
+
+                                                </div>
                                                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addEventModal">
                                                     일정 추가
                                                 </button>

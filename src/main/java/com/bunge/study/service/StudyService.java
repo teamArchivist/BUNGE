@@ -2,6 +2,7 @@ package com.bunge.study.service;
 
 import com.bunge.memo.domain.Book;
 import com.bunge.study.domain.StudyBoard;
+import com.bunge.study.domain.StudyBoardComm;
 import com.bunge.study.domain.StudyEvent;
 import com.bunge.study.filter.StudyBoardFilter;
 import com.bunge.study.parameter.BookSearchRequest;
@@ -32,5 +33,8 @@ public interface StudyService {
 
     //스터디 모집글 세부정보
     public StudyBoard getDetailStudy(int no);
+
+    //스터디 모집글 댓글 추가
+    public void addBoardComment(StudyBoardComm studyBoardComm);
 
 }

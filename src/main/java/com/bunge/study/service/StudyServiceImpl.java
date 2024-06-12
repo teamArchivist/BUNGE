@@ -2,12 +2,14 @@ package com.bunge.study.service;
 
 import com.bunge.memo.domain.Book;
 import com.bunge.study.domain.StudyBoard;
+import com.bunge.study.domain.StudyBoardComm;
 import com.bunge.study.domain.StudyEvent;
 import com.bunge.study.filter.StudyBoardFilter;
 import com.bunge.study.mapper.StudyMapper;
 import com.bunge.study.parameter.BookSearchRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -60,8 +62,17 @@ public class StudyServiceImpl implements StudyService {
         return studyMapper.getDetailStudy(no);
     }
 
+
     @Override
     public void addStudyEvent(StudyEvent studyEvent) {
         studyMapper.addStudyEvent(studyEvent);
+    }
+
+    @Override
+    @Transactional
+    public void addBoardComment(StudyBoardComm studyBoardComm) {
+        studyMapper.addBoardComment(studyBoardComm);
+        int lastInsertId = studyBoardComm.getNo();
+        studyMapper.updateRefColumn(lastInsertId);
     }
 }
