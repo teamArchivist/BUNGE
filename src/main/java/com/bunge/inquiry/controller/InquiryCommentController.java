@@ -22,11 +22,6 @@ public class InquiryCommentController {
         return commentService.findCommentsByInquiryId(inquiryId);
     }
 
-    @GetMapping("/replies/{parentCommentId}")
-    public List<InquiryComment> getRepliesByCommentId(@PathVariable int parentCommentId) {
-        return commentService.findRepliesByCommentId(parentCommentId);
-    }
-
     @PostMapping("/add")
     public InquiryComment addComment(@RequestBody InquiryComment comment) {
         int inserted = commentService.insertComment(comment);
@@ -38,8 +33,19 @@ public class InquiryCommentController {
     }
 
     @DeleteMapping("/{commentId}")
-    public void deleteComment(@PathVariable Long commentId) {
-        commentService.deleteComment(commentId);
+    public ResponseEntity<Integer> deleteComment(@PathVariable Long commentId, @RequestParam(required = false) Long parentCommentId) {
+        try {
+            if (parentCommentId == null) {
+                // 댓글 삭제
+                commentService.deleteComment(commentId);
+            } else {
+                // 대댓글 삭제
+                commentService.deleteReplyComment(commentId);
+            }
+            return ResponseEntity.ok(1); // 성공 시 1 반환
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(0); // 실패 시 0 반환
+        }
     }
 
     @PutMapping

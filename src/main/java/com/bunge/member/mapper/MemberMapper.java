@@ -30,10 +30,4 @@ public interface MemberMapper {
     public int update(Member member);
 
     public List<Review> getMyReviewList(String id);
-
-    public int getMyReviewListCount(String id);
-
-    public int countReviewComm(int no);
-
-    public int countReviewLike(int no);
 }

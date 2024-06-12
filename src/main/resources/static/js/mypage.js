@@ -41,8 +41,9 @@ $(function () {
     });
 
     // Example AJAX request (not directly related to email verification)
-    console.log($("#loginId").text());
+    //console.log($("#loginId").text());
     let id = $("#loginId").text();
+
     $.ajax({
         url: "myreview",
         data: id,
@@ -54,34 +55,27 @@ $(function () {
             }
         },
         success: function (rdata) {
-            console.log(rdata.list);
-            console.log(rdata.listcount);
-            console.log(rdata.list[0]);
-            console.log($(rdata.list[0].list));
-            console.log($(rdata.list[0].list.cover));
+            $(rdata).each(function () {
+                let output = "<div class='d-flex mb-4'>"
+                    + "<div class='flex-shrink-0'>"
+                    + "<img class='img-sm rounded-circle' src='" + this.cover + "' alt='북커버이미지' loading='lazy'>"
+                    + "</div>"
+                    + "<div class='flex-grow-1 ms-3'>"
+                    + "<div class='mb-1'>"
+                    + "<a class='h6 btn-link'>" + this.linetitle + "</a>"
+                    + "</div>"
+                    + "<small class='d-block text-body-secondary mb-2'>" + this.lastmodified + "</small>"
+                    + "<p>" + this.content + "</p>"
+                    + "<div class='d-flex gap-4 mb-4'>"
+                    + "<i class='text-body-secondary demo-pli-heart-2 fs-5 me-2'></i>" + this.countlike
+                    + "<i class='text-body-secondary demo-pli-speech-bubble-4 fs-5 me-2'></i>" + this.countcomment
+                    + "</div>"
+                    + "</div>"
+                    + "</div>";
 
-            for (let i = 0; i < rdata.list.length; i++) {
-                $.each(rdata.list[i].list, function(index, item) {
-                    let output = "<div class='d-flex mb-4'>"
-                        + "<div class='flex-shrink-0'>"
-                        + "<img class='img-sm rounded-circle' src='" + item.cover + "' alt='북커버이미지' loading='lazy'>"
-                        + "</div>"
-                        + "<div class='flex-grow-1 ms-3'>"
-                        + "<div class='mb-1'>"
-                        + "<a class='h6 btn-link'>" + item.linetitle + "</a>"
-                        + "</div>"
-                        + "<small class='d-block text-body-secondary mb-2'>" + item.lastmodified + "</small>"
-                        + "<p>" + item.content + "</p>"
-                        + "<div class='d-flex gap-4 mb-4'>"
-                        + "<i class='text-body-secondary demo-pli-heart-2 fs-5 me-2'></i>" + item.countLike
-                        + "<i class='text-body-secondary demo-pli-speech-bubble-4 fs-5 me-2'></i>" + item.countReview
-                        + "</div>"
-                        + "</div>"
-                        + "</div>";
+                $("#_dm-tabs-review").append(output);
+            })
 
-                    $("#_dm-tabs-review").append(output);
-                });
-            }
         }
     });
     $.ajax({

@@ -150,16 +150,13 @@ public class MypageController {
     //내 리뷰 글보기
     @ResponseBody
     @PostMapping(value = "/myreview")
-    public Map<String, Object> myReview(Principal principal){
+    public List<Review> myReview(Principal principal){
+
         String id = principal.getName();
-        Map<String, Object> map = new HashMap<String, Object>();
-        List<Map<String,Object>> list = mypageservice.getMyReviewList(id);
+        List<Review> list = mypageservice.getMyReviewList(id);
         logger.info(list.toString());
 
-        int listcount = mypageservice.getMyReviewListCount(id);
-        map.put("list", list);
-        map.put("listcount", listcount);
-        return map;
+        return list;
     }
     //내 문의글
     @ResponseBody

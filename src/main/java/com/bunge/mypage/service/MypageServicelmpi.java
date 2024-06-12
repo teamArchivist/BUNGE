@@ -31,8 +31,8 @@ public class MypageServicelmpi implements MypageService {
 
     @Override
     public boolean pwdupdate(Member member) {
-        int result= membermapper.pwdupdate(member);
-        if(result == 1) {
+        int result = membermapper.pwdupdate(member);
+        if (result == 1) {
             return true;
         }
         return false;
@@ -41,35 +41,16 @@ public class MypageServicelmpi implements MypageService {
     @Override
     public boolean update(Member member) {
         int result = membermapper.update(member);
-        if(result == 1) {
+        if (result == 1) {
             return true;
         }
         return false;
     }
 
     @Override
-    public List<Map<String, Object>> getMyReviewList(String id) {
-        List<Map<String, Object>> result = new ArrayList<Map<String, Object>>();
-        List<Review> list = membermapper.getMyReviewList(id);
+    public List<Review> getMyReviewList(String id) {
 
-        for (Review review : list) {
-            Map<String, Object> map = new HashMap<String, Object>();
-            int no = review.getNo();
-            int countReview = membermapper.countReviewComm(no);
-            int countLike = membermapper.countReviewLike(no);
-
-            map.put("countReview", countReview);
-            map.put("countLike", countLike);
-            map.put("list", list);
-
-            result.add(map);
-        }
-        return result;
-    }
-
-    @Override
-    public int getMyReviewListCount(String id) {
-        return membermapper.getMyReviewListCount(id);
+        return membermapper.getMyReviewList(id);
     }
 }
 

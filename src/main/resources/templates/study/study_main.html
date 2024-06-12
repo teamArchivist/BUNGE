@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>스터디 메인페이지</title>
+    <links>
+        <script th:src="@{/js/studymain.js}"></script>
+    </links>
+</head>
+<body>
+<!-- CONTENTS -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<section id="content" class="content">
+    <div class="content__header content__boxed overlapping">
+        <div class="content__wrap">
+
+
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="./index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="./blog-apps.html">스터디</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">스터디 모아보기</li>
+                </ol>
+            </nav>
+            <!-- END : Breadcrumb -->
+
+
+            <!-- Title and information -->
+            <h1 class="page-title d-flex flex-wrap just justify-content-center mb-2 mt-4">스터디</h1>
+            <p class="text-center lead mb-5">현재 진행 중인 스터디를 모아볼 수 있습니다</p>
+            <!-- END : Title and information -->
+
+
+            <!-- Search form -->
+            <div class="col-md-8 offset-md-2 mb-3">
+                <form class="searchbox input-group">
+                    <input class="searchbox__input form-control form-control-lg" type="search" placeholder="검색어를 입력하세요. . ." aria-label="Search">
+                    <div class="searchbox__btn-group">
+                        <button class="searchbox__btn btn btn-icon bg-transparent shadow-none border-0 btn-sm" type="submit">
+                            <i class="demo-pli-magnifi-glass"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <!-- END : Search form -->
+
+
+            <!-- Sort and categories filter -->
+            <div class="d-flex flex-wrap align-items-end justify-content-center gap-2 mb-3 pb-3">
+                <div class="d-md-flex flex-wrap align-items-center gap-2 mb-3 mb-sm-0">
+                    <div class="text-center mb-2 mb-md-0">검색 조건</div>
+                    <select class="form-select w-auto" aria-label="Categories">
+                        <option value="musics">책 제목</option>
+                        <option value="photos">스터디장 ID</option>
+                        <option value="internet">도전 기간</option>
+                        <option value="internet">모집 중</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-light mb-3 mb-sm-0">검색</button>
+            </div>
+            <!-- END : Sort and categories filter -->
+        </div>
+
+    </div>
+
+
+    <div class="content__boxed">
+        <div class="content__wrap">
+            <div class="card">
+                <div class="card-body">
+
+
+                    <!-- Blog post lists -->
+                    <div class="table-responsive">
+                        <table class="table table-striped align-middle">
+                            <thead class="border">
+                                <tr>
+                                    <th class="text-center fs-5">번호</th>
+                                    <th class="text-center fs-5">목표 도서</th>
+                                    <th class="text-center fs-5">스터디 제목</th>
+                                    <th class="text-center fs-5">스터디 소개</th>
+                                    <th class="text-center fs-5">모집 기간</th>
+                                    <th class="text-center fs-5">도전 기간</th>
+                                    <th class="text-center fs-5">참여</th>
+                                    <th class="text-center fs-5">리더</th>
+                                    <th class="text-center fs-5">상태</th>
+                                    <th class="text-center fs-5">조회수</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="list:${studyBoardList}">
+                                    <td class="text-center">
+                                        #[[${list.no}]]
+                                    </td>
+                                    <td class="text-center">
+                                        <img th:src="${list.bookcover}" width="50px">
+                                        <p th:text="${#strings.abbreviate(list.booktitle, 20)}"></p>
+                                    </td>
+                                    <td>
+                                        <a class="btn-link text-body-emphasis text-decoration-underline text-truncate mb-0 fs-5"
+                                           th:href="@{'/study/detail?no=' + ${list.no}}" th:text="${#strings.abbreviate(list.title, 20)}"></a>
+                                    </td>
+                                    <td>
+                                        <span class="fs-5" th:text="${#strings.abbreviate(list.content, 25)}"></span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="text-nowrap text-body-secondary">[[${list.startdate}]] ~ [[${list.enddate}]]</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="text-nowrap text-body-secondary">[[${list.challengestart}]] ~ [[${list.challengeend}]] ([[${list.challengeperiod}]]일)</span>
+                                    </td>
+                                    <td class="text-center">
+                                        [[${list.quota}]]명
+                                    </td>
+                                    <td class="text-center">
+                                        <a class="btn-link text-nowrap">[[${list.id}]]</a>
+                                    </td>
+                                    <td class="h5">
+                                        <div th:if="${list.state == 0}" class="d-block badge bg-success">모집중</div>
+                                        <div th:if="${list.state == 1}" class="d-block badge bg-danger">마감</div>
+                                    </td>
+                                    <td class="text-center">
+                                        [[${list.readcount}]]
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                    <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#scrollableModal">
+                        스터디 생성하기
+                    </button>
+
+                    </div>
+
+                    <div class="mt-4 d-flex justify-content-center">
+
+                        <!-- Pagination - Disabled and active states -->
+                        <nav th:if="${maxPage > 1 and studyBoardList.size() != 0}" class="text-align-center mt-5" aria-label="Page navigation" id="reviewPagination">
+                            <ul class="pagination justify-content-center">
+                                <li th:if="${currentPage == 1}" class="page-item">
+                                    <a class="page-link disabled">이전</a>
+                                </li>
+                                <li th:if="${currentPage > 1}" class="page-item">
+                                    <a th:href="@{'/study/main?page=' + ${currentPage - 1}}" class="page-link">이전</a>
+                                </li>
+                                <li th:each="pageNum : ${#numbers.sequence(startPage, endPage)}" th:classappend="${pageNum == currentPage} ? 'active'">
+                                    <a th:href="@{'/study/main?page=' + ${pageNum}}" class="page-link" th:text="${pageNum}">1</a>
+                                </li>
+                                <li th:if="${currentPage < maxPage}" class="page-item">
+                                    <a th:href="@{'/study/main?page=' + ${currentPage + 1}}" class="page-link">다음</a>
+                                </li>
+                                <li th:if="${currentPage >= maxPage}" class="page-item">
+                                    <a class="page-link disabled">다음</a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <!-- END : Pagination - Disabled and active states -->
+
+                    </div>
+
+                    <!-- END : Blog post lists -->
+
+
+                    <!-- Scrollable modal -->
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="scrollableModal" tabindex="-1" aria-labelledby="scrollableModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="scrollableModalLabel">스터디 생성하기</h1>
+                                    <button type="reset" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+
+                                    <!-- Horizontal Form -->
+                                    <form id="createStudyForm" th:action="@{/study/create-study}" method="post">
+
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label">스터디리더</label>
+                                            <div class="col-sm-10">
+                                                <input name="id" type="text" class="form-control" id="studyLeader" readonly>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label">스터디이름</label>
+                                            <div class="col-sm-10">
+                                                <div class="input-group mb-2">
+                                                    <input name="title" type="text" class="form-control" placeholder="최대 50자 까지 입력할 수 있습니다" required>
+                                                </div>
+                                                    <p class="float-end mb-0" id="countStudyTitle"></p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label">목표도서</label>
+                                            <div class="col-sm-10">
+                                                <div class="input-group mb-2">
+                                                    <textarea class="form-control" placeholder="책 제목(최대 20글자)" id="inputBookTitle"
+                                                              maxlength="20" style="resize:none;" rows="1" required></textarea>
+                                                    <textarea class="form-control" placeholder="지은이(최대 10글자)" id="inputAuthor"
+                                                              maxlength="10" style="resize:none;" rows="1"></textarea>
+                                                    <button type="button" class="btn btn-primary" id="searchBook">검색</button>
+                                                </div>
+                                                <select class="form-select" id="searchCondition" name="booktitle">
+
+                                                </select>
+                                                <img id="bookCover" src="" alt="Book Cover" height="240px" style="display:none">
+                                                <input type="hidden" name="bookcover" id="inputBookCover">
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label">모집기간</label>
+                                            <div class="col-sm-10">
+                                                <div class="input-group">
+                                                    <input name="startdate" type="date" class="form-control" id="startDate" required>
+                                                    <input name="enddate" type="date" class="form-control" id="endDate" required>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-2">
+                                            <label class="col-sm-2 col-form-label">모집인원</label>
+                                            <div class="col-sm-10">
+                                                <div class="form-floating mb-2">
+                                                    <select name="quota" class="form-select" id="floatingSelect" aria-label="Floating label select example" required>
+                                                        <option value="1" selected>1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                        <option value="6">6</option>
+                                                        <option value="7">7</option>
+                                                        <option value="8">8</option>
+                                                        <option value="9">9</option>
+                                                    </select>
+                                                    <label for="floatingSelect">최대 10명이 참여할 수 있습니다</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label">도전기간</label>
+                                            <div class="col-sm-10">
+                                                <div class="input-group">
+                                                    <input name="challengestart" type="date" class="form-control" id="studyStartDate">
+                                                    <input name="challengeend" type="date" class="form-control" id="studyEndDate">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <label class="col-sm-2 col-form-label">소개</label>
+                                            <div class="col-sm-10">
+                                                <textarea name="content" class="form-control" rows="10" required></textarea>
+                                                <p class="float-end mb-0" id="countStudyContent"></p>
+                                            </div>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="reset" class="btn btn-danger" data-bs-dismiss="modal">취소</button>
+                                            <button type="submit" class="btn btn-primary">생성</button>
+                                        </div>
+
+                                    </form>
+                                    <!-- END : Horizontal Form -->
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END : Scrollable modal -->
+
+
+
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bunge.study.mapper.StudyMapper">
+
+    <select id="getSearchBook" parameterType="com.bunge.study.parameter.BookSearchRequest" resultType="com.bunge.memo.domain.Book">
+        select *
+        from book
+        <if test="title != null and title != ''">
+            where title like CONCAT('%', #{title}, '%')
+        </if>
+        <if test="author != null and author != ''">
+            and author like CONCAT('%', #{author}, '%')
+        </if>
+    </select>
+
+    <insert id="createStudyBoard" parameterType="com.bunge.study.domain.StudyBoard">
+        insert into studyboard
+        (id, booktitle, bookcover, title, content, startdate, enddate, challengestart, challengeend, challengeperiod, quota, state, readcount)
+        values
+        (#{id}, #{booktitle}, #{bookcover}, #{title}, #{content}, #{startdate}, #{enddate}, #{challengestart}, #{challengeend}, #{challengeperiod}, #{quota}, 0, 0)
+    </insert>
+
+    <select id="getStudyList" parameterType="com.bunge.study.filter.StudyBoardFilter" resultType="com.bunge.study.domain.StudyBoard">
+        select *
+        from studyboard
+        where 1=1
+        <if test="booktitle != null and booktitle != ''">
+            and booktitle like CONCAT('%', #{booktitle}, '%')
+        </if>
+        <if test="leader != null and leader != ''">
+            and leader like CONCAT('%', #{leader}, '%')
+        </if>
+        <if test="challengeperiod != null and challengeperiod != ''">
+            <![CDATA[ and DATEDIFF(challengeend, challengestart) < #{challengeperiod} ]]>
+        </if>
+        <if test="state != null and state != ''">
+            and state = #{state}
+        </if>
+        order by enddate desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="getStudyListCount" parameterType="com.bunge.study.filter.StudyBoardFilter" resultType="int">
+        select count(*)
+        from studyboard
+        where 1=1
+        <if test="booktitle != null and booktitle != ''">
+            and booktitle like CONCAT('%', #{booktitle}, '%')
+        </if>
+        <if test="leader != null and leader != ''">
+            and leader like CONCAT('%', #{leader}, '%')
+        </if>
+        <if test="challengeperiod != null and challengeperiod != ''">
+            <![CDATA[ and DATEDIFF(challengeend, challengestart) < #{challengeperiod} ]]>
+        </if>
+        <if test="state != null and state != ''">
+            and state = #{state}
+        </if>
+    </select>
+
+    <select id="getDetailStudy" parameterType="int" resultType="com.bunge.study.domain.StudyBoard">
+        select s.*, b.isbn13, b.author, b.pubDate, b.categoryName, b.description, b.score, b.page
+        from studyboard s
+                 join book b on s.booktitle = b.title
+        where s.no = #{no};
+    </select>
+
+    <insert id="addStudyEvent" parameterType="com.bunge.study.domain.StudyEvent">
+        insert into studyevent
+        (studyBoardNo, title, start, end, className)
+        values
+        (#{studyBoardNo}, #{title}, #{start}, #{end}, #{className})
+    </insert>
+
+</mapper>

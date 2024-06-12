@@ -83,7 +83,8 @@
 							<div class="row mb-3">
 								<label for="title" class="col-sm-2 col-form-label">제목</label>
 								<div class="col-sm-10">
-								<textarea name="title" id="title" rows="1" maxlength="100" class="form-control" readonly th:text="${inquirydata.title}"></textarea>
+								<textarea name="title" id="title" rows="1" maxlength="100" class="form-control" readonly th:text="${inquirydata.title}"
+										  style="resize: none;"></textarea>
 								</div>
 							</div>
 
@@ -181,15 +182,15 @@
 
 					<!-- Submit comment form -->
 					<div class="card mb-3">
-						<div class="card-body">
+						<div class="card-body" style="padding-top: 0px;">
 
 							<form class="mt-4" id="commentForm" >
 								<div class="row mb-3">
 									<textarea type="text" id="_dm-commentTextarea" class="form-control" rows="6" placeholder="댓글을 남겨보세요"
-											   maxLength="200"></textarea>
+											   maxLength="200" style="resize: none;"></textarea>
 								</div>
 								<br>
-									<button class="btn btn-primary" id="submitComment" type="submit" style="text-align:center;">Submit comment</button>
+									<button class="btn btn-primary" id="submitComment" type="submit" style="text-align:center; float:right">댓글 작성</button>
 									<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
 							</form>
 						</div>
