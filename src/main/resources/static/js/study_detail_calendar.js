@@ -30,17 +30,40 @@ document.addEventListener( "DOMContentLoaded", () => {
 
    calendar.render();
 
+   fetch(`/study/get-events?studyBoardNo=${studyBoardNo}`, {
+      method: 'GET',
+      headers: {
+         'Content-Type': 'application/json',
+         'X-CSRF-TOKEN': token,
+      }
+   })
+       .then(response => response.json())
+       .then(events => {
+          events.forEach(event => {
+             calendar.addEvent({
+                title: event.title,
+                start: event.start,
+                end: new Date(new Date(event.end).getTime() + 24 * 60 * 60 * 1000),
+                className: event.className
+             });
+          });
+       })
+       .catch(error => {
+          console.error("Error fetching events:", error);
+       });
+
    document.getElementById("saveEventButton").addEventListener("click", () => {
       const title = document.getElementById("eventTitle").value;
       const start = document.getElementById("eventStart").value;
-      const end = document.getElementById("eventEnd").value;
+      const end = new Date(new Date(document.getElementById("eventEnd").value).getTime() + 24 * 60 * 60 * 1000).toISOString().split("T")[0]; // Add one day to end date
+      const className = document.getElementById("eventColor").value;
 
       if (title && start && end) {
          calendar.addEvent({
             title: title,
             start: start,
             end: end,
-            className: 'bg-' + getRandomColorClass()
+            className: className
          });
 
          fetch('/study/add-event', {
@@ -54,7 +77,7 @@ document.addEventListener( "DOMContentLoaded", () => {
                title: title,
                start: start,
                end: end,
-               className: 'bg-' + getRandomColorClass()
+               className: className
             })
          })
              .then(response => response.json())
@@ -78,10 +101,4 @@ document.addEventListener( "DOMContentLoaded", () => {
          alert("모든 필드를 입력해야 합니다");
       }
    });
-
-   function getRandomColorClass() {
-      var colors = ['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark'];
-      return colors[Math.floor(Math.random() * colors.length)];
-   }
-
 });

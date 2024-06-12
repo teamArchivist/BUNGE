@@ -151,4 +151,10 @@ public class StudyController {
 
         return response;
     }
+
+    @ResponseBody
+    @GetMapping("/get-events")
+    public List<StudyEvent> getEvents(@RequestParam int studyBoardNo) {
+        return studyService.getEventsByStudyBoardNo(studyBoardNo);
+    }
 }

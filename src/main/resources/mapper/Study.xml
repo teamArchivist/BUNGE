@@ -102,4 +102,10 @@
         where studyboardno = #{no}
     </select>
 
+    <select id="getEventsByStudyBoardNo" parameterType="int" resultType="com.bunge.study.domain.StudyEvent">
+        select *
+        from studyevent
+        where studyboardno = #{studyBoardNo}
+    </select>
+
 </mapper>
