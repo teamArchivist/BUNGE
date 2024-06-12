@@ -18,7 +18,7 @@
                 <figure class="m-0">
                     <div class="d-inline-flex align-items-center position-relative pt-xl-3 mb-3">
                         <div class="flex-shrink-0">
-                            <img class="hv-oc img-xl rounded-circle border" sec:authentication="principal.profile" alt="profile" loading="lazy">
+                            <img class="hv-oc img-xl rounded-circle border" th:src="|/upload${#authentication.principal.profile}|" alt="profile" loading="lazy">
                         </div>
                         <div class="flex-grow-1 ms-4">
                             <a href="#" class="h3 btn-link text-body-emphasis" sec:authentication="principal.id"></a>
@@ -31,7 +31,6 @@
 
                     <div class="pb-4">
                         <blockquote class="blockquote text-reset">
-                            <p>간단한 메세지</p>
                         </blockquote>
                     </div>
                 </figure>
@@ -432,34 +431,20 @@
                                         <div class="d-flex mb-4">
                                             <div class="flex-grow-1 ms-3">
                                                 <div class="mb-1">
-                                                    <a href="#" class="h6 btn-link">(진행중)문의제목</a>
-                                                </div>
-                                                <div class="d-flex align-items-center position-relative">
-                                                    <div class="flex-shrink-0">
-                                                        <img src="/img/inquiry/private.png" style="width: 16px; height: 16px;">
+                                                    <div class="d-flex align-items-center position-relative">
+                                                        <div class="flex-shrink-0">
+                                                            <img src="/img/inquiry/private.png" style="width: 16px; height: 16px;">
+                                                        </div>
+                                                        <div class="flex-grow-1 ms-2">
+                                                            <a href="#" class="stretched-link text-reset btn-link"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">비공개</font></font></a>
+                                                        </div>
                                                     </div>
-                                                    <div class="flex-grow-1 ms-2">
-                                                        <a href="#" class="stretched-link text-reset btn-link"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">비공개</font></font></a>
-                                                    </div>
+                                                    <a href="#" class="h6 btn-link">문의제목</a>
                                                 </div>
                                                 <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">문의내용</font></font></p>
+                                                <small class="d-block text-body-secondary mb-2">등록일</small>
                                             </div>
                                         </div>
-                                        <ul class="pagination justify-content-center">
-                                            <li class="page-item disabled">
-                                                <a class="page-link"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">이전</font></font></a>
-                                            </li>
-                                            <li class="page-item active" aria-current="page">
-                                                <span class="page-link"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1</font></font></span>
-                                            </li>
-                                            <li class="page-item"><a class="page-link" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2</font></font></a></li>
-                                            <li class="page-item"><a class="page-link" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">3</font></font></a></li>
-                                            <li class="page-item"><a class="page-link" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">4</font></font></a></li>
-                                            <li class="page-item"><a class="page-link" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">5</font></font></a></li>
-                                            <li class="page-item">
-                                                <a class="page-link" href="#"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">다음</font></font></a>
-                                            </li>
-                                        </ul>
                                     </div>
                                 </div>
                             </div>

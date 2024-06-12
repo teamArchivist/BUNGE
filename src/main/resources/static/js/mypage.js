@@ -43,7 +43,7 @@ $(function () {
     // Example AJAX request (not directly related to email verification)
     //console.log($("#loginId").text());
     let id = $("#loginId").text();
-
+    //내리뷰 글 조회
     $.ajax({
         url: "myreview",
         data: id,
@@ -78,6 +78,7 @@ $(function () {
 
         }
     });
+    //내 문의글 조회
     $.ajax({
         url: "myinquiry",
         data: id,
@@ -89,33 +90,29 @@ $(function () {
             }
         },
         success: function (rdata) {
-            console.log(rdata);
-            console.log(rdata.list);
-            console.log(rdata.listcount);
-            console.log(rdata.list[0].typeName)
+                console.log(rdata);
+                $(rdata).each(function () {
+                    let output = "<div class='d-flex mb-4'>"
+                        + "<div class='flex-grow-1 ms-3'>"
+                        + "<div class='mb-1>'"
+                        + "<div class='d-flex align-items-center position-relative'>"
+                        + "<div class='flex-shrink-0'>"
+                        + "<img src='/img/inquiry/private.png' style='width: 16px; height: 16px;'>"
+                        + "</div>"
+                        + "<div class='flex-grow-1 ms-2'>"
+                        + "<a class='stretched-link text-reset btn-link'>"+this.isAnswered+"</a>"
+                        + "</div>"
+                        + "</div>"
+                        + "<a class='h6 btn-link'>"+this.title+"</a>"
+                        + "</div>"
+                        + "<p>" + this.content + "</p>"
+                        + "</div>"
+                        + "<p>"+this.createdAt+"</p>"
+                        + "</div>"
+                        + "</div>"
 
-        for (let i = 0; i < rdata.list.length; i++) {
-        $.each(rdata.list[i], function(index, item) {
-            let output ="<div class='d-flex mb-4'>"
-                 + "<div class='flex-grow-1 ms-3'>"
-                 + "<div class='mb-1>'"
-                 + "<a class='h6 btn-link'>"+ +"</a>"
-                 + "</div>"
-                 + "<div class='d-flex align-items-center position-relative'>"
-                 + "<div class='flex-shrink-0'>"
-                 + ""
-                 + "</div>"
-                 + "<div class='flex-grow-1 ms-2'>"
-                 + "<a></a>"
-                 + "</div>"
-                 + "</div>"
-                 + "<p>"+item.typeName+"</p>"
-                 + "</div>"
-                 + "</div>";
-
-            $("#_dm-tabs-inquiry").append(output);
-            });
-          }
+                    $("#_dm-tabs-inquiry").append(output);
+                });
         }
     });
 
