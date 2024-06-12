@@ -60,4 +60,11 @@
         </if>
     </select>
 
+    <select id="getDetailStudy" parameterType="int" resultType="com.bunge.study.domain.StudyBoard">
+        select s.*, b.isbn13, b.author, b.pubDate, b.categoryName, b.description, b.score, b.page
+        from studyboard s
+                 join book b on s.booktitle = b.title
+        where s.no = #{no};
+    </select>
+
 </mapper>

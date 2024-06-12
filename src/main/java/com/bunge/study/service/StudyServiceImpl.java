@@ -53,4 +53,9 @@ public class StudyServiceImpl implements StudyService {
     public long calculateDateDifference(LocalDate startDate, LocalDate endDate) {
         return ChronoUnit.DAYS.between(startDate, endDate);
     }
+
+    @Override
+    public StudyBoard getDetailStudy(int no) {
+        return studyMapper.getDetailStudy(no);
+    }
 }

@@ -22,4 +22,7 @@ public interface StudyMapper {
 
     //스터디 모집글 갯수
     public int getStudyListCount(StudyBoardFilter studyBoardFilter);
+
+    //스터디 모집글 세부정보
+    public StudyBoard getDetailStudy(int no);
 }

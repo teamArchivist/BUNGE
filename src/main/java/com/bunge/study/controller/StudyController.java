@@ -8,6 +8,8 @@ import com.bunge.study.service.StudyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -77,5 +79,21 @@ public class StudyController {
         studyService.createStudyBoard(studyBoard);
 
         return "redirect:main";
+    }
+
+    @GetMapping("/detail")
+    public String detailStudy(@RequestParam("no") int no,
+                              Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loginId = authentication.getName();
+
+        StudyBoard studyBoard = studyService.getDetailStudy(no);
+        logger.info(studyBoard.toString());
+
+        model.addAttribute("loginId", loginId);
+        model.addAttribute("studyBoard", studyBoard);
+
+        return "study/study_detail";
+
     }
 }
