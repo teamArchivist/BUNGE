@@ -112,7 +112,7 @@ $(function () {
                  + ""
                  + "</div>"
                  + "<div class='flex-grow-1 ms-2'>"
-                 + ""
+                 + "<a></a>"
                  + "</div>"
                  + "</div>"
                  + "<p>"+item.typeName+"</p>"
