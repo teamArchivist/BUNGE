@@ -38,7 +38,7 @@ public class StudyController {
                             @RequestParam(value = "page", defaultValue = "1") Integer page,
                             Model model) {
 
-        logger.info(studyBoardFilter.toString());
+        //logger.info(studyBoardFilter.toString());
 
         int pageSize = 8;
         int offset = (page - 1) * pageSize;
@@ -50,7 +50,7 @@ public class StudyController {
         //logger.info(studyBoardList.toString());
 
         int totalStudyList = studyService.getStudyListCount(studyBoardFilter);
-        logger.info(String.valueOf(totalStudyList));
+        //logger.info(String.valueOf(totalStudyList));
 
         int maxPage = (int) Math.ceil((double) totalStudyList / pageSize);
         int startPage = Math.max(1, page - 5);
@@ -77,7 +77,7 @@ public class StudyController {
 
     @PostMapping("/create-study")
     public String createStudy(@ModelAttribute StudyBoard studyBoard) {
-        logger.info("Received StudyBoard: " + studyBoard.toString());
+        //logger.info("Received StudyBoard: " + studyBoard.toString());
         studyService.createStudyBoard(studyBoard);
 
         return "redirect:main";
@@ -90,10 +90,13 @@ public class StudyController {
         String loginId = authentication.getName();
 
         StudyBoard studyBoard = studyService.getDetailStudy(no);
-        logger.info(studyBoard.toString());
+        //logger.info(studyBoard.toString());
+        List<StudyBoardComm> studyCommList = studyService.getStudyCommList(no);
+        logger.info(studyCommList.toString());
 
         model.addAttribute("loginId", loginId);
         model.addAttribute("studyBoard", studyBoard);
+        model.addAttribute("studyCommList", studyCommList);
 
         return "study/study_detail";
 
