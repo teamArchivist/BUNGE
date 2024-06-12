@@ -74,4 +74,17 @@
         (#{studyBoardNo}, #{title}, #{start}, #{end}, #{className})
     </insert>
 
+    <insert id="addBoardComment" parameterType="com.bunge.study.domain.StudyBoardComm" useGeneratedKeys="true" keyProperty="no">
+        insert into studyboardcomm
+        (id, studyboardno, content, ref, lev, seq, created)
+        values
+        (#{id}, #{studyboardno}, #{content}, 0, 0, 0, now())
+    </insert>
+
+    <update id="updateRefColumn" parameterType="int">
+        update studyboardcomm
+        set ref = #{no}
+        where no = #{no}
+    </update>
+
 </mapper>

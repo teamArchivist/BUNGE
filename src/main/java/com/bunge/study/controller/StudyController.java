@@ -1,6 +1,7 @@
 package com.bunge.study.controller;
 
 import com.bunge.memo.domain.Book;
+import com.bunge.study.domain.StudyBoardComm;
 import com.bunge.study.domain.StudyEvent;
 import com.bunge.study.filter.StudyBoardFilter;
 import com.bunge.study.domain.StudyBoard;
@@ -109,6 +110,23 @@ public class StudyController {
         } catch (Exception e) {
             response.put("status", "error");
             response.put("message", "일정 추가에 실패했습니다");
+        }
+
+        return response;
+    }
+
+    @ResponseBody
+    @PostMapping("/add-board-comment")
+    public Map<String, Object> addBoardComment(StudyBoardComm studyBoardComm) {
+        //logger.info(studyBoardComm.toString());
+        Map<String, Object> response = new HashMap<>();
+        try {
+            studyService.addBoardComment(studyBoardComm);
+            response.put("status", "success");
+            response.put("message", "댓글 추가 성공");
+        } catch (Exception e) {
+            response.put("status", "error");
+            response.put("message", "댓글 추가 중 오류가 발생했습니다. 다시 시도해주세요");
         }
 
         return response;

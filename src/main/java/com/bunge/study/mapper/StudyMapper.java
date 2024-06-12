@@ -2,10 +2,14 @@ package com.bunge.study.mapper;
 
 import com.bunge.memo.domain.Book;
 import com.bunge.study.domain.StudyBoard;
+import com.bunge.study.domain.StudyBoardComm;
 import com.bunge.study.domain.StudyEvent;
 import com.bunge.study.filter.StudyBoardFilter;
 import com.bunge.study.parameter.BookSearchRequest;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -29,4 +33,8 @@ public interface StudyMapper {
 
     //스터디 모집글에서 설정한 일정 추가
     public void addStudyEvent(StudyEvent studyEvent);
+
+    //스터디 모집글 댓글 추가
+    public void addBoardComment(StudyBoardComm studyBoardComm);
+    public void updateRefColumn(int no);
 }
