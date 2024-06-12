@@ -21,11 +21,11 @@
                     <div class="d-inline-flex align-items-center position-relative pt-xl-3 mb-3">
                         <div class="flex-grow-1 ms-4">
                             <span class="h3 text-body-emphasis fw-bold">[[${studyBoard.title}]]</span>
-                            <p class="m-0">[[${studyBoard.quota}]]명 모집 중</p>
+                            <span class="m-0">([[${studyBoard.quota}]]명 모집 중)</span>
                         </div>
                     </div>
                 </figure>
-                <div class="d-inline-block justify-content-end pt-xl-3 gap-1 ms-auto">
+                <div class="d-inline-block justify-content-end pt-xl-3 gap-1 ms-auto mb-2">
                     <button th:if="!${#strings.equals(studyBoard.id, loginId)}" class="btn btn-success text-nowrap" id="application">스터디 신청</button>
                     <button th:if="${#strings.equals(studyBoard.id, loginId)}" class="btn btn-info text-nowrap" data-bs-toggle="modal" data-bs-target="#exampleModal">스터디 승인</button>
                     <button th:if="${#strings.equals(studyBoard.id, loginId)}" class="btn btn-warning text-nowrap">스터디 수정</button>
@@ -147,11 +147,12 @@
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <button id="toggleComments" class="btn btn-link fs-5">댓글 보기</button>
+                                        <button id="toggleComments" class="btn btn-link fs-5">댓글 보기 ([[${countStudyComm}]])</button>
                                     </div>
 
                                     <!-- commentsSection start -->
                                     <div id="commentsSection" style="display:none;">
+                                        <input type="hidden" th:value="${countStudyComm}" id="countStudyComm">
 
                                         <!-- comment start -->
                                         <div th:each="list:${studyCommList}" class="d-flex mb-2">
@@ -271,7 +272,6 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
                             </div>
                         </div>
                     </div>
