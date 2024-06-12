@@ -85,4 +85,9 @@ public class StudyServiceImpl implements StudyService {
     public int getStudyCommListCount(int no) {
         return studyMapper.getStudyCommListCount(no);
     }
+
+    @Override
+    public List<StudyEvent> getEventsByStudyBoardNo(int studyBoardNo) {
+        return studyMapper.getEventsByStudyBoardNo(studyBoardNo);
+    }
 }
