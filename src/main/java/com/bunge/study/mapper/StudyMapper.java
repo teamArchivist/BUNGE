@@ -8,6 +8,7 @@ import com.bunge.study.domain.StudyEvent;
 import com.bunge.study.filter.StudyBoardFilter;
 import com.bunge.study.parameter.ApproveApplicationRequest;
 import com.bunge.study.parameter.BookSearchRequest;
+import com.bunge.study.parameter.CheckApplicationRequest;
 import com.bunge.study.parameter.RejectApplicationRequest;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -74,4 +75,10 @@ public interface StudyMapper {
 
     //스터디 가입 신청 후 승인 된 멤버
     public List<StudyApplication> getStudyMember(int studyboardno);
+
+    //스터디 메인 페이지에서 나의 신청 정보를 보여주기
+    public List<StudyApplication> getMyApplicationList(String loginId);
+
+    //신청 여부 확인
+    public int checkApplication(CheckApplicationRequest checkApplicationRequest);
 }

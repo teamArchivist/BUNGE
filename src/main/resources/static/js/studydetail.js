@@ -1,5 +1,6 @@
 $(function () {
     let studyboardno = $("#commentAddBtn").data("studyboardno")
+    let id = $("#loginId").text();
 
     getStudyCommentList(studyboardno)
 
@@ -307,6 +308,29 @@ $(function () {
                 })
         }
     }
+
+    $.ajax({
+        url: "/study/check-application",
+        method: "post",
+        data: { studyboardno:studyboardno, application_id:id },
+
+        beforeSend : function (xhr) {
+            if (header && token) {
+                xhr.setRequestHeader(header, token);
+            }
+        },
+        success: function (data) {
+            if (data === 1) {
+                $("#application").after("<button id='cancelApplication' class='btn btn-danger text-nowrap'>신청 취소</button>")
+                $("#application").remove();
+            }
+        },
+        error: function (status, error) {
+            console.log("ajax 요청 실패");
+            console.log("상태:" + status);
+            console.log("오류:" + error);
+        }
+    })
 
 
 
