@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class StudyServiceImpl implements StudyService {
@@ -95,5 +96,10 @@ public class StudyServiceImpl implements StudyService {
     @Override
     public void applyStudy(StudyApplication studyApplication) {
         studyMapper.applyStudy(studyApplication);
+    }
+
+    @Override
+    public List<StudyBoard> getApprovalPendingStatus() {
+        return studyMapper.getApprovalPendingStatus();
     }
 }
