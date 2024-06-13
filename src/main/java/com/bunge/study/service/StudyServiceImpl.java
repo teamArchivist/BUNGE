@@ -9,6 +9,7 @@ import com.bunge.study.filter.StudyBoardFilter;
 import com.bunge.study.mapper.StudyMapper;
 import com.bunge.study.parameter.ApproveApplicationRequest;
 import com.bunge.study.parameter.BookSearchRequest;
+import com.bunge.study.parameter.CheckApplicationRequest;
 import com.bunge.study.parameter.RejectApplicationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -133,5 +134,15 @@ public class StudyServiceImpl implements StudyService {
     @Override
     public List<StudyApplication> getStudyMember(int studyboardno) {
         return studyMapper.getStudyMember(studyboardno);
+    }
+
+    @Override
+    public List<StudyApplication> getMyApplicationList(String loginId) {
+        return studyMapper.getMyApplicationList(loginId);
+    }
+
+    @Override
+    public int checkApplication(CheckApplicationRequest checkApplicationRequest) {
+        return studyMapper.checkApplication(checkApplicationRequest);
     }
 }

@@ -138,4 +138,37 @@ $(function() {
         }
     })
 
+    function updateStudyApplicationStatus(loginId) {
+        $.ajax({
+            url: "/study/get-application-status",
+            method: "get",
+            data: {loginId: loginId},
+            cache: false,
+            success: function (data) {
+                if (data.result === "success") {
+                    data.myApplication.forEach(application => {
+                        let statusBadge;
+                        if (application.status === "대기") {
+                            statusBadge = "<div class='d-block badge bg-secondary'>대기중</div>";
+                        } else if (application.status === "승인") {
+                            statusBadge = "<div class='d-block badge bg-primary'>승인됨</div>";
+                        } else if (application.status === "거절") {
+                            statusBadge = "<div class='d-block badge bg-danger'>거절됨";
+                        }
+                        $(`#status-${application.studyboardno}`).append(statusBadge);
+                    })
+                } else {
+                    alert("페이지 새로고침이 필요합니다")
+                }
+            },
+            error: function (status, error) {
+                console.log("ajax 요청 실패");
+                console.log("상태:" + status);
+                console.log("오류:" + error);
+            }
+        })
+    }
+
+    updateStudyApplicationStatus(loginId);
+
 })

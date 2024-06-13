@@ -8,6 +8,7 @@ import com.bunge.study.filter.StudyBoardFilter;
 import com.bunge.study.domain.StudyBoard;
 import com.bunge.study.parameter.ApproveApplicationRequest;
 import com.bunge.study.parameter.BookSearchRequest;
+import com.bunge.study.parameter.CheckApplicationRequest;
 import com.bunge.study.parameter.RejectApplicationRequest;
 import com.bunge.study.service.StudyService;
 import org.slf4j.Logger;
@@ -53,7 +54,7 @@ public class StudyController {
         studyBoardFilter.setLimit(pageSize);
 
         List<StudyBoard> studyBoardList = studyService.getStudyList(studyBoardFilter);
-        //logger.info(studyBoardList.toString());
+        logger.info(studyBoardList.toString());
 
         int totalStudyList = studyService.getStudyListCount(studyBoardFilter);
         //logger.info(String.valueOf(totalStudyList));
@@ -61,6 +62,8 @@ public class StudyController {
         int maxPage = (int) Math.ceil((double) totalStudyList / pageSize);
         int startPage = Math.max(1, page - 5);
         int endPage = Math.min(maxPage, page + 4);
+
+        //List<StudyApplication> myApplication = studyService.getMyApplications(loginId);
 
         model.addAttribute("loginId", loginId);
         model.addAttribute("studyBoardList", studyBoardList);
@@ -103,7 +106,7 @@ public class StudyController {
         int countStudyComm = studyService.getStudyCommListCount(no);
 
         List<StudyApplication> studyMember = studyService.getStudyMember(no);
-        logger.info(studyMember.toString());
+        //logger.info(studyMember.toString());
 
         model.addAttribute("loginId", loginId);
         model.addAttribute("studyBoard", studyBoard);
@@ -252,5 +255,25 @@ public class StudyController {
         return response;
     }
 
+    @ResponseBody
+    @GetMapping("/get-application-status")
+    public Map<String, Object> getApplicationStatus(@RequestParam String loginId) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            List<StudyApplication> myApplication = studyService.getMyApplicationList(loginId);
+            response.put("result", "success");
+            response.put("myApplication", myApplication);
+        } catch(Exception e) {
+            response.put("result", "error");
+        }
+
+        return response;
+    }
+
+    @ResponseBody
+    @PostMapping("check-application")
+    public int checkApplication(CheckApplicationRequest checkApplicationRequest) {
+        return studyService.checkApplication(checkApplicationRequest);
+    }
 
 }

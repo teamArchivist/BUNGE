@@ -154,4 +154,17 @@
         and status = '승인'
     </select>
 
+    <select id="getMyApplicationList" parameterType="String" resultType="com.bunge.study.domain.StudyApplication">
+        select *
+        from studyapplication
+        where application_id = #{loginId}
+    </select>
+
+    <select id="checkApplication" parameterType="com.bunge.study.parameter.CheckApplicationRequest" resultType="int">
+        select count(*)
+        from studyapplication
+        where studyboardno = #{studyboardno}
+        and application_id = #{application_id}
+    </select>
+
 </mapper>
