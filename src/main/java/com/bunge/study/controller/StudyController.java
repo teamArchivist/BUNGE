@@ -6,6 +6,7 @@ import com.bunge.study.domain.StudyBoardComm;
 import com.bunge.study.domain.StudyEvent;
 import com.bunge.study.filter.StudyBoardFilter;
 import com.bunge.study.domain.StudyBoard;
+import com.bunge.study.parameter.ApproveApplicationRequest;
 import com.bunge.study.parameter.BookSearchRequest;
 import com.bunge.study.service.StudyService;
 import org.slf4j.Logger;
@@ -184,5 +185,26 @@ public class StudyController {
 
         return response;
     }
+
+    @ResponseBody
+    @GetMapping("/get-applications")
+    public List<StudyApplication> getApplications(@RequestParam int studyboardno) {
+        return studyService.getApplicationsByStudyBoardNo(studyboardno);
+    }
+
+    @ResponseBody
+    @PostMapping("/approve-application")
+    public Map<String, Object> approveApplication(@RequestBody ApproveApplicationRequest approveApplicationRequest) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            studyService.approveApplication(approveApplicationRequest);
+            response.put("status", "success");
+        } catch (Exception e) {
+            response.put("status", "error");
+        }
+
+        return response;
+    }
+
 
 }

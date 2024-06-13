@@ -7,6 +7,7 @@ import com.bunge.study.domain.StudyBoardComm;
 import com.bunge.study.domain.StudyEvent;
 import com.bunge.study.filter.StudyBoardFilter;
 import com.bunge.study.mapper.StudyMapper;
+import com.bunge.study.parameter.ApproveApplicationRequest;
 import com.bunge.study.parameter.BookSearchRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -101,5 +102,15 @@ public class StudyServiceImpl implements StudyService {
     @Override
     public List<StudyBoard> getApprovalPendingStatus() {
         return studyMapper.getApprovalPendingStatus();
+    }
+
+    @Override
+    public List<StudyApplication> getApplicationsByStudyBoardNo(int studyboardno) {
+        return studyMapper.getApplicationsByStudyBoardNo(studyboardno);
+    }
+
+    @Override
+    public void approveApplication(ApproveApplicationRequest approveApplicationRequest) {
+        studyMapper.approveApplication(approveApplicationRequest);
     }
 }

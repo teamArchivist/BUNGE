@@ -69,39 +69,19 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="table-responsive">
-                            <table class="table table-layout-fixed">
-                                <tbody>
-                                <tr>
-                                    <td><img src="/img/profile-photos/1.png" class="img-sm rounded-circle border">
-                                        <span>고라니</span>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-primary rounded-pill">승인</button>
-                                        &nbsp;<button class="btn btn-danger rounded-pill">거절</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><img src="/img/profile-photos/1.png" class="img-sm rounded-circle border">
-                                        <span>고라니</span>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-primary rounded-pill">승인</button>
-                                        &nbsp;<button class="btn btn-danger rounded-pill">거절</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><img src="/img/profile-photos/1.png" class="img-sm rounded-circle border">
-                                        <span>고라니</span>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-primary rounded-pill">승인</button>
-                                        &nbsp;<button class="btn btn-danger rounded-pill">거절</button>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>신청자</th>
+                                <th>신청 사유</th>
+                                <th>신청 일자</th>
+                                <th class="text-center">처리 상태</th>
+                            </tr>
+                            </thead>
+                            <tbody id="applicationsList">
+                            <!-- 데이터 바인딩 -->
+                            </tbody>
+                        </table>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
