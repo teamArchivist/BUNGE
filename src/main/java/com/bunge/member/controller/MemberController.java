@@ -45,13 +45,6 @@ public class MemberController {
         this.sendmail=sendmail;
         this.joinsendmail=joinsendmail;
     }
-    //임시페이지
-    @GetMapping(value = "/index")
-    public String index(Model mv, HttpServletRequest request){
-        String welcomemsg = (String) request.getSession().getAttribute("welcomemsg");
-        mv.addAttribute("welcomemsg" , welcomemsg);
-        return "member/index";
-    }
     //로그인페이지
     @PreAuthorize("isAnonymous()")
     @GetMapping (value ="/login")
