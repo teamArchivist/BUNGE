@@ -6,6 +6,7 @@ import com.bunge.study.domain.StudyBoard;
 import com.bunge.study.domain.StudyBoardComm;
 import com.bunge.study.domain.StudyEvent;
 import com.bunge.study.filter.StudyBoardFilter;
+import com.bunge.study.parameter.ApproveApplicationRequest;
 import com.bunge.study.parameter.BookSearchRequest;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
@@ -54,4 +55,10 @@ public interface StudyMapper {
 
     //스터디 리더의 경우 "대기" 상태 있는지를 확인
     public List<StudyBoard> getApprovalPendingStatus();
+
+    //해당 스터디 모집글의 신청 상태를 가져옴
+    public List<StudyApplication> getApplicationsByStudyBoardNo(int studyboardno);
+
+    //신청에 대한 승인 절차
+    public void approveApplication(ApproveApplicationRequest approveApplicationRequest);
 }

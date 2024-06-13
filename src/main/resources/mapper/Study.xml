@@ -117,4 +117,16 @@
         (#{studyboardno}, #{application_id}, #{application_content}, now(), now())
     </insert>
 
+    <select id="getApplicationsByStudyBoardNo" parameterType="int" resultType="com.bunge.study.domain.StudyApplication">
+        select *
+        from studyapplication
+        where studyboardno = #{studyboardno}
+    </select>
+
+    <update id="approveApplication" parameterType="com.bunge.study.parameter.ApproveApplicationRequest">
+        update studyapplication
+        set status = #{status}
+        where no = #{no}
+    </update>
+
 </mapper>

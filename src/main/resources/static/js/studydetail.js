@@ -154,5 +154,74 @@ $(function () {
         }
     })
 
+    $("#exampleModal").on("show.bs.modal", function (event) {
+        let studyboardno = document.getElementById("studyBoardNo").value;
+
+        fetch(`/study/get-applications?studyboardno=${studyboardno}`)
+            .then(response => response.json())
+            .then(data => {
+                let applicationsList = document.getElementById("applicationsList");
+                applicationsList.innerHTML = '';
+
+                data.forEach(application => {
+                    let row = document.createElement("tr");
+
+                    let applicantTd = document.createElement("td");
+                    applicantTd.innerHTML = `<img src="/img/profile-photos/1.png" class="img-sm rounded-circle border">
+                                             <span>${application.application_id}</span>`;
+                    row.appendChild(applicantTd);
+
+                    let reasonTd = document.createElement("td");
+                    reasonTd.innerText = application.application_content;
+                    row.appendChild(reasonTd);
+
+                    let requestDateTd = document.createElement("td");
+                    requestDateTd.innerText = application.request_date;
+                    row.appendChild(requestDateTd);
+
+                    let actionsTd = document.createElement("td");
+                    if (application.status === "승인") {
+                        actionsTd.innerHTML = `<button class="btn btn-link btn-sm" onclick="cancelApplication(${application.no})">승인취소</button>`;
+                    } else {
+                        actionsTd.innerHTML = `<button class="btn btn-primary rounded-pill btn-xs" onclick="approveApplication(${application.no})">승인</button>
+                                               &nbsp;<button class="btn btn-danger rounded-pill btn-xs" onclick="rejectApplication(${application.no})">거절</button>`;
+                    }
+                    actionsTd.className = "status-area text-center";
+                    row.appendChild(actionsTd);
+
+                    applicationsList.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error("Error fetching applications:", error);
+            });
+    });
+
+    window.approveApplication = function (applicationNo) {
+        fetch(`/study/approve-application`, {
+            method: "post",
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': token
+            },
+            body: JSON.stringify({ no: applicationNo, status: "승인" })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    alert("승인 성공");
+                    // 승인 상태 업데이트
+                    let applicationRow = $(`button[onclick="approveApplication(${applicationNo})"]`).closest('tr');
+                    applicationRow.find('.status-area').html('<button class="btn btn-link btn-sm" onclick="cancelApplication(${application.no})">승인취소</button>');
+                } else {
+                    alert("승인 실패. 다시 시도해주세요");
+                }
+            })
+            .catch(error => {
+                console.log("Error:", error);
+                alert("승인 중 오류가 발생했습니다. 다시 시도해주세요");
+            });
+    };
+
 }) //ready end
 
