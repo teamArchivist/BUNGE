@@ -108,4 +108,11 @@
         where studyboardno = #{studyBoardNo}
     </select>
 
+    <insert id="applyStudy" parameterType="com.bunge.study.domain.StudyApplication">
+        insert into studyapplication
+        (studyboardno, application_id, application_content, request_date, response_date)
+        values
+        (#{studyboardno}, #{application_id}, #{application_content}, now(), now())
+    </insert>
+
 </mapper>
