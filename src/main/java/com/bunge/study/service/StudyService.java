@@ -65,4 +65,10 @@ public interface StudyService {
     //신청에 대한 거절 절차
     public void rejectApplication(RejectApplicationRequest rejectApplicationRequest);
 
+    //스터디 가입 신청 승인 취소
+    public void cancelApprove(ApproveApplicationRequest approveApplicationRequest);
+
+    //스터디 가입 신청 거절 취소
+    public void cancelReject(RejectApplicationRequest rejectApplicationRequest);
+
 }
