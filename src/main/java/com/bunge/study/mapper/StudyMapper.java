@@ -8,6 +8,7 @@ import com.bunge.study.domain.StudyEvent;
 import com.bunge.study.filter.StudyBoardFilter;
 import com.bunge.study.parameter.ApproveApplicationRequest;
 import com.bunge.study.parameter.BookSearchRequest;
+import com.bunge.study.parameter.RejectApplicationRequest;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -61,4 +62,7 @@ public interface StudyMapper {
 
     //신청에 대한 승인 절차
     public void approveApplication(ApproveApplicationRequest approveApplicationRequest);
+
+    //신청에 대한 거절 절차
+    public void rejectApplication(RejectApplicationRequest rejectApplicationRequest);
 }

@@ -129,4 +129,10 @@
         where no = #{no}
     </update>
 
+    <update id="rejectApplication" parameterType="com.bunge.study.parameter.RejectApplicationRequest">
+        update studyapplication
+        set status = #{status}
+        where no = #{no}
+    </update>
+
 </mapper>

@@ -8,6 +8,7 @@ import com.bunge.study.filter.StudyBoardFilter;
 import com.bunge.study.domain.StudyBoard;
 import com.bunge.study.parameter.ApproveApplicationRequest;
 import com.bunge.study.parameter.BookSearchRequest;
+import com.bunge.study.parameter.RejectApplicationRequest;
 import com.bunge.study.service.StudyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -203,6 +204,19 @@ public class StudyController {
             response.put("status", "error");
         }
 
+        return response;
+    }
+
+    @ResponseBody
+    @PostMapping("/reject-application")
+    public Map<String, Object> rejectApplication(@RequestBody RejectApplicationRequest rejectApplicationRequest) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            studyService.rejectApplication(rejectApplicationRequest);
+            response.put("status", "success");
+        } catch (Exception e) {
+            response.put("status", "error");
+        }
         return response;
     }
 

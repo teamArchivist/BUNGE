@@ -182,6 +182,8 @@ $(function () {
                     let actionsTd = document.createElement("td");
                     if (application.status === "승인") {
                         actionsTd.innerHTML = `<button class="btn btn-link btn-sm" onclick="cancelApplication(${application.no})">승인취소</button>`;
+                    } else if (application.status === "거절") {
+                        actionsTd.innerHTML = `<button class="btn btn-link btn-sm" onclick="cancelReject(${application.no})">거절취소</button>`;
                     } else {
                         actionsTd.innerHTML = `<button class="btn btn-primary rounded-pill btn-xs" onclick="approveApplication(${application.no})">승인</button>
                                                &nbsp;<button class="btn btn-danger rounded-pill btn-xs" onclick="rejectApplication(${application.no})">거절</button>`;
@@ -222,6 +224,33 @@ $(function () {
                 alert("승인 중 오류가 발생했습니다. 다시 시도해주세요");
             });
     };
+
+    window.rejectApplication = function (applicationNo) {
+        fetch(`/study/reject-application`, {
+            method: "post",
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': token
+            },
+            body: JSON.stringify({ no: applicationNo, status: "거절"})
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    alert("승인이 거절 되었습니다")
+                    let applicationRow = $(`button[onclick="rejectApplication(${applicationNo})"]`).closest('tr');
+                    applicationRow.find('.status-area').html('<button class="btn btn-link btn-sm" onclick="cancelReject(${application.no})">거절취소</button>');
+                } else {
+                    alert("승인 거절 실패. 다시 시도해주세요")
+                }
+            })
+            .catch(error => {
+                console.log("Error:", error);
+                alert("거절 중 오류가 발생했습니다. 다시 시도해주세요");
+            });
+    };
+
+
 
 }) //ready end
 
