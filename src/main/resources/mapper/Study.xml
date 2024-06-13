@@ -23,10 +23,12 @@
     </insert>
 
     <select id="getStudyList" parameterType="com.bunge.study.filter.StudyBoardFilter" resultType="com.bunge.study.domain.StudyBoard">
-        select s.*, COUNT(c.no) AS countcomm
+        select s.*,
+               COUNT(DISTINCT c.no) AS countcomm,
+               COUNT(DISTINCT CASE WHEN sa.status = '대기' THEN sa.no ELSE NULL END) AS pendingcount
         from studyboard s
-        left join studyboardcomm c
-        on s.no = c.studyboardno
+            left join studyboardcomm c on s.no = c.studyboardno
+            left join studyapplication sa on s.no = sa.studyboardno
         where 1=1
         <if test="booktitle != null and booktitle != ''">
             and booktitle like CONCAT('%', #{booktitle}, '%')

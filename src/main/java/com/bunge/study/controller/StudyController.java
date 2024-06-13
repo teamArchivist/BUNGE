@@ -39,6 +39,9 @@ public class StudyController {
                             @RequestParam(value = "page", defaultValue = "1") Integer page,
                             Model model) {
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loginId = authentication.getName();
+
         //logger.info(studyBoardFilter.toString());
 
         int pageSize = 8;
@@ -57,6 +60,7 @@ public class StudyController {
         int startPage = Math.max(1, page - 5);
         int endPage = Math.min(maxPage, page + 4);
 
+        model.addAttribute("loginId", loginId);
         model.addAttribute("studyBoardList", studyBoardList);
         model.addAttribute("currentPage", page);
         model.addAttribute("maxPage", maxPage);
@@ -180,4 +184,5 @@ public class StudyController {
 
         return response;
     }
+
 }

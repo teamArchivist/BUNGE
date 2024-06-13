@@ -13,6 +13,7 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface StudyMapper {
@@ -50,4 +51,7 @@ public interface StudyMapper {
 
     //스터디 신청
     public void applyStudy(StudyApplication studyApplication);
+
+    //스터디 리더의 경우 "대기" 상태 있는지를 확인
+    public List<StudyBoard> getApprovalPendingStatus();
 }

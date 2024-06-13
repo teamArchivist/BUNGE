@@ -11,6 +11,7 @@ import com.bunge.study.parameter.BookSearchRequest;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public interface StudyService {
 
@@ -49,4 +50,7 @@ public interface StudyService {
 
     //스터디 신청
     public void applyStudy(StudyApplication studyApplication);
+
+    //스터디 리더의 경우 "대기" 상태 있는지를 확인
+    public List<StudyBoard> getApprovalPendingStatus();
 }
