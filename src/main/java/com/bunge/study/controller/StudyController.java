@@ -102,10 +102,14 @@ public class StudyController {
         //logger.info(studyCommList.toString());
         int countStudyComm = studyService.getStudyCommListCount(no);
 
+        List<StudyApplication> studyMember = studyService.getStudyMember(no);
+        logger.info(studyMember.toString());
+
         model.addAttribute("loginId", loginId);
         model.addAttribute("studyBoard", studyBoard);
         model.addAttribute("studyCommList", studyCommList);
         model.addAttribute("countStudyComm", countStudyComm);
+        model.addAttribute("studyMember", studyMember);
 
         return "study/study_detail";
 

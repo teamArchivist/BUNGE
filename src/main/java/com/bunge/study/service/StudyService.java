@@ -71,4 +71,6 @@ public interface StudyService {
     //스터디 가입 신청 거절 취소
     public void cancelReject(RejectApplicationRequest rejectApplicationRequest);
 
+    //스터디 가입 신청 후 승인 된 멤버
+    public List<StudyApplication> getStudyMember(int studyboardno);
 }

@@ -147,4 +147,11 @@
         where no = #{no}
     </update>
 
+    <select id="getStudyMember" parameterType="int" resultType="com.bunge.study.domain.StudyApplication">
+        select *
+        from studyapplication
+        where studyboardno = #{studyboardno}
+        and status = '승인'
+    </select>
+
 </mapper>
