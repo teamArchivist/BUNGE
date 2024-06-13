@@ -220,5 +220,33 @@ public class StudyController {
         return response;
     }
 
+    @ResponseBody
+    @PostMapping("/cancel-approve")
+    public Map<String, Object> cancelApprove(@RequestBody ApproveApplicationRequest approveApplicationRequest) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            studyService.cancelApprove(approveApplicationRequest);
+            response.put("status", "success");
+        } catch (Exception e) {
+            response.put("status", "error");
+        }
+
+        return response;
+    }
+
+    @ResponseBody
+    @PostMapping("/cancel-reject")
+    public Map<String, Object> cancelReject(@RequestBody RejectApplicationRequest rejectApplicationRequest) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            studyService.cancelReject(rejectApplicationRequest);
+            response.put("status", "success");
+        } catch (Exception e) {
+            response.put("status", "error");
+        }
+
+        return response;
+    }
+
 
 }

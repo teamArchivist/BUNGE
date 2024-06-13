@@ -214,7 +214,7 @@ $(function () {
                     alert("승인 성공");
                     // 승인 상태 업데이트
                     let applicationRow = $(`button[onclick="approveApplication(${applicationNo})"]`).closest('tr');
-                    applicationRow.find('.status-area').html('<button class="btn btn-link btn-sm" onclick="cancelApplication(${application.no})">승인취소</button>');
+                    applicationRow.find('.status-area').html("<button class='btn btn-link btn-sm' onclick=cancelApplication(" + applicationNo +")>승인취소</button>");
                 } else {
                     alert("승인 실패. 다시 시도해주세요");
                 }
@@ -239,7 +239,7 @@ $(function () {
                 if (data.status === "success") {
                     alert("승인이 거절 되었습니다")
                     let applicationRow = $(`button[onclick="rejectApplication(${applicationNo})"]`).closest('tr');
-                    applicationRow.find('.status-area').html('<button class="btn btn-link btn-sm" onclick="cancelReject(${application.no})">거절취소</button>');
+                    applicationRow.find('.status-area').html("<button class='btn btn-link btn-sm' onclick=cancelReject(" + applicationNo + ")>거절취소</button>");
                 } else {
                     alert("승인 거절 실패. 다시 시도해주세요")
                 }
@@ -249,6 +249,64 @@ $(function () {
                 alert("거절 중 오류가 발생했습니다. 다시 시도해주세요");
             });
     };
+
+    window.cancelApplication = function (applicationNo) {
+        let answer = confirm("정말 취소하시겠습니까?")
+        if (answer) {
+            fetch(`/study/cancel-approve`,{
+                method: "post",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token
+                },
+                body: JSON.stringify({no: applicationNo, status: "대기"})
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        alert("승인이 취소 되었습니다")
+                        let applicationRow = $(`button[onclick="cancelApplication(${applicationNo})"`).closest('tr');
+                        applicationRow.find('.status-area').html(`<button class="btn btn-primary rounded-pill btn-xs" onclick="approveApplication(${applicationNo})">승인</button>
+                                               &nbsp;<button class="btn btn-danger rounded-pill btn-xs" onclick="rejectApplication(${applicationNo})">거절</button>`)
+                    } else {
+                        alert("승인 취소 실패. 다시 시도해주세요")
+                    }
+                })
+                .catch(error => {
+                    console.log("Error:", error);
+                    alert("취소 중 오류가 발생했습니다. 다시 시도해주세요");
+                })
+        }
+    }
+
+    window.cancelReject = function (applicationNo) {
+        let answer = confirm("정말 취소하시겠습니까?")
+        if (answer) {
+            fetch(`/study/cancel-reject`, {
+                method: "post",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': token
+                },
+                body: JSON.stringify({no: applicationNo, status: "대기"})
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        alert("거절이 취소 되었습니다")
+                        let applicationRow = $(`button[onclick="cancelReject(${applicationNo})"]`).closest('tr');
+                        applicationRow.find('.status-area').html(`<button class="btn btn-primary rounded-pill btn-xs" onclick="approveApplication(${applicationNo})">승인</button>
+                                               &nbsp;<button class="btn btn-danger rounded-pill btn-xs" onclick="rejectApplication(${applicationNo})">거절</button>`)
+                    } else {
+                        alert("거절 취소 실패. 다시 시도해주세요")
+                    }
+                })
+                .catch(error => {
+                    console.log("Error:", error);
+                    alert("취소 중 오류가 발생했습니다. 다시 시도해주세요")
+                })
+        }
+    }
 
 
 
