@@ -27,7 +27,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         // 세션에 환영 메시지 저장
         request.getSession().setAttribute("welcomemsg", welcomeMessage);
-        String url = request.getContextPath()+"/member/index";
+        String url = request.getContextPath()+"/main";
         response.sendRedirect(url);
     }
 }
