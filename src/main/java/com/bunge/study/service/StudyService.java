@@ -1,6 +1,7 @@
 package com.bunge.study.service;
 
 import com.bunge.memo.domain.Book;
+import com.bunge.study.domain.StudyApplication;
 import com.bunge.study.domain.StudyBoard;
 import com.bunge.study.domain.StudyBoardComm;
 import com.bunge.study.domain.StudyEvent;
@@ -46,4 +47,6 @@ public interface StudyService {
     //스터디 이벤트 리스트 조회
     public List<StudyEvent> getEventsByStudyBoardNo(int studyBoardNo);
 
+    //스터디 신청
+    public void applyStudy(StudyApplication studyApplication);
 }

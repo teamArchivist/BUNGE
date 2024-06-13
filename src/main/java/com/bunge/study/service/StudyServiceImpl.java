@@ -1,6 +1,7 @@
 package com.bunge.study.service;
 
 import com.bunge.memo.domain.Book;
+import com.bunge.study.domain.StudyApplication;
 import com.bunge.study.domain.StudyBoard;
 import com.bunge.study.domain.StudyBoardComm;
 import com.bunge.study.domain.StudyEvent;
@@ -89,5 +90,10 @@ public class StudyServiceImpl implements StudyService {
     @Override
     public List<StudyEvent> getEventsByStudyBoardNo(int studyBoardNo) {
         return studyMapper.getEventsByStudyBoardNo(studyBoardNo);
+    }
+
+    @Override
+    public void applyStudy(StudyApplication studyApplication) {
+        studyMapper.applyStudy(studyApplication);
     }
 }

@@ -113,5 +113,46 @@ $(function () {
         });
     }
 
+    const submitApplicationButton = document.getElementById("submitApplicationButton");
+
+    submitApplicationButton.addEventListener("click", function () {
+        const studyboardno = document.getElementById("studyBoardNo").value;
+        const application_content = document.getElementById("applicationReason").value;
+        const application_id = document.getElementById("loginId").textContent;
+
+        if (application_content) {
+            $.ajax({
+                url: "/study/apply-study",
+                method: "post",
+                data: {
+                    studyboardno: studyboardno,
+                    application_id: application_id,
+                    application_content: application_content,
+                },
+                beforeSend : function (xhr) {
+                    if (header && token) {
+                        xhr.setRequestHeader(header, token);
+                    }
+                },
+                success: function(response) {
+                    if (response.status === "success") {
+                        alert(response.message);
+                        $("#applicationModal").modal("hide");
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function (status, error) {
+                    console.log("ajax 요청 실패");
+                    console.log("상태:" + status);
+                    console.log("오류:" + error);
+                    alert("스터디 신청 중 에러가 발생했습니다. 다시 시도해주세요.");
+                }
+            });
+        } else {
+            alert("신청 사유를 입력하세요")
+        }
+    })
+
 }) //ready end
 

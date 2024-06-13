@@ -1,6 +1,7 @@
 package com.bunge.study.controller;
 
 import com.bunge.memo.domain.Book;
+import com.bunge.study.domain.StudyApplication;
 import com.bunge.study.domain.StudyBoardComm;
 import com.bunge.study.domain.StudyEvent;
 import com.bunge.study.filter.StudyBoardFilter;
@@ -162,5 +163,21 @@ public class StudyController {
     public String mine(Model model) {
 
         return "study/study_mine";
+    }
+
+    @ResponseBody
+    @PostMapping("/apply-study")
+    public Map<String, Object> applyStudy(StudyApplication studyApplication) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            studyService.applyStudy(studyApplication);
+            response.put("status", "success");
+            response.put("message", "스터디 신청 완료");
+        } catch (Exception e) {
+            response.put("status", "error");
+            response.put("message", "스터디 신청 오류, 다시 시도해주세요");
+        }
+
+        return response;
     }
 }

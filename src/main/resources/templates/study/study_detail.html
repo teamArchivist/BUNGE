@@ -26,7 +26,33 @@
                     </div>
                 </figure>
                 <div class="d-inline-block justify-content-end pt-xl-3 gap-1 ms-auto mb-2">
-                    <button th:if="!${#strings.equals(studyBoard.id, loginId)}" class="btn btn-success text-nowrap" id="application">스터디 신청</button>
+
+                    <!-- Study Application Modal -->
+                    <div class="modal fade" id="applicationModal" tabindex="-1" aria-labelledby="applicationModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="applicationModalLabel">스터디 신청</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="applicationForm">
+                                        <div class="mb-3">
+                                            <label for="applicationReason" class="form-label">신청 동기 (50자 까지만 입력 가능합니다)</label>
+                                            <textarea class="form-control" id="applicationReason" rows="3" maxlength="50" required></textarea>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                    <button type="button" class="btn btn-primary" id="submitApplicationButton">제출</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Study Application Modal emd -->
+
+                    <button th:if="!${#strings.equals(studyBoard.id, loginId)}" class="btn btn-success text-nowrap" id="application" data-bs-toggle="modal" data-bs-target="#applicationModal">스터디 신청</button>
                     <button th:if="${#strings.equals(studyBoard.id, loginId)}" class="btn btn-info text-nowrap" data-bs-toggle="modal" data-bs-target="#exampleModal">스터디 승인</button>
                     <button th:if="${#strings.equals(studyBoard.id, loginId)}" class="btn btn-warning text-nowrap">스터디 수정</button>
                     <button th:if="${#strings.equals(studyBoard.id, loginId)}" class="btn btn-danger text-nowrap" id="delete">스터디 삭제</button>
