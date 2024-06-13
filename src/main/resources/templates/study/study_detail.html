@@ -140,10 +140,7 @@
                                     <div class="row mb-3 border-bottom">
                                         <div class="col-sm-3 fs-5">참여인원</div>
                                         <div class="col-sm-9 mb-3">
-                                            <img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">
-                                            <span>삼차선</span>
-                                            <img class="img-xs rounded-circle" th:src="@{/img/profile-photos/7.png}" alt="Profile Picture" loading="lazy">
-                                            <span>게슴츠레</span>
+                                            <span th:each="studyMember:${studyMember}"><img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">[[${studyMember.application_id}]]&nbsp;</span>
                                         </div>
                                     </div>
                                     <div class="row mb-3 border-bottom">

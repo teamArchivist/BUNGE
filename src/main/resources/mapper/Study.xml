@@ -125,26 +125,33 @@
 
     <update id="approveApplication" parameterType="com.bunge.study.parameter.ApproveApplicationRequest">
         update studyapplication
-        set status = #{status}
+        set status = #{status}, response_date = now()
         where no = #{no}
     </update>
 
     <update id="rejectApplication" parameterType="com.bunge.study.parameter.RejectApplicationRequest">
         update studyapplication
-        set status = #{status}
+        set status = #{status}, response_date = now()
         where no = #{no}
     </update>
 
     <update id="cancelApprove" parameterType="com.bunge.study.parameter.ApproveApplicationRequest">
         update studyapplication
-        set status = #{status}
+        set status = #{status}, response_date = now()
         where no = #{no}
     </update>
 
     <update id="cancelReject" parameterType="com.bunge.study.parameter.RejectApplicationRequest">
         update studyapplication
-        set status = #{status}
+        set status = #{status}, response_date = now()
         where no = #{no}
     </update>
+
+    <select id="getStudyMember" parameterType="int" resultType="com.bunge.study.domain.StudyApplication">
+        select *
+        from studyapplication
+        where studyboardno = #{studyboardno}
+        and status = '승인'
+    </select>
 
 </mapper>

@@ -129,4 +129,9 @@ public class StudyServiceImpl implements StudyService {
     public void cancelReject(RejectApplicationRequest rejectApplicationRequest) {
         studyMapper.cancelReject(rejectApplicationRequest);
     }
+
+    @Override
+    public List<StudyApplication> getStudyMember(int studyboardno) {
+        return studyMapper.getStudyMember(studyboardno);
+    }
 }
