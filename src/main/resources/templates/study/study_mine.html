@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>나의 스터디</title>
+  <links>
+    <script th:src="@{/js/studymine.js}"></script>
+    <script type="module" th:src="@{/vendors/ionicons/ionicons.js}"></script>
+    <!-- Fullcalendar Scripts [ OPTIONAL ] -->
+    <script th:src="@{/vendors/fullcalendar/index.global.min.js}"></script>
+    <!-- Initialize [ SAMPLE ] -->
+    <script th:src="@{/js/study_mine_calendar.js}"></script>
+  </links>
+</head>
+<body class="out-quart">
+<div id="root" class="root mn--max sb--stuck tm--expanded-hd">
+<section>
+  <div class="content__wrap">
+
+
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="../../">Home</a></li>
+        <li class="breadcrumb-item"><a href="../../miscellaneous/">스터디</a></li>
+        <li class="breadcrumb-item active" aria-current="page">나의 스터디</li>
+      </ol>
+    </nav>
+    <!-- END : Breadcrumb -->
+
+
+    <h1 class="page-title mb-0 mt-2">나의 스터디</h1>
+
+    <p class="lead">
+      현재 진행 중인 스터디의 개요 / 담벼락 / 캘린더 를 보여줍니다.
+    </p>
+  </div>
+
+  <div class="content__wrap">
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <div class="tab-base">
+
+          <!-- Nav tabs -->
+          <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item active" role="presentation">
+              <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#_dm-tabsSummary" type="button" role="tab" aria-controls="summary" aria-selected="true">개요</button>
+            </li>
+
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#_dm-tabsAdmin" type="button" role="tab" aria-controls="summary" aria-selected="false"
+                      tabindex="-1">관리(리더/관리자만 보임)</button>
+            </li>
+          </ul>
+
+
+          <!-- Tabs content -->
+          <div class="tab-content mb-3">
+
+            <div id="_dm-tabsSummary" class="tab-pane fade active show" role="tabpanel" aria-labelledby="profile-tab">
+              <div class="row mb-3">
+                <h5>스터디 이름(목표도서)</h5>
+                <div class="row">
+                  <dt class="col-sm-8">이번엔 성공하자 30일 모임!(나를 소비하지 않는 현명한 태도에 관하여)</dt>
+                  <dd class="col-sm-4 text-end">+ 수정 요청하기</dd>
+                </div>
+              </div>
+
+              <div class="row mb-4">
+                <h5>참여자</h5>
+                <div class="col-sm-2">
+                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">admin
+                  </button>
+                </div>
+
+                <div class="col-sm-2">
+                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <img class="img-xs rounded-circle" th:src="@{/img/profile-photos/7.png}" alt="Profile Picture" loading="lazy">고라니
+                  </button>
+                </div>
+
+                <div class="col-sm-2">
+                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">김레오
+                  </button>
+                </div>
+
+                <div class="col-sm-2">
+                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    <img class="img-xs rounded-circle" th:src="@{/img/profile-photos/7.png}" alt="Profile Picture" loading="lazy">박칼린
+                  </button>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">강퇴</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                        "yes"를 누르면 해당 스터디원에 대한 강퇴 투표가 담벼락에 올라갑니다.
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-primary">yes</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">no</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- END : Basic Modal -->
+
+              </div>
+
+              <div class="row">
+                <h5>도전기간</h5>
+                <div class="row">
+                  <dt class="col-sm-8">24.05.01 ~ 24.05.31 (30일)</dt>
+                  <dd class="col-sm-4 text-end">+ 수정 요청하기</dd>
+                </div>
+              </div>
+            </div>
+
+            <div id="_dm-tabsAdmin" class="tab-pane fade" role="tabpanel" aria-labelledby="_dm-tabsAdmin">
+              <dt class="col-sm-9 mb-2">승인현황</dt>
+              <div class="row mb-3">
+                <div class="col-sm-4">
+                  <div class="d-flex align-items-stretch">
+                    <div class="d-flex align-items-center justify-content-center flex-shrink-0 text-bg-warning px-4 rounded-start">
+                      <i class="demo-psi-speech-bubble-3 fs-1"></i>
+                    </div>
+                    <div class="flex-grow-1 py-3 ms-3">
+                      <h5 class="h2 mb-0 fw-bold text-warning">2</h5>
+                      <p class="mb-0">승인대기</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4">
+                  <div class="d-flex align-items-stretch">
+                    <div class="d-flex align-items-center justify-content-center flex-shrink-0 text-bg-primary px-4 rounded-start">
+                      <i class="demo-psi-speech-bubble-3 fs-1"></i>
+                    </div>
+                    <div class="flex-grow-1 py-3 ms-3">
+                      <h5 class="h2 mb-0 fw-bold text-primary">4</h5>
+                      <p class="mb-0">승인중</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-4 mb-3">
+                  <div class="d-flex align-items-stretch">
+                    <div class="d-flex align-items-center justify-content-center flex-shrink-0 text-bg-success px-4 rounded-start">
+                      <i class="demo-psi-speech-bubble-3 fs-1"></i>
+                    </div>
+                    <div class="flex-grow-1 py-3 ms-3">
+                      <h5 class="h2 mb-0 fw-bold text-success">2</h5>
+                      <p class="mb-0">승인완료</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <dt class="col-sm-3">승인 수신 목록</dt>
+                <dd class="col-sm-9 text-end">승인 목록 전체 보기 +</dd>
+              </div>
+
+              <div class="table-responsive">
+                <table class="table table-bordered">
+                  <thead>
+                  <tr>
+                    <th>번호</th>
+                    <th>종류</th>
+                    <th>제목</th>
+                    <th>제안자</th>
+                    <th>제안일</th>
+                    <th>상태</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr>
+                    <td><a href="#" class="btn-link">#1</a></td>
+                    <td>강퇴</td>
+                    <td>"고라니" 님에 대한 강퇴 투표 승인</td>
+                    <td>김레오</td>
+                    <td>24.05.15</td>
+                    <td>승인중</td>
+                  </tr>
+                  <tr>
+                    <td><a href="#" class="btn-link">#2</a></td>
+                    <td>수정</td>
+                    <td>"목표도서 변경" 안건에 대한 승인</td>
+                    <td>김레오</td>
+                    <td>24.05.14</td>
+                    <td>승인대기</td>
+                  </tr>
+                  <tr>
+                    <td><a href="#" class="btn-link">#3</a></td>
+                    <td>수정</td>
+                    <td>"도전기간 변경" 안건에 대한 승인</td>
+                    <td>김레오</td>
+                    <td>24.05.15</td>
+                    <td>승인완료</td>
+                  </tr>
+                  <tr>
+                    <td><a href="#" class="btn-link">#4</a></td>
+                    <td>입장</td>
+                    <td>"새로운참여자" 님에 대한 참가 투표 승인</td>
+                    <td>김레오</td>
+                    <td>24.05.15</td>
+                    <td>승인중</td>
+                  </tr>
+                  <tr>
+                    <td><a href="#" class="btn-link">#5</a></td>
+                    <td>탈퇴</td>
+                    <td>"아퀴나스" 님에 대한 탈퇴 승인</td>
+                    <td>김레오</td>
+                    <td>24.05.15</td>
+                    <td>승인중</td>
+                  </tr>
+                  <tr>
+                    <td><a href="#" class="btn-link">#6</a></td>
+                    <td>신고</td>
+                    <td>"박칼린" 님에 대한 신고 승인</td>
+                    <td>김레오</td>
+                    <td>24.05.15</td>
+                    <td>승인중</td>
+                  </tr>
+                  <tr>
+                    <td><a href="#" class="btn-link">#7</a></td>
+                    <td>위임/선임</td>
+                    <td>"고라니" 님에 대한 리더/매니저 위임/선임</td>
+                    <td>김레오</td>
+                    <td>24.05.15</td>
+                    <td>승인중</td>
+                  </tr>
+
+
+                  </tbody>
+                </table>
+              </div>
+
+              <nav class="text-align-center mt-2" aria-label="Table navigation">
+                <ul class="pagination justify-content-center">
+                  <li class="page-item disabled">
+                    <a class="page-link">Previous</a>
+                  </li>
+                  <li class="page-item active" aria-current="page">
+                    <span class="page-link">1</span>
+                  </li>
+                  <li class="page-item"><a class="page-link" href="#">2</a></li>
+                  <li class="page-item"><a class="page-link" href="#">3</a></li>
+                  <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
+                  <li class="page-item"><a class="page-link" href="#">5</a></li>
+                  <li class="page-item">
+                    <a class="page-link" href="#">Next</a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+
+          </div>
+
+          <div class="card mb-3">
+            <div class="card-body">
+              <div class="flex-fill mb-3">
+                <div id="_dm-calendar"></div>
+              </div>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addEventModal">
+                일정 추가
+              </button>
+              <div class="modal" id="addEventModal">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title">일정 추가</h4>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                      <form id="addEventForm">
+                        <div class="mb-3">
+                          <label for="eventTitle" class="form-label">제목</label>
+                          <input type="text" class="form-control" id="eventTitle" required>
+                        </div>
+                        <div class="mb-3">
+                          <label for="eventStart" class="form-label">시작일</label>
+                          <input type="date" class="form-control" id="eventStart" required>
+                        </div>
+                        <div class="mb-3">
+                          <label for="eventEnd" class="form-label">종료일</label>
+                          <input type="date" class="form-control" id="eventEnd" required>
+                        </div>
+                        <div class="mb-3">
+                          <label for="eventColor" class="form-label">색상</label>
+                          <select class="form-select" id="eventColor" required>
+                            <option value="bg-primary" selected>Primary</option>
+                            <option value="bg-secondary">Secondary</option>
+                            <option value="bg-success">Success</option>
+                            <option value="bg-danger">Danger</option>
+                            <option value="bg-warning">Warning</option>
+                            <option value="bg-info">Info</option>
+                            <option value="bg-light">Light</option>
+                            <option value="bg-dark">Dark</option>
+                          </select>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                      <button type="button" class="btn btn-primary" id="saveEventButton">저장</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+      <div class="col-md-6">
+        <div class="tab-base">
+
+          <!-- Nav tabs -->
+          <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item active" role="presentation">
+              <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#_dm-tabsSummary" type="button" role="tab" aria-controls="summary" aria-selected="true" tabindex="-1">담벼락</button>
+            </li>
+          </ul>
+
+          <!-- Tabs content -->
+          <div class="tab-content mb-3">
+
+            <div id="_dm-tabsSummary" class="tab-pane fade active show" role="tabpanel" aria-labelledby="profile-tab">
+              <div class="mb-2">
+                <button type="button" class="btn btn-primary rounded-pill">담벼락 글 추가</button>
+              </div>
+              <div class="mb-2">
+                &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/7.png}" alt="Profile Picture" loading="lazy"><a href="#">"고라니 (24.05.15)" 님에 대한 강퇴 투표가 시작되었습니다. 과반 이상 찬성 시 승인 절차 진행합니다.</a>
+              </div>
+
+              <div class="mb-2">
+                &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">김레오 (24.05.15) 과제 제출 신속히 부탁
+              </div>
+
+              <div class="mb-2">
+                &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">박칼린 (24.05.14) 이번에 스터디 어디서 해요??
+              </div>
+
+              <div class="mb-2">
+                &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy"><a href="#">"목표도서 변경" 안건에 대한 승인 절차가 진행 중입니다.</a>
+              </div>
+
+              <div class="mb-2">
+                &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">고라니 (24.05.13) 탈퇴 / 강퇴 / 신고기능 있나요??
+              </div>
+
+              <div class="mb-2">
+                &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">고라니 (24.05.13) 리더가 관리할 수 있는 기능 있나요??
+              </div>
+              <div class="mb-2">
+                &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">고라니 (24.05.12) 리더가 관리할 수 있는 기능 있나요??
+              </div>
+              <div class="mb-2">
+                &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy"><a href="#">"도전기간 변경" 안건에 대한 승인 절차가 진행 중입니다.</a>
+              </div>
+              <div class="mb-2">
+                &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">고라니 (24.05.11) 리더가 관리할 수 있는 기능 있나요??
+              </div>
+              <div class="mb-2">
+                &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">고라니 (24.05.10) 리더가 관리할 수 있는 기능 있나요??
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+
+
+              <div class="d-md-flex gap-4">
+
+
+                <!-- File manager sidebar -->
+                <div class="w-md-160px w-xl-200px flex-shrink-0">
+
+                  <h5 class="px-3 mb-3">Folders</h5>
+                  <div class="list-group list-group-borderless gap-1">
+                    <a href="#" class="list-group-item list-group-item-action">
+                      <i class="demo-pli-folder fs-5 me-2"></i> ...
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action active">
+                      <i class="demo-pli-folder fs-5 me-2"></i> Documents
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                      <i class="demo-pli-folder fs-5 me-2"></i> Data
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                      <i class="demo-pli-folder fs-5 me-2"></i> PDF
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                      <i class="demo-pli-folder fs-5 me-2"></i> Illustration
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                      <i class="demo-pli-folder fs-5 me-2"></i> Github
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                      <i class="demo-pli-folder fs-5 me-2"></i> Server
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action disabled" tabindex="-1" aria-disabled="true">
+                      <i class="demo-pli-folder fs-5 me-2"></i> Deleted files
+                    </a>
+                  </div>
+
+
+                  <h5 class="px-3 mt-5 mb-3">Favorites</h5>
+                  <div class="list-group list-group-borderless gap-1">
+                    <a href="#" class="list-group-item list-group-item-action">
+                      <i class="demo-pli-folder-with-document fs-5 me-2"></i> User folders
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                      <i class="demo-pli-camera-2 fs-5 me-2"></i> Photos
+                    </a>
+                    <a href="#" class="list-group-item list-group-item-action">
+                      <i class="demo-pli-video fs-5 me-2"></i> Videos
+                    </a>
+                  </div>
+
+
+                  <h5 class="px-3 mt-5 mb-3">Tags</h5>
+                  <div class="d-flex flex-wrap gap-2 px-3">
+                    <a href="#" class="btn btn-warning btn-xs">Family</a>
+                    <a href="#" class="btn btn-info btn-xs">Home</a>
+                    <a href="#" class="btn btn-danger btn-xs">Work</a>
+                    <a href="#" class="btn btn-secondary btn-xs">Films</a>
+                    <a href="#" class="btn btn-success btn-xs">Musics</a>
+                    <a href="#" class="btn btn-primary btn-xs">Videos</a>
+                  </div>
+
+
+                </div>
+                <!-- END : File manager sidebar -->
+
+
+                <div class="vr"></div>
+
+
+                <!-- File manager content -->
+                <div class="flex-fill">
+
+                  <!-- Folder name and path -->
+                  <h2 class="d-flex align-items-center gap-3">
+                    <i class="demo-pli-folder-with-document fs-4"></i> Documents
+                  </h2>
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Public</a></li>
+                    <li class="breadcrumb-item"><a href="#">Data</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Documents</li>
+                  </ol>
+                  <!-- END : Folder name and path -->
+
+
+                  <div class="row py-3">
+
+                    <!-- Left toolbar -->
+                    <div class="col-md-6 d-flex gap-1 align-items-center mb-3">
+                      <button class="btn btn-icon btn-outline-light">
+                        <i class="demo-pli-home fs-5"></i>
+                      </button>
+                      <button class="btn btn-outline-light text-nowrap hstack gap-2">
+                        <i class="demo-pli-reload-3 fs-5"></i>
+                        <span class="vr"></span>
+                        <span class="d-none d-lg-inline-block ms-lg-2">
+                                          Refresh
+                                       </span>
+                      </button>
+                      <div class="btn-group">
+                        <button class="btn btn-icon btn-outline-light"><i class="demo-pli-file-add fs-5"></i></button>
+                        <button class="btn btn-icon btn-outline-light"><i class="demo-pli-file-edit fs-5"></i></button>
+                        <button class="btn btn-icon btn-outline-light"><i class="demo-pli-recycling fs-5"></i></button>
+                      </div>
+                    </div>
+                    <!-- END : Left toolbar -->
+
+                    <!-- Right Toolbar -->
+                    <div class="col-md-6 d-flex gap-1 align-items-center justify-content-md-end mb-3">
+                      <div class="form-group">
+                        <input type="text" placeholder="Search files or folders..." class="form-control" autocomplete="off">
+                      </div>
+
+                      <div class="dropdown">
+                        <button class="btn btn-icon btn-outline-light" data-bs-toggle="dropdown" aria-expanded="false">
+                          <i class="demo-pli-dot-horizontal fs-5"></i>
+                          <span class="visually-hidden">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                          <li><a class="dropdown-item" href="#">Action</a></li>
+                          <li><a class="dropdown-item" href="#">Another action</a></li>
+                          <li><a class="dropdown-item" href="#">Something else here</a></li>
+                          <li>
+                            <hr class="dropdown-divider">
+                          </li>
+                          <li><a class="dropdown-item" href="#">Separated link</a></li>
+                        </ul>
+                      </div>
+                    </div>
+                    <!-- END : Right Toolbar -->
+
+                  </div>
+
+
+                  <!-- Folder view -->
+                  <div class="table-responsive pb-4">
+                    <table class="table table-striped align-middle">
+                      <thead>
+                      <tr>
+                        <th style="width: 40px"></th>
+                        <th class="w-100w">Name</th>
+                        <th class="text-center">Type</th>
+                        <th class="text-center" style="width: 100px">Size</th>
+                        <th class="text-center" style="width: 150px">Date Modified</th>
+                        <th class="text-center" style="width: 40px">Options</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr>
+                        <td>
+                          <input class="form-check-input" type="checkbox">
+                        </td>
+                        <td>
+                          <div class="d-flex align-items-center position-relative">
+                            <div class="flex-shrink-0">
+                              <i class="demo-psi-folder fs-3 text-orange-400"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-2">
+                              <a href="#" class="stretched-link text-reset btn-link">. . .</a>
+                            </div>
+                          </div>
+                        </td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <input class="form-check-input" type="checkbox">
+                        </td>
+                        <td>
+                          <div class="d-flex align-items-center position-relative">
+                            <div class="flex-shrink-0">
+                              <i class="demo-psi-folder fs-3 text-orange-400"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-2">
+                              <a href="#" class="stretched-link text-reset btn-link">My Project</a>
+                            </div>
+                          </div>
+                        </td>
+                        <td class="text-center">Folder</td>
+                        <td class="text-center">225 MB</td>
+                        <td class="text-center">Yesterday, 07:55PM</td>
+                        <td class="text-center">
+                          <div class="dropdown">
+                            <button class="btn btn-icon btn-xs btn-hover btn-primary" data-bs-toggle="dropdown" aria-expanded="false">
+                              <i class="demo-pli-dot-horizontal"></i>
+                              <span class="visually-hidden">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                              <li><a class="dropdown-item" href="#">Action</a></li>
+                              <li><a class="dropdown-item" href="#">Another action</a></li>
+                              <li><a class="dropdown-item" href="#">Something else here</a></li>
+                              <li>
+                                <hr class="dropdown-divider">
+                              </li>
+                              <li><a class="dropdown-item" href="#">Separated link</a></li>
+                            </ul>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <input class="form-check-input" type="checkbox">
+                        </td>
+                        <td>
+                          <div class="d-flex align-items-center position-relative">
+                            <div class="flex-shrink-0">
+                              <i class="demo-psi-folder fs-3 text-orange-400"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-2">
+                              <a href="#" class="stretched-link text-reset btn-link">Photos</a>
+                            </div>
+                          </div>
+                        </td>
+                        <td class="text-center">Folder</td>
+                        <td class="text-center">225 MB</td>
+                        <td class="text-center">Yesterday, 10:45PM</td>
+                        <td class="text-center">
+                          <div class="dropdown">
+                            <button class="btn btn-icon btn-xs btn-hover btn-primary" data-bs-toggle="dropdown" aria-expanded="false">
+                              <i class="demo-pli-dot-horizontal"></i>
+                              <span class="visually-hidden">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                              <li><a class="dropdown-item" href="#">Action</a></li>
+                              <li><a class="dropdown-item" href="#">Another action</a></li>
+                              <li><a class="dropdown-item" href="#">Something else here</a></li>
+                              <li>
+                                <hr class="dropdown-divider">
+                              </li>
+                              <li><a class="dropdown-item" href="#">Separated link</a></li>
+                            </ul>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <input class="form-check-input" type="checkbox">
+                        </td>
+                        <td>
+                          <div class="d-flex align-items-center position-relative">
+                            <div class="flex-shrink-0">
+                              <i class="demo-psi-folder fs-3 text-orange-400"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-2">
+                              <a href="#" class="stretched-link text-reset btn-link">Downloads</a>
+                            </div>
+                          </div>
+                        </td>
+                        <td class="text-center">Folder</td>
+                        <td class="text-center">498 MB</td>
+                        <td class="text-center">Today, 11:23AM</td>
+                        <td class="text-center">
+                          <div class="dropdown">
+                            <button class="btn btn-icon btn-xs btn-hover btn-primary" data-bs-toggle="dropdown" aria-expanded="false">
+                              <i class="demo-pli-dot-horizontal"></i>
+                              <span class="visually-hidden">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                              <li><a class="dropdown-item" href="#">Action</a></li>
+                              <li><a class="dropdown-item" href="#">Another action</a></li>
+                              <li><a class="dropdown-item" href="#">Something else here</a></li>
+                              <li>
+                                <hr class="dropdown-divider">
+                              </li>
+                              <li><a class="dropdown-item" href="#">Separated link</a></li>
+                            </ul>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <input class="form-check-input" type="checkbox">
+                        </td>
+                        <td>
+                          <div class="d-flex align-items-center position-relative">
+                            <div class="flex-shrink-0">
+                              <i class="demo-psi-folder-zip fs-3 text-orange"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-2">
+                              <a href="#" class="stretched-link text-reset btn-link">Package.zip</a>
+                            </div>
+                          </div>
+                        </td>
+                        <td class="text-center">Compressed</td>
+                        <td class="text-center">25 MB</td>
+                        <td class="text-center">Nov 23, 09:11AM</td>
+                        <td class="text-center">
+                          <div class="dropdown">
+                            <button class="btn btn-icon btn-xs btn-hover btn-primary" data-bs-toggle="dropdown" aria-expanded="false">
+                              <i class="demo-pli-dot-horizontal"></i>
+                              <span class="visually-hidden">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                              <li><a class="dropdown-item" href="#">Action</a></li>
+                              <li><a class="dropdown-item" href="#">Another action</a></li>
+                              <li><a class="dropdown-item" href="#">Something else here</a></li>
+                              <li>
+                                <hr class="dropdown-divider">
+                              </li>
+                              <li><a class="dropdown-item" href="#">Separated link</a></li>
+                            </ul>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <input class="form-check-input" type="checkbox">
+                        </td>
+                        <td>
+                          <div class="d-flex align-items-center position-relative">
+                            <div class="flex-shrink-0 text-primary">
+                              <i class="demo-psi-file-html fs-3"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-2">
+                              <a href="#" class="stretched-link text-reset btn-link">index.html</a>
+                            </div>
+                          </div>
+                        </td>
+                        <td class="text-center">HTML</td>
+                        <td class="text-center">182KB</td>
+                        <td class="text-center">Oct 22, 07:11AM</td>
+                        <td class="text-center">
+                          <div class="dropdown">
+                            <button class="btn btn-icon btn-xs btn-hover btn-primary" data-bs-toggle="dropdown" aria-expanded="false">
+                              <i class="demo-pli-dot-horizontal"></i>
+                              <span class="visually-hidden">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                              <li><a class="dropdown-item" href="#">Action</a></li>
+                              <li><a class="dropdown-item" href="#">Another action</a></li>
+                              <li><a class="dropdown-item" href="#">Something else here</a></li>
+                              <li>
+                                <hr class="dropdown-divider">
+                              </li>
+                              <li><a class="dropdown-item" href="#">Separated link</a></li>
+                            </ul>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <input class="form-check-input" type="checkbox">
+                        </td>
+                        <td>
+                          <div class="d-flex align-items-center position-relative">
+                            <div class="flex-shrink-0">
+                              <i class="demo-pli-file-txt fs-3"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-2">
+                              <a href="#" class="stretched-link text-reset btn-link">robot.txt</a>
+                            </div>
+                          </div>
+                        </td>
+                        <td class="text-center">Text</td>
+                        <td class="text-center">2KB</td>
+                        <td class="text-center">Aug 11, 05:22AM</td>
+                        <td class="text-center">
+                          <div class="dropdown">
+                            <button class="btn btn-icon btn-xs btn-hover btn-primary" data-bs-toggle="dropdown" aria-expanded="false">
+                              <i class="demo-pli-dot-horizontal"></i>
+                              <span class="visually-hidden">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                              <li><a class="dropdown-item" href="#">Action</a></li>
+                              <li><a class="dropdown-item" href="#">Another action</a></li>
+                              <li><a class="dropdown-item" href="#">Something else here</a></li>
+                              <li>
+                                <hr class="dropdown-divider">
+                              </li>
+                              <li><a class="dropdown-item" href="#">Separated link</a></li>
+                            </ul>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <input class="form-check-input" type="checkbox">
+                        </td>
+                        <td>
+                          <div class="d-flex align-items-center position-relative">
+                            <div class="flex-shrink-0">
+                              <i class="demo-pli-video fs-3"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-2">
+                              <a href="#" class="stretched-link text-reset btn-link">highland.mp4</a>
+                            </div>
+                          </div>
+                        </td>
+                        <td class="text-center">Video</td>
+                        <td class="text-center">540Mb</td>
+                        <td class="text-center">Des 5, 09:17AM</td>
+                        <td class="text-center">
+                          <div class="dropdown">
+                            <button class="btn btn-icon btn-xs btn-hover btn-primary" data-bs-toggle="dropdown" aria-expanded="false">
+                              <i class="demo-pli-dot-horizontal"></i>
+                              <span class="visually-hidden">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                              <li><a class="dropdown-item" href="#">Action</a></li>
+                              <li><a class="dropdown-item" href="#">Another action</a></li>
+                              <li><a class="dropdown-item" href="#">Something else here</a></li>
+                              <li>
+                                <hr class="dropdown-divider">
+                              </li>
+                              <li><a class="dropdown-item" href="#">Separated link</a></li>
+                            </ul>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <input class="form-check-input" type="checkbox">
+                        </td>
+                        <td>
+                          <div class="d-flex align-items-center position-relative">
+                            <div class="flex-shrink-0">
+                              <i class="demo-pli-file-word fs-3"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-2">
+                              <a href="#" class="stretched-link text-reset btn-link">Company Overview.doc</a>
+                            </div>
+                          </div>
+                        </td>
+                        <td class="text-center">Document</td>
+                        <td class="text-center">9KB</td>
+                        <td class="text-center">Oct 14, 03:14PM</td>
+                        <td class="text-center">
+                          <div class="dropdown">
+                            <button class="btn btn-icon btn-xs btn-hover btn-primary" data-bs-toggle="dropdown" aria-expanded="false">
+                              <i class="demo-pli-dot-horizontal"></i>
+                              <span class="visually-hidden">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                              <li><a class="dropdown-item" href="#">Action</a></li>
+                              <li><a class="dropdown-item" href="#">Another action</a></li>
+                              <li><a class="dropdown-item" href="#">Something else here</a></li>
+                              <li>
+                                <hr class="dropdown-divider">
+                              </li>
+                              <li><a class="dropdown-item" href="#">Separated link</a></li>
+                            </ul>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <input class="form-check-input" type="checkbox">
+                        </td>
+                        <td>
+                          <div class="d-flex align-items-center position-relative">
+                            <div class="flex-shrink-0">
+                              <i class="demo-pli-file-jpg fs-3"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-2">
+                              <a href="#" class="stretched-link text-reset btn-link">Nature.jpeg</a>
+                            </div>
+                          </div>
+                        </td>
+                        <td class="text-center">Image</td>
+                        <td class="text-center">55KB</td>
+                        <td class="text-center">Des 15, 08:34PM</td>
+                        <td class="text-center">
+                          <div class="dropdown">
+                            <button class="btn btn-icon btn-xs btn-hover btn-primary" data-bs-toggle="dropdown" aria-expanded="false">
+                              <i class="demo-pli-dot-horizontal"></i>
+                              <span class="visually-hidden">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                              <li><a class="dropdown-item" href="#">Action</a></li>
+                              <li><a class="dropdown-item" href="#">Another action</a></li>
+                              <li><a class="dropdown-item" href="#">Something else here</a></li>
+                              <li>
+                                <hr class="dropdown-divider">
+                              </li>
+                              <li><a class="dropdown-item" href="#">Separated link</a></li>
+                            </ul>
+                          </div>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <input class="form-check-input" type="checkbox">
+                        </td>
+                        <td>
+                          <div class="d-flex align-items-center position-relative">
+                            <div class="flex-shrink-0">
+                              <i class="demo-pli-video fs-3"></i>
+                            </div>
+                            <div class="flex-grow-1 ms-2">
+                              <a href="#" class="stretched-link text-reset btn-link">CSS3-tutorial.mp4</a>
+                            </div>
+                          </div>
+                        </td>
+                        <td class="text-center">Video</td>
+                        <td class="text-center">320Mb</td>
+                        <td class="text-center">Des 5, 09:17AM</td>
+                        <td class="text-center">
+                          <div class="dropdown">
+                            <button class="btn btn-icon btn-xs btn-hover btn-primary" data-bs-toggle="dropdown" aria-expanded="false">
+                              <i class="demo-pli-dot-horizontal"></i>
+                              <span class="visually-hidden">Toggle Dropdown</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                              <li><a class="dropdown-item" href="#">Action</a></li>
+                              <li><a class="dropdown-item" href="#">Another action</a></li>
+                              <li><a class="dropdown-item" href="#">Something else here</a></li>
+                              <li>
+                                <hr class="dropdown-divider">
+                              </li>
+                              <li><a class="dropdown-item" href="#">Separated link</a></li>
+                            </ul>
+                          </div>
+                        </td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- END : Folder view -->
+
+                </div>
+                <!-- END : File manager content -->
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+</div>
+</body>
+</html>

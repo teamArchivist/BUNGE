@@ -157,4 +157,10 @@ public class StudyController {
     public List<StudyEvent> getEvents(@RequestParam int studyBoardNo) {
         return studyService.getEventsByStudyBoardNo(studyBoardNo);
     }
+
+    @GetMapping("/mine")
+    public String mine(Model model) {
+
+        return "study/study_mine";
+    }
 }
