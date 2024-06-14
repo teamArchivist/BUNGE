@@ -80,4 +80,7 @@ public interface StudyService {
 
     //신청 여부 확인
     public int checkApplication(CheckApplicationRequest checkApplicationRequest);
+
+    //모집일이 지났을 때 모집글 상태 업데이트
+    public int updateEnrollStatus(StudyBoard studyBoard);
 }

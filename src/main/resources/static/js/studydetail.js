@@ -3,6 +3,7 @@ $(function () {
     let id = $("#loginId").text();
 
     getStudyCommentList(studyboardno)
+    checkEnddate(studyboardno)
 
     let countStudyComm = $("#countStudyComm").val();
     console.log(countStudyComm)
@@ -331,6 +332,79 @@ $(function () {
             console.log("오류:" + error);
         }
     })
+
+    $("#studyStart").click(function() {
+        $.ajax({
+            url: "/study/get-study-info",
+            method: "post",
+            data: { no: studyboardno },
+            beforeSend : function (xhr) {
+                if (header && token) {
+                    xhr.setRequestHeader(header, token);
+                }
+            },
+            success: function (data) {
+                console.log(data)
+                confirm("도전을 시작하시겠습니까? 도전기간 : " + data.challengeperiod + "일, 참여인원 : " + data.approved + "명 입니다."  )
+            },
+            error: function (status, error) {
+                console.log("ajax 요청 실패");
+                console.log("상태:" + status);
+                console.log("오류:" + error);
+            }
+        })
+    })
+
+    function checkEnddate(studyboardno) {
+        $.ajax({
+            url: "/study/check-enddate",
+            method: "post",
+            data: {no: studyboardno},
+            cache: false,
+            beforeSend : function (xhr) {
+                if (header && token) {
+                    xhr.setRequestHeader(header, token);
+                }
+            },
+            success: function (data) {
+                //console.log(data)
+                if (data) {
+                    $("#studyStart").after("<span>(모집기간 종료!! 도전시작 버튼을 눌러주세요)</span>")
+                    $("#application").prop("disabled", true).text("모집 종료")
+                    $.ajax({
+                        url: "/study/update-enroll-status",
+                        method: "post",
+                        data: {no : studyboardno},
+                        cache: false,
+                        beforeSend : function (xhr) {
+                            if (header && token) {
+                                xhr.setRequestHeader(header, token);
+                            }
+                        },
+                        success: function (data) {
+                            if (data == 1) {
+                                console.log("상태 update 성공")
+                                $("#enrollStatus").empty();
+                                $("#enrollStatus").append("<div class='d-block badge bg-danger form-control-plaintext'>마감</div><p></p>")
+                            } else {
+                                console.log("상태 update 실패")
+                            }
+                        },
+                        error: function (status, error) {
+                            console.log("ajax 요청 실패");
+                            console.log("상태:" + status);
+                            console.log("오류:" + error);
+                        }
+                    })
+                }
+            },
+            error: function (status, error) {
+                console.log("ajax 요청 실패");
+                console.log("상태:" + status);
+                console.log("오류:" + error);
+            }
+        })
+    }
 
 
 

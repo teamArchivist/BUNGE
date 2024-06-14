@@ -31,5 +31,6 @@ public class StudyBoard {
     private int page;
     private int countcomm;
     private int pendingcount;
+    private int approved;
 
 }

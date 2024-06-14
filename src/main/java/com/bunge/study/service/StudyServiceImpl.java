@@ -145,4 +145,9 @@ public class StudyServiceImpl implements StudyService {
     public int checkApplication(CheckApplicationRequest checkApplicationRequest) {
         return studyMapper.checkApplication(checkApplicationRequest);
     }
+
+    @Override
+    public int updateEnrollStatus(StudyBoard studyBoard) {
+        return studyMapper.updateEnrollStatus(studyBoard);
+    }
 }
