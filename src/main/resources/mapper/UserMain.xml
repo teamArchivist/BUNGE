@@ -2,20 +2,47 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.bunge.membermain.mapper.UserMainMapper">
+<mapper namespace="com.bunge.usermain.mapper.UserMainMapper">
     <!-- 스터디보드 정보 조회 -->
     <select id="selectStudyboardByMemberId" parameterType="String" resultType="com.bunge.study.domain.StudyBoard">
-        SELECT s.*
-        FROM studyboard s
-                 JOIN member m ON s.id = m.id
-        WHERE m.id = #{id}
+        SELECT
+            sm.studyboardno,
+            sm.studystart,
+            sm.studyend,
+            sm.studyperiod,
+            sm.leaderId,
+            sm.booktitle,
+            sm.studystatus,
+            smm.no,
+            smm.memberId,
+            smm.role,
+            sb.title AS study_title
+        FROM
+            studymanagement sm
+                JOIN
+            studymember smm
+            ON
+                sm.studyboardno = smm.studyboardno
+                JOIN
+            studyboard sb
+            ON
+                sm.studyboardno = sb.no
+        WHERE
+            smm.memberId = #{memberId};
     </select>
 
     <!-- 스터디보드 정보 개수 조회 -->
     <select id="countStudyboardByMemberId" parameterType="String" resultType="int">
-        SELECT COUNT(*)
-        FROM studyboard s
-                 JOIN member m ON s.id = m.id
-        WHERE m.id = #{id}
+        SELECT
+            COUNT(*) AS total_count
+        FROM
+            studymanagement sm
+                JOIN
+            studymember smm
+            ON
+                sm.studyboardno = smm.studyboardno
+        WHERE
+            smm.memberId = #{memberId};
+
     </select>
 </mapper>

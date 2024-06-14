@@ -2,7 +2,7 @@
 <html th:fragment="layout (title, links, content)"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      lang="en" data-bs-theme="light" data-scheme="navy">
+      lang="en" data-bs-theme="light" data-scheme="navy" xmlns="http://www.w3.org/1999/html">
 
 <head>
    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
@@ -32,6 +32,9 @@
 
    <!-- Demo purpose CSS [ DEMO ] -->
    <link rel="stylesheet" th:href="@{/css/demo-purpose/demo-settings.min.css}">
+
+   <!-- Line-icons CSS-->
+   <link rel="stylesheet" th:href="@{/premium/icon-sets/line-icons/premium-line-icons.css}">
 
    <script th:src="@{/js/jquery-3.7.1.js}"></script>
 
@@ -68,9 +71,11 @@
 
                   <!-- Brand title -->
                   <div class="brand-title">
-                     <a th:href="@{/main}">BUNGE</a>
+                     <a th:if="${#authorization.expression('hasAuthority(''admin'') or hasAuthority(''superadmin'')')}" th:href="@{/main}">BUNGE</a>
+                     <a th:if="${#authorization.expression('hasAuthority(''member'')')}" th:href="@{/user/main}">BUNGE</a>
+                     <!-- Anonymous user (not logged in) -->
+                     <a th:if="${#authorization.expression('isAnonymous()')}" th:href="@{/member/login}">BUNGE</a>
                   </div>
-
                </div>
             </div>
             <!-- End - Brand -->
