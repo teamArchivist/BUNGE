@@ -4,8 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.Date;
-
 @ToString
 @Setter
 @Getter
@@ -18,4 +16,6 @@ public class StudyManagement {
     private String booktitle;
     private String studystatus;
     private String title;
+    private String memberIds;
+
 }
