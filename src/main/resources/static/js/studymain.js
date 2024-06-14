@@ -153,7 +153,7 @@ $(function() {
                         } else if (application.status === "승인") {
                             statusBadge = "<div class='d-block badge bg-primary'>승인됨</div>";
                         } else if (application.status === "거절") {
-                            statusBadge = "<div class='d-block badge bg-danger'>거절됨";
+                            statusBadge = "<div class='d-block badge bg-dark'>거절됨";
                         }
                         $(`#status-${application.studyboardno}`).append(statusBadge);
                     })

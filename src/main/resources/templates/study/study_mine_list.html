@@ -4,7 +4,7 @@
 <head>
     <title>나의 스터디</title>
     <links>
-        <!--/* link, script 태그 영역 */-->
+        <script th:src="@{/js/studymine.js}"></script>
     </links>
 </head>
 <body>
@@ -91,7 +91,9 @@
                                         [[${myList.leaderId}]]
                                     </td>
                                     <td class="text-center">
-                                        admin, b1234
+                                       <span th:each="memberId : ${#strings.listSplit(myList.memberIds,',')}">
+                                           &nbsp[[${memberId}]]
+                                       </span>
                                     </td>
                                     <td class="text-center" th:text="${#strings.abbreviate(myList.booktitle, 50)}">
                                     </td>

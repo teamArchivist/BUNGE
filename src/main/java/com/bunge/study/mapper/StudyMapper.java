@@ -94,4 +94,5 @@ public interface StudyMapper {
 
     //나의 스터디 리스트 조회
     public List<StudyManagement> getMyStudyList(String loginId);
+
 }
