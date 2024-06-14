@@ -22,6 +22,7 @@
                         <div class="flex-grow-1 ms-4">
                             <span class="h3 text-body-emphasis fw-bold">[[${studyBoard.title}]]</span>
                             <span class="m-0">([[${studyBoard.quota}]]명 모집 중)</span>
+                            <button type="button" class="btn btn-light" id="studyStart">도전시작</button>
                         </div>
                     </div>
                 </figure>
@@ -101,7 +102,7 @@
                                     <div class="row mb-3 border-bottom">
                                         <input type="hidden" th:value="${studyBoard.no}" id="studyBoardNo">
                                         <div class="col-sm-3 fs-5">상태</div>
-                                        <div class="col-sm-2">
+                                        <div class="col-sm-2" id="enrollStatus">
                                             <div th:if="${studyBoard.state == 0}" class="d-block badge bg-success form-control-plaintext">모집중</div>
                                             <div th:if="${studyBoard.state == 1}" class="d-block badge bg-danger form-control-plaintext">마감</div>
                                             <p></p>
@@ -129,6 +130,12 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3 border-bottom">
+                                        <div class="col-sm-3 fs-5">모집기간</div>
+                                        <div class="col-sm-9">
+                                            <p>[[${studyBoard.startdate}]] ~ [[${studyBoard.enddate}]]</p>
                                         </div>
                                     </div>
                                     <div class="row mb-3 border-bottom">

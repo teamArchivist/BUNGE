@@ -20,6 +20,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,7 +56,7 @@ public class StudyController {
         studyBoardFilter.setLimit(pageSize);
 
         List<StudyBoard> studyBoardList = studyService.getStudyList(studyBoardFilter);
-        logger.info(studyBoardList.toString());
+        //logger.info(studyBoardList.toString());
 
         int totalStudyList = studyService.getStudyListCount(studyBoardFilter);
         //logger.info(String.valueOf(totalStudyList));
@@ -275,5 +277,35 @@ public class StudyController {
     public int checkApplication(CheckApplicationRequest checkApplicationRequest) {
         return studyService.checkApplication(checkApplicationRequest);
     }
+
+    @ResponseBody
+    @PostMapping("get-study-info")
+    public StudyBoard getStudyInfo(@ModelAttribute StudyBoard studyBoard) {
+        int studyBoardNo = studyBoard.getNo();
+        return studyService.getDetailStudy(studyBoardNo);
+    }
+
+    @ResponseBody
+    @PostMapping("/check-enddate")
+    public boolean checkEnddate(@ModelAttribute StudyBoard studyBoard) {
+        int studyBoardNo = studyBoard.getNo();
+        StudyBoard studyboard = studyService.getDetailStudy(studyBoardNo);
+        LocalDate today = LocalDate.now();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate endDate = LocalDate.parse(studyboard.getEnddate(), formatter);
+
+        boolean isOver = today.isAfter(endDate);
+        //logger.info("isover:" + isOver);
+
+        return isOver;
+    }
+
+    @ResponseBody
+    @PostMapping("/update-enroll-status")
+    public int updateEnrollStatus(@ModelAttribute StudyBoard studyBoard) {
+        return studyService.updateEnrollStatus(studyBoard);
+    }
+
 
 }

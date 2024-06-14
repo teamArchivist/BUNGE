@@ -66,10 +66,26 @@
     </select>
 
     <select id="getDetailStudy" parameterType="int" resultType="com.bunge.study.domain.StudyBoard">
-        select s.*, b.isbn13, b.author, b.pubDate, b.categoryName, b.description, b.score, b.page
-        from studyboard s
-                 join book b on s.booktitle = b.title
-        where s.no = #{no};
+        SELECT
+            s.*,
+            b.isbn13,
+            b.author,
+            b.pubDate,
+            b.categoryName,
+            b.description,
+            b.score,
+            b.page,
+            COUNT(CASE WHEN a.status = '승인' THEN 1 END) AS approved
+        FROM
+            studyboard s
+                JOIN
+            book b ON s.booktitle = b.title
+                LEFT JOIN
+            studyapplication a ON s.no = a.studyboardno
+        WHERE
+            s.no = #{no}
+        GROUP BY
+            s.no, b.isbn13, b.author, b.pubDate, b.categoryName, b.description, b.score, b.page;
     </select>
 
     <insert id="addStudyEvent" parameterType="com.bunge.study.domain.StudyEvent">
@@ -166,5 +182,11 @@
         where studyboardno = #{studyboardno}
         and application_id = #{application_id}
     </select>
+
+    <update id="updateEnrollStatus" parameterType="com.bunge.study.domain.StudyBoard">
+        update studyboard
+        set state = '1'
+        where no = #{no}
+    </update>
 
 </mapper>
