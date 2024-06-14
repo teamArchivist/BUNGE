@@ -24,10 +24,14 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         // 환영 메시지 생성
         String welcomeMessage = "환영합니다, " + username + "님!";
-
-        // 세션에 환영 메시지 저장
-        request.getSession().setAttribute("welcomemsg", welcomeMessage);
-        String url = request.getContextPath()+"/main";
-        response.sendRedirect(url);
+        if (username.equals("admin") || username.equals("superadmin")) {
+            // 세션에 환영 메시지 저장
+            request.getSession().setAttribute("welcomemsg", welcomeMessage);
+            String url = request.getContextPath()+"/main";
+            response.sendRedirect(url);
+        } else {
+            request.getSession().setAttribute("welcomemsg", welcomeMessage);
+            response.sendRedirect("/user/main");
+        }
     }
 }
