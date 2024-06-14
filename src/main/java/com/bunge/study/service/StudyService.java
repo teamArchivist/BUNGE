@@ -92,4 +92,7 @@ public interface StudyService {
 
     //참여 인원 스터디 멤버 테이블에 추가
     public void createStudyMembers(int studyboardno, List<String> memberIdList);
+
+    //나의 스터디 리스트 조회
+    public List<StudyManagement> getMyStudyList(String loginId);
 }

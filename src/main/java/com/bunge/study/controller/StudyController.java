@@ -343,5 +343,17 @@ public class StudyController {
         return studyService.cancelApplication(studyApplication);
     }
 
+    @GetMapping("/mine-list")
+    public String mineList(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loginId = authentication.getName();
+
+        List<StudyManagement> myStudyList = studyService.getMyStudyList(loginId);
+        logger.info(myStudyList.toString());
+
+        model.addAttribute("myStudyList", myStudyList);
+        return "study/study_mine_list";
+    }
+
 
 }
