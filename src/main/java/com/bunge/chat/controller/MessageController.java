@@ -1,7 +1,6 @@
 package com.bunge.chat.controller;
 
-import com.bunge.chat.KafkaTopic;
-import com.bunge.chat.domain.Message;
+import com.bunge.chat.constant.KafkaTopic;
 import com.bunge.chat.service.KafkaConsumerService;
 import com.bunge.chat.service.KafkaProducerService;
 import lombok.RequiredArgsConstructor;
