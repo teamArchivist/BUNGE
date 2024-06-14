@@ -35,7 +35,7 @@ $(document).ready(function() {
 		});
 	}
 
-	function generateCommentHtml(comment, isReply = false) {
+	function generateCommentHtml( comment, isReply = false) {
 		let replyClass = isReply ? 'reply' : 'comment';
 		let replyContainer = isReply ? '' : `<div class="replies ms-4" id="replies-${comment.commentId}"></div>`;
 		let replyButton = isReply ? '' : `<a class="btn btn-xs btn-outline-light replyComment" data-id="${comment.commentId}">답글쓰기</a>`;

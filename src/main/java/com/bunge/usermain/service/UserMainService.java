@@ -1,4 +1,4 @@
-package com.bunge.membermain.service;
+package com.bunge.usermain.service;
 
 import com.bunge.study.domain.StudyBoard;
 

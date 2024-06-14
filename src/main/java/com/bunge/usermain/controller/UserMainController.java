@@ -1,6 +1,6 @@
-package com.bunge.membermain.controller;
+package com.bunge.usermain.controller;
 
-import com.bunge.membermain.service.UserMainService;
+import com.bunge.usermain.service.UserMainService;
 import com.bunge.study.domain.StudyBoard;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

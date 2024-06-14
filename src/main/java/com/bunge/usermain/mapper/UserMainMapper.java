@@ -1,4 +1,4 @@
-package com.bunge.membermain.mapper;
+package com.bunge.usermain.mapper;
 
 import com.bunge.study.domain.StudyBoard;
 import org.apache.ibatis.annotations.Mapper;

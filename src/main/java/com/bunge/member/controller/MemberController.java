@@ -46,6 +46,7 @@ public class MemberController {
         this.joinsendmail=joinsendmail;
     }
     //로그인페이지
+    @PreAuthorize("isAnonymous()")
     @GetMapping (value ="/login")
     public ModelAndView login(ModelAndView mav,
                               @CookieValue(value = "remember-me", required = false) Cookie readCookie,

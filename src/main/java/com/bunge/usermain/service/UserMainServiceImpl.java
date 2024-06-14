@@ -1,6 +1,6 @@
-package com.bunge.membermain.service;
+package com.bunge.usermain.service;
 
-import com.bunge.membermain.mapper.UserMainMapper;
+import com.bunge.usermain.mapper.UserMainMapper;
 import com.bunge.study.domain.StudyBoard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
