@@ -55,4 +55,11 @@
             r.no
     </select>
 
+    <update id="updateDeletedMember">
+
+    </update>
+
+    <delete id="deleteMember">
+
+    </delete>
 </mapper>

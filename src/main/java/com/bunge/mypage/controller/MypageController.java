@@ -167,4 +167,10 @@ public class MypageController {
         logger.info(list.toString());
         return list;
     }
+    @DeleteMapping(value = "/member-delete")
+    public ResponseEntity<Void>  memberdelete(@PathVariable int memberId, Principal principal){
+        String deletemember = principal.getName();
+        memberservice.deletemember(memberId, deletemember);
+        return ResponseEntity.ok().build();
+    }
 }

@@ -20,4 +20,6 @@ public interface MemberService {
     public boolean findpwd(String id, String name, String email);
 
     public boolean pwdset(Member member);
+
+    void deletemember(int memberId, String deletemember);
 }

@@ -30,4 +30,8 @@ public interface MemberMapper {
     public int update(Member member);
 
     public List<Review> getMyReviewList(String id);
+
+    void updateDeletedMember(int memberId, String deletemember);
+
+    void deleteMember(int memberId);
 }

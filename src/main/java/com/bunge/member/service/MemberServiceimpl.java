@@ -92,4 +92,10 @@ public class MemberServiceimpl implements MemberService{
         if(result ==1) return true;
         return false;
     }
+
+    @Override
+    public void deletemember(int memberId, String deletemember) {
+        memberMapper.updateDeletedMember(memberId, deletemember);
+        memberMapper.deleteMember(memberId);
+    }
 }
