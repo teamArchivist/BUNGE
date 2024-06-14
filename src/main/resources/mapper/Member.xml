@@ -55,4 +55,8 @@
             r.no
     </select>
 
+    <select id="findAll" resultType="member">
+        SELECT *
+        FROM member;
+    </select>
 </mapper>
