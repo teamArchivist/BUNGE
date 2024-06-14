@@ -149,8 +149,11 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
+    @Transactional
     public int startStudy(StudyManagement studyManagement) {
-        return studyMapper.startStudy(studyManagement);
+        int result = studyMapper.startStudy(studyManagement);
+        studyMapper.insertLeaderToStudyMember(studyManagement);
+        return result;
     }
 
     @Override
@@ -161,5 +164,12 @@ public class StudyServiceImpl implements StudyService {
     @Override
     public int cancelApplication(StudyApplication studyApplication) {
         return studyMapper.cancelApplication(studyApplication);
+    }
+
+    @Override
+    public void createStudyMembers(int studyboardno, List<String> memberIdList) {
+        for (String memberId : memberIdList) {
+            studyMapper.insertStudyMember(studyboardno, memberId);
+        }
     }
 }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -309,6 +310,24 @@ public class StudyController {
     @PostMapping("/start-study")
     public int startStudy(@ModelAttribute StudyManagement studyManagement) {
         return studyService.startStudy(studyManagement);
+    }
+
+    @ResponseBody
+    @PostMapping("/create-study-member")
+    public Map<String, Object> createStudyMember(@RequestParam int studyboardno,
+                                                 @RequestParam String memberIds) {
+
+        Map<String, Object> response = new HashMap<>();
+        try {
+            List<String> memberIdList = Arrays.asList(memberIds.split(","));
+            logger.info(memberIdList.toString());
+            studyService.createStudyMembers(studyboardno, memberIdList);
+            response.put("status", "success");
+        } catch (Exception e) {
+            response.put("status", "error");
+        }
+
+        return response;
     }
 
     @ResponseBody

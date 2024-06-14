@@ -17,9 +17,9 @@
 
     <insert id="createStudyBoard" parameterType="com.bunge.study.domain.StudyBoard">
         insert into studyboard
-        (id, booktitle, bookcover, title, content, startdate, enddate, challengestart, challengeend, challengeperiod, quota, state, readcount)
+        (id, booktitle, bookcover, title, content, startdate, enddate, challengestart, challengeend, challengeperiod, quota, state)
         values
-        (#{id}, #{booktitle}, #{bookcover}, #{title}, #{content}, #{startdate}, #{enddate}, #{challengestart}, #{challengeend}, #{challengeperiod}, #{quota}, 0, 0)
+        (#{id}, #{booktitle}, #{bookcover}, #{title}, #{content}, #{startdate}, #{enddate}, #{challengestart}, #{challengeend}, #{challengeperiod}, #{quota}, 0)
     </insert>
 
     <select id="getStudyList" parameterType="com.bunge.study.filter.StudyBoardFilter" resultType="com.bunge.study.domain.StudyBoard">
@@ -130,9 +130,9 @@
 
     <insert id="applyStudy" parameterType="com.bunge.study.domain.StudyApplication">
         insert into studyapplication
-        (studyboardno, application_id, application_content, request_date, response_date)
+        (studyboardno, applicationId, applicationContent, requestDate, responseDate)
         values
-        (#{studyboardno}, #{applicationid}, #{applicationcontent}, now(), now())
+        (#{studyboardno}, #{applicationId}, #{applicationContent}, now(), now())
     </insert>
 
     <select id="getApplicationsByStudyBoardNo" parameterType="int" resultType="com.bunge.study.domain.StudyApplication">
@@ -143,25 +143,25 @@
 
     <update id="approveApplication" parameterType="com.bunge.study.parameter.ApproveApplicationRequest">
         update studyapplication
-        set status = #{status}, response_date = now()
+        set status = #{status}, responseDate = now()
         where no = #{no}
     </update>
 
     <update id="rejectApplication" parameterType="com.bunge.study.parameter.RejectApplicationRequest">
         update studyapplication
-        set status = #{status}, response_date = now()
+        set status = #{status}, responseDate = now()
         where no = #{no}
     </update>
 
     <update id="cancelApprove" parameterType="com.bunge.study.parameter.ApproveApplicationRequest">
         update studyapplication
-        set status = #{status}, response_date = now()
+        set status = #{status}, responseDate = now()
         where no = #{no}
     </update>
 
     <update id="cancelReject" parameterType="com.bunge.study.parameter.RejectApplicationRequest">
         update studyapplication
-        set status = #{status}, response_date = now()
+        set status = #{status}, responseDate = now()
         where no = #{no}
     </update>
 
@@ -175,14 +175,14 @@
     <select id="getMyApplicationList" parameterType="String" resultType="com.bunge.study.domain.StudyApplication">
         select *
         from studyapplication
-        where application_id = #{loginId}
+        where applicationId = #{loginId}
     </select>
 
     <select id="checkApplication" parameterType="com.bunge.study.parameter.CheckApplicationRequest" resultType="int">
         select count(*)
         from studyapplication
         where studyboardno = #{studyboardno}
-        and application_id = #{application_id}
+        and applicationId = #{applicationId}
     </select>
 
     <update id="updateEnrollStatus" parameterType="com.bunge.study.domain.StudyBoard">
@@ -193,9 +193,9 @@
 
     <insert id="startStudy" parameterType="com.bunge.study.domain.StudyManagement">
         insert into studymanagement
-        (studyboardno, studystart, studyend, studyperiod, leader_id, booktitle, studystatus)
+        (studyboardno, studystart, studyend, studyperiod, leaderId, booktitle, studystatus)
         values
-        (#{studyboardno}, #{studystart}, #{studyend}, #{studyperiod}, #{leader_id}, #{booktitle}, #{studystatus})
+        (#{studyboardno}, #{studystart}, #{studyend}, #{studyperiod}, #{leaderId}, #{booktitle}, #{studystatus})
     </insert>
 
     <select id="checkStudyStatus" parameterType="com.bunge.study.domain.StudyManagement" resultType="com.bunge.study.domain.StudyManagement">
@@ -207,7 +207,21 @@
     <delete id="cancelApplication" parameterType="com.bunge.study.domain.StudyApplication">
         delete from studyapplication
         where studyboardno = #{studyboardno}
-        and application_id = #{applicationid}
+        and applicationId = #{applicationId}
     </delete>
+
+    <insert id="insertLeaderToStudyMember" parameterType="com.bunge.study.domain.StudyManagement">
+        insert into studymember
+        (studyboardno, memberId, role)
+        values
+        (#{studyboardno}, #{leaderId}, 'leader')
+    </insert>
+
+    <insert id="insertStudyMember">
+        insert into studymember
+        (studyboardno, memberId)
+        values
+        (#{studyboardno}, #{memberId})
+    </insert>
 
 </mapper>

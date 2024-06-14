@@ -119,17 +119,17 @@ $(function () {
 
     submitApplicationButton.addEventListener("click", function () {
         const studyboardno = document.getElementById("studyBoardNo").value;
-        const application_content = document.getElementById("applicationReason").value;
-        const application_id = document.getElementById("loginId").textContent;
+        const applicationContent = document.getElementById("applicationReason").value;
+        const applicationId = document.getElementById("loginId").textContent;
 
-        if (application_content) {
+        if (applicationContent) {
             $.ajax({
                 url: "/study/apply-study",
                 method: "post",
                 data: {
                     studyboardno: studyboardno,
-                    applicationid: application_id,
-                    applicationcontent: application_content,
+                    applicationId: applicationId,
+                    applicationContent: applicationContent,
                 },
                 beforeSend : function (xhr) {
                     if (header && token) {
@@ -171,11 +171,11 @@ $(function () {
 
                     let applicantTd = document.createElement("td");
                     applicantTd.innerHTML = `<img src="/img/profile-photos/1.png" class="img-sm rounded-circle border">
-                                             <span>${application.applicationid}</span>`;
+                                             <span>${application.applicationId}</span>`;
                     row.appendChild(applicantTd);
 
                     let reasonTd = document.createElement("td");
-                    reasonTd.innerText = application.applicationcontent;
+                    reasonTd.innerText = application.applicationContent;
                     row.appendChild(reasonTd);
 
                     let requestDateTd = document.createElement("td");
@@ -314,7 +314,7 @@ $(function () {
     $.ajax({
         url: "/study/check-application",
         method: "post",
-        data: { studyboardno:studyboardno, application_id:id },
+        data: { studyboardno:studyboardno, applicationId:id },
 
         beforeSend : function (xhr) {
             if (header && token) {
@@ -335,11 +335,17 @@ $(function () {
     })
 
     $("#startStudy").click(function() {
-        let leader_id = $("#leader_id").text();
+        let leaderId = $("#leaderId").text();
         let studystart = $("#challengeDate").data("challengestart");
         let studyend = $("#challengeDate").data("challengeend");
         let studyperiod = $("#challengeDate").data("challengeperiod");
         let booktitle = $("#booktitle").text();
+        let memberIds = [];
+        $(".member-id").each(function () {
+            memberIds.push($(this).text().trim());
+        });
+
+        console.log(memberIds);
 
         $.ajax({
             url: "/study/get-study-info",
@@ -363,9 +369,9 @@ $(function () {
                             studystart: studystart,
                             studyend: studyend,
                             studyperiod: studyperiod,
-                            leader_id: leader_id,
+                            leaderId: leaderId,
                             booktitle: booktitle,
-                            studystatus: 'progress'
+                            studystatus: 'progress',
                         },
                         beforeSend : function (xhr) {
                             if (header && token) {
@@ -389,6 +395,32 @@ $(function () {
                             console.log("오류:" + error);
                         }
                     })
+
+                    $.ajax({
+                        url: "/study/create-study-member",
+                        method: "post",
+                        data: {
+                            studyboardno : studyboardno,
+                            memberIds : memberIds.join(',')
+                        },
+                        beforeSend : function (xhr) {
+                            if (header && token) {
+                                xhr.setRequestHeader(header, token);
+                            }
+                        },
+                        async: false,
+                        success: function (data) {
+                            if (data.status === "error") {
+                                alert("참여 인원이 포함되지 않았습니다. 다시 시도해주세요.")
+                            }
+                        },
+                        error: function (status, error) {
+                            console.log("ajax 요청 실패");
+                            console.log("상태:" + status);
+                            console.log("오류:" + error);
+                        }
+                    })
+
                 }
             },
             error: function (status, error) {
@@ -397,6 +429,8 @@ $(function () {
                 console.log("오류:" + error);
             }
         })
+
+
     })
 
     function checkEnddate(studyboardno) {
@@ -484,7 +518,7 @@ $(function () {
                 method: "post",
                 cache: "false",
                 data: {
-                    applicationid : id,
+                    applicationId : id,
                     studyboardno : studyboardno
                 },
                 beforeSend : function (xhr) {

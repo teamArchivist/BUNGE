@@ -14,7 +14,7 @@ public class StudyManagement {
     private String studystart;
     private String studyend;
     private int studyperiod;
-    private String leader_id;
+    private String leaderId;
     private String booktitle;
     private String studystatus;
 }
