@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bunge.admin.mapper.AdminMapper">
+
+    <select id="findByUsername" resultType="com.bunge.admin.domain.Visitor">
+        select * from visitor where userid = #{username}
+    </select>
+
+    <insert id="insertVisitor" parameterType="com.bunge.admin.domain.Visitor">
+        INSERT INTO visitor (userid ,visitdate, ipaddress, useragent)
+        VALUES (#{userid}, #{visitdate}, #{ipaddress}, #{useragent})
+    </insert>
+
+   <update id="updateVisitor" parameterType="com.bunge.admin.domain.Visitor">
+       update visitor
+       set visitdate = #{visitdate}
+       where userid = #{userid};
+   </update>
+
+    <select id="getVisitorCount" parameterType="com.bunge.admin.domain.Visitor" resultType="int">
+        select count(*) from visitor
+    </select>
+
+    <select id="getjoinCount" parameterType="com.bunge.member.domain.Member" resultType="int">
+        select count(*) from member
+    </select>
+
+    <select id="getstudyCount" parameterType="com.bunge.study.domain.StudyBoard" resultType="int">
+        select count(*) from studyboard
+    </select>
+
+    <select id="getreviewCount" parameterType="com.bunge.review.domain.Review" resultType="int">
+        select count(*) from review
+    </select>
+
+</mapper>

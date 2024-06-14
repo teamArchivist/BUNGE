@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
+import com.bunge.admin.service.AdminService;
 import com.bunge.member.domain.Member;
 import com.bunge.member.mapper.MemberMapper;
 import org.slf4j.Logger;
@@ -28,11 +29,13 @@ public class CustomUserDatilsService implements UserDetailsService{
 	
 	@Autowired
 	MemberMapper membermapper;
+
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
 		Member member = membermapper.checkid(username);
+
 		if(member==null) {
 
 			throw new UsernameNotFoundException("User not found with username: " + username);
