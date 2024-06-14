@@ -89,4 +89,7 @@ public interface StudyService {
 
     //신청 취소
     public int cancelApplication(StudyApplication studyApplication);
+
+    //참여 인원 스터디 멤버 테이블에 추가
+    public void createStudyMembers(int studyboardno, List<String> memberIdList);
 }

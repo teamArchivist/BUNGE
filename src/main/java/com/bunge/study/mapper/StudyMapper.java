@@ -7,10 +7,7 @@ import com.bunge.study.parameter.ApproveApplicationRequest;
 import com.bunge.study.parameter.BookSearchRequest;
 import com.bunge.study.parameter.CheckApplicationRequest;
 import com.bunge.study.parameter.RejectApplicationRequest;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 import java.util.Map;
@@ -84,10 +81,14 @@ public interface StudyMapper {
 
     //스터디 시작
     public int startStudy(StudyManagement studyManagement);
+    public void insertLeaderToStudyMember(StudyManagement studyManagement);
 
     //해당 스터디 모집글의 스터디 도전 진행 여부 확인
     public StudyManagement checkStudyStatus(StudyManagement studyManagement);
 
     //신청 취소
     public int cancelApplication(StudyApplication studyApplication);
+
+    //참여 인원 스터디 멤버 테이블에 추가
+    public void insertStudyMember(@Param("studyboardno") int studyboardno, @Param("memberId") String memberId);
 }
