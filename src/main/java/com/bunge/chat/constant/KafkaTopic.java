@@ -1,4 +1,4 @@
-package com.bunge.chat;
+package com.bunge.chat.constant;
 
 public abstract class KafkaTopic {
     public static final String CHAT = "bunge.dev.chat";
