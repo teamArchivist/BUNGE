@@ -170,15 +170,15 @@ $(function () {
 
                     let applicantTd = document.createElement("td");
                     applicantTd.innerHTML = `<img src="/img/profile-photos/1.png" class="img-sm rounded-circle border">
-                                             <span>${application.application_id}</span>`;
+                                             <span>${application.applicationid}</span>`;
                     row.appendChild(applicantTd);
 
                     let reasonTd = document.createElement("td");
-                    reasonTd.innerText = application.application_content;
+                    reasonTd.innerText = application.applicationcontent;
                     row.appendChild(reasonTd);
 
                     let requestDateTd = document.createElement("td");
-                    requestDateTd.innerText = application.request_date;
+                    requestDateTd.innerText = application.requestdate;
                     row.appendChild(requestDateTd);
 
                     let actionsTd = document.createElement("td");
@@ -333,19 +333,62 @@ $(function () {
         }
     })
 
-    $("#studyStart").click(function() {
+    $("#startStudy").click(function() {
+        let leader_id = $("#leader_id").text();
+        let studystart = $("#challengeDate").data("challengestart");
+        let studyend = $("#challengeDate").data("challengeend");
+        let studyperiod = $("#challengeDate").data("challengeperiod");
+        let booktitle = $("#booktitle").text();
+
         $.ajax({
             url: "/study/get-study-info",
             method: "post",
-            data: { no: studyboardno },
+            data: {
+                no: studyboardno,
+            },
             beforeSend : function (xhr) {
                 if (header && token) {
                     xhr.setRequestHeader(header, token);
                 }
             },
             success: function (data) {
-                console.log(data)
-                confirm("도전을 시작하시겠습니까? 도전기간 : " + data.challengeperiod + "일, 참여인원 : " + data.approved + "명 입니다."  )
+                let answer = confirm("도전을 시작하시겠습니까? 도전기간 : " + data.challengeperiod + "일, 참여인원 : " + data.approved + "명 입니다."  )
+                if (answer) {
+                    $.ajax({
+                        url: "/study/start-study",
+                        method: "post",
+                        data: {
+                            studyboardno: studyboardno,
+                            studystart: studystart,
+                            studyend: studyend,
+                            studyperiod: studyperiod,
+                            leader_id: leader_id,
+                            booktitle: booktitle,
+                            studystatus: 'progress'
+                        },
+                        beforeSend : function (xhr) {
+                            if (header && token) {
+                                xhr.setRequestHeader(header, token);
+                            }
+                        },
+                        success: function (data) {
+                            if (data == 1) {
+                                alert("스터디 도전이 시작되었습니다. 꼭 완독하세요!")
+                                $("#startStudy").text("진행중").attr("disabled", true)
+                                $("#studyApprove").remove()
+                                $("#updateStudy").remove()
+                                $("#deleteStudy").remove()
+                            } else {
+                                alert("도전 시작 중 에러가 발생했습니다. 다시 시도해주세요")
+                            }
+                        },
+                        error: function (status, error) {
+                            console.log("ajax 요청 실패");
+                            console.log("상태:" + status);
+                            console.log("오류:" + error);
+                        }
+                    })
+                }
             },
             error: function (status, error) {
                 console.log("ajax 요청 실패");
@@ -369,7 +412,7 @@ $(function () {
             success: function (data) {
                 //console.log(data)
                 if (data) {
-                    $("#studyStart").after("<span>(모집기간 종료!! 도전시작 버튼을 눌러주세요)</span>")
+                    $("#startStudy").after("<span>(모집기간 종료!! 도전시작 버튼을 눌러주세요)</span>")
                     $("#application").prop("disabled", true).text("모집 종료")
                     $.ajax({
                         url: "/study/update-enroll-status",
@@ -406,6 +449,31 @@ $(function () {
         })
     }
 
+    $.ajax({
+        url: "/study/check-study-status",
+        method: "post",
+        cache: false,
+        data: {studyboardno : studyboardno},
+        beforeSend : function (xhr) {
+            if (header && token) {
+                xhr.setRequestHeader(header, token);
+            }
+        },
+        success: function (data) {
+            if (data.studystatus === "progress") {
+                $("#startStudy").text("진행중").attr("disabled", true)
+                $("#studyApprove").remove()
+                $("#updateStudy").remove()
+                $("#deleteStudy").remove()
+            }
+
+        },
+        error: function (status, error) {
+            console.log("ajax 요청 실패");
+            console.log("상태:" + status);
+            console.log("오류:" + error);
+        }
+    })
 
 
 }) //ready end

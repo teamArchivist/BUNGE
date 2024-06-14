@@ -10,9 +10,10 @@ import lombok.ToString;
 public class StudyApplication {
     private int no;
     private int studyboardno;
-    private String application_id;
-    private String application_content;
+    private String applicationid;
+    private String applicationcontent;
     private String status;
-    private String request_date;
-    private String response_date;
+    private String requestdate;
+    private String responsedate;
+
 }

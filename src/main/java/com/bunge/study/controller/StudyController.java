@@ -1,11 +1,8 @@
 package com.bunge.study.controller;
 
 import com.bunge.memo.domain.Book;
-import com.bunge.study.domain.StudyApplication;
-import com.bunge.study.domain.StudyBoardComm;
-import com.bunge.study.domain.StudyEvent;
+import com.bunge.study.domain.*;
 import com.bunge.study.filter.StudyBoardFilter;
-import com.bunge.study.domain.StudyBoard;
 import com.bunge.study.parameter.ApproveApplicationRequest;
 import com.bunge.study.parameter.BookSearchRequest;
 import com.bunge.study.parameter.CheckApplicationRequest;
@@ -56,7 +53,7 @@ public class StudyController {
         studyBoardFilter.setLimit(pageSize);
 
         List<StudyBoard> studyBoardList = studyService.getStudyList(studyBoardFilter);
-        //logger.info(studyBoardList.toString());
+        logger.info(studyBoardList.toString());
 
         int totalStudyList = studyService.getStudyListCount(studyBoardFilter);
         //logger.info(String.valueOf(totalStudyList));
@@ -199,6 +196,7 @@ public class StudyController {
     @ResponseBody
     @GetMapping("/get-applications")
     public List<StudyApplication> getApplications(@RequestParam int studyboardno) {
+        logger.info(studyService.getApplicationsByStudyBoardNo(studyboardno).toString());
         return studyService.getApplicationsByStudyBoardNo(studyboardno);
     }
 
@@ -305,6 +303,18 @@ public class StudyController {
     @PostMapping("/update-enroll-status")
     public int updateEnrollStatus(@ModelAttribute StudyBoard studyBoard) {
         return studyService.updateEnrollStatus(studyBoard);
+    }
+
+    @ResponseBody
+    @PostMapping("/start-study")
+    public int startStudy(@ModelAttribute StudyManagement studyManagement) {
+        return studyService.startStudy(studyManagement);
+    }
+
+    @ResponseBody
+    @PostMapping("/check-study-status")
+    public StudyManagement checkStudyStatus(@ModelAttribute StudyManagement studyManagement) {
+        return studyService.checkStudyStatus(studyManagement);
     }
 
 
