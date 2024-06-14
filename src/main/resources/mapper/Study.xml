@@ -224,4 +224,12 @@
         (#{studyboardno}, #{memberId})
     </insert>
 
+    <select id="getMyStudyList" parameterType="String" resultType="com.bunge.study.domain.StudyManagement">
+        SELECT sm.*, sb.title
+        FROM studymanagement sm
+                 JOIN studyapplication sa ON sm.studyboardno = sa.studyboardno
+                 JOIN studyboard sb ON sm.studyboardno = sb.no
+        WHERE sa.applicationId = #{loginId};
+    </select>
+
 </mapper>

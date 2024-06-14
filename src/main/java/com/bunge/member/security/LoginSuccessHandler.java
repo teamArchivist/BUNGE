@@ -35,7 +35,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
             String url = request.getContextPath()+"/admin/adminmain";
             response.sendRedirect(url);
         }else{
-            String url = request.getContextPath()+"/member/main";
+            String url = request.getContextPath()+"/user/main";
             response.sendRedirect(url);
         }
     }
