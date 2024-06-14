@@ -87,4 +87,7 @@ public interface StudyMapper {
 
     //해당 스터디 모집글의 스터디 도전 진행 여부 확인
     public StudyManagement checkStudyStatus(StudyManagement studyManagement);
+
+    //신청 취소
+    public int cancelApplication(StudyApplication studyApplication);
 }

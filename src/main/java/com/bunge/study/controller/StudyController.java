@@ -317,5 +317,12 @@ public class StudyController {
         return studyService.checkStudyStatus(studyManagement);
     }
 
+    @ResponseBody
+    @PostMapping("/cancel-application")
+    public int cancelApplication(@ModelAttribute StudyApplication studyApplication) {
+        logger.info(studyApplication.toString());
+        return studyService.cancelApplication(studyApplication);
+    }
+
 
 }

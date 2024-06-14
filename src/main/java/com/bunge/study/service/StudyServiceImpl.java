@@ -157,4 +157,9 @@ public class StudyServiceImpl implements StudyService {
     public StudyManagement checkStudyStatus(StudyManagement studyManagement) {
         return studyMapper.checkStudyStatus(studyManagement);
     }
+
+    @Override
+    public int cancelApplication(StudyApplication studyApplication) {
+        return studyMapper.cancelApplication(studyApplication);
+    }
 }

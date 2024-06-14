@@ -6,7 +6,7 @@ $(function () {
     checkEnddate(studyboardno)
 
     let countStudyComm = $("#countStudyComm").val();
-    console.log(countStudyComm)
+    //console.log(countStudyComm)
 
     $("#toggleComments").on("click", function() {
         let commentsSection = $("#commentsSection");
@@ -128,8 +128,8 @@ $(function () {
                 method: "post",
                 data: {
                     studyboardno: studyboardno,
-                    application_id: application_id,
-                    application_content: application_content,
+                    applicationid: application_id,
+                    applicationcontent: application_content,
                 },
                 beforeSend : function (xhr) {
                     if (header && token) {
@@ -140,6 +140,7 @@ $(function () {
                     if (response.status === "success") {
                         alert(response.message);
                         $("#applicationModal").modal("hide");
+                        location.reload()
                     } else {
                         alert(response.message);
                     }
@@ -472,6 +473,36 @@ $(function () {
             console.log("ajax 요청 실패");
             console.log("상태:" + status);
             console.log("오류:" + error);
+        }
+    })
+
+    $("body").on("click", "#cancelApplication", function() {
+        let answer = confirm("정말 취소하시겠습니까?")
+        if (answer) {
+            $.ajax({
+                url: "/study/cancel-application",
+                method: "post",
+                cache: "false",
+                data: {
+                    applicationid : id,
+                    studyboardno : studyboardno
+                },
+                beforeSend : function (xhr) {
+                    if (header && token) {
+                        xhr.setRequestHeader(header, token);
+                    }
+                },
+                success: function (data) {
+                    if (data == 1) {
+                        location.reload();
+                    }
+                },
+                error: function (status, error) {
+                    console.log("ajax 요청 실패");
+                    console.log("상태:" + status);
+                    console.log("오류:" + error);
+                }
+            })
         }
     })
 

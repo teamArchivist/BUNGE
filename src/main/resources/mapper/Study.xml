@@ -132,7 +132,7 @@
         insert into studyapplication
         (studyboardno, application_id, application_content, request_date, response_date)
         values
-        (#{studyboardno}, #{application_id}, #{application_content}, now(), now())
+        (#{studyboardno}, #{applicationid}, #{applicationcontent}, now(), now())
     </insert>
 
     <select id="getApplicationsByStudyBoardNo" parameterType="int" resultType="com.bunge.study.domain.StudyApplication">
@@ -203,5 +203,11 @@
         from studymanagement
         where studyboardno = #{studyboardno}
     </select>
+
+    <delete id="cancelApplication" parameterType="com.bunge.study.domain.StudyApplication">
+        delete from studyapplication
+        where studyboardno = #{studyboardno}
+        and application_id = #{applicationid}
+    </delete>
 
 </mapper>
