@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bunge.membermain.mapper.UserMainMapper">
+    <!-- 스터디보드 정보 조회 -->
+    <select id="selectStudyboardByMemberId" parameterType="String" resultType="com.bunge.study.domain.StudyBoard">
+        SELECT s.*
+        FROM studyboard s
+                 JOIN member m ON s.id = m.id
+        WHERE m.id = #{id}
+    </select>
+
+    <!-- 스터디보드 정보 개수 조회 -->
+    <select id="countStudyboardByMemberId" parameterType="String" resultType="int">
+        SELECT COUNT(*)
+        FROM studyboard s
+                 JOIN member m ON s.id = m.id
+        WHERE m.id = #{id}
+    </select>
+</mapper>

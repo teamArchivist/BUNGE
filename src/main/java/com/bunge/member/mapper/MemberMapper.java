@@ -23,6 +23,8 @@ public interface MemberMapper {
 
     public int findpwd(HashMap<String, String> map);
 
+    List<Member> findAll();
+
     public int pwdset(HashMap<String, String> map);
 
     public int pwdupdate(Member member);

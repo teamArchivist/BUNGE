@@ -1,12 +1,13 @@
 package com.bunge.study.service;
 
 import com.bunge.memo.domain.Book;
-import com.bunge.study.domain.StudyBoard;
-import com.bunge.study.domain.StudyBoardComm;
-import com.bunge.study.domain.StudyEvent;
+import com.bunge.study.domain.*;
 import com.bunge.study.filter.StudyBoardFilter;
 import com.bunge.study.mapper.StudyMapper;
+import com.bunge.study.parameter.ApproveApplicationRequest;
 import com.bunge.study.parameter.BookSearchRequest;
+import com.bunge.study.parameter.CheckApplicationRequest;
+import com.bunge.study.parameter.RejectApplicationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +16,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class StudyServiceImpl implements StudyService {
@@ -84,5 +86,80 @@ public class StudyServiceImpl implements StudyService {
     @Override
     public int getStudyCommListCount(int no) {
         return studyMapper.getStudyCommListCount(no);
+    }
+
+    @Override
+    public List<StudyEvent> getEventsByStudyBoardNo(int studyBoardNo) {
+        return studyMapper.getEventsByStudyBoardNo(studyBoardNo);
+    }
+
+    @Override
+    public void applyStudy(StudyApplication studyApplication) {
+        studyMapper.applyStudy(studyApplication);
+    }
+
+    @Override
+    public List<StudyBoard> getApprovalPendingStatus() {
+        return studyMapper.getApprovalPendingStatus();
+    }
+
+    @Override
+    public List<StudyApplication> getApplicationsByStudyBoardNo(int studyboardno) {
+        return studyMapper.getApplicationsByStudyBoardNo(studyboardno);
+    }
+
+    @Override
+    public void approveApplication(ApproveApplicationRequest approveApplicationRequest) {
+        studyMapper.approveApplication(approveApplicationRequest);
+    }
+
+    @Override
+    public void rejectApplication(RejectApplicationRequest rejectApplicationRequest) {
+        studyMapper.rejectApplication(rejectApplicationRequest);
+    }
+
+    @Override
+    public void cancelApprove(ApproveApplicationRequest approveApplicationRequest) {
+        studyMapper.cancelApprove(approveApplicationRequest);
+    }
+
+    @Override
+    public void cancelReject(RejectApplicationRequest rejectApplicationRequest) {
+        studyMapper.cancelReject(rejectApplicationRequest);
+    }
+
+    @Override
+    public List<StudyApplication> getStudyMember(int studyboardno) {
+        return studyMapper.getStudyMember(studyboardno);
+    }
+
+    @Override
+    public List<StudyApplication> getMyApplicationList(String loginId) {
+        return studyMapper.getMyApplicationList(loginId);
+    }
+
+    @Override
+    public int checkApplication(CheckApplicationRequest checkApplicationRequest) {
+        return studyMapper.checkApplication(checkApplicationRequest);
+    }
+
+    @Override
+    public int updateEnrollStatus(StudyBoard studyBoard) {
+        return studyMapper.updateEnrollStatus(studyBoard);
+    }
+
+    @Override
+    public int startStudy(StudyManagement studyManagement) {
+        return studyMapper.startStudy(studyManagement);
+    }
+
+    @Override
+    public StudyManagement checkStudyStatus(StudyManagement studyManagement) {
+        return studyMapper.checkStudyStatus(studyManagement);
+    }
+
+    @Override
+    public int cancelApplication(StudyApplication studyApplication) {
+        return studyMapper.cancelApplication(studyApplication);
     }
 }

@@ -1,11 +1,12 @@
 package com.bunge.study.controller;
 
 import com.bunge.memo.domain.Book;
-import com.bunge.study.domain.StudyBoardComm;
-import com.bunge.study.domain.StudyEvent;
+import com.bunge.study.domain.*;
 import com.bunge.study.filter.StudyBoardFilter;
-import com.bunge.study.domain.StudyBoard;
+import com.bunge.study.parameter.ApproveApplicationRequest;
 import com.bunge.study.parameter.BookSearchRequest;
+import com.bunge.study.parameter.CheckApplicationRequest;
+import com.bunge.study.parameter.RejectApplicationRequest;
 import com.bunge.study.service.StudyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +41,9 @@ public class StudyController {
                             @RequestParam(value = "page", defaultValue = "1") Integer page,
                             Model model) {
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loginId = authentication.getName();
+
         //logger.info(studyBoardFilter.toString());
 
         int pageSize = 8;
@@ -47,7 +53,7 @@ public class StudyController {
         studyBoardFilter.setLimit(pageSize);
 
         List<StudyBoard> studyBoardList = studyService.getStudyList(studyBoardFilter);
-        //logger.info(studyBoardList.toString());
+        logger.info(studyBoardList.toString());
 
         int totalStudyList = studyService.getStudyListCount(studyBoardFilter);
         //logger.info(String.valueOf(totalStudyList));
@@ -56,6 +62,9 @@ public class StudyController {
         int startPage = Math.max(1, page - 5);
         int endPage = Math.min(maxPage, page + 4);
 
+        //List<StudyApplication> myApplication = studyService.getMyApplications(loginId);
+
+        model.addAttribute("loginId", loginId);
         model.addAttribute("studyBoardList", studyBoardList);
         model.addAttribute("currentPage", page);
         model.addAttribute("maxPage", maxPage);
@@ -95,10 +104,14 @@ public class StudyController {
         //logger.info(studyCommList.toString());
         int countStudyComm = studyService.getStudyCommListCount(no);
 
+        List<StudyApplication> studyMember = studyService.getStudyMember(no);
+        //logger.info(studyMember.toString());
+
         model.addAttribute("loginId", loginId);
         model.addAttribute("studyBoard", studyBoard);
         model.addAttribute("studyCommList", studyCommList);
         model.addAttribute("countStudyComm", countStudyComm);
+        model.addAttribute("studyMember", studyMember);
 
         return "study/study_detail";
 
@@ -151,4 +164,165 @@ public class StudyController {
 
         return response;
     }
+
+    @ResponseBody
+    @GetMapping("/get-events")
+    public List<StudyEvent> getEvents(@RequestParam int studyBoardNo) {
+        return studyService.getEventsByStudyBoardNo(studyBoardNo);
+    }
+
+    @GetMapping("/mine")
+    public String mine(Model model) {
+
+        return "study/study_mine";
+    }
+
+    @ResponseBody
+    @PostMapping("/apply-study")
+    public Map<String, Object> applyStudy(StudyApplication studyApplication) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            studyService.applyStudy(studyApplication);
+            response.put("status", "success");
+            response.put("message", "스터디 신청 완료");
+        } catch (Exception e) {
+            response.put("status", "error");
+            response.put("message", "스터디 신청 오류, 다시 시도해주세요");
+        }
+
+        return response;
+    }
+
+    @ResponseBody
+    @GetMapping("/get-applications")
+    public List<StudyApplication> getApplications(@RequestParam int studyboardno) {
+        logger.info(studyService.getApplicationsByStudyBoardNo(studyboardno).toString());
+        return studyService.getApplicationsByStudyBoardNo(studyboardno);
+    }
+
+    @ResponseBody
+    @PostMapping("/approve-application")
+    public Map<String, Object> approveApplication(@RequestBody ApproveApplicationRequest approveApplicationRequest) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            studyService.approveApplication(approveApplicationRequest);
+            response.put("status", "success");
+        } catch (Exception e) {
+            response.put("status", "error");
+        }
+
+        return response;
+    }
+
+    @ResponseBody
+    @PostMapping("/reject-application")
+    public Map<String, Object> rejectApplication(@RequestBody RejectApplicationRequest rejectApplicationRequest) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            studyService.rejectApplication(rejectApplicationRequest);
+            response.put("status", "success");
+        } catch (Exception e) {
+            response.put("status", "error");
+        }
+        return response;
+    }
+
+    @ResponseBody
+    @PostMapping("/cancel-approve")
+    public Map<String, Object> cancelApprove(@RequestBody ApproveApplicationRequest approveApplicationRequest) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            studyService.cancelApprove(approveApplicationRequest);
+            response.put("status", "success");
+        } catch (Exception e) {
+            response.put("status", "error");
+        }
+
+        return response;
+    }
+
+    @ResponseBody
+    @PostMapping("/cancel-reject")
+    public Map<String, Object> cancelReject(@RequestBody RejectApplicationRequest rejectApplicationRequest) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            studyService.cancelReject(rejectApplicationRequest);
+            response.put("status", "success");
+        } catch (Exception e) {
+            response.put("status", "error");
+        }
+
+        return response;
+    }
+
+    @ResponseBody
+    @GetMapping("/get-application-status")
+    public Map<String, Object> getApplicationStatus(@RequestParam String loginId) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            List<StudyApplication> myApplication = studyService.getMyApplicationList(loginId);
+            response.put("result", "success");
+            response.put("myApplication", myApplication);
+        } catch(Exception e) {
+            response.put("result", "error");
+        }
+
+        return response;
+    }
+
+    @ResponseBody
+    @PostMapping("check-application")
+    public int checkApplication(CheckApplicationRequest checkApplicationRequest) {
+        return studyService.checkApplication(checkApplicationRequest);
+    }
+
+    @ResponseBody
+    @PostMapping("get-study-info")
+    public StudyBoard getStudyInfo(@ModelAttribute StudyBoard studyBoard) {
+        int studyBoardNo = studyBoard.getNo();
+        return studyService.getDetailStudy(studyBoardNo);
+    }
+
+    @ResponseBody
+    @PostMapping("/check-enddate")
+    public boolean checkEnddate(@ModelAttribute StudyBoard studyBoard) {
+        int studyBoardNo = studyBoard.getNo();
+        StudyBoard studyboard = studyService.getDetailStudy(studyBoardNo);
+        LocalDate today = LocalDate.now();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate endDate = LocalDate.parse(studyboard.getEnddate(), formatter);
+
+        boolean isOver = today.isAfter(endDate);
+        //logger.info("isover:" + isOver);
+
+        return isOver;
+    }
+
+    @ResponseBody
+    @PostMapping("/update-enroll-status")
+    public int updateEnrollStatus(@ModelAttribute StudyBoard studyBoard) {
+        return studyService.updateEnrollStatus(studyBoard);
+    }
+
+    @ResponseBody
+    @PostMapping("/start-study")
+    public int startStudy(@ModelAttribute StudyManagement studyManagement) {
+        return studyService.startStudy(studyManagement);
+    }
+
+    @ResponseBody
+    @PostMapping("/check-study-status")
+    public StudyManagement checkStudyStatus(@ModelAttribute StudyManagement studyManagement) {
+        return studyService.checkStudyStatus(studyManagement);
+    }
+
+    @ResponseBody
+    @PostMapping("/cancel-application")
+    public int cancelApplication(@ModelAttribute StudyApplication studyApplication) {
+        logger.info(studyApplication.toString());
+        return studyService.cancelApplication(studyApplication);
+    }
+
+
 }

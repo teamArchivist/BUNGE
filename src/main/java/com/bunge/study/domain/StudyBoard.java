@@ -30,5 +30,8 @@ public class StudyBoard {
     private int score;
     private int page;
     private int countcomm;
+    private int pendingcount;
+    private int approved;
+    private String studystatus;
 
 }

@@ -8,6 +8,7 @@ import com.bunge.member.domain.Member;
 import com.bunge.member.mapper.MemberMapper;
 
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class MemberServiceimpl implements MemberService{
@@ -91,6 +92,11 @@ public class MemberServiceimpl implements MemberService{
         int result = memberMapper.pwdset(map);
         if(result ==1) return true;
         return false;
+    }
+
+    @Override
+    public List<Member> findMembers() {
+        return memberMapper.findAll();
     }
 
     @Override

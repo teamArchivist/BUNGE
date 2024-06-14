@@ -3,6 +3,8 @@ package com.bunge.member.service;
 
 import com.bunge.member.domain.Member;
 
+import java.util.List;
+
 public interface MemberService {
 
     public int insert(Member member);
@@ -20,6 +22,8 @@ public interface MemberService {
     public boolean findpwd(String id, String name, String email);
 
     public boolean pwdset(Member member);
+
+    List<Member> findMembers();
 
     void deletemember(int memberId, String deletemember);
 }

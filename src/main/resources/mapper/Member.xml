@@ -55,6 +55,10 @@
             r.no
     </select>
 
+    <select id="findAll" resultType="member">
+        SELECT *
+        FROM member;
+    </select>
     <update id="updateDeletedMember">
 
     </update>

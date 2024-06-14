@@ -22,14 +22,41 @@
                         <div class="flex-grow-1 ms-4">
                             <span class="h3 text-body-emphasis fw-bold">[[${studyBoard.title}]]</span>
                             <span class="m-0">([[${studyBoard.quota}]]명 모집 중)</span>
+                            <button th:if="${#strings.equals(loginId, studyBoard.id)}" type="button" class="btn btn-light" id="startStudy">도전시작</button>
                         </div>
                     </div>
                 </figure>
                 <div class="d-inline-block justify-content-end pt-xl-3 gap-1 ms-auto mb-2">
-                    <button th:if="!${#strings.equals(studyBoard.id, loginId)}" class="btn btn-success text-nowrap" id="application">스터디 신청</button>
-                    <button th:if="${#strings.equals(studyBoard.id, loginId)}" class="btn btn-info text-nowrap" data-bs-toggle="modal" data-bs-target="#exampleModal">스터디 승인</button>
-                    <button th:if="${#strings.equals(studyBoard.id, loginId)}" class="btn btn-warning text-nowrap">스터디 수정</button>
-                    <button th:if="${#strings.equals(studyBoard.id, loginId)}" class="btn btn-danger text-nowrap" id="delete">스터디 삭제</button>
+
+                    <!-- Study Application Modal -->
+                    <div class="modal fade" id="applicationModal" tabindex="-1" aria-labelledby="applicationModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="applicationModalLabel">스터디 신청</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="applicationForm">
+                                        <div class="mb-3">
+                                            <label for="applicationReason" class="form-label">신청 동기 (50자 까지만 입력 가능합니다)</label>
+                                            <textarea class="form-control" id="applicationReason" rows="3" maxlength="50" required></textarea>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                    <button type="button" class="btn btn-primary" id="submitApplicationButton">제출</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Study Application Modal emd -->
+
+                    <button th:if="!${#strings.equals(studyBoard.id, loginId)}" class="btn btn-success text-nowrap" id="application" data-bs-toggle="modal" data-bs-target="#applicationModal">스터디 신청</button>
+                    <button th:if="${#strings.equals(studyBoard.id, loginId)}" class="btn btn-info text-nowrap" data-bs-toggle="modal" data-bs-target="#exampleModal" id="studyApprove">스터디 승인</button>
+                    <button th:if="${#strings.equals(studyBoard.id, loginId)}" class="btn btn-warning text-nowrap" id="updateStudy">스터디 수정</button>
+                    <button th:if="${#strings.equals(studyBoard.id, loginId)}" class="btn btn-danger text-nowrap" id="deleteStudy">스터디 삭제</button>
                 </div>
             </div>
         </div>
@@ -43,39 +70,19 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="table-responsive">
-                            <table class="table table-layout-fixed">
-                                <tbody>
-                                <tr>
-                                    <td><img src="/img/profile-photos/1.png" class="img-sm rounded-circle border">
-                                        <span>고라니</span>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-primary rounded-pill">승인</button>
-                                        &nbsp;<button class="btn btn-danger rounded-pill">거절</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><img src="/img/profile-photos/1.png" class="img-sm rounded-circle border">
-                                        <span>고라니</span>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-primary rounded-pill">승인</button>
-                                        &nbsp;<button class="btn btn-danger rounded-pill">거절</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><img src="/img/profile-photos/1.png" class="img-sm rounded-circle border">
-                                        <span>고라니</span>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-primary rounded-pill">승인</button>
-                                        &nbsp;<button class="btn btn-danger rounded-pill">거절</button>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>신청자</th>
+                                <th>신청 사유</th>
+                                <th>신청 일자</th>
+                                <th class="text-center">처리 상태</th>
+                            </tr>
+                            </thead>
+                            <tbody id="applicationsList">
+                            <!-- 데이터 바인딩 -->
+                            </tbody>
+                        </table>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -95,7 +102,7 @@
                                     <div class="row mb-3 border-bottom">
                                         <input type="hidden" th:value="${studyBoard.no}" id="studyBoardNo">
                                         <div class="col-sm-3 fs-5">상태</div>
-                                        <div class="col-sm-2">
+                                        <div class="col-sm-2" id="enrollStatus">
                                             <div th:if="${studyBoard.state == 0}" class="d-block badge bg-success form-control-plaintext">모집중</div>
                                             <div th:if="${studyBoard.state == 1}" class="d-block badge bg-danger form-control-plaintext">마감</div>
                                             <p></p>
@@ -104,7 +111,7 @@
                                     <div class="row mb-3 border-bottom">
                                         <div class="col-sm-3 fs-5">리더</div>
                                         <div class="col-sm-9">
-                                            <p th:text="${studyBoard.id}" readonly></p>
+                                            <p th:text="${studyBoard.id}" readonly id="leader_id"></p>
                                         </div>
                                     </div>
                                     <div class="row mb-3 border-bottom">
@@ -115,7 +122,7 @@
                                                     <img th:src="${studyBoard.bookcover}" width="100%" height="90%">
                                                 </div>
                                                 <div class="col-md-9">
-                                                    <p th:text="${studyBoard.booktitle}"></p>
+                                                    <p th:text="${studyBoard.booktitle}" id="booktitle"></p>
                                                     <p th:text="${studyBoard.author}"></p>
                                                     <p>[[${studyBoard.page}]] page</p>
                                                     <div class="col-md-2">
@@ -126,7 +133,16 @@
                                         </div>
                                     </div>
                                     <div class="row mb-3 border-bottom">
-                                        <div class="col-sm-3 fs-5">도전기간</div>
+                                        <div class="col-sm-3 fs-5">모집기간</div>
+                                        <div class="col-sm-9">
+                                            <p>[[${studyBoard.startdate}]] ~ [[${studyBoard.enddate}]]</p>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3 border-bottom">
+                                        <div class="col-sm-3 fs-5" id="challengeDate"
+                                             th:data-challengestart="${studyBoard.challengestart}"
+                                             th:data-challengeend="${studyBoard.challengeend}"
+                                             th:data-challengeperiod="${studyBoard.challengeperiod}">도전기간</div>
                                         <div class="col-sm-9">
                                             <p>[[${studyBoard.challengeperiod}]]일 ([[${studyBoard.challengestart}]] ~ [[${studyBoard.challengeend}]])</p>
                                         </div>
@@ -134,10 +150,7 @@
                                     <div class="row mb-3 border-bottom">
                                         <div class="col-sm-3 fs-5">참여인원</div>
                                         <div class="col-sm-9 mb-3">
-                                            <img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">
-                                            <span>삼차선</span>
-                                            <img class="img-xs rounded-circle" th:src="@{/img/profile-photos/7.png}" alt="Profile Picture" loading="lazy">
-                                            <span>게슴츠레</span>
+                                            <span th:each="studyMember:${studyMember}"><img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">[[${studyMember.application_id}]]&nbsp;</span>
                                         </div>
                                     </div>
                                     <div class="row mb-3 border-bottom">
@@ -215,7 +228,8 @@
                                                 <div id="_dm-calendar" class="mb-3">
 
                                                 </div>
-                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addEventModal">
+                                                <button th:if="${#strings.equals(loginId, studyBoard.id)}" type="button"
+                                                        class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addEventModal">
                                                     일정 추가
                                                 </button>
                                                 <div class="modal" id="addEventModal">
@@ -232,12 +246,25 @@
                                                                         <input type="text" class="form-control" id="eventTitle" required>
                                                                     </div>
                                                                     <div class="mb-3">
-                                                                        <label for="eventStart" class="form-label">시작 날짜</label>
+                                                                        <label for="eventStart" class="form-label">시작일</label>
                                                                         <input type="date" class="form-control" id="eventStart" required>
                                                                     </div>
                                                                     <div class="mb-3">
-                                                                        <label for="eventEnd" class="form-label">종료 날짜</label>
+                                                                        <label for="eventEnd" class="form-label">종료일</label>
                                                                         <input type="date" class="form-control" id="eventEnd" required>
+                                                                    </div>
+                                                                    <div class="mb-3">
+                                                                        <label for="eventColor" class="form-label">색상</label>
+                                                                        <select class="form-select" id="eventColor" required>
+                                                                            <option value="bg-primary" selected>Primary</option>
+                                                                            <option value="bg-secondary">Secondary</option>
+                                                                            <option value="bg-success">Success</option>
+                                                                            <option value="bg-danger">Danger</option>
+                                                                            <option value="bg-warning">Warning</option>
+                                                                            <option value="bg-info">Info</option>
+                                                                            <option value="bg-light">Light</option>
+                                                                            <option value="bg-dark">Dark</option>
+                                                                        </select>
                                                                     </div>
                                                                 </form>
                                                             </div>

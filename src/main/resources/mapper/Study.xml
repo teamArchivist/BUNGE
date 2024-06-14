@@ -23,10 +23,14 @@
     </insert>
 
     <select id="getStudyList" parameterType="com.bunge.study.filter.StudyBoardFilter" resultType="com.bunge.study.domain.StudyBoard">
-        select s.*, COUNT(c.no) AS countcomm
+        select s.*,
+               sm.studystatus,
+               COUNT(DISTINCT c.no) AS countcomm,
+               COUNT(DISTINCT CASE WHEN sa.status = '대기' THEN sa.no ELSE NULL END) AS pendingcount
         from studyboard s
-        left join studyboardcomm c
-        on s.no = c.studyboardno
+            left join studyboardcomm c on s.no = c.studyboardno
+            left join studyapplication sa on s.no = sa.studyboardno
+            left join studymanagement sm on s.no = sm.studyboardno
         where 1=1
         <if test="booktitle != null and booktitle != ''">
             and booktitle like CONCAT('%', #{booktitle}, '%')
@@ -41,7 +45,7 @@
             and state = #{state}
         </if>
         group by s.no
-        order by enddate
+        order by state
         limit #{offset}, #{limit}
     </select>
 
@@ -64,10 +68,26 @@
     </select>
 
     <select id="getDetailStudy" parameterType="int" resultType="com.bunge.study.domain.StudyBoard">
-        select s.*, b.isbn13, b.author, b.pubDate, b.categoryName, b.description, b.score, b.page
-        from studyboard s
-                 join book b on s.booktitle = b.title
-        where s.no = #{no};
+        SELECT
+            s.*,
+            b.isbn13,
+            b.author,
+            b.pubDate,
+            b.categoryName,
+            b.description,
+            b.score,
+            b.page,
+            COUNT(CASE WHEN a.status = '승인' THEN 1 END) AS approved
+        FROM
+            studyboard s
+                JOIN
+            book b ON s.booktitle = b.title
+                LEFT JOIN
+            studyapplication a ON s.no = a.studyboardno
+        WHERE
+            s.no = #{no}
+        GROUP BY
+            s.no, b.isbn13, b.author, b.pubDate, b.categoryName, b.description, b.score, b.page;
     </select>
 
     <insert id="addStudyEvent" parameterType="com.bunge.study.domain.StudyEvent">
@@ -101,5 +121,93 @@
         from studyboardcomm
         where studyboardno = #{no}
     </select>
+
+    <select id="getEventsByStudyBoardNo" parameterType="int" resultType="com.bunge.study.domain.StudyEvent">
+        select *
+        from studyevent
+        where studyboardno = #{studyBoardNo}
+    </select>
+
+    <insert id="applyStudy" parameterType="com.bunge.study.domain.StudyApplication">
+        insert into studyapplication
+        (studyboardno, application_id, application_content, request_date, response_date)
+        values
+        (#{studyboardno}, #{applicationid}, #{applicationcontent}, now(), now())
+    </insert>
+
+    <select id="getApplicationsByStudyBoardNo" parameterType="int" resultType="com.bunge.study.domain.StudyApplication">
+        select *
+        from studyapplication
+        where studyboardno = #{studyboardno}
+    </select>
+
+    <update id="approveApplication" parameterType="com.bunge.study.parameter.ApproveApplicationRequest">
+        update studyapplication
+        set status = #{status}, response_date = now()
+        where no = #{no}
+    </update>
+
+    <update id="rejectApplication" parameterType="com.bunge.study.parameter.RejectApplicationRequest">
+        update studyapplication
+        set status = #{status}, response_date = now()
+        where no = #{no}
+    </update>
+
+    <update id="cancelApprove" parameterType="com.bunge.study.parameter.ApproveApplicationRequest">
+        update studyapplication
+        set status = #{status}, response_date = now()
+        where no = #{no}
+    </update>
+
+    <update id="cancelReject" parameterType="com.bunge.study.parameter.RejectApplicationRequest">
+        update studyapplication
+        set status = #{status}, response_date = now()
+        where no = #{no}
+    </update>
+
+    <select id="getStudyMember" parameterType="int" resultType="com.bunge.study.domain.StudyApplication">
+        select *
+        from studyapplication
+        where studyboardno = #{studyboardno}
+        and status = '승인'
+    </select>
+
+    <select id="getMyApplicationList" parameterType="String" resultType="com.bunge.study.domain.StudyApplication">
+        select *
+        from studyapplication
+        where application_id = #{loginId}
+    </select>
+
+    <select id="checkApplication" parameterType="com.bunge.study.parameter.CheckApplicationRequest" resultType="int">
+        select count(*)
+        from studyapplication
+        where studyboardno = #{studyboardno}
+        and application_id = #{application_id}
+    </select>
+
+    <update id="updateEnrollStatus" parameterType="com.bunge.study.domain.StudyBoard">
+        update studyboard
+        set state = '1'
+        where no = #{no}
+    </update>
+
+    <insert id="startStudy" parameterType="com.bunge.study.domain.StudyManagement">
+        insert into studymanagement
+        (studyboardno, studystart, studyend, studyperiod, leader_id, booktitle, studystatus)
+        values
+        (#{studyboardno}, #{studystart}, #{studyend}, #{studyperiod}, #{leader_id}, #{booktitle}, #{studystatus})
+    </insert>
+
+    <select id="checkStudyStatus" parameterType="com.bunge.study.domain.StudyManagement" resultType="com.bunge.study.domain.StudyManagement">
+        select *
+        from studymanagement
+        where studyboardno = #{studyboardno}
+    </select>
+
+    <delete id="cancelApplication" parameterType="com.bunge.study.domain.StudyApplication">
+        delete from studyapplication
+        where studyboardno = #{studyboardno}
+        and application_id = #{applicationid}
+    </delete>
 
 </mapper>
