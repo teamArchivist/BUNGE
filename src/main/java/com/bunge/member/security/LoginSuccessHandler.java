@@ -1,8 +1,12 @@
 package com.bunge.member.security;
 
 import java.io.IOException;
+
+import com.bunge.admin.domain.Visitor;
+import com.bunge.admin.service.AdminService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -16,22 +20,23 @@ import jakarta.servlet.http.HttpServletResponse;
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     private static final Logger logger = LoggerFactory.getLogger(LoginSuccessHandler.class);
 
+    @Autowired
+    private AdminService adminService;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
         logger.info("로그인 성공 : LoginSuccessHandler");
         String username = authentication.getName();
+        adminService.insertVisitor(username);
 
-        // 환영 메시지 생성
-        String welcomeMessage = "환영합니다, " + username + "님!";
-        if (username.equals("admin") || username.equals("superadmin")) {
-            // 세션에 환영 메시지 저장
-            request.getSession().setAttribute("welcomemsg", welcomeMessage);
-            String url = request.getContextPath()+"/main";
+
+        if(username.equals("admin")){
+            String url = request.getContextPath()+"/admin/adminmain";
             response.sendRedirect(url);
-        } else {
-            request.getSession().setAttribute("welcomemsg", welcomeMessage);
-            response.sendRedirect("/user/main");
+        }else{
+            String url = request.getContextPath()+"/member/main";
+            response.sendRedirect(url);
         }
     }
 }

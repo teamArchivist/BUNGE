@@ -24,4 +24,6 @@ public interface MemberService {
     public boolean pwdset(Member member);
 
     List<Member> findMembers();
+
+    void deletemember(int memberId, String deletemember);
 }

@@ -98,4 +98,10 @@ public class MemberServiceimpl implements MemberService{
     public List<Member> findMembers() {
         return memberMapper.findAll();
     }
+
+    @Override
+    public void deletemember(int memberId, String deletemember) {
+        memberMapper.updateDeletedMember(memberId, deletemember);
+        memberMapper.deleteMember(memberId);
+    }
 }
