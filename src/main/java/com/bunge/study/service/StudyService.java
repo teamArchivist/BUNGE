@@ -1,10 +1,7 @@
 package com.bunge.study.service;
 
 import com.bunge.memo.domain.Book;
-import com.bunge.study.domain.StudyApplication;
-import com.bunge.study.domain.StudyBoard;
-import com.bunge.study.domain.StudyBoardComm;
-import com.bunge.study.domain.StudyEvent;
+import com.bunge.study.domain.*;
 import com.bunge.study.filter.StudyBoardFilter;
 import com.bunge.study.parameter.ApproveApplicationRequest;
 import com.bunge.study.parameter.BookSearchRequest;
@@ -83,4 +80,10 @@ public interface StudyService {
 
     //모집일이 지났을 때 모집글 상태 업데이트
     public int updateEnrollStatus(StudyBoard studyBoard);
+
+    //스터디 시작
+    public int startStudy(StudyManagement studyManagement);
+
+    //해당 스터디 모집글의 스터디 도전 진행 여부 확인
+    public StudyManagement checkStudyStatus(StudyManagement studyManagement);
 }

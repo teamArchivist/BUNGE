@@ -1,10 +1,7 @@
 package com.bunge.study.service;
 
 import com.bunge.memo.domain.Book;
-import com.bunge.study.domain.StudyApplication;
-import com.bunge.study.domain.StudyBoard;
-import com.bunge.study.domain.StudyBoardComm;
-import com.bunge.study.domain.StudyEvent;
+import com.bunge.study.domain.*;
 import com.bunge.study.filter.StudyBoardFilter;
 import com.bunge.study.mapper.StudyMapper;
 import com.bunge.study.parameter.ApproveApplicationRequest;
@@ -149,5 +146,15 @@ public class StudyServiceImpl implements StudyService {
     @Override
     public int updateEnrollStatus(StudyBoard studyBoard) {
         return studyMapper.updateEnrollStatus(studyBoard);
+    }
+
+    @Override
+    public int startStudy(StudyManagement studyManagement) {
+        return studyMapper.startStudy(studyManagement);
+    }
+
+    @Override
+    public StudyManagement checkStudyStatus(StudyManagement studyManagement) {
+        return studyMapper.checkStudyStatus(studyManagement);
     }
 }

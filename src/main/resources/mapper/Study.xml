@@ -24,11 +24,13 @@
 
     <select id="getStudyList" parameterType="com.bunge.study.filter.StudyBoardFilter" resultType="com.bunge.study.domain.StudyBoard">
         select s.*,
+               sm.studystatus,
                COUNT(DISTINCT c.no) AS countcomm,
                COUNT(DISTINCT CASE WHEN sa.status = '대기' THEN sa.no ELSE NULL END) AS pendingcount
         from studyboard s
             left join studyboardcomm c on s.no = c.studyboardno
             left join studyapplication sa on s.no = sa.studyboardno
+            left join studymanagement sm on s.no = sm.studyboardno
         where 1=1
         <if test="booktitle != null and booktitle != ''">
             and booktitle like CONCAT('%', #{booktitle}, '%')
@@ -43,7 +45,7 @@
             and state = #{state}
         </if>
         group by s.no
-        order by enddate
+        order by state
         limit #{offset}, #{limit}
     </select>
 
@@ -188,5 +190,18 @@
         set state = '1'
         where no = #{no}
     </update>
+
+    <insert id="startStudy" parameterType="com.bunge.study.domain.StudyManagement">
+        insert into studymanagement
+        (studyboardno, studystart, studyend, studyperiod, leader_id, booktitle, studystatus)
+        values
+        (#{studyboardno}, #{studystart}, #{studyend}, #{studyperiod}, #{leader_id}, #{booktitle}, #{studystatus})
+    </insert>
+
+    <select id="checkStudyStatus" parameterType="com.bunge.study.domain.StudyManagement" resultType="com.bunge.study.domain.StudyManagement">
+        select *
+        from studymanagement
+        where studyboardno = #{studyboardno}
+    </select>
 
 </mapper>

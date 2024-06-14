@@ -22,7 +22,7 @@
                         <div class="flex-grow-1 ms-4">
                             <span class="h3 text-body-emphasis fw-bold">[[${studyBoard.title}]]</span>
                             <span class="m-0">([[${studyBoard.quota}]]명 모집 중)</span>
-                            <button type="button" class="btn btn-light" id="studyStart">도전시작</button>
+                            <button th:if="${#strings.equals(loginId, studyBoard.id)}" type="button" class="btn btn-light" id="startStudy">도전시작</button>
                         </div>
                     </div>
                 </figure>
@@ -54,9 +54,9 @@
                     <!-- Study Application Modal emd -->
 
                     <button th:if="!${#strings.equals(studyBoard.id, loginId)}" class="btn btn-success text-nowrap" id="application" data-bs-toggle="modal" data-bs-target="#applicationModal">스터디 신청</button>
-                    <button th:if="${#strings.equals(studyBoard.id, loginId)}" class="btn btn-info text-nowrap" data-bs-toggle="modal" data-bs-target="#exampleModal">스터디 승인</button>
-                    <button th:if="${#strings.equals(studyBoard.id, loginId)}" class="btn btn-warning text-nowrap">스터디 수정</button>
-                    <button th:if="${#strings.equals(studyBoard.id, loginId)}" class="btn btn-danger text-nowrap" id="delete">스터디 삭제</button>
+                    <button th:if="${#strings.equals(studyBoard.id, loginId)}" class="btn btn-info text-nowrap" data-bs-toggle="modal" data-bs-target="#exampleModal" id="studyApprove">스터디 승인</button>
+                    <button th:if="${#strings.equals(studyBoard.id, loginId)}" class="btn btn-warning text-nowrap" id="updateStudy">스터디 수정</button>
+                    <button th:if="${#strings.equals(studyBoard.id, loginId)}" class="btn btn-danger text-nowrap" id="deleteStudy">스터디 삭제</button>
                 </div>
             </div>
         </div>
@@ -111,7 +111,7 @@
                                     <div class="row mb-3 border-bottom">
                                         <div class="col-sm-3 fs-5">리더</div>
                                         <div class="col-sm-9">
-                                            <p th:text="${studyBoard.id}" readonly></p>
+                                            <p th:text="${studyBoard.id}" readonly id="leader_id"></p>
                                         </div>
                                     </div>
                                     <div class="row mb-3 border-bottom">
@@ -122,7 +122,7 @@
                                                     <img th:src="${studyBoard.bookcover}" width="100%" height="90%">
                                                 </div>
                                                 <div class="col-md-9">
-                                                    <p th:text="${studyBoard.booktitle}"></p>
+                                                    <p th:text="${studyBoard.booktitle}" id="booktitle"></p>
                                                     <p th:text="${studyBoard.author}"></p>
                                                     <p>[[${studyBoard.page}]] page</p>
                                                     <div class="col-md-2">
@@ -139,7 +139,10 @@
                                         </div>
                                     </div>
                                     <div class="row mb-3 border-bottom">
-                                        <div class="col-sm-3 fs-5">도전기간</div>
+                                        <div class="col-sm-3 fs-5" id="challengeDate"
+                                             th:data-challengestart="${studyBoard.challengestart}"
+                                             th:data-challengeend="${studyBoard.challengeend}"
+                                             th:data-challengeperiod="${studyBoard.challengeperiod}">도전기간</div>
                                         <div class="col-sm-9">
                                             <p>[[${studyBoard.challengeperiod}]]일 ([[${studyBoard.challengestart}]] ~ [[${studyBoard.challengeend}]])</p>
                                         </div>
@@ -225,7 +228,8 @@
                                                 <div id="_dm-calendar" class="mb-3">
 
                                                 </div>
-                                                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addEventModal">
+                                                <button th:if="${#strings.equals(loginId, studyBoard.id)}" type="button"
+                                                        class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addEventModal">
                                                     일정 추가
                                                 </button>
                                                 <div class="modal" id="addEventModal">

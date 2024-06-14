@@ -32,5 +32,6 @@ public class StudyBoard {
     private int countcomm;
     private int pendingcount;
     private int approved;
+    private String studystatus;
 
 }
