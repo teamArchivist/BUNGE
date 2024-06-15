@@ -172,12 +172,6 @@ public class StudyController {
         return studyService.getEventsByStudyBoardNo(studyBoardNo);
     }
 
-    @GetMapping("/mine")
-    public String mine(Model model) {
-
-        return "study/study_mine";
-    }
-
     @ResponseBody
     @PostMapping("/apply-study")
     public Map<String, Object> applyStudy(StudyApplication studyApplication) {
@@ -353,6 +347,24 @@ public class StudyController {
 
         model.addAttribute("myStudyList", myStudyList);
         return "study/study_mine_list";
+    }
+
+
+    @GetMapping("/mine")
+    public String mine(Model model,
+                       @RequestParam int studyboardno) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loginId = authentication.getName();
+
+        //logger.info(String.valueOf(studyboardno));
+        StudyManagement studyManagement = studyService.getStudyManagement(studyboardno);
+        logger.info(studyManagement.toString());
+
+        model.addAttribute("loginId", loginId);
+        model.addAttribute("studyManagement", studyManagement);
+
+        return "study/study_mine";
     }
 
 
