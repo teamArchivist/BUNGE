@@ -228,10 +228,13 @@
         SELECT sm.*, sb.title,
                GROUP_CONCAT(sm2.memberId SEPARATOR ',') AS memberIds
         FROM studymanagement sm
-                 JOIN studyapplication sa ON sm.studyboardno = sa.studyboardno
                  JOIN studyboard sb ON sm.studyboardno = sb.no
                  LEFT JOIN studymember sm2 ON sm.studyboardno = sm2.studyboardno
-        WHERE sa.applicationId = #{loginId}
+        WHERE sm.studyboardno IN (
+            SELECT studyboardno
+            FROM studymember
+            WHERE memberId = #{loginId}
+        )
         GROUP BY sm.studyboardno, sb.title;
     </select>
 
@@ -246,5 +249,15 @@
         <result property="title" column="title"/>
         <result property="memberIds" column="memberIds"/>
     </resultMap>
+
+    <select id="getStudyManagement" parameterType="int" resultType="com.bunge.study.domain.StudyManagement">
+        SELECT sm.*, sb.title, sb.bookcover, sb.content, sb.startdate, sb.enddate, sb.challengestart, sb.challengeend, sb.quota, sb.state,
+               GROUP_CONCAT(sbm.memberId) AS memberIds
+        FROM studymanagement sm
+                 LEFT JOIN studymember sbm ON sm.studyboardno = sbm.studyboardno
+                 LEFT JOIN studyboard sb ON sm.studyboardno = sb.no
+        WHERE sm.studyboardno = #{studyboardno}
+        GROUP BY sm.studyboardno, sb.title, sb.booktitle, sb.bookcover, sb.content, sb.startdate, sb.enddate, sb.challengestart, sb.challengeend, sb.quota, sb.state;
+    </select>
 
 </mapper>

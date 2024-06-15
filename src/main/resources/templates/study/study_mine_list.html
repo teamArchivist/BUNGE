@@ -101,7 +101,10 @@
                                         [[${myList.studystart}]] ~ [[${myList.studyend}]] ([[${myList.studyperiod}]]일)
                                     </td>
                                     <td th:if="${myList.studystatus == 'progress'}" class="text-center">
-                                        <div class="d-block badge bg-success">진행중</div>
+                                        <div class="d-block badge bg-success">진행</div>
+                                    </td>
+                                    <td th:if="${myList.studystatus == 'end'}" class="text-center"}>
+                                        <div class="d-block badge bg-danger">종료</div>
                                     </td>
                                 </tr>
 

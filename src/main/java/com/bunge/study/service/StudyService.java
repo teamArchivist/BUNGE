@@ -95,4 +95,7 @@ public interface StudyService {
 
     //나의 스터디 리스트 조회
     public List<StudyManagement> getMyStudyList(String loginId);
+
+    //현재 진행중인 스터디 모임 페이지
+    public StudyManagement getStudyManagement(int studyboardno);
 }

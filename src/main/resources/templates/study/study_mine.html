@@ -14,28 +14,7 @@
 </head>
 <body class="out-quart">
 <div id="root" class="root mn--max sb--stuck tm--expanded-hd">
-<section>
-  <div class="content__wrap">
-
-
-    <!-- Breadcrumb -->
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="../../">Home</a></li>
-        <li class="breadcrumb-item"><a href="../../miscellaneous/">스터디</a></li>
-        <li class="breadcrumb-item active" aria-current="page">나의 스터디</li>
-      </ol>
-    </nav>
-    <!-- END : Breadcrumb -->
-
-
-    <h1 class="page-title mb-0 mt-2">나의 스터디</h1>
-
-    <p class="lead">
-      현재 진행 중인 스터디의 개요 / 담벼락 / 캘린더 를 보여줍니다.
-    </p>
-  </div>
-
+<section id="content" class="content">
   <div class="content__wrap">
     <div class="row">
       <div class="col-md-6 mb-3">
@@ -48,8 +27,8 @@
             </li>
 
             <li class="nav-item" role="presentation">
-              <button class="nav-link" data-bs-toggle="tab" data-bs-target="#_dm-tabsAdmin" type="button" role="tab" aria-controls="summary" aria-selected="false"
-                      tabindex="-1">관리(리더/관리자만 보임)</button>
+              <button th:if="${#strings.equals(studyManagement.leaderId, loginId)}" class="nav-link" data-bs-toggle="tab" data-bs-target="#_dm-tabsAdmin" type="button" role="tab" aria-controls="summary" aria-selected="false"
+                      tabindex="-1">관리·승인</button>
             </li>
           </ul>
 
@@ -57,70 +36,59 @@
           <!-- Tabs content -->
           <div class="tab-content mb-3">
 
-            <div id="_dm-tabsSummary" class="tab-pane fade active show" role="tabpanel" aria-labelledby="profile-tab">
+            <div class="tab-pane fade active show" role="tabpanel" aria-labelledby="profile-tab">
+
               <div class="row mb-3">
-                <h5>스터디 이름(목표도서)</h5>
                 <div class="row">
-                  <dt class="col-sm-8">이번엔 성공하자 30일 모임!(나를 소비하지 않는 현명한 태도에 관하여)</dt>
-                  <dd class="col-sm-4 text-end">+ 수정 요청하기</dd>
+                  <p class="fw-bold text-decoration-underline fs-4 text-black">스터디 이름</p>
+                </div>
+                <div class="input-group mb-3">
+                  <input type="text" class="form-control"
+                         th:value="${studyManagement.title}"
+                         aria-describedby="button-addon1"
+                         readonly>
                 </div>
               </div>
 
-              <div class="row mb-4">
-                <h5>참여자</h5>
-                <div class="col-sm-2">
-                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    <img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">admin
-                  </button>
+              <div class="row mb-3">
+                <p class="fw-bold text-decoration-underline fs-4 text-black">도전 책</p>
+                <div class="input-group">
+                  <input type="text" class="form-control"
+                         th:value="${studyManagement.booktitle}"
+                         readonly>
+                  <button type="button" class="btn btn-info">수정요청</button>
                 </div>
+              </div>
 
-                <div class="col-sm-2">
-                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    <img class="img-xs rounded-circle" th:src="@{/img/profile-photos/7.png}" alt="Profile Picture" loading="lazy">고라니
-                  </button>
-                </div>
-
-                <div class="col-sm-2">
-                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    <img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">김레오
-                  </button>
-                </div>
-
-                <div class="col-sm-2">
-                  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    <img class="img-xs rounded-circle" th:src="@{/img/profile-photos/7.png}" alt="Profile Picture" loading="lazy">박칼린
-                  </button>
-                </div>
-
-                <!-- Modal -->
-                <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                  <div class="modal-dialog">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">강퇴</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                      <div class="modal-body">
-                        "yes"를 누르면 해당 스터디원에 대한 강퇴 투표가 담벼락에 올라갑니다.
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-primary">yes</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">no</button>
-                      </div>
-                    </div>
+              <div class="row mb-3">
+                <p class="fw-bold text-decoration-underline fs-4 text-black">참여 인원</p>
+                <div class="row">
+                  <div class="col-md-8">
+                    <span th:each="memberId : ${#strings.listSplit(studyManagement.memberIds,',')}">
+                      <img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">
+                      <button type="button" th:if="${#strings.equals(studyManagement.leaderId, memberId)}" class="btn btn-link">[[${memberId}]](리더)</button>
+                      <button type="button" th:if="!${#strings.equals(studyManagement.leaderId, memberId)}" class="btn btn-link">[[${memberId}]]</button>
+                    </span>
                   </div>
                 </div>
-                <!-- END : Basic Modal -->
-
               </div>
 
-              <div class="row">
-                <h5>도전기간</h5>
-                <div class="row">
-                  <dt class="col-sm-8">24.05.01 ~ 24.05.31 (30일)</dt>
-                  <dd class="col-sm-4 text-end">+ 수정 요청하기</dd>
+              <div class="row mb-3">
+                <p class="fw-bold text-decoration-underline fs-4 text-black">도전 기간</p>
+                <div class="input-group">
+                  <input type="date" class="form-control"
+                         th:value="${studyManagement.studystart}"
+                         readonly>
+                  <input type="date" class="form-control"
+                         th:value="${studyManagement.studyend}"
+                         readonly>
+                  <input type="text" class="form-control"
+                         th:value="${studyManagement.studyperiod}"
+                         readonly>
+                  <button type="button" class="btn btn-info">수정요청</button>
                 </div>
               </div>
+
             </div>
 
             <div id="_dm-tabsAdmin" class="tab-pane fade" role="tabpanel" aria-labelledby="_dm-tabsAdmin">
@@ -907,6 +875,7 @@
         </div>
       </div>
     </div>
+  </div>
 </section>
 </div>
 </body>

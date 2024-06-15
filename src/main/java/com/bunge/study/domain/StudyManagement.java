@@ -16,6 +16,7 @@ public class StudyManagement {
     private String booktitle;
     private String studystatus;
     private String title;
+    private String bookcover;
     private String memberId;
     private int no;
     private String categoryName;

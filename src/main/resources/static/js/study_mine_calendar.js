@@ -2,7 +2,11 @@ let token = $("meta[name='_csrf']").attr("content");
 let header = $("meta[name='_csrf_header']").attr("content");
 
 document.addEventListener( "DOMContentLoaded", () => {
-   let studyBoardNo = $("#studyBoardNo").val()
+
+   const urlParams = new URLSearchParams(window.location.search);
+   const studyBoardNo = urlParams.get('studyboardno');
+   //console.log(studyBoardNo);
+
    const calendar = new FullCalendar.Calendar( document.getElementById( "_dm-calendar" ), {
       locale: "ko",
       timeZone: "UTC",
