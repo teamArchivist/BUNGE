@@ -91,4 +91,8 @@ public interface StudyMapper {
 
     //참여 인원 스터디 멤버 테이블에 추가
     public void insertStudyMember(@Param("studyboardno") int studyboardno, @Param("memberId") String memberId);
+
+    //나의 스터디 리스트 조회
+    public List<StudyManagement> getMyStudyList(String loginId);
+
 }

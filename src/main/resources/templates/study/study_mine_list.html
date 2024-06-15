@@ -1,10 +1,149 @@
 <!DOCTYPE html>
-<html lang="en">
+<html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>진행 중인 스터디</title>
+    <title>나의 스터디</title>
+    <links>
+        <script th:src="@{/js/studymine.js}"></script>
+    </links>
 </head>
 <body>
+<!-- CONTENTS -->
+<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+<section id="content" class="content">
+    <div class="content__header content__boxed overlapping">
+        <div class="content__wrap">
 
+            <!-- Title and information -->
+            <h1 class="page-title d-flex flex-wrap just justify-content-center mb-2 mt-4">나의 스터디</h1>
+            <p class="text-center lead mb-4">내가 참가한 진행 중인 스터디와 종료된 스터디를 볼 수 있습니다</p>
+            <!-- END : Title and information -->
+
+
+            <!-- Search form -->
+            <div class="col-md-8 offset-md-2 mb-3">
+                <form class="searchbox input-group">
+                    <input class="searchbox__input form-control form-control-lg" type="search" placeholder="검색어를 입력하세요. . ." aria-label="Search">
+                    <div class="searchbox__btn-group">
+                        <button class="searchbox__btn btn btn-icon bg-transparent shadow-none border-0 btn-sm" type="submit">
+                            <i class="demo-pli-magnifi-glass"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <!-- END : Search form -->
+
+
+            <!-- Sort and categories filter -->
+            <div class="d-flex flex-wrap align-items-end justify-content-center gap-2 mb-3 pb-3">
+                <div class="d-md-flex flex-wrap align-items-center gap-2 mb-3 mb-sm-0">
+                    <div class="text-center mb-2 mb-md-0">검색 조건</div>
+                    <select class="form-select w-auto" aria-label="Categories">
+                        <option value="progress">진행</option>
+                        <option value="end">종료</option>
+                        <option value="booktitle">책 제목</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-light mb-3 mb-sm-0">검색</button>
+            </div>
+            <!-- END : Sort and categories filter -->
+        </div>
+
+    </div>
+
+
+    <div class="content__boxed">
+        <div class="content__wrap">
+            <div th:if="${myStudyList.size() == 0}">
+                <p class="fs-1 text-decoration-underline text-white fw-bold">진행 중이거나 종료된 스터디가 없습니다.</p>
+            </div>
+            <div th:if="${myStudyList.size() > 0}" class="card">
+                <div class="card-body">
+
+
+                    <!-- Blog post lists -->
+                    <div class="table-responsive">
+                        <table class="table table-striped align-middle">
+                            <thead class="border">
+                            <tr>
+                                <th class="text-center fs-5">번호</th>
+                                <th class="text-center fs-5">스터디 이름</th>
+                                <th class="text-center fs-5">리더</th>
+                                <th class="text-center fs-5">참가자</th>
+                                <th class="text-center fs-5">목표 도서</th>
+                                <th class="text-center fs-5">진행 기간</th>
+                                <th class="text-center fs-5">상태</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="myList : ${myStudyList}">
+                                   <td class="text-center">
+                                       #[[${myList.studyboardno}]]
+                                   </td>
+                                    <td class="text-center" >
+                                        <a class="btn-link text-body-emphasis text-decoration-underline text-truncate mb-0 fs-5"
+                                           th:href="@{'/study/mine?studyboardno=' + ${myList.studyboardno}}"
+                                           th:text="${#strings.abbreviate(myList.title, 50)}">
+                                        </a>
+                                    </td>
+                                    <td class="text-center">
+                                        [[${myList.leaderId}]]
+                                    </td>
+                                    <td class="text-center">
+                                       <span th:each="memberId : ${#strings.listSplit(myList.memberIds,',')}">
+                                           &nbsp[[${memberId}]]
+                                       </span>
+                                    </td>
+                                    <td class="text-center" th:text="${#strings.abbreviate(myList.booktitle, 50)}">
+                                    </td>
+                                    <td class="text-center">
+                                        [[${myList.studystart}]] ~ [[${myList.studyend}]] ([[${myList.studyperiod}]]일)
+                                    </td>
+                                    <td th:if="${myList.studystatus == 'progress'}" class="text-center">
+                                        <div class="d-block badge bg-success">진행중</div>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                    <div class="mt-4 d-flex justify-content-center">
+
+                        <!-- Pagination - Disabled and active states -->
+                        <nav th:if="${maxPage > 1 and studyBoardList.size() != 0}" class="text-align-center mt-5" aria-label="Page navigation" id="reviewPagination">
+                            <ul class="pagination justify-content-center">
+                                <li th:if="${currentPage == 1}" class="page-item">
+                                    <a class="page-link disabled">이전</a>
+                                </li>
+                                <li th:if="${currentPage > 1}" class="page-item">
+                                    <a th:href="@{'/study/main?page=' + ${currentPage - 1}}" class="page-link">이전</a>
+                                </li>
+                                <li th:each="pageNum : ${#numbers.sequence(startPage, endPage)}" th:classappend="${pageNum == currentPage} ? 'active'">
+                                    <a th:href="@{'/study/main?page=' + ${pageNum}}" class="page-link" th:text="${pageNum}">1</a>
+                                </li>
+                                <li th:if="${currentPage < maxPage}" class="page-item">
+                                    <a th:href="@{'/study/main?page=' + ${currentPage + 1}}" class="page-link">다음</a>
+                                </li>
+                                <li th:if="${currentPage >= maxPage}" class="page-item">
+                                    <a class="page-link disabled">다음</a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <!-- END : Pagination - Disabled and active states -->
+
+                    </div>
+                    <!-- END : Blog post lists -->
+
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
 </body>
 </html>

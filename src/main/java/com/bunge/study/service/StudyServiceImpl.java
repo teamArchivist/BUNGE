@@ -172,4 +172,9 @@ public class StudyServiceImpl implements StudyService {
             studyMapper.insertStudyMember(studyboardno, memberId);
         }
     }
+
+    @Override
+    public List<StudyManagement> getMyStudyList(String loginId) {
+        return studyMapper.getMyStudyList(loginId);
+    }
 }

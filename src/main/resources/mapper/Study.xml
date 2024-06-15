@@ -224,4 +224,27 @@
         (#{studyboardno}, #{memberId})
     </insert>
 
+    <select id="getMyStudyList" parameterType="String" resultMap="studyManagementResultMap">
+        SELECT sm.*, sb.title,
+               GROUP_CONCAT(sm2.memberId SEPARATOR ',') AS memberIds
+        FROM studymanagement sm
+                 JOIN studyapplication sa ON sm.studyboardno = sa.studyboardno
+                 JOIN studyboard sb ON sm.studyboardno = sb.no
+                 LEFT JOIN studymember sm2 ON sm.studyboardno = sm2.studyboardno
+        WHERE sa.applicationId = #{loginId}
+        GROUP BY sm.studyboardno, sb.title;
+    </select>
+
+    <resultMap id="studyManagementResultMap" type="com.bunge.study.domain.StudyManagement">
+        <result property="studyboardno" column="studyboardno"/>
+        <result property="studystart" column="studystart"/>
+        <result property="studyend" column="studyend"/>
+        <result property="studyperiod" column="studyperiod"/>
+        <result property="leaderId" column="leaderId"/>
+        <result property="booktitle" column="booktitle"/>
+        <result property="studystatus" column="studystatus"/>
+        <result property="title" column="title"/>
+        <result property="memberIds" column="memberIds"/>
+    </resultMap>
+
 </mapper>

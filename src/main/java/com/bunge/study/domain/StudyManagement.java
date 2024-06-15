@@ -4,8 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.Date;
-
 @ToString
 @Setter
 @Getter
@@ -21,4 +19,6 @@ public class StudyManagement {
     private String memberId;
     private int no;
     private String categoryName;
+    private String memberIds;
+
 }
