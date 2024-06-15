@@ -1,7 +1,7 @@
 package com.bunge.usermain.controller;
 
+import com.bunge.study.domain.StudyManagement;
 import com.bunge.usermain.service.UserMainService;
-import com.bunge.study.domain.StudyBoard;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,41 +19,45 @@ import java.util.Map;
 public class UserMainController {
 
     @Autowired
-    private UserMainService memberMainService;
-
-  //  @RequestMapping("/main")
-   // public String showMainPage() {
-
-     //   return "member_main";
-  //  }
+    private UserMainService userMainService;
 
     @GetMapping("/main")
-    public String mianPageView(Model model) {
+    public String userMianView(Model model,Principal principal) {
 
+        String loginId = principal.getName();
+
+        model.addAttribute("loginId",loginId);
+
+        System.out.println("여기는 main");
         return "user_main";
-
     }
 
     @ResponseBody
-    @PostMapping("/user-info")
-        public Map<String, Object> memberMainPost(Principal principal) {
+    @GetMapping("/user-info")
+        public Map<String, Object> userMainInfo(Principal principal,
+                                                @RequestParam(defaultValue = "1") int page,
+                                                @RequestParam(defaultValue = "5") int size,
+                                                @RequestParam(defaultValue = "name") String sort) {
 
-            String loginId = principal.getName();  // 현재 로그인된 사용자의 아이디
+            String memberId = principal.getName();  // 현재 로그인된 사용자의 아이디
 
             Map<String, Object> response = new HashMap<>();
+            int offset = (page - 1) * size;
+
         try {
+            List<StudyManagement> studyMyList = userMainService.selectStudyBoardByMemberId(memberId, size, offset, sort);
+            System.out.println("studyMyList:" + studyMyList);
 
-            List<StudyBoard> studyBoards = memberMainService.selectStudyboardByMemberId(loginId);
-            int studyBoardCount = memberMainService.countStudyboardByMemberId(loginId);
+            int studyListCount = userMainService.countStudyBoardByMemberId(memberId);
 
+            response.put("studyMyList", studyMyList);
+            response.put("studyListCount", studyListCount);
             response.put("status", "success");
-            response.put("message", "댓글 추가 성공");
         } catch (Exception e) {
-
+            e.printStackTrace(); // 예외 스택 트레이스 출력
             response.put("status", "error");
             response.put("message", "목록을 불러오는데 실패했습니다.");
         }
-
         return response;
     }
 

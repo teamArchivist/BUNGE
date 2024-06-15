@@ -4,7 +4,7 @@
 
 <mapper namespace="com.bunge.usermain.mapper.UserMainMapper">
     <!-- 스터디보드 정보 조회 -->
-    <select id="selectStudyboardByMemberId" parameterType="String" resultType="com.bunge.study.domain.StudyBoard">
+    <select id="selectStudyBoardByMemberId" resultType="com.bunge.study.domain.StudyManagement">
         SELECT
             sm.studyboardno,
             sm.studystart,
@@ -16,23 +16,35 @@
             smm.no,
             smm.memberId,
             smm.role,
-            sb.title AS study_title
+            sb.title,
+            b.categoryName
         FROM
             studymanagement sm
                 JOIN
-            studymember smm
-            ON
-                sm.studyboardno = smm.studyboardno
+            studymember smm ON sm.studyboardno = smm.studyboardno
                 JOIN
-            studyboard sb
-            ON
-                sm.studyboardno = sb.no
+            studyboard sb ON sm.studyboardno = sb.no
+                JOIN
+            book b ON sm.booktitle = b.title
         WHERE
-            smm.memberId = #{memberId};
+            smm.memberId = #{memberId}
+        ORDER BY
+        <choose>
+            <when test="sort == 'name'">
+                sb.title
+            </when>
+            <when test="sort == 'studystart'">
+                sm.studystart
+            </when>
+            <when test="sort == 'progress'">
+                sm.studyperiod
+            </when>
+        </choose>
+        LIMIT #{size} OFFSET #{offset}
     </select>
 
     <!-- 스터디보드 정보 개수 조회 -->
-    <select id="countStudyboardByMemberId" parameterType="String" resultType="int">
+    <select id="countStudyBoardByMemberId" parameterType="String" resultType="int">
         SELECT
             COUNT(*) AS total_count
         FROM
@@ -44,5 +56,40 @@
         WHERE
             smm.memberId = #{memberId};
 
+    </select>
+
+    <select id="selectStudyBoardByMemberId123" resultType="com.bunge.study.domain.StudyManagement">
+        SELECT
+            sm.studyboardno,
+            sm.studystart,
+            sm.studyend,
+            sm.studyperiod,
+            sm.leaderId,
+            sm.booktitle,
+            sm.studystatus,
+            smm.no,
+            smm.memberId,
+            smm.role,
+            sb.title,
+            b.categoryName
+        FROM
+            studymanagement sm
+                JOIN
+            studymember smm ON sm.studyboardno = smm.studyboardno
+                JOIN
+            book b ON sm.booktitle = b.title
+        WHERE
+            smm.memberId = #{memberId}
+        ORDER BY
+        <if test="sort == 'name'">
+            sb.title
+        </if>
+        <if test="sort == 'studystart'">
+            sm.studystart
+        </if>
+        <if test="sort == 'progress'">
+            sm.studyperiod
+        </if>
+        LIMIT #{size} OFFSET #{offset};
     </select>
 </mapper>

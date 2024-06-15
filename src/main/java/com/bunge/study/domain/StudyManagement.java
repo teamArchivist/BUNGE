@@ -17,4 +17,8 @@ public class StudyManagement {
     private String leaderId;
     private String booktitle;
     private String studystatus;
+    private String title;
+    private String memberId;
+    private int no;
+    private String categoryName;
 }
