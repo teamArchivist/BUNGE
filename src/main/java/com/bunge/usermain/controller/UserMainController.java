@@ -71,27 +71,27 @@ public class UserMainController {
 
 
         String memberId = principal.getName();  // 현재 로그인된 사용자의 아이디
-        log.info("memberId: {}", memberId);
+//        log.info("memberId: {}", memberId);
 
         Map<String, Object> response = new HashMap<>();
         int offset = (page - 1) * size;
 
         try {
-            log.info("Calling selectMyEvent with memberId: {}, size: {}, offset: {}", memberId, size, offset);
+//            log.info("Calling selectMyEvent with memberId: {}, size: {}, offset: {}", memberId, size, offset);
 
             List<StudyEvent> studyEvent = userMainService.selectMyEvent(memberId, size, offset);
             int eventCount = userMainService.countMyEvent(memberId);
 
-            log.info("studyEvent: {}", studyEvent); // 디버깅 출력
-            log.info("eventCount: {}", eventCount); // 디버깅 출력
+//            log.info("studyEvent: {}", studyEvent); // 디버깅 출력
+//            log.info("eventCount: {}", eventCount); // 디버깅 출력
 
             // 데이터를 response 맵에 추가
             response.put("studyEvent", studyEvent);
             response.put("eventCount", eventCount);
             response.put("status", "success");
-            log.info("response: {}", response); // 디버깅 출력
+//            log.info("response: {}", response); // 디버깅 출력
         } catch (Exception e) {
-            log.error("Error fetching user event list", e);
+//            log.error("Error fetching user event list", e);
             response.put("status", "error");
             response.put("message", "목록을 불러오는데 실패했습니다.");
         }
