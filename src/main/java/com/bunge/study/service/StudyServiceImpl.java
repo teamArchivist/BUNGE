@@ -182,4 +182,14 @@ public class StudyServiceImpl implements StudyService {
     public StudyManagement getStudyManagement(int studyboardno) {
         return studyMapper.getStudyManagement(studyboardno);
     }
+
+    @Override
+    public void submitChangeBook(StudyApproval studyApproval) {
+        studyMapper.submitChangeBook(studyApproval);
+    }
+
+    @Override
+    public int countApprovalReady(int studyboardno) {
+        return studyMapper.countApprovalReady(studyboardno);
+    }
 }

@@ -98,4 +98,10 @@ public interface StudyMapper {
     //현재 진행중인 스터디 모임 페이지
     public StudyManagement getStudyManagement(int studyboardno);
 
+    //책 변경 제안
+    public void submitChangeBook(StudyApproval studyApproval);
+
+    //현재 대기 중인 승인 갯수
+    public int countApprovalReady(int studyboardno);
+
 }

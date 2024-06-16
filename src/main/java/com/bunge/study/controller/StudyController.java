@@ -54,7 +54,7 @@ public class StudyController {
         studyBoardFilter.setLimit(pageSize);
 
         List<StudyBoard> studyBoardList = studyService.getStudyList(studyBoardFilter);
-        logger.info(studyBoardList.toString());
+        //logger.info(studyBoardList.toString());
 
         int totalStudyList = studyService.getStudyListCount(studyBoardFilter);
         //logger.info(String.valueOf(totalStudyList));
@@ -191,7 +191,7 @@ public class StudyController {
     @ResponseBody
     @GetMapping("/get-applications")
     public List<StudyApplication> getApplications(@RequestParam int studyboardno) {
-        logger.info(studyService.getApplicationsByStudyBoardNo(studyboardno).toString());
+        //logger.info(studyService.getApplicationsByStudyBoardNo(studyboardno).toString());
         return studyService.getApplicationsByStudyBoardNo(studyboardno);
     }
 
@@ -314,7 +314,7 @@ public class StudyController {
         Map<String, Object> response = new HashMap<>();
         try {
             List<String> memberIdList = Arrays.asList(memberIds.split(","));
-            logger.info(memberIdList.toString());
+            //logger.info(memberIdList.toString());
             studyService.createStudyMembers(studyboardno, memberIdList);
             response.put("status", "success");
         } catch (Exception e) {
@@ -333,7 +333,7 @@ public class StudyController {
     @ResponseBody
     @PostMapping("/cancel-application")
     public int cancelApplication(@ModelAttribute StudyApplication studyApplication) {
-        logger.info(studyApplication.toString());
+        //logger.info(studyApplication.toString());
         return studyService.cancelApplication(studyApplication);
     }
 
@@ -343,7 +343,7 @@ public class StudyController {
         String loginId = authentication.getName();
 
         List<StudyManagement> myStudyList = studyService.getMyStudyList(loginId);
-        logger.info(myStudyList.toString());
+        //logger.info(myStudyList.toString());
 
         model.addAttribute("myStudyList", myStudyList);
         return "study/study_mine_list";
@@ -359,12 +359,31 @@ public class StudyController {
 
         //logger.info(String.valueOf(studyboardno));
         StudyManagement studyManagement = studyService.getStudyManagement(studyboardno);
-        logger.info(studyManagement.toString());
+        //logger.info(studyManagement.toString());
+        int countApprovalReady = studyService.countApprovalReady(studyboardno);
 
         model.addAttribute("loginId", loginId);
         model.addAttribute("studyManagement", studyManagement);
+        model.addAttribute("countApprovalReady", countApprovalReady);
 
         return "study/study_mine";
+    }
+
+    @ResponseBody
+    @PostMapping("/submit-change-book")
+    public Map<String, Object> submitChangeBook(@ModelAttribute StudyApproval studyApproval) {
+
+        logger.info(studyApproval.toString());
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            studyService.submitChangeBook(studyApproval);
+            response.put("status", "success");
+        } catch (Exception e) {
+            response.put("status", "error");
+        }
+
+        return response;
     }
 
 
