@@ -10,6 +10,15 @@
 
 
 </head>
+<style>
+    /* styles.css */
+    table td {
+        height: 50px; !important;/* 원하는 높이로 설정 */
+        overflow: hidden; !important;/* 텍스트가 넘칠 경우 숨김 */
+        text-overflow: ellipsis; !important;/* 넘치는 텍스트는 말줄임 표시 */
+        white-space: nowrap; !important;/* 텍스트가 줄바꿈 되지 않도록 설정 */
+    }
+</style>
 <body>
 <section sec:authorize="hasAnyAuthority('member')">
     <div class="content__header content__boxed overlapping">
@@ -137,7 +146,7 @@
                 <div class="col-xl-6 mb-3">
                     <div class="card">
                         <div class="card-body">
-                            <h3 class="h4 card-title"><i class="pli-calendar-4"></i>&nbsp; 한 주 주요 일정</h3>
+                            <h3 class="h4 card-title"><i class="pli-calendar-4"></i>&nbsp; 내 스터디 일정</h3>
 
                             <!-- GridJS - Resizable columns -->
                             <div id="_dm-gridjsResizableCol">
@@ -147,11 +156,11 @@
                                             <thead class="gridjs-thead">
                                             <tr class="gridjs-tr">
                                                 <th data-column-id="id" class="gridjs-th" style="min-width: 53px; width: 70px;">
-                                                    <div class="gridjs-th-content">일정</div>
+                                                    <div class="gridjs-th-content">스터디</div>
                                                     <div class="gridjs-th gridjs-resizable"></div>
                                                 </th>
                                                 <th data-column-id="name" class="gridjs-th" style="min-width: 108px; width: 142px;">
-                                                    <div class="gridjs-th-content">내용</div><div class="gridjs-th gridjs-resizable"></div>
+                                                    <div class="gridjs-th-content">모임 제목</div><div class="gridjs-th gridjs-resizable"></div>
                                                 </th>
                                                 <th data-column-id="lastLogin" class="gridjs-th" style="min-width: 132px; width: 174px;">
                                                     <div class="gridjs-th-content">날짜</div>
@@ -165,7 +174,7 @@
                                                 </th>
                                             </tr>
                                             </thead>
-                                            <tbody class="gridjs-tbody">
+                                            <tbody class="gridjs-tbody" id="eventList">
                                             <tr class="gridjs-tr">
                                                 <td data-column-id="id" class="gridjs-td">53454</td>
                                                 <td data-column-id="name" class="gridjs-td">Charles S Boyle</td>
@@ -173,39 +182,12 @@
                                                 <td data-column-id="amount" class="gridjs-td">$132.20</td>
                                                 <td data-column-id="amount" class="gridjs-td">$132.20</td>
                                             </tr>
-                                            <tr class="gridjs-tr"><td data-column-id="id" class="gridjs-td">53453</td>
-                                                <td data-column-id="name" class="gridjs-td">Steve N. Horton</td>
-                                                <td data-column-id="lastLogin" class="gridjs-td">Today 11:03 AM</td>
-                                                <td data-column-id="amount" class="gridjs-td">$74.00</td>
-                                                <td data-column-id="amount" class="gridjs-td">$74.00</td>
-                                            </tr>
-                                            <tr class="gridjs-tr">
-                                                <td data-column-id="id" class="gridjs-td">53452</td>
-                                                <td data-column-id="name" class="gridjs-td">Lucy Doe</td>
-                                                <td data-column-id="lastLogin" class="gridjs-td">Today 10:56 PM</td>
-                                                <td data-column-id="amount" class="gridjs-td">$12.00</td>
-                                                <td data-column-id="amount" class="gridjs-td">$12.00</td>
-                                            </tr>
-                                            <tr class="gridjs-tr">
-                                                <td data-column-id="id" class="gridjs-td">53451</td>
-                                                <td data-column-id="name" class="gridjs-td">Teresa L. Doe</td>
-                                                <td data-column-id="lastLogin" class="gridjs-td">Yesterday 05:25 PM</td>
-                                                <td data-column-id="amount" class="gridjs-td">$532.99</td>
-                                                <td data-column-id="amount" class="gridjs-td">$532.99</td>
-                                            </tr>
-                                            <tr class="gridjs-tr"><td data-column-id="id" class="gridjs-td">53450</td>
-                                                <td data-column-id="name" class="gridjs-td">Lucy Doe</td>
-                                                <td data-column-id="lastLogin" class="gridjs-td">Yesterday 03:25 PM</td>
-                                                <td data-column-id="amount" class="gridjs-td">$45.00</td>
-                                                <td data-column-id="amount" class="gridjs-td">$45.00</td>
-                                            </tr>
-
                                             </tbody>
                                         </table>
                                     </div>
                                     <div id="gridjs-temp" class="gridjs-temp"></div>
                                     <nav class="text-align-center mt-5" aria-label="Table navigation">
-                                        <ul class="pagination justify-content-center">
+                                        <ul id="eventPagination" class="pagination justify-content-center">
                                             <li class="page-item disabled">
                                                 <a class="page-link" href="#">이전</a>
                                             </li>

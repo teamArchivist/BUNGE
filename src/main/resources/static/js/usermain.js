@@ -52,7 +52,7 @@ $(document).ready(function() {
 		</tr>`;
 	}
 
-	function generatePagination(totalCount, currentPage, pageSize, sort) {
+	function StudyPagination(totalCount, currentPage, pageSize, sort) {
 		const totalPage = Math.ceil(totalCount / pageSize);
 		const startPage = Math.max(1, currentPage - 5);
 		const endPage = Math.min(totalPage, currentPage + 4);
@@ -85,10 +85,11 @@ $(document).ready(function() {
 		});
 	}
 
+	//스터디 목록
 	function loadMyStudyList(page = 1, size = 5, sort = 'name') {
 
 		$.ajax({
-			url: '/user/user-info',
+			url: '/user/user-studyList',
 			method: 'GET',
 			data: { id: id,
 					page: page,
@@ -101,8 +102,8 @@ $(document).ready(function() {
 				}
 			},
 			success: function (response) {
-				console.log("response.studyListCount:"+ response.studyListCount)
-				console.log("response.studyMyList:"+ response.studyMyList)
+//				console.log("response.studyListCount:"+ response.studyListCount)
+//				console.log("response.studyMyList:"+ response.studyMyList)
 				if (response.studyListCount == 0) {
 					let sentence = '가입된 스터디가 없습니다. '
 					$('#studylist').html(sentence)
@@ -112,13 +113,13 @@ $(document).ready(function() {
 					let output = '';
 
 					response.studyMyList.forEach(function (study) {
-						console.log("study object: ", study);
+//						console.log("study object: ", study);
 						output += generateMyStudyHtml(study);
 					});
 					$('#studylist').html(output);
 
 					// 페이징 처리
-					generatePagination(response.studyListCount, page, size, sort);
+					StudyPagination(response.studyListCount, page, size, sort);
 				}
 			},
 			error: function (xhr,status, error) {
@@ -144,4 +145,96 @@ $(document).ready(function() {
 			loadMyStudyList(1, size, sort, keyword); // 검색 시 1페이지부터 다시 로드
 		}
 	});
+
+	//일정 리스트
+	loadMyEventList(page, size);
+
+	function EventPagination(totalCount, currentPage, pageSize) {
+		const totalPage = Math.ceil(totalCount / pageSize);
+		const startPage = Math.max(1, currentPage - 5);
+		const endPage = Math.min(totalPage, currentPage + 4);
+
+		$("#eventPagination").empty();
+
+		if (totalCount != 0) {
+			if (currentPage == 1) {
+				$("#eventPagination").append(`<li class="page-item"><a class="page-link disabled">이전</a></li>`);
+			} else {
+				$("#eventPagination").append(`<li class="page-item"><a href="#" data-page="${currentPage - 1}" class="page-link">이전</a></li>`);
+			}
+
+			for (let i = startPage; i <= endPage; i++) {
+				$("#eventPagination").append(`<li class="page-item ${i === currentPage ? 'active' : ''}"><a href="#" data-page="${i}" class="page-link">${i}</a></li>`);
+			}
+
+			if (currentPage < totalPage) {
+				$("#eventPagination").append(`<li class="page-item"><a href="#" data-page="${currentPage + 1}" class="page-link">다음</a></li>`);
+			} else {
+				$("#eventPagination").append(`<li class="page-item"><a class="page-link disabled">다음</a></li>`);
+			}
+		}
+
+		// 페이지 링크 클릭 이벤트
+		$("#eventPagination a").click(function(event) {
+			event.preventDefault();
+			let selectedPage = $(this).data("page");
+			loadMyEventList(selectedPage, pageSize);
+		});
+	}
+
+	function loadMyEventList(page = 1, size = 5) {
+
+		$.ajax({
+			url: '/user/user-eventList',
+			method: 'GET',
+			data: { id: id,
+				page: page,
+				size: size
+				},
+			cache: false,
+			beforeSend: function (xhr) {
+				if (header && token) {
+					xhr.setRequestHeader(header, token);
+				}
+			},
+			success: function (response) {
+				console.log("response.studyEvent:"+ response.studyEvent)
+				console.log("response.studyEventCount:"+ response.eventCount)
+				if (response.eventCount == 0) {
+					let sentence = '일정이 없습니다. '
+					$('#eventList').html(sentence)
+
+				} else {
+					$('#eventList').empty();
+					response.studyEvent.forEach(study => {
+
+						let studySubject = study.studyTitle;
+						if (studySubject.length > 5) { // 원하는 길이로 설정
+							studySubject = studySubject.substring(0, 5) + '...';
+						}
+
+							console.log("study object: ", study);
+							let output = ` <tr class="gridjs-tr">
+                                                <td data-column-id="id" class="gridjs-td"><a href="/study/mine?studyboardno=${study.no}" class="btn-link">${studySubject}</a></td>
+                                                <td data-column-id="name" class="gridjs-td">${study.eventTitle}</td>
+                                                <td data-column-id="lastLogin" class="gridjs-td">${study.start}</td>
+                                                <td data-column-id="amount" class="gridjs-td">${study.start}</td>
+                                                <td data-column-id="amount" class="gridjs-td">${study.end}</td>
+                                            </tr>`;
+							console.log("output: ", output);
+							$('#eventList').append(output);
+
+							// 페이징 처리
+							EventPagination(response.eventCount, page, size);
+
+					});
+				}
+			},
+			error: function (xhr,status, error) {
+				console.log("ajax 요청 실패")
+				console.log("상태:" + status)
+				console.log("오류:" + error)
+			}
+		})
+	}
 })

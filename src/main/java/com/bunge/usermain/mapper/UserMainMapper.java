@@ -1,8 +1,7 @@
 package com.bunge.usermain.mapper;
 
-import com.bunge.study.domain.StudyBoard;
+import com.bunge.study.domain.StudyEvent;
 import com.bunge.study.domain.StudyManagement;
-import com.bunge.study.domain.StudyMember;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -12,4 +11,7 @@ import java.util.Map;
 public interface UserMainMapper {
     List<StudyManagement> selectStudyBoardByMemberId(Map<String, Object> params);
     int countStudyBoardByMemberId(String memberId);
+    List<StudyEvent> selectMyEvent(Map<String, Object> params);
+    int countMyEvent(Map<String, Object> params);
+
 }

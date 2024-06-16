@@ -54,42 +54,43 @@
             ON
                 sm.studyboardno = smm.studyboardno
         WHERE
-            smm.memberId = #{memberId};
+            smm.memberId = #{memberId}
 
     </select>
 
-    <select id="selectStudyBoardByMemberId123" resultType="com.bunge.study.domain.StudyManagement">
+    <!-- 스터디 일정 리스트 조회 -->
+    <select id="selectMyEvent" parameterType="java.util.Map" resultType="com.bunge.study.domain.StudyEvent">
         SELECT
-            sm.studyboardno,
-            sm.studystart,
-            sm.studyend,
-            sm.studyperiod,
-            sm.leaderId,
-            sm.booktitle,
-            sm.studystatus,
-            smm.no,
+            se.title AS event_title,
+            start,
+            end,
+            className,
+            sb.title AS study_title,
             smm.memberId,
-            smm.role,
-            sb.title,
-            b.categoryName
+            se.studyboardNo
         FROM
-            studymanagement sm
+            studyevent se
                 JOIN
-            studymember smm ON sm.studyboardno = smm.studyboardno
+            studyboard sb ON sb.no = se.studyboardno
                 JOIN
-            book b ON sm.booktitle = b.title
+            studymember smm ON smm.studyboardno = sb.no
         WHERE
             smm.memberId = #{memberId}
-        ORDER BY
-        <if test="sort == 'name'">
-            sb.title
-        </if>
-        <if test="sort == 'studystart'">
-            sm.studystart
-        </if>
-        <if test="sort == 'progress'">
-            sm.studyperiod
-        </if>
-        LIMIT #{size} OFFSET #{offset};
+            LIMIT #{size} OFFSET #{offset}
     </select>
+
+    <!-- 스터디보드 정보 개수 조회 -->
+    <select id="countMyEvent" parameterType="java.util.Map" resultType="int">
+        SELECT
+            COUNT(*) AS total_count
+        FROM
+            studyevent se
+                JOIN
+            studyboard sb ON sb.no = se.studyboardno
+                JOIN
+            studymember smm ON smm.studyboardno = sb.no
+        WHERE
+            smm.memberId = #{memberId}
+    </select>
+
 </mapper>
