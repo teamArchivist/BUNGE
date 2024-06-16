@@ -1,5 +1,7 @@
 package com.bunge.chat.controller;
 
+import com.bunge.chat.domain.Chatroom;
+import com.bunge.chat.service.ChatService;
 import com.bunge.member.domain.Member;
 import com.bunge.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +19,7 @@ public class ChatController {
     private final MemberService memberService;
 
     @GetMapping
-    public String chatPage() {
+    public String showChatMainPage() {
         return "chat/chat";
     }
 
