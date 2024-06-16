@@ -260,4 +260,18 @@
         GROUP BY sm.studyboardno, sb.title, sb.booktitle, sb.bookcover, sb.content, sb.startdate, sb.enddate, sb.challengestart, sb.challengeend, sb.quota, sb.state;
     </select>
 
+    <insert id="submitChangeBook" parameterType="com.bunge.study.domain.StudyApproval">
+        insert into studyapproval
+        (studyboardno, sort, approvalContent, proposer, proposeDate, changeStatusDate)
+        values
+        (#{studyboardno}, #{sort}, #{approvalContent}, #{proposer}, now(), now())
+    </insert>
+
+    <select id="countApprovalReady" parameterType="int" resultType="int">
+        select count(*)
+        from studyapproval
+        where studyboardno = #{studyboardno}
+        and approvalStatus = '대기'
+    </select>
+
 </mapper>
