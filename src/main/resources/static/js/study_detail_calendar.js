@@ -6,8 +6,9 @@ document.addEventListener( "DOMContentLoaded", () => {
    const calendar = new FullCalendar.Calendar( document.getElementById( "_dm-calendar" ), {
       locale: "ko",
       timeZone: "UTC",
-      editable: true,
-      droppable: true, // this allows things to be dropped onto the calendar
+      editable: false,
+      droppable: false,
+      selectable: true,
       dayMaxEvents: true, // allow "more" link when too many events
       headerToolbar: {
          left: "prev,next today",
@@ -24,6 +25,9 @@ document.addEventListener( "DOMContentLoaded", () => {
          prevYear: " demo-psi-arrow-left-2",
          nextYear: " demo-psi-arrow-right-2"
       },
+
+      displayEventTime : false,
+
 
       events: []
    });

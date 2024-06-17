@@ -224,4 +224,14 @@ public class StudyServiceImpl implements StudyService {
     public int rejectApproval(StudyApproval studyApproval) {
         return studyMapper.rejectApproval(studyApproval);
     }
+
+    @Override
+    public List<StudyEvent> getStudyEventList(int studyboardno) {
+        return studyMapper.getStudyEventList(studyboardno);
+    }
+
+    @Override
+    public int deleteStudyEvent(int no) {
+        return studyMapper.deleteStudyEvent(no);
+    }
 }

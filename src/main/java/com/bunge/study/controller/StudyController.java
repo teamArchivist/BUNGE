@@ -11,6 +11,8 @@ import com.bunge.study.service.StudyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -169,7 +171,7 @@ public class StudyController {
     @ResponseBody
     @GetMapping("/get-events")
     public List<StudyEvent> getEvents(@RequestParam int studyBoardNo) {
-        //logger.info(studyService.getEventsByStudyBoardNo(studyBoardNo).toString());
+        logger.info(studyService.getEventsByStudyBoardNo(studyBoardNo).toString());
         return studyService.getEventsByStudyBoardNo(studyBoardNo);
     }
 
@@ -366,6 +368,8 @@ public class StudyController {
         int countApprovalReject = studyService.countApprovalReject(studyboardno);
         List<StudyApproval> studyApprovals = studyService.getStudyApprovalList(studyboardno);
         //logger.info(studyApprovals.toString());
+        List<StudyEvent> studyEvents = studyService.getStudyEventList(studyboardno);
+        logger.info(studyEvents.toString());
 
 
         model.addAttribute("loginId", loginId);
@@ -374,6 +378,7 @@ public class StudyController {
         model.addAttribute("countApprovalComplete", countApprovalComplete);
         model.addAttribute("countApprovalReject", countApprovalReject);
         model.addAttribute("studyApprovals", studyApprovals);
+        model.addAttribute("studyEvents", studyEvents);
 
         return "study/study_mine";
     }
@@ -437,5 +442,11 @@ public class StudyController {
         return studyService.rejectApproval(studyApproval);
     }
 
+    @ResponseBody
+    @PostMapping("/delete-study-event")
+    public int deleteStudyEvent(@RequestParam int no) {
+
+        return studyService.deleteStudyEvent(no);
+    }
 
 }

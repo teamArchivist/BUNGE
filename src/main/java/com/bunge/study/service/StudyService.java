@@ -118,4 +118,10 @@ public interface StudyService {
 
     //거절 후 정보 변경
     public int rejectApproval(StudyApproval studyApproval);
+
+    //스터디 이벤트 리스트
+    public List<StudyEvent> getStudyEventList(int studyboardno);
+
+    //스터디 이벤트 삭제
+    public int deleteStudyEvent(int no);
 }
