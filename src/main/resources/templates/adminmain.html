@@ -137,11 +137,12 @@
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <th width="55">프로필</th>
+                                <th>프로필</th>
                                 <th>아이디</th>
                                 <th class="text-nowrap">이름</th>
                                 <th>닉네임</th>
                                 <th>주소</th>
+                                <th>신고정보</th>
                                 <th>회원권한</th>
                                 <th class="text-center">회원상태수정</th>
                             </tr>
@@ -152,70 +153,81 @@
                             <div class="modal fade" id="authority" tabindex="-1" aria-labelledby="verticalCenteredLabel" aria-hidden="true" style="display: none;">
                                 <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="verticalCenteredLabel">회원상태수정</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫다"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <!--
-                                            <div class="row _dm-dropdown">
-                                                <p>권한정보</p>
-                                                <ul class="dropdown-menu">
-                                                    <li><a class="dropdown-item" href="#">리더</a></li>
-                                                    <li><a class="dropdown-item" href="#">맴버</a></li>
-                                                </ul>
+                                        <form th:action="@{/admin/report-process}" method="post">
+                                            <input type="hidden" name="reportid" value="a1234">
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="verticalCenteredLabel">회원상태수정</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫다"></button>
                                             </div>
-                                             -->
+                                            <div class="modal-body">
+                                                <!--
+                                                <div class="row _dm-dropdown">
+                                                    <p>권한정보</p>
+                                                    <ul class="dropdown-menu">
+                                                        <li><a class="dropdown-item" href="#">리더</a></li>
+                                                        <li><a class="dropdown-item" href="#">맴버</a></li>
+                                                    </ul>
+                                                </div>
+                                                 -->
+                                                <h4 style="padding-top: 10px;">회원신고</h4>
+                                                <div class="card-body">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">신고사유</h5>
+                                                        <div class="mt-4 d-flex flex-wrap justify-content-center gap-2">
 
-                                            <h4 style="padding-top: 10px;">회원신고</h4>
-                                            <div class="card-body">
-                                                <h5 class="card-title">신고사유</h5>
-                                                <div class="mt-4 d-flex flex-wrap justify-content-center gap-2">
-                                                    <!-- Button groups with checkboxes -->
-                                                    <div class="btn-group" role="group" aria-label="신고사유 체크박스">
-                                                        <input type="checkbox" class="btn-check" id="reportreason1" autocomplete="off">
-                                                        <label class="btn btn-outline-primary" for="reportreason1">음란물유포</label>
+                                                            <div class="mb-3">
+                                                                <label for="reporterId" class="form-label">신고자 아이디</label>
+                                                                <input type="text" class="form-control" name="reporttargetid" id="reporterId" value="admin" readonly>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label for="reportDate" class="form-label">신고 제출일</label>
+                                                                <input type="text" class="form-control" id="reportDate" value="2024-06-17" readonly>
+                                                            </div>
+                                                            <!-- 신고사유 체크박스 -->
+                                                            <div class="btn-group" role="group" aria-label="신고사유 체크박스" >
+                                                                <input type="checkbox" name="reportreason" class="btn-check" id="reportreason1" autocomplete="off" th:value="|음란물 유포|">
+                                                                <label class="btn btn-outline-primary" for="reportreason1">음란물유포</label>
 
-                                                        <input type="checkbox" class="btn-check" id="reportreason2" autocomplete="off">
-                                                        <label class="btn btn-outline-primary" for="reportreason2">불법정보 유포</label>
+                                                                <input type="checkbox" name="reportreason"  class="btn-check" id="reportreason2" autocomplete="off" th:value="|불법정보 유포|">
+                                                                <label class="btn btn-outline-primary" for="reportreason2">불법정보 유포</label>
 
-                                                        <input type="checkbox" class="btn-check" id="reportreason3" autocomplete="off">
-                                                        <label class="btn btn-outline-primary" for="reportreason3">개인정보 노출</label>
+                                                                <input type="checkbox" name="reportreason"  class="btn-check" id="reportreason3" autocomplete="off" th:value="|개인정보 노출|">
+                                                                <label class="btn btn-outline-primary" for="reportreason3">개인정보 노출</label>
 
-                                                        <input type="checkbox" class="btn-check" id="reportreason4" autocomplete="off">
-                                                        <label class="btn btn-outline-primary" for="reportreason4">불쾌한 표현사용</label>
+                                                                <input type="checkbox" name="reportreason"  class="btn-check" id="reportreason4" autocomplete="off" th:value="|불쾌한표현 사용|">
+                                                                <label class="btn btn-outline-primary" for="reportreason4">불쾌한 표현사용</label>
 
-                                                        <input type="checkbox" class="btn-check" id="reportreason5" autocomplete="off">
-                                                        <label class="btn btn-outline-primary" for="reportreason5">갈등조장및 허위 사실 유포</label>
-                                                        <input type="checkbox" class="btn-check" id="reportreason6" autocomplete="off">
-                                                        <label class="btn btn-outline-primary" for="reportreason6">영리목적 홍보성</label>
+                                                                <input type="checkbox" name="reportreason"  class="btn-check" id="reportreason5" autocomplete="off" th:value="|갈등조장 및 허위사실유포|">
+                                                                <label class="btn btn-outline-primary" for="reportreason5">갈등조장및 허위 사실 유포</label>
+
+                                                                <input type="checkbox" name="reportreason"  class="btn-check" id="reportreason6" autocomplete="off" th:value="|영리목적 홍보성|">
+                                                                <label class="btn btn-outline-primary" for="reportreason6">영리목적 홍보성</label>
+                                                            </div>
+                                                        <!-- END : Button groups with checkboxes -->
                                                     </div>
-                                                    <!-- END : Button groups with checkboxes -->
+                                                </div>
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">처벌내용</h5>
+                                                        <div class="mt-4 d-flex flex-wrap justify-content-center gap-2">
+                                                            <div class="btn-group" role="group" aria-label="처벌내용">
+                                                                <input type="radio" name="report" class="btn-check" id="report1" th:value="3일정지">
+                                                                <label class="btn btn-outline-primary" for="report1">3일정지</label>
+                                                                <input type="radio" name="report" class="btn-check" id="report2" th:value="5일정지">
+                                                                <label class="btn btn-outline-primary" for="report2">5일정지</label>
+                                                                <input type="radio" name="report" class="btn-check" id="report3" th:value="10일정지">
+                                                                <label class="btn btn-outline-dark" for="report3">10일정지</label>
+                                                                <input type="radio" name="report" class="btn-check" id="report4" th:value="회원탈퇴">
+                                                                <label class="btn btn-outline-dark" for="report4">회원탈퇴</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-primary">변경</button>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                                                 </div>
                                             </div>
-                                            <div class="card-body">
-                                                <h5 class="card-title">처벌내용</h5>
-                                                <div class="mt-4 d-flex flex-wrap justify-content-center gap-2">
-                                                    <!-- Button groups with radio button -->
-                                                    <div class="btn-group" role="group" aria-label="처벌내용">
-                                                        <input type="radio" name="report" class="btn-check" id="report1" th:value="3일정지">
-                                                        <label class="btn btn-outline-primary" for="report1">3일정지</label>
-                                                        <input type="radio" name="report" class="btn-check" id="report2" th:value="5일정지">
-                                                        <label class="btn btn-outline-primary" for="report2">5일정지</label>
-                                                        <input type="radio" name="report" class="btn-check" id="report3" th:value="10일정지">
-                                                        <label class="btn btn-outline-dark" for="report3">10일정지</label>
-                                                        <input type="radio" name="report" class="btn-check" id="report4" th:value="회원탈퇴">
-                                                        <label class="btn btn-outline-dark" for="report4">회원탈퇴</label>
-                                                    </div>
-                                                    <!-- END : Button groups with radio button -->
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-primary">변경</button>
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                                        </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>

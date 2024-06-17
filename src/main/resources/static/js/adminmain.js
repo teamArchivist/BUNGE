@@ -1,13 +1,9 @@
 $(function() {
-
-    let token = $("meta[name='_csrf']").attr("content");
-    let header = $("meta[name='_csrf_header']").attr("content");
-
     let params = new URLSearchParams(window.location.search);
     let page = params.get('page') || 1;
     let limit = params.get('limit') || 5;
 
-    function memberlistcount(totalCount, currentPage, pageSize, sort) {
+    function memberlistcount(totalCount, currentPage, pageSize) {
         const totalPage = Math.ceil(totalCount / pageSize);
         const startPage = Math.max(1, currentPage - 5);
         const endPage = Math.min(totalPage, currentPage + 4);
@@ -63,6 +59,7 @@ $(function() {
                     + "<td><span class='text-nowrap text-body-secondary'>" + this.name + "</span></td>"
                     + "<td>" + this.nick + "</td>"
                     + "<td><a class='btn-link text-nowrap'>" + this.addr1 + "</a></td>"
+                    + "<td></td>"
                     + "<td>+"+this.role+"</td>"
                     + "<td>"
                     + "<div class='text-nowrap text-center'>"

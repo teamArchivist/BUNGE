@@ -49,4 +49,8 @@
         GROUP BY b.no;
     </select>
 
+    <insert id="insertsavereport" parameterType="com.bunge.admin.domain.reportmanagement">
+        INSERT INTO reportmanagement (reporttargetid, reporterid, reportreason, reportstatus, reportstart, reportend, reportdate)
+        VALUES (#{reporttargetid}, #{reporterid}, #{reportreason}, #{reportstatus}, #{reportstart}, #{reportend}, #{reportdate})
+    </insert>
 </mapper>

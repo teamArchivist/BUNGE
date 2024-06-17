@@ -1,6 +1,7 @@
 package com.bunge.admin.service;
 
 
+import com.bunge.admin.domain.reportmanagement;
 import com.bunge.member.domain.Member;
 import com.bunge.study.domain.StudyBoard;
 
@@ -22,5 +23,6 @@ public interface AdminService {
 
     List<StudyBoard> getstudylist();
 
+    void saveReport(reportmanagement report);
 
 }
