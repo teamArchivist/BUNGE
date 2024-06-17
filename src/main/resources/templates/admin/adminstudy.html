@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>스터디 관리페이지</title>
+    <links>
+        <script th:src="@{/js/adminstudy.js}"></script>
+    </links>
+
+</head>
+<body >
+<section sec:authorize="hasAnyAuthority('admin','superadmin')">
+    <div class="content__header content__boxed overlapping" >
+        <div class="content__wrap">
+
+            <!-- Breadcrumb -->
+            <!--
+           <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                 <li class="breadcrumb-item"><a href="./1.index.html">Home</a></li>
+                 <li class="breadcrumb-item"><a href="./blog-apps.html">Blog Apps</a></li>
+                 <li class="breadcrumb-item active" aria-current="page">회원목록</li>
+              </ol>
+           </nav>-->
+            <!-- END : Breadcrumb -->
+
+            <!-- Title and information -->
+            <h1 class="page-title d-flex flex-wrap just justify-content-center mb-2 mt-4">스터디목록</h1>
+            <!-- END : Title and information -->
+
+            <!-- Search form -->
+            <div class="col-md-8 offset-md-2 mb-3">
+                <form class="searchbox input-group">
+                    <input class="searchbox__input form-control form-control-lg" type="search" placeholder="스터디 제목을입력해주세요..." aria-label="Search">
+                    <div class="searchbox__btn-group">
+                        <button class="searchbox__btn btn btn-icon bg-transparent shadow-none border-0 btn-sm" type="submit">
+                            <i class="demo-pli-magnifi-glass"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <!-- END : Search form -->
+
+            <!-- Sort and categories filter -->
+            <div class="d-flex flex-wrap align-items-end justify-content-center gap-2 mb-3 pb-3">
+                <div class="d-md-flex flex-wrap align-items-center gap-2 mb-3 mb-sm-0">
+                    <div class="text-center mb-2 mb-md-0">정렬 기준</div>
+                    <select class="form-select w-auto" aria-label="Sort options">
+                        <option value="date-created" selected="">가나다라순</option>
+                        <option value="date-modified">생성날짜순</option>
+                        <option value="frequency-used">신규등록순</option>
+                        <option value="alpabetically">가다나라 역순</option>
+                    </select>
+                </div>
+                <button class="btn btn-light mb-3 mb-sm-0">필터</button>
+            </div>
+            <!-- END : Sort and categories filter -->
+        </div>
+
+    </div>
+
+    <div class="content__boxed">
+        <div class="content__wrap">
+            <div class="card">
+                <div class="card-body">
+
+                    <!-- Blog post lists -->
+                    <div class="table-responsive">
+                        <table class="table table-striped align-middle">
+                            <thead>
+                            <tr>
+                                <th>스터디이름</th>
+                                <th>그룹장</th>
+                                <th>상태</th>
+                                <th class="text-center">스터디진행률</th>
+                                <th>시작일</th>
+                                <th>종료일</th>
+                                <th class="text-center">카테고리</th>
+                            </tr>
+                            </thead>
+                            <tbody id="studylist">
+                            <tr >
+                                <td><a href="#" class="btn-link">스터디이름1</a></td>
+                                <td>고라니1</td>
+                                <td><span class="text-body"><i class="demo-pli-clock"></i>진행중</span></td>
+                                <td class="text-center fs-5">
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" style="width: 81%;" aria-valuenow="81" aria-valuemin="0" aria-valuemax="100"><81%</div>
+                                    </div>
+                                </td>
+                                <td>2024-01-01</td>
+                                <td>2024-06-01</td>
+                                <td class="text-center">문학 소설</td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- END : Blog post lists -->
+
+                    <div class="mt-4 d-flex justify-content-center">
+
+                        <!-- Pagination - Disabled and active states -->
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">이전</a>
+                                </li>
+                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item active" aria-current="page">
+                                    <a class="page-link" href="#">2</a>
+                                </li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">다음</a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <!-- END : Pagination - Disabled and active states -->
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</section>
+
+</body>
+</html>

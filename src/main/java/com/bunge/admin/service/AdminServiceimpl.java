@@ -2,12 +2,15 @@ package com.bunge.admin.service;
 
 import com.bunge.admin.domain.Visitor;
 import com.bunge.admin.mapper.AdminMapper;
+import com.bunge.member.domain.Member;
+import com.bunge.study.domain.StudyBoard;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class AdminServiceimpl implements AdminService {
@@ -53,4 +56,15 @@ public class AdminServiceimpl implements AdminService {
     public int getreviewCount() {
         return adminMapper.getreviewCount();
     }
+
+    @Override
+    public List<Member> getmemberlist() {
+        return adminMapper.getmemberlist();
+    }
+
+    @Override
+    public List<StudyBoard> getstudylist() {
+        return adminMapper.getstudylist();
+    }
+
 }

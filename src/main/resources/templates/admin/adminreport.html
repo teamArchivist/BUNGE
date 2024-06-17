@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>신고관리</title>
+    <links>
+
+    </links>
+
+</head>
+<body>
+<section sec:authorize="hasAnyAuthority('admin','superadmin')">
+    <div class="content__header content__boxed overlapping">
+        <div class="content__wrap">
+
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="./1.index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="./blog-apps.html">Blog Apps</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">신고목록</li>
+                </ol>
+            </nav>
+            <!-- END : Breadcrumb -->
+
+            <!-- Title and information -->
+            <h1 class="page-title d-flex flex-wrap just justify-content-center mb-2 mt-4">신고회원목록</h1>
+            <!-- END : Title and information -->
+
+            <!-- Search form -->
+            <div class="col-md-8 offset-md-2 mb-3">
+                <form class="searchbox input-group">
+                    <input class="searchbox__input form-control form-control-lg" type="search" placeholder="회원정보를 입력해주세요..." aria-label="Search">
+                    <div class="searchbox__btn-group">
+                        <button class="searchbox__btn btn btn-icon bg-transparent shadow-none border-0 btn-sm" type="submit">
+                            <i class="demo-pli-magnifi-glass"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <!-- END : Search form -->
+
+            <!-- Sort and categories filter -->
+            <div class="d-flex flex-wrap align-items-end justify-content-center gap-2 mb-3 pb-3">
+                <div class="d-md-flex flex-wrap align-items-center gap-2 mb-3 mb-sm-0">
+                    <div class="text-center mb-2 mb-md-0">정렬 기준</div>
+                    <select class="form-select w-auto" aria-label="Sort options">
+                        <option value="date-created" selected="">가나다라순</option>
+                        <option value="alpabetically-reversed">가다나라 역순</option>
+                        <option value="date-modified">생성날짜순</option>
+                        <option value="frequency-used">신규등록순</option>
+                    </select>
+                </div>
+                <button class="btn btn-light mb-3 mb-sm-0">검색</button>
+            </div>
+            <!-- END : Sort and categories filter -->
+        </div>
+
+    </div>
+
+    <div class="content__boxed">
+        <div class="content__wrap">
+            <div class="card">
+                <div class="card-body">
+
+                    <!-- Blog post lists -->
+                    <div class="table-responsive">
+                        <table class="table table-striped align-middle">
+                            <thead>
+                            <tr>
+                                <th width="55">프로필</th>
+                                <th>아이디</th>
+                                <th class="text-nowrap">이름</th>
+                                <th>닉네임</th>
+                                <th>주소</th>
+                                <th>회원권한</th>
+                                <th>정지기간</th>
+                                <th class="text-center">회원상태</th>
+                                <th class="text-center">수정</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td><img class="img-sm rounded" src="./assets/img/megamenu/img-1.jpg" alt="thumbs"></td>
+                                <td><a class="btn-link text-body-emphasis text-decoration-underline text-truncate mb-0" href="#">아이디1</a></td>
+                                <td><span class="text-nowrap text-body-secondary">이름1</span></td>
+                                <td>닉네임3</td>
+                                <td><a href="#" class="btn-link text-nowrap">서울시 목동1</a></td>
+                                <td>리더</td>
+                                <td>1990-04-01</td>
+                                <td class="h5">
+                                    <div class="d-block badge bg-black">스터디활동정지</div>
+                                </td>
+                                <td>
+                                    <div class="text-nowrap text-center">
+                                        <a href="#" class="btn btn-icon btn-sm btn-hover bg-body-tertiary" data-bs-toggle="modal" data-bs-target="#authority"><i class="demo-pli-gear fs-5"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><img class="img-sm rounded" src="./assets/img/megamenu/img-1.jpg" alt="thumbs"></td>
+                                <td><a class="btn-link text-body-emphasis text-decoration-underline text-truncate mb-0" href="#">아이디1</a></td>
+                                <td><span class="text-nowrap text-body-secondary">이름1</span></td>
+                                <td>닉네임3</td>
+                                <td><a href="#" class="btn-link text-nowrap">서울시 목동1</a></td>
+                                <td>리더</td>
+                                <td>1990-04-01</td>
+                                <td class="h5">
+                                    <div class="d-block badge bg-black">스터디생성정지</div>
+                                </td>
+                                <td>
+                                    <div class="text-nowrap text-center">
+                                        <a href="#" class="btn btn-icon btn-sm btn-hover bg-body-tertiary" data-bs-toggle="modal" data-bs-target="#authority"><i class="demo-pli-gear fs-5"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- modal-->
+                            <div class="modal fade" id="authority" tabindex="-1" aria-labelledby="verticalCenteredLabel" aria-hidden="true" style="display: none;">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="verticalCenteredLabel">회원상태수정</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫다"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row _dm-dropdown">
+                                                <p>권한정보</p>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item" href="#">리더</a></li>
+                                                    <li><a class="dropdown-item" href="#">맴버</a></li>
+                                                </ul>
+                                            </div>
+                                            <p style="padding-top: 10px;">회원신고</p>
+                                            <input type="radio" name="report" class="btn-check" id="report1" th:value="3일정지">
+                                            <label class="btn btn-outline-secondary" for="report1">3일정지</label>
+                                            <input type="radio" name="report" class="btn-check" id="report2" th:value="5일정지">
+                                            <label class="btn btn-outline-primary" for="report2">5일정지</label>
+                                            <input type="radio" name="report" class="btn-check" id="report3" th:value="10일정지">
+                                            <label class="btn btn-outline-dark" for="report3">10일정지</label>
+                                            <input type="radio" name="report" class="btn-check" id="report4" th:value="정지해제">
+                                            <label class="btn btn-outline-dark" for="report4">해제</label>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary">변경</button>
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- END : Blog post lists -->
+
+                    <div class="mt-4 d-flex justify-content-center">
+
+                        <!-- Pagination - Disabled and active states -->
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">이전</a>
+                                </li>
+                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item active" aria-current="page">
+                                    <a class="page-link" href="#">2</a>
+                                </li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">다음</a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <!-- END : Pagination - Disabled and active states -->
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</section>
+
+</body>
+</html>

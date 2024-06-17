@@ -35,4 +35,16 @@
         select count(*) from review
     </select>
 
+    <select id="getmemberlist" parameterType="String" resultType="com.bunge.member.domain.Member">
+        select * from member
+    </select>
+
+    <select id="getstudylist" parameterType="String" resultType="com.bunge.study.domain.StudyBoard">
+        SELECT b.*, e.*, m.*, k.categoryName
+        FROM studyboard b
+                 LEFT JOIN studyevent e ON b.no = e.studyBoardNo
+                 LEFT JOIN studymanagement m ON b.no = m.studyboardno
+                 JOIN book k ON b.booktitle = k.title
+        GROUP BY b.no;
+    </select>
 </mapper>
