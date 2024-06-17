@@ -22,7 +22,7 @@
             and author like CONCAT('%', #{author}, '%')
         </if>
         <if test="category != null and category != ''">
-            and category like CONCAT('%', #{category}, '%')
+            and categoryName like CONCAT('%', #{category}, '%')
         </if>
         <if test="customerReviewRank != null">
             and book.customerReviewRank >= #{customerReviewRank}
@@ -40,10 +40,10 @@
             and author like CONCAT('%', #{author}, '%')
         </if>
         <if test="category != null and category != ''">
-            and category like CONCAT('%', #{category}, '%')
+            and categoryName like CONCAT('%', #{category}, '%')
         </if>
         <if test="customerReviewRank != null">
-            and book.customerReviewRank >= #{customerReviewRank}
+            and customerReviewRank >= #{customerReviewRank}
         </if>
         order by regitdate desc
         limit #{offset}, #{limit}
