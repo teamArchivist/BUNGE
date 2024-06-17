@@ -157,6 +157,7 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫다"></button>
                                         </div>
                                         <div class="modal-body">
+                                            <!--
                                             <div class="row _dm-dropdown">
                                                 <p>권한정보</p>
                                                 <ul class="dropdown-menu">
@@ -164,15 +165,52 @@
                                                     <li><a class="dropdown-item" href="#">맴버</a></li>
                                                 </ul>
                                             </div>
-                                            <p style="padding-top: 10px;">회원신고</p>
-                                            <input type="radio" name="report" class="btn-check" id="report1" th:value="3일정지">
-                                            <label class="btn btn-outline-secondary" for="report1">3일정지</label>
-                                            <input type="radio" name="report" class="btn-check" id="report2" th:value="5일정지">
-                                            <label class="btn btn-outline-primary" for="report2">5일정지</label>
-                                            <input type="radio" name="report" class="btn-check" id="report3" th:value="10일정지">
-                                            <label class="btn btn-outline-dark" for="report3">10일정지</label>
-                                            <input type="radio" name="report" class="btn-check" id="report4" th:value="정지해제">
-                                            <label class="btn btn-outline-dark" for="report4">해제</label>
+                                             -->
+
+                                            <h4 style="padding-top: 10px;">회원신고</h4>
+                                            <div class="card-body">
+                                                <h5 class="card-title">신고사유</h5>
+                                                <div class="mt-4 d-flex flex-wrap justify-content-center gap-2">
+                                                    <!-- Button groups with checkboxes -->
+                                                    <div class="btn-group" role="group" aria-label="신고사유 체크박스">
+                                                        <input type="checkbox" class="btn-check" id="reportreason1" autocomplete="off">
+                                                        <label class="btn btn-outline-primary" for="reportreason1">음란물유포</label>
+
+                                                        <input type="checkbox" class="btn-check" id="reportreason2" autocomplete="off">
+                                                        <label class="btn btn-outline-primary" for="reportreason2">불법정보 유포</label>
+
+                                                        <input type="checkbox" class="btn-check" id="reportreason3" autocomplete="off">
+                                                        <label class="btn btn-outline-primary" for="reportreason3">개인정보 노출</label>
+
+                                                        <input type="checkbox" class="btn-check" id="reportreason4" autocomplete="off">
+                                                        <label class="btn btn-outline-primary" for="reportreason4">불쾌한 표현사용</label>
+
+                                                        <input type="checkbox" class="btn-check" id="reportreason5" autocomplete="off">
+                                                        <label class="btn btn-outline-primary" for="reportreason5">갈등조장및 허위 사실 유포</label>
+                                                        <input type="checkbox" class="btn-check" id="reportreason6" autocomplete="off">
+                                                        <label class="btn btn-outline-primary" for="reportreason6">영리목적 홍보성</label>
+                                                    </div>
+                                                    <!-- END : Button groups with checkboxes -->
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <h5 class="card-title">처벌내용</h5>
+                                                <div class="mt-4 d-flex flex-wrap justify-content-center gap-2">
+                                                    <!-- Button groups with radio button -->
+                                                    <div class="btn-group" role="group" aria-label="처벌내용">
+                                                        <input type="radio" name="report" class="btn-check" id="report1" th:value="3일정지">
+                                                        <label class="btn btn-outline-primary" for="report1">3일정지</label>
+                                                        <input type="radio" name="report" class="btn-check" id="report2" th:value="5일정지">
+                                                        <label class="btn btn-outline-primary" for="report2">5일정지</label>
+                                                        <input type="radio" name="report" class="btn-check" id="report3" th:value="10일정지">
+                                                        <label class="btn btn-outline-dark" for="report3">10일정지</label>
+                                                        <input type="radio" name="report" class="btn-check" id="report4" th:value="회원탈퇴">
+                                                        <label class="btn btn-outline-dark" for="report4">회원탈퇴</label>
+                                                    </div>
+                                                    <!-- END : Button groups with radio button -->
+
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-primary">변경</button>
