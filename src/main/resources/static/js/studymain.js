@@ -171,5 +171,8 @@ $(function() {
 
     updateStudyApplicationStatus(loginId);
 
+    $("#showAll").click(function () {
+        location.href = "/study/main";
+    })
 
 })
