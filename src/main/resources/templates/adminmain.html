@@ -4,9 +4,7 @@
 <head>
     <title>메인페이지</title>
     <links>
-        <script th:src="@{/pages/adminvistorcanvas.js}"></script>
-
-        <script th:src="@{https://cdn.jsdelivr.net/npm/chart.js}"></script>
+        <script th:src="@{/js/adminmain.js}"></script>
     </links>
 
 </head>
@@ -49,7 +47,7 @@
 
                             <div class="d-flex align-items-center mb-3">
                                 <div class="flex-shrink-0">
-                                    <i class="d-flex align-items-center justify-content-center demo-pli-add-cart display-5 pli-books-2"></i>
+                                    <i class="d-flex align-items-center justify-content-center pli-id-3 display-5"></i>
                                 </div>
                                 <div class="flex-grow-1 ms-4">
                                     <h5 class="h2 mb-0" th:text="${joinCount+'명'}"></h5>
@@ -71,7 +69,7 @@
 
                             <div class="d-flex align-items-center mb-3">
                                 <div class="flex-shrink-0">
-                                    <i class="d-flex align-items-center justify-content-center demo-pli-male-female display-6"></i>
+                                    <i class="d-flex align-items-center justify-content-center pli-student-hat-2 display-6"></i>
                                 </div>
                                 <div class="flex-grow-1 ms-4">
                                     <h5 class="h2 mb-0" th:text="${studyCount+'명'}"></h5>
@@ -90,7 +88,7 @@
 
                             <div class="d-flex align-items-center mb-3">
                                 <div class="flex-shrink-0">
-                                    <i class="d-flex align-items-center justify-content-center demo-pli-add-cart display-5"></i>
+                                    <i class="d-flex align-items-center justify-content-center pli-open-book display-5"></i>
                                 </div>
                                 <div class="flex-grow-1 ms-4">
                                     <h5 class="h2 mb-0" th:text="${reviewCount+'명'}"></h5>
@@ -109,135 +107,6 @@
     <div class="content__boxed">
         <div class="content__wrap">
             <!-- Table with toolbar -->
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title mb-3">스터디 목록</h5>
-                    <div class="row">
-                        <!-- Right Toolbar -->
-                        <div class="col-md-12 d-flex gap-1 align-items-center justify-content-md-end mb-2">
-                            <div class="form-group">
-                                <input type="text" placeholder="Search..." class="form-control" autocomplete="off">
-                            </div>
-                            <div class="btn-group">
-                                <div class="btn-group dropdown">
-                                    <button class="btn btn-icons btn-outline-light dropdown-toggle hstack gap-2" data-bs-toggle="dropdown" aria-expanded="false">
-                                        옵션
-                                        <span class="vr"></span>
-                                        <span class="visually-hidden">Toggle Dropdown</span>
-                                    </button>
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <li><a class="dropdown-item" href="#">스터디이름순</a></li>
-                                        <li><a class="dropdown-item" href="#">등록순</a></li>
-                                        <li><a class="dropdown-item" href="#">진행순</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- END : Right Toolbar -->
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th>스터디이름</th>
-                                <th>그룹장</th>
-                                <th>상태</th>
-                                <th class="text-center">스터디진행률</th>
-                                <th>시작일</th>
-                                <th>종료일</th>
-                                <th class="text-center">카테고리</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td><a href="#" class="btn-link">스터디이름1</a></td>
-                                <td>고라니1</td>
-                                <td><span class="text-body"><i class="demo-pli-clock"></i>진행중</span></td>
-                                <td class="text-center fs-5">
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar" style="width: 81%;" aria-valuenow="81" aria-valuemin="0" aria-valuemax="100"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">81%</font></font></div>
-                                    </div>
-                                </td>
-                                <td>2024-01-01</td>
-                                <td>2024-06-01</td>
-                                <td class="text-center">문학 소설</td>
-                            </tr>
-                            <tr>
-                                <td><a href="#" class="btn-link">스터디이름2</a></td>
-                                <td>고라니2</td>
-                                <td><span class="text-body"><i class="demo-pli-clock"></i>진행중</span></td>
-                                <td class="text-center fs-5">
-                                    <div class="progress">
-                                        <div class="progress-bar bg-success" role="progressbar" style="width: 30%;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">30%</font></font></div>
-                                    </div>
-                                </td>
-                                <td>2024-01-01</td>
-                                <td>2024-06-01</td>
-                                <td class="text-center">문학 소설</td>
-                            </tr>
-                            <tr>
-                                <td><a href="#" class="btn-link">스터디이름3</a></td>
-                                <td>고라니3</td>
-                                <td><span class="text-body"><i class="demo-pli-clock"></i>진행중</span></td>
-                                <td class="text-center fs-5">
-                                    <div class="progress">
-                                        <div class="progress-bar bg-info" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">50%</font></font></div>
-                                    </div>
-                                </td>
-                                <td>2024-01-01</td>
-                                <td>2024-06-01</td>
-                                <td class="text-center">문학 소설</td>
-                            </tr>
-                            <tr>
-                                <td><a href="#" class="btn-link">스터디이름4</a></td>
-                                <td>고라니4</td>
-                                <td><span class="text-body"><i class="demo-pli-clock"></i>진행중</span></td>
-                                <td class="text-center fs-5">
-                                    <div class="progress">
-                                        <div class="progress-bar bg-info" role="progressbar" style="width: 69%;" aria-valuenow="69" aria-valuemin="0" aria-valuemax="100"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">69%</font></font></div>
-                                    </div>
-                                </td>
-                                <td>2024-01-01</td>
-                                <td>2024-06-01</td>
-                                <td class="text-center">과학/기술</td>
-                            </tr>
-                            <tr>
-                                <td><a href="#" class="btn-link">스터디이름5</a></td>
-                                <td>고라니5</td>
-                                <td><span class="text-body"><i class="demo-pli-clock"></i>진행완료</span></td>
-                                <td class="text-center fs-5">
-                                    <div class="progress">
-                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">100%</font></font></div>
-                                    </div>
-                                </td>
-                                <td>2024-01-01</td>
-                                <td>2024-06-01</td>
-                                <td class="text-center">경제 경영</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <nav class="text-align-center mt-5" aria-label="Table navigation">
-                        <ul class="pagination justify-content-center">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#">이전</a>
-                            </li>
-                            <li class="page-item active" aria-current="page">
-                                <span class="page-link">1</span>
-                            </li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
-                            <li class="page-item"><a class="page-link" href="#">5</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">다음</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
 
             <div class="card">
                 <div class="card-header">
@@ -268,90 +137,50 @@
                         <table class="table table-striped">
                             <thead>
                             <tr>
+                                <th width="55">프로필</th>
                                 <th>아이디</th>
-                                <th>이름</th>
+                                <th class="text-nowrap">이름</th>
+                                <th>닉네임</th>
+                                <th>주소</th>
                                 <th>회원권한</th>
-                                <th class="text-center">회원상태</th>
-                                <th>신고횟수</th>
-                                <th>신고당한수</th>
-                                <th>회원수정</th>
+                                <th class="text-center">회원상태수정</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr>
-                                <td><a href="#" class="btn-link">회원아이디</a></td>
-                                <td>고라니1</td>
-                                <td><span class="text-body">맴버</span></td>
-                                <td class="text-center fs-5">
-                                    <div class="d-block badge bg-success">
-                                        일반회원
+                            <tbody id="memberlist">
+
+                            <!-- modal-->
+                            <div class="modal fade" id="authority" tabindex="-1" aria-labelledby="verticalCenteredLabel" aria-hidden="true" style="display: none;">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="verticalCenteredLabel">회원상태수정</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫다"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row _dm-dropdown">
+                                                <p>권한정보</p>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item" href="#">리더</a></li>
+                                                    <li><a class="dropdown-item" href="#">맴버</a></li>
+                                                </ul>
+                                            </div>
+                                            <p style="padding-top: 10px;">회원신고</p>
+                                            <input type="radio" name="report" class="btn-check" id="report1" th:value="3일정지">
+                                            <label class="btn btn-outline-secondary" for="report1">3일정지</label>
+                                            <input type="radio" name="report" class="btn-check" id="report2" th:value="5일정지">
+                                            <label class="btn btn-outline-primary" for="report2">5일정지</label>
+                                            <input type="radio" name="report" class="btn-check" id="report3" th:value="10일정지">
+                                            <label class="btn btn-outline-dark" for="report3">10일정지</label>
+                                            <input type="radio" name="report" class="btn-check" id="report4" th:value="정지해제">
+                                            <label class="btn btn-outline-dark" for="report4">해제</label>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-primary">변경</button>
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                        </div>
                                     </div>
-                                </td>
-                                <td>8번</td>
-                                <td>3번</td>
-                                <td>
-                                    <a href="#" class="btn btn-icon btn-sm btn-hover btn-primary"><i class="demo-pli-pen-5 fs-5"></i></a>
-                                    <a href="#" class="btn btn-icon btn-sm btn-hover btn-danger"><i class="demo-pli-trash fs-5"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><a href="#" class="btn-link">회원아이디</a></td>
-                                <td>고라니2</td>
-                                <td><span class="text-body">리더</span></td>
-                                <td class="text-center fs-5">
-                                    <div class="d-block badge bg-light text-dark">3일정지</div>
-                                </td>
-                                <td>15번</td>
-                                <td>20번</td>
-                                <td>
-                                    <a href="#" class="btn btn-icon btn-sm btn-hover btn-primary"><i class="demo-pli-pen-5 fs-5"></i></a>
-                                    <a href="#" class="btn btn-icon btn-sm btn-hover btn-danger"><i class="demo-pli-trash fs-5"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><a href="#" class="btn-link">회원아이디</a></td>
-                                <td>고라니1</td>
-                                <td><span class="text-body">맴버</span></td>
-                                <td class="text-center fs-5">
-                                    <div class="d-block badge bg-success">
-                                        일반회원
-                                    </div>
-                                </td>
-                                <td>8번</td>
-                                <td>3번</td>
-                                <td>
-                                    <a href="#" class="btn btn-icon btn-sm btn-hover btn-primary"><i class="demo-pli-pen-5 fs-5"></i></a>
-                                    <a href="#" class="btn btn-icon btn-sm btn-hover btn-danger"><i class="demo-pli-trash fs-5"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><a href="#" class="btn-link">회원아이디</a></td>
-                                <td>고라니2</td>
-                                <td><span class="text-body">리더</span></td>
-                                <td class="text-center fs-5">
-                                    <div class="d-block badge bg-black text-light">탈퇴요청</div>
-                                </td>
-                                <td>15번</td>
-                                <td>20번</td>
-                                <td>
-                                    <a href="#" class="btn btn-icon btn-sm btn-hover btn-primary"><i class="demo-pli-pen-5 fs-5"></i></a>
-                                    <a href="#" class="btn btn-icon btn-sm btn-hover btn-danger"><i class="demo-pli-trash fs-5"></i></a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><a href="#" class="btn-link">회원아이디</a></td>
-                                <td>고라니2</td>
-                                <td><span class="text-body">매니저</span></td>
-                                <td class="text-center fs-5">
-                                    <div class="d-block badge bg-light text-dark">5일정지</div>
-                                </td>
-                                <td>15번</td>
-                                <td>20번</td>
-                                <td>
-                                    <a href="#" class="btn btn-icon btn-sm btn-hover btn-primary"><i class="demo-pli-pen-5 fs-5"></i></a>
-                                    <a href="#" class="btn btn-icon btn-sm btn-hover btn-danger"><i class="demo-pli-trash fs-5"></i></a>
-                                </td>
-                            </tr>
+                                </div>
+                            </div>
                             </tbody>
                         </table>
                     </div>

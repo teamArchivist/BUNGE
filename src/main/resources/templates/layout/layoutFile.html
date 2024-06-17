@@ -33,6 +33,9 @@
    <!-- Demo purpose CSS [ DEMO ] -->
    <link rel="stylesheet" th:href="@{/css/demo-purpose/demo-settings.min.css}">
 
+   <!-- Line-icons CSS-->
+   <link rel="stylesheet" th:href="@{/premium/icon-sets/line-icons/premium-line-icons.css}">
+
    <script th:src="@{/js/jquery-3.7.1.js}"></script>
 
    <title th:replace="${title}">레이아웃 타이틀</title>
@@ -314,7 +317,16 @@
                         <ul class="mininav-content nav collapse">
                            <li data-popper-arrow class="arrow"></li>
                            <li class="nav-item">
-                              <a href="#" class="nav-link">관리자페이지</a>
+                              <a href="/admin/adminmain" class="nav-link">관리자페이지</a>
+                           </li>
+                           <li class="nav-item">
+                              <a href="/admin/adminstudy" class="nav-link">스터디관리</a>
+                           </li>
+                           <li class="nav-item">
+                              <a href="/admin/adminstudy2" class="nav-link">스터디관리2</a>
+                           </li>
+                           <li class="nav-item">
+                              <a href="/admin/adminreport" class="nav-link">신고관리</a>
                            </li>
                         </ul>
                         <!-- END : Layouts submenu list -->
@@ -520,5 +532,7 @@
 
    <!-- Nifty Settings [ DEMO ] -->
    <script th:src="@{/js/demo-purpose-only.js}"></script>
+
+
 
 </html>
