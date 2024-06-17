@@ -1,12 +1,14 @@
 package com.bunge.admin.service;
 
 import com.bunge.admin.domain.Visitor;
+import com.bunge.admin.domain.reportmanagement;
 import com.bunge.admin.mapper.AdminMapper;
 import com.bunge.member.domain.Member;
 import com.bunge.study.domain.StudyBoard;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -70,5 +72,30 @@ public class AdminServiceimpl implements AdminService {
         return adminMapper.getstudylist();
     }
 
+    @Override
+    public void saveReport(reportmanagement report) {
+        LocalDate today = LocalDate.now();
+        LocalDate endDate = null;
 
-}
+        switch (report.getReportstatus()) {
+            case "3일정지":
+                endDate = today.plusDays(3);
+                break;
+            case "5일정지":
+                endDate = today.plusDays(5);
+                break;
+            case "10일정지":
+                endDate = today.plusDays(10);
+                break;
+            case "회원탈퇴":
+                endDate = null;
+                break;
+            default:
+                break;
+        }
+        report.setReportstart(today);
+        report.setReportend(endDate);
+
+        adminMapper.insertsavereport(report);
+        }
+    }

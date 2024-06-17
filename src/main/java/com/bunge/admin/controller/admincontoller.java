@@ -1,25 +1,19 @@
 package com.bunge.admin.controller;
 
+import com.bunge.admin.domain.reportmanagement;
 import com.bunge.admin.service.AdminService;
-import com.bunge.admin.service.AdminServiceimpl;
 import com.bunge.member.domain.Member;
 import com.bunge.member.service.MemberService;
-import com.bunge.memo.domain.Book;
 import com.bunge.study.domain.StudyBoard;
 import com.bunge.study.service.StudyService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.security.Principal;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,7 +41,6 @@ public class admincontoller {
         int joinCount = adminservice.getjoinCount();
         int studyCount = adminservice.getstudyCount();
         int reviewCount = adminservice.getreviewCount();
-        logger.info(visitorCount+"수"+joinCount+"수"+studyCount+"수"+reviewCount+"수");
         mav.addObject("visitorCount",visitorCount);
         mav.addObject("joinCount", joinCount);
         mav.addObject("studyCount", studyCount);
@@ -93,6 +86,28 @@ public class admincontoller {
     public List<StudyBoard> studylist(){
         List<StudyBoard> list = adminservice.getstudylist();
         return list;
+    }
+
+    @PostMapping(value = "/report-process")
+    public ModelAndView reportprocess(@RequestParam(value = "reporttargetid") String reporttargetid,
+                                      @RequestParam(value = "reportid") String reportid,
+                                      @RequestParam(value = "reportreason") String[] reportreasons,
+                                      @RequestParam(value = "report") String reportstatus, ModelAndView mav,
+                                      RedirectAttributes redirectAttributes){
+
+        //체크박스로 선택된 신고 사유들을 하나의 문자열로 합침
+        String reportreason = String.join("," ,reportreasons);
+
+        reportmanagement report = new reportmanagement();
+        report.setReporttargetid(reporttargetid);
+        report.setReporterid(reportid);
+        report.setReportreason(reportreason);
+        report.setReportstatus(reportstatus);
+        //신고 정보를 데이터베이스 저장
+        adminservice.saveReport(report);
+        redirectAttributes.addFlashAttribute("message","처리완료");
+        mav.setViewName("redirect:adminmain");
+        return mav;
     }
 
 }
