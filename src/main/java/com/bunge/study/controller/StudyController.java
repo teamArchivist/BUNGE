@@ -169,6 +169,7 @@ public class StudyController {
     @ResponseBody
     @GetMapping("/get-events")
     public List<StudyEvent> getEvents(@RequestParam int studyBoardNo) {
+        //logger.info(studyService.getEventsByStudyBoardNo(studyBoardNo).toString());
         return studyService.getEventsByStudyBoardNo(studyBoardNo);
     }
 
@@ -361,10 +362,18 @@ public class StudyController {
         StudyManagement studyManagement = studyService.getStudyManagement(studyboardno);
         //logger.info(studyManagement.toString());
         int countApprovalReady = studyService.countApprovalReady(studyboardno);
+        int countApprovalComplete = studyService.countApprovalComplete(studyboardno);
+        int countApprovalReject = studyService.countApprovalReject(studyboardno);
+        List<StudyApproval> studyApprovals = studyService.getStudyApprovalList(studyboardno);
+        //logger.info(studyApprovals.toString());
+
 
         model.addAttribute("loginId", loginId);
         model.addAttribute("studyManagement", studyManagement);
         model.addAttribute("countApprovalReady", countApprovalReady);
+        model.addAttribute("countApprovalComplete", countApprovalComplete);
+        model.addAttribute("countApprovalReject", countApprovalReject);
+        model.addAttribute("studyApprovals", studyApprovals);
 
         return "study/study_mine";
     }
@@ -373,7 +382,7 @@ public class StudyController {
     @PostMapping("/submit-change-book")
     public Map<String, Object> submitChangeBook(@ModelAttribute StudyApproval studyApproval) {
 
-        logger.info(studyApproval.toString());
+        //logger.info(studyApproval.toString());
         Map<String, Object> response = new HashMap<>();
 
         try {
@@ -384,6 +393,41 @@ public class StudyController {
         }
 
         return response;
+    }
+
+    @ResponseBody
+    @GetMapping("/get-study-approval")
+    public Map<String, Object> getStudyApproval(@RequestParam int studyboardno) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            List<StudyApproval> studyApprovals = studyService.getStudyApprovalList(studyboardno);
+            response.put("result", "success");
+            response.put("studyApprovals", studyApprovals);
+        } catch (Exception e) {
+            response.put("result", "error");
+        }
+        return response;
+    }
+
+    @ResponseBody
+    @GetMapping("/get-approval-content")
+    public Map<String, Object> getApprovalContent(@RequestParam int no) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            StudyApproval approval = studyService.getApprovalByNo(no);
+            response.put("status", "success");
+            response.put("approval", approval);
+        } catch (Exception e) {
+            response.put("status", "error");
+        }
+        return response;
+    }
+
+    @ResponseBody
+    @PostMapping("/accept-approval")
+    public int acceptApproval(@ModelAttribute StudyApproval studyApproval) {
+
+        return studyService.acceptApproval(studyApproval);
     }
 
 

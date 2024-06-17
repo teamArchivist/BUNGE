@@ -101,7 +101,19 @@ public interface StudyMapper {
     //책 변경 제안
     public void submitChangeBook(StudyApproval studyApproval);
 
-    //현재 대기 중인 승인 갯수
+    //승인 현황 관련 정보
     public int countApprovalReady(int studyboardno);
+    public int countApprovalComplete(int studyboardno);
+    public int countApprovalReject(int studyboardno);
+
+    //현재 진행중인 스터디 승인 관련 리스트
+    public List<StudyApproval> getStudyApprovalList(int studyboardno);
+
+    //전송된 승인 요청에 대한 정보 조회
+    public StudyApproval getApprovalByNo(int no);
+
+    //승인 후 정보 변경
+    public int acceptApproval(StudyApproval studyApproval);
+    public void changeAcceptedBookTitle(StudyApproval studyApproval);
 
 }

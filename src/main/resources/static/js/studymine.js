@@ -75,6 +75,8 @@ $(function () {
                         $("#searchPubDate").text("출간일 : " + subject.pubDate).css("display", "block")
                         $("#searchBookInfo").css("display", "block")
 
+                        $("#approvalBookTitle").val(subject.title);
+
                     })
 
                     $("#searchCondition").change(function() {
@@ -104,6 +106,7 @@ $(function () {
 
     $("body").on("click", "#submitChangeBook", function () {
         alert("책 수정 요청이 전송되었습니다. 리더가 승인하면 도전 책이 변경됩니다.");
+        let approvalBookTitle = $("#approvalBookTitle").val();
         let approvalContent = $("#approvalContent").val();
 
         $.ajax({
@@ -117,7 +120,8 @@ $(function () {
             },
             data: {
                 studyboardno: studyboardno,
-                sort: "수정",
+                sort: "책수정",
+                approvalBookTitle: approvalBookTitle,
                 approvalContent: approvalContent,
                 proposer: $("#loginId").text(),
             },
@@ -133,5 +137,139 @@ $(function () {
                 alert("도전 책 변경 요청 중 오류 발생. 다시 시도해주세요")
             }
         })
+    }) //$("body").on("click", "#submitChangeBook", function () end
+
+    $("body").on("click", ".approval-content-button", function () {
+        let no = $(this).data("no");
+        //console.log(no);
+        showApprovalContentModal(no);
+    });
+
+    function showApprovalContentModal(no) {
+        $.ajax({
+            url: "/study/get-approval-content",
+            method: "GET",
+            data: { no: no },
+            success: function(data) {
+                //console.log(data);
+                if (data.status === "success") {
+                    let originBookTitle = $("#originBookTitle").val();
+                    let originBookCover = $("#originBookCover").val();
+                    let originAuthor = $("#originAuthor").val();
+                    let originPage = $("#originPage").val();
+                    let originPubDate = $("#originPubDate").val();
+
+                    let approval = data.approval;
+                    let modalBody =
+                        "<div class='row mb-3'>" +
+                        "   <div class='col-md-6'><span class='text-decoration-underline fw-bold fs-4'>변경 전</span>" +
+                        "       <div class='row'>" +
+                        "           <div class='col-md-5'>" +
+                        "               <img src='" + originBookCover + "' height='200px'>" +
+                        "           </div>" +
+                        "           <div class='col-md-5'>" +
+                        "               <p>" + originBookTitle + "</p>" +
+                        "               <p>" + originAuthor + "</p>" +
+                        "               <p>page : " + originPage + "</p>" +
+                        "               <p>출간일 : " + originPubDate + "</p>" +
+                        "           </div>" +
+                        "       </div>" +
+                        "   </div>" +
+                        "   <div class='col-md-6'><span class='text-decoration-underline fw-bold fs-4'>변경 후</span>" +
+                        "       <div class='row'>" +
+                        "           <div class='col-md-5'>" +
+                        "               <img src='" + approval.cover + "' height='200px'>" +
+                        "           </div>" +
+                        "           <div class='col-md-5'>" +
+                        "               <p id='approvedBookTitle'>" + approval.approvalBookTitle + "</p>" +
+                        "               <p>" + approval.author + "</p>" +
+                        "               <p>page : " + approval.page + "</p>" +
+                        "               <p>출간일 : " + approval.pubdate + "</p>" +
+                        "           </div>" +
+                        "       </div>" +
+                        "   </div>" +
+                        "</div>" +
+                        "<hr>" +
+                        "<div class='row'>" +
+                        "   <table class='table table-bordered'>" +
+                        "       <thead>" +
+                        "           <th class='text-center'>번호</th>" +
+                        "           <th class='text-center'>종류</th>" +
+                        "           <th class='text-center'>제안내용</th>" +
+                        "           <th class='text-center'>제안자</th>" +
+                        "           <th class='text-center'>제안일</th>" +
+                        "       </thead>" +
+                        "       <tbody>" +
+                        "           <tr>" +
+                        "               <td class='text-center' id='approvalno'>" + approval.no + "</td>" +
+                        "               <td class='text-center'>" + approval.sort + "</td>" +
+                        "               <td class='text-center'>" + approval.approvalContent + "</td>" +
+                        "               <td class='text-center'>" + approval.proposer + "</td>" +
+                        "               <td class='text-center'>" + approval.proposeDate + "</td>" +
+                        "           </tr>" +
+                        "       </tbody>" +
+                        "   </table>" +
+                        "</div>"
+
+                    $("#approvalBookContent").html(modalBody)
+                    $("#approvalContentModal").modal("show");
+                } else {
+                    alert("데이터를 가져오는 데 실패했습니다. 다시 시도해주세요.");
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Error fetching approval content:", error);
+                alert("데이터를 가져오는 중 오류가 발생했습니다. 다시 시도해주세요.");
+            }
+        });
+    } //function showApprovalContentModal(no) end
+
+    $("body").on("click", "#acceptApproval", function () {
+        let no = $("#approvalno").text();
+        let approvedBookTitle = $("#approvedBookTitle").text();
+        console.log(no);
+        console.log(approvedBookTitle);
+        let answer = confirm("'확인'을 누르면 목표 책이 변경됩니다");
+        if (answer) {
+            $.ajax({
+                url: "/study/accept-approval",
+                method: "post",
+                data: {
+                    no : no,
+                    studyboardno : studyboardno,
+                    approvalBookTitle : approvedBookTitle,
+                    approvalStatus : "승인"
+                },
+                beforeSend: function (xhr) {
+                    if (header && token) {
+                        xhr.setRequestHeader(header, token);
+                    }
+                },
+                success: function (data) {
+                    if (data === 1) {
+                        alert("승인 완료")
+                        location.reload();
+                    } else {
+                        alert("승인 실패. 다시 시도해주세요")
+                    }
+                },
+                error: function(status, error) {
+                    console.log("ajax 요청 실패")
+                    console.log("상태:" + status)
+                    console.log("오류:" + error)
+                    alert("승인 중 오류 발생. 다시 시도해주세요")
+                }
+
+            })
+
+        }
     })
-})
+
+    $("body").on("click", "#rejectApproval", function () {
+        let answer = confirm("'확인'을 누르면 제안된 내용이 거절됩니다")
+        if (answer) {
+
+        }
+    })
+
+}) //ready end

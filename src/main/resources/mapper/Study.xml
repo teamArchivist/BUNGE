@@ -251,20 +251,24 @@
     </resultMap>
 
     <select id="getStudyManagement" parameterType="int" resultType="com.bunge.study.domain.StudyManagement">
-        SELECT sm.*, sb.title, sb.bookcover, sb.content, sb.startdate, sb.enddate, sb.challengestart, sb.challengeend, sb.quota, sb.state,
-               GROUP_CONCAT(sbm.memberId) AS memberIds
+        SELECT sm.*,
+               sb.title, sb.bookcover, sb.content, sb.startdate, sb.enddate, sb.challengestart, sb.challengeend, sb.quota, sb.state,
+               GROUP_CONCAT(sbm.memberId) AS memberIds,
+               b.author, b.pubDate, b.categoryName, b.page
         FROM studymanagement sm
                  LEFT JOIN studymember sbm ON sm.studyboardno = sbm.studyboardno
                  LEFT JOIN studyboard sb ON sm.studyboardno = sb.no
+                 LEFT JOIN book b ON sb.booktitle = b.title
         WHERE sm.studyboardno = #{studyboardno}
-        GROUP BY sm.studyboardno, sb.title, sb.booktitle, sb.bookcover, sb.content, sb.startdate, sb.enddate, sb.challengestart, sb.challengeend, sb.quota, sb.state;
+        GROUP BY sm.studyboardno, sb.title, sb.booktitle, sb.bookcover, sb.content, sb.startdate, sb.enddate, sb.challengestart, sb.challengeend, sb.quota, sb.state,
+                 b.author, b.pubDate, b.categoryName, b.page;
     </select>
 
     <insert id="submitChangeBook" parameterType="com.bunge.study.domain.StudyApproval">
         insert into studyapproval
-        (studyboardno, sort, approvalContent, proposer, proposeDate, changeStatusDate)
+        (studyboardno, sort, approvalBookTitle, approvalContent, proposer, proposeDate, changeStatusDate)
         values
-        (#{studyboardno}, #{sort}, #{approvalContent}, #{proposer}, now(), now())
+        (#{studyboardno}, #{sort}, #{approvalBookTitle}, #{approvalContent}, #{proposer}, now(), now())
     </insert>
 
     <select id="countApprovalReady" parameterType="int" resultType="int">
@@ -273,5 +277,44 @@
         where studyboardno = #{studyboardno}
         and approvalStatus = '대기'
     </select>
+
+    <select id="countApprovalComplete" parameterType="int" resultType="int">
+        select count(*)
+        from studyapproval
+        where studyboardno = #{studyboardno}
+        and approvalStatus = '승인'
+    </select>
+
+    <select id="countApprovalReject" parameterType="int" resultType="int">
+        select count(*)
+        from studyapproval
+        where studyboardno = #{studyboardno}
+        and approvalStatus = '거절'
+    </select>
+
+    <select id="getStudyApprovalList" parameterType="int" resultType="com.bunge.study.domain.StudyApproval">
+        select *
+        from studyapproval
+        where studyboardno = #{studyboardno}
+    </select>
+
+    <select id="getApprovalByNo" parameterType="int" resultType="com.bunge.study.domain.StudyApproval">
+        SELECT sa.*, b.cover, b.author, b.pubDate, b.categoryName, b.page
+        FROM studyapproval sa
+                 JOIN book b ON sa.approvalBookTitle = b.title
+        WHERE sa.no = #{no};
+    </select>
+
+    <update id="acceptApproval" parameterType="com.bunge.study.domain.StudyApproval">
+        update studyapproval
+        set approvalStatus = #{approvalStatus}, changeStatusDate = now()
+        where no = #{no}
+    </update>
+
+    <update id="changeAcceptedBookTitle" parameterType="com.bunge.study.domain.StudyApproval">
+        update studymanagement
+        set booktitle = #{approvalBookTitle}
+        where studyboardno = #{studyboardno}
+    </update>
 
 </mapper>
