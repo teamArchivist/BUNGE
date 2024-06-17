@@ -187,63 +187,21 @@
                               <img class="img-sm rounded-circle" th:src="|/upload${#authentication.principal.profile}|" alt="Profile Picture" loading="lazy">
                            </div>
                            <div class="flex-grow-1 ms-3">
-                              <h5 class="mb-0" sec:authentication="name"></h5>
-                              <span class="text-body-secondary fst-italic" sec:authentication="principal.email"></span>
-                           </div>
-                        </div>
-
-                        <div class="row">
-                           <div class="col-md-7">
-
-                              <!-- Simple widget and reports -->
-                              <div class="list-group list-group-borderless">
-                                 <div class="list-group-item text-center mb-3">
-                                    <p class="h1 display-1 text-primary fw-semibold" sec:authentication="principal.readpoint"></p>
-                                    <small class="text-body-secondary">활발한 책마니</small>
-                                 </div>
-                              </div>
-
-                           </div>
-
-                           <div class="col-md-5">
-
-                              <!-- User menu link -->
-                              <div class="list-group list-group-borderless h-100 py-3">
-                                 <a th:href="@{/mypage/main}" class="list-group-item list-group-item-action">
-                                    <i class="demo-pli-male fs-5 me-2"></i> 마이페이지
+                              <span class="fw-bolder fs-5" sec:authentication="name"></span>
+                              <span class="text-body-secondary" sec:authentication="principal.email"></span>
+                              <a th:href="@{/mypage/main}" class="list-group-item list-group-item-action mt-2">
+                                 <i class="demo-pli-male fs-5 me-2"></i> 마이페이지
+                              </a>
+                              <form th:action="@{/member/logout}" method="post" name="logout" class="mt-2">
+                                 <a th:href="@{logout}" class="list-group-item list-group-item-action logout">
+                                    <i class="demo-pli-unlock fs-5 me-2"></i> Logout
                                  </a>
-                                 <form th:action="@{/member/logout}" method="post" style="margin-bottom:0px" name="logout">
-                                    <a th:href="@{logout}" class="list-group-item list-group-item-action logout">
-                                       <i class="demo-pli-unlock fs-5 me-2"></i> Logout
-                                    </a>
-                                 </form>
-                              </div>
-
+                              </form>
                            </div>
                         </div>
-
                      </div>
                   </div>
                   <!-- End - User dropdown -->
-
-
-                  <div class="vr mx-1 d-none d-md-block"></div>
-
-                  <div class="form-check form-check-alt form-switch mx-md-2">
-                     <input id="headerThemeToggler" class="form-check-input mode-switcher" type="checkbox" role="switch">
-                     <label class="form-check-label ps-1 fw-bold d-none d-md-flex align-items-center " for="headerThemeToggler">
-                        <i class="mode-switcher-icon icon-light demo-psi-sun fs-5"></i>
-                        <i class="mode-switcher-icon icon-dark d-none demo-psi-half-moon"></i>
-                     </label>
-                  </div>
-
-                  <div class="vr mx-1 d-none d-md-block"></div>
-
-                  <!-- Sidebar Toggler -->
-                  <button class="sidebar-toggler header__btn btn btn-icon btn-sm" type="button" aria-label="Sidebar button" sec:authorize="isAuthenticated()">
-                     <i class="demo-psi-dot-vertical"></i>
-                  </button>
-
 
                </div>
             </div>
@@ -332,14 +290,13 @@
 
 
                      <!-- Link with submenu -->
+                     <!--
                      <li class="nav-item has-sub">
-
 
                         <a href="#" class="mininav-toggle nav-link collapsed"><i class="demo-pli-split-vertical-2 fs-5 me-2"></i>
                            <span class="nav-label ms-1">기록 · 리뷰</span>
                         </a>
 
-                        <!-- Layouts submenu list -->
                         <ul class="mininav-content nav collapse">
                            <li data-popper-arrow class="arrow"></li>
                            <li class="nav-item">
@@ -352,11 +309,13 @@
                               <a th:href="@{/memo/mine}" class="nav-link">나의 기록</a>
                            </li>
                         </ul>
-                        <!-- END : Layouts submenu list -->
 
                      </li>
+                     -->
+
                      <!-- END : Link with submenu -->
 
+                     <!--
                      <li class="nav-item has-sub">
                         <a href="/trade/main" class="mininav-toggle nav-link collapsed"><i class="demo-pli-split-vertical-2 fs-5 me-2"></i>
                            <span class="nav-label ms-1">중고 책 거래</span>
@@ -408,6 +367,7 @@
                            </li>
                         </ul>
                      </li>
+                     -->
 
                      <!-- Link with submenu -->
                      <li class="nav-item has-sub">
@@ -433,6 +393,7 @@
                      <!-- END : Link with submenu -->         
                      
                      <!-- Link with submenu -->
+                     <!--
                      <li class="nav-item">
 
                         <a th:href="@{/inquiry/list}" class="mininav-toggle nav-link collapsed"><i class="demo-pli-split-vertical-2 fs-5 me-2"></i>
@@ -440,6 +401,7 @@
                         </a>
 
                      </li>
+                     -->
                      <!-- END : Link with submenu -->
 
 
