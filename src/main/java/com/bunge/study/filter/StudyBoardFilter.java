@@ -8,8 +8,8 @@ import lombok.ToString;
 @Setter
 @Getter
 public class StudyBoardFilter {
-    private String booktitle;
-    private String leader;
+    private String keyword;
+    private String category;
     private int page;
     private int offset;
     private int limit;

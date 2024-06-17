@@ -12,11 +12,47 @@
 <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 <section id="content" class="content">
 
+    <div class="content__header content__boxed overlapping">
+        <div class="content__wrap">
+
+            <!-- Title and information -->
+            <h1 class="page-title d-flex flex-wrap just justify-content-center mb-2 mt-4">스터디 둘러보기</h1>
+            <p class="text-center lead mb-4">흥미로운 스터디를 둘러볼 수 있습니다</p>
+            <!-- END : Title and information -->
+
+
+            <!-- Search form -->
+            <div class="col-md-8 offset-md-2 mb-3">
+                <form class="searchbox input-group d-flex flex-column align-items-center" th:action="@{/study/main}" method="get">
+                    <div class="input-group">
+                        <input name="keyword" class="searchbox__input form-control form-control-lg" type="search" placeholder="검색어를 입력하세요..." aria-label="Search">
+                        <button class="searchbox__btn btn btn-icon bg-transparent shadow-none border-0 btn-sm" type="submit">
+                            <i class="demo-pli-magnifi-glass"></i>
+                        </button>
+                    </div>
+                    <div class="d-md-flex flex-wrap align-items-center gap-2 mt-3 justify-content-center">
+                        <label class="text-center mb-2 mb-md-0">검색 조건</label>
+                        <select class="form-select w-auto" aria-label="Categories" name="category">
+                            <option value="booktitle">책 제목</option>
+                            <option value="leader">리더</option>
+                        </select>
+                        <button type="button" class="btn btn-light" id="showAll">전체보기</button>
+                    </div>
+                </form>
+            </div>
+            <!-- END : Search form -->
+
+        </div>
+
+    </div>
+
     <div class="content__boxed">
         <div class="content__wrap">
-            <div class="card">
-                <div class="card-body">
-
+                <div th:if="${studyBoardList.size() == 0}" class="fs-2 fw-bolder text-decoration-underline text-white">
+                    검색 결과가 없습니다
+                </div>
+            <div class="card" th:if="${studyBoardList.size() > 0}">
+                <div  class="card-body">
 
                     <!-- Blog post lists -->
                     <div class="table-responsive" id=searchresult>

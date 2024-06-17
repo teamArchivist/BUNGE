@@ -24,19 +24,19 @@
 
     <select id="getStudyList" parameterType="com.bunge.study.filter.StudyBoardFilter" resultType="com.bunge.study.domain.StudyBoard">
         select s.*,
-               sm.studystatus,
-               COUNT(DISTINCT c.no) AS countcomm,
-               COUNT(DISTINCT CASE WHEN sa.status = '대기' THEN sa.no ELSE NULL END) AS pendingcount
+        sm.studystatus,
+        COUNT(DISTINCT c.no) AS countcomm,
+        COUNT(DISTINCT CASE WHEN sa.status = '대기' THEN sa.no ELSE NULL END) AS pendingcount
         from studyboard s
-            left join studyboardcomm c on s.no = c.studyboardno
-            left join studyapplication sa on s.no = sa.studyboardno
-            left join studymanagement sm on s.no = sm.studyboardno
+        left join studyboardcomm c on s.no = c.studyboardno
+        left join studyapplication sa on s.no = sa.studyboardno
+        left join studymanagement sm on s.no = sm.studyboardno
         where 1=1
-        <if test="booktitle != null and booktitle != ''">
-            and booktitle like CONCAT('%', #{booktitle}, '%')
+        <if test="category == 'booktitle' and keyword != null and keyword != ''">
+            and s.booktitle like CONCAT('%', #{keyword}, '%')
         </if>
-        <if test="leader != null and leader != ''">
-            and leader like CONCAT('%', #{leader}, '%')
+        <if test="category == 'leader' and keyword != null and keyword != ''">
+            and s.id like CONCAT('%', #{keyword}, '%')
         </if>
         group by s.no
         order by state
@@ -47,11 +47,11 @@
         select count(*)
         from studyboard
         where 1=1
-        <if test="booktitle != null and booktitle != ''">
-            and booktitle like CONCAT('%', #{booktitle}, '%')
+        <if test="category == 'booktitle' and keyword != null and keyword != ''">
+            and booktitle like CONCAT('%', #{keyword}, '%')
         </if>
-        <if test="leader != null and leader != ''">
-            and leader like CONCAT('%', #{leader}, '%')
+        <if test="category == 'leader' and keyword != null and keyword != ''">
+            and id like CONCAT('%', #{keyword}, '%')
         </if>
     </select>
 
