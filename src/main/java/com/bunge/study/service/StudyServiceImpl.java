@@ -192,4 +192,31 @@ public class StudyServiceImpl implements StudyService {
     public int countApprovalReady(int studyboardno) {
         return studyMapper.countApprovalReady(studyboardno);
     }
+
+    @Override
+    public int countApprovalComplete(int studyboardno) {
+        return studyMapper.countApprovalComplete(studyboardno);
+    }
+
+    @Override
+    public int countApprovalReject(int studyboardno) {
+        return studyMapper.countApprovalReject(studyboardno);
+    }
+
+    @Override
+    public List<StudyApproval> getStudyApprovalList(int studyboardno) {
+        return studyMapper.getStudyApprovalList(studyboardno);
+    }
+
+    @Override
+    public StudyApproval getApprovalByNo(int no) {
+        return studyMapper.getApprovalByNo(no);
+    }
+
+    @Override
+    @Transactional
+    public int acceptApproval(StudyApproval studyApproval) {
+        studyMapper.changeAcceptedBookTitle(studyApproval);
+        return studyMapper.acceptApproval(studyApproval);
+    }
 }

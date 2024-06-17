@@ -8,18 +8,21 @@ import lombok.ToString;
 @Setter
 @Getter
 public class StudyManagement {
+    private int no;
     private int studyboardno;
     private String studystart;
     private String studyend;
     private int studyperiod;
     private String leaderId;
-    private String booktitle;
     private String studystatus;
     private String title;
-    private String bookcover;
     private String memberId;
-    private int no;
-    private String categoryName;
     private String memberIds;
+    private String booktitle;
+    private String bookcover;
+    private String categoryName;
+    private String author;
+    private String pubDate;
+    private int page;
 
 }
