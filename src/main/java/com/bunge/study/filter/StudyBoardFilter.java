@@ -10,8 +10,6 @@ import lombok.ToString;
 public class StudyBoardFilter {
     private String booktitle;
     private String leader;
-    private int challengeperiod;
-    private int state;
     private int page;
     private int offset;
     private int limit;

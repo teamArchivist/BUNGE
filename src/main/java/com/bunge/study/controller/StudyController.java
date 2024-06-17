@@ -47,9 +47,9 @@ public class StudyController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String loginId = authentication.getName();
 
-        //logger.info(studyBoardFilter.toString());
+        logger.info(studyBoardFilter.toString());
 
-        int pageSize = 8;
+        int pageSize = 20;
         int offset = (page - 1) * pageSize;
         studyBoardFilter.setPage(page);
         studyBoardFilter.setOffset(offset);
@@ -100,6 +100,7 @@ public class StudyController {
                               Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String loginId = authentication.getName();
+        int studyboardno = no;
 
         StudyBoard studyBoard = studyService.getDetailStudy(no);
         //logger.info(studyBoard.toString());
@@ -109,12 +110,16 @@ public class StudyController {
 
         List<StudyApplication> studyMember = studyService.getStudyMember(no);
         //logger.info(studyMember.toString());
+        List<StudyEvent> studyEvents = studyService.getStudyEventList(studyboardno);
+
 
         model.addAttribute("loginId", loginId);
         model.addAttribute("studyBoard", studyBoard);
         model.addAttribute("studyCommList", studyCommList);
         model.addAttribute("countStudyComm", countStudyComm);
         model.addAttribute("studyMember", studyMember);
+        model.addAttribute("studyEvents", studyEvents);
+
 
         return "study/study_detail";
 
@@ -447,6 +452,36 @@ public class StudyController {
     public int deleteStudyEvent(@RequestParam int no) {
 
         return studyService.deleteStudyEvent(no);
+    }
+
+    @ResponseBody
+    @GetMapping("/search-study-list")
+    public Map<String, Object> searchStudyList(StudyBoardFilter studyBoardFilter,
+                                               @RequestParam(value="page", defaultValue = "1") Integer page) {
+
+        int pageSize = 8;
+        int offset = (page - 1) * pageSize;
+
+        studyBoardFilter.setPage(page);
+        studyBoardFilter.setOffset(offset);
+        studyBoardFilter.setLimit(pageSize);
+
+        List<StudyBoard> studyBoards = studyService.getStudyList(studyBoardFilter);
+
+        int totalStudyBoards = studyService.getStudyListCount(studyBoardFilter);
+
+        int maxPage = (int) Math.ceil((double) totalStudyBoards / pageSize);
+        int startPage = Math.max(1, page - 5);
+        int endPage = Math.min(maxPage, page + 4);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("studyBoards", studyBoards);
+        response.put("currentPage", page);
+        response.put("maxPage", maxPage);
+        response.put("startPage", startPage);
+        response.put("endPage", endPage);
+
+        return response;
     }
 
 }
