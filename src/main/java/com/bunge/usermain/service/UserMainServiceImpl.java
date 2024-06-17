@@ -43,9 +43,9 @@ public class UserMainServiceImpl implements UserMainService {
         params.put("memberId", memberId);
         params.put("size", size);
         params.put("offset", offset);
-        log.info("Params for selectMyEvent: {}", params);
+//        log.info("Params for selectMyEvent: {}", params);
         List<StudyEvent> events = userMainMapper.selectMyEvent(params);
-        log.info("Events retrieved: {}", events); // 디버깅 출력
+//        log.info("Events retrieved: {}", events); // 디버깅 출력
         return events;
     }
 
@@ -53,9 +53,9 @@ public class UserMainServiceImpl implements UserMainService {
     public int countMyEvent(String memberId) {
         Map<String, Object> params = new HashMap<>();
         params.put("memberId", memberId);
-        log.info("Params for countMyEvent: {}", params);
+//        log.info("Params for countMyEvent: {}", params);
         int count = userMainMapper.countMyEvent(params);
-        log.info("Total events count for member {}: {}", memberId, count); // 디버깅 출력
+//        log.info("Total events count for member {}: {}", memberId, count); // 디버깅 출력
         return count;
     }
 
