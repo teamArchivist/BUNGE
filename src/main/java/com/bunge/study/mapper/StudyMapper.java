@@ -116,4 +116,7 @@ public interface StudyMapper {
     public int acceptApproval(StudyApproval studyApproval);
     public void changeAcceptedBookTitle(StudyApproval studyApproval);
 
+    //거절 후 정보 변경
+    public int rejectApproval(StudyApproval studyApproval);
+
 }

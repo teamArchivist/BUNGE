@@ -219,4 +219,9 @@ public class StudyServiceImpl implements StudyService {
         studyMapper.changeAcceptedBookTitle(studyApproval);
         return studyMapper.acceptApproval(studyApproval);
     }
+
+    @Override
+    public int rejectApproval(StudyApproval studyApproval) {
+        return studyMapper.rejectApproval(studyApproval);
+    }
 }

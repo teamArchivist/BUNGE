@@ -263,13 +263,41 @@ $(function () {
             })
 
         }
-    })
+    }) // $("body").on("click", "#acceptApproval", function ()
 
     $("body").on("click", "#rejectApproval", function () {
         let answer = confirm("'확인'을 누르면 제안된 내용이 거절됩니다")
-        if (answer) {
+        let no = $("#approvalno").text();
 
+        if (answer) {
+            $.ajax({
+                url: "/study/reject-approval",
+                method: "post",
+                data: {
+                    no: no,
+                    approvalStatus: "거절"
+                },
+                beforeSend: function (xhr) {
+                    if (header && token) {
+                        xhr.setRequestHeader(header, token);
+                    }
+                },
+                success: function (data) {
+                    if (data === 1) {
+                        alert("거절 완료")
+                        location.reload();
+                    } else {
+                        alert("거절 실패. 다시 시도해주세요")
+                    }
+                },
+                error: function(status, error) {
+                    console.log("ajax 요청 실패")
+                    console.log("상태:" + status)
+                    console.log("오류:" + error)
+                    alert("거절 중 오류 발생. 다시 시도해주세요")
+                }
+            })
         }
-    })
+    }) //$("body").on("click", "#rejectApproval", function ()
 
 }) //ready end

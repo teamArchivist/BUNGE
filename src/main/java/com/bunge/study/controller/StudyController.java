@@ -430,5 +430,12 @@ public class StudyController {
         return studyService.acceptApproval(studyApproval);
     }
 
+    @ResponseBody
+    @PostMapping("/reject-approval")
+    public int rejectApproval(@ModelAttribute StudyApproval studyApproval) {
+
+        return studyService.rejectApproval(studyApproval);
+    }
+
 
 }
