@@ -6,38 +6,46 @@
     <!-- 스터디보드 정보 조회 -->
     <select id="selectStudyBoardByMemberId" resultType="com.bunge.study.domain.StudyManagement">
         SELECT
-            sm.studyboardno,
-            sm.studystart,
-            sm.studyend,
-            sm.studyperiod,
-            sm.leaderId,
-            sm.booktitle,
-            sm.studystatus,
-            smm.no,
-            smm.memberId,
-            smm.role,
-            sb.title,
-            b.categoryName
+        sm.studyboardno,
+        sm.studystart,
+        sm.studyend,
+        sm.studyperiod,
+        sm.leaderId,
+        sm.booktitle,
+        sm.studystatus,
+        smm.no,
+        smm.memberId,
+        smm.role,
+        sb.title,
+        b.categoryName,
+        CASE
+        WHEN CURRENT_DATE &lt; sm.studystart THEN 0
+        WHEN CURRENT_DATE &gt; sm.studyend THEN 100
+        ELSE (DATEDIFF(CURRENT_DATE, sm.studystart) / DATEDIFF(sm.studyend, sm.studystart)) * 100
+        END AS progress,
+        CASE
+        WHEN CURRENT_DATE = sm.studystart THEN 1
+        ELSE 0
+        END AS is_today
         FROM
-            studymanagement sm
-                JOIN
-            studymember smm ON sm.studyboardno = smm.studyboardno
-                JOIN
-            studyboard sb ON sm.studyboardno = sb.no
-                JOIN
-            book b ON sm.booktitle = b.title
+        studymanagement sm
+        JOIN
+        studymember smm ON sm.studyboardno = smm.studyboardno
+        JOIN
+        studyboard sb ON sm.studyboardno = sb.no
+        JOIN
+        book b ON sm.booktitle = b.title
         WHERE
-            smm.memberId = #{memberId}
+        smm.memberId = #{memberId}
         ORDER BY
         <choose>
-            <when test="sort == 'name'">
-                sb.title
-            </when>
             <when test="sort == 'studystart'">
-                sm.studystart
+                sm.studystart ASC
             </when>
             <when test="sort == 'progress'">
-                sm.studyperiod
+                progress DESC,
+                is_today DESC,
+                sm.studystart ASC
             </when>
         </choose>
         LIMIT #{size} OFFSET #{offset}
@@ -63,20 +71,22 @@
         SELECT
             se.title AS event_title,
             start,
-            end,
-            className,
-            sb.title AS study_title,
-            smm.memberId,
-            se.studyboardNo
-        FROM
-            studyevent se
-                JOIN
-            studyboard sb ON sb.no = se.studyboardno
-                JOIN
-            studymember smm ON smm.studyboardno = sb.no
-        WHERE
-            smm.memberId = #{memberId}
-            LIMIT #{size} OFFSET #{offset}
+        end,
+        className,
+        sb.title AS study_title,
+        smm.memberId,
+        se.studyboardNo
+    FROM
+        studyevent se
+            JOIN
+        studyboard sb ON sb.no = se.studyboardno
+            JOIN
+        studymember smm ON smm.studyboardno = sb.no
+    WHERE
+        smm.memberId = #{memberId}
+        AND end &gt;= CURRENT_DATE
+    ORDER BY start
+    LIMIT #{size} OFFSET #{offset}
     </select>
 
     <!-- 스터디보드 정보 개수 조회 -->
@@ -91,6 +101,7 @@
             studymember smm ON smm.studyboardno = sb.no
         WHERE
             smm.memberId = #{memberId}
+            AND end &gt;= CURRENT_DATE
     </select>
 
 </mapper>

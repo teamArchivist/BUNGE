@@ -37,90 +37,233 @@
                             <h3 class="h4 card-title "><i class="pli-megaphone"></i>&nbsp;&nbsp;공지사항</h3>
                             <!-- GridJS - Sorting -->
                             <div id="_dm-gridjsSorting">
-                                <div role="complementary" class="gridjs gridjs-container" style="width: 100%;">
-                                    <div class="gridjs-wrapper" style="height: auto;">
-                                        <table role="grid" class="gridjs-table table table-striped" style="height: auto;">
-                                        <thead class="gridjs-thead">
-                                        <tr class="gridjs-tr">
-                                            <th data-column-id="id" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 53px; width: 68px;">
-                                                <div class="gridjs-th-content">
-                                                    No.
-                                                </div>
-                                            </th>
-                                            <th data-column-id="name" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 108px; width: 138px;">
-                                                <div class="gridjs-th-content">
-                                                    제목
-                                                </div>
-                                            </th>
-                                            <th data-column-id="lastLogin" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 132px; width: 169px;">
-                                                <div class="gridjs-th-content">
-                                                    작성자
-                                                </div>
-                                            </th>
-                                        </tr>
-                                        </thead>
-                                        <tbody class="gridjs-tbody">
-                                        <tr class="gridjs-tr">
-                                            <td data-column-id="id" class="gridjs-td">
-                                                53454
-                                            </td>
-                                            <td data-column-id="name" class="gridjs-td">
-                                                Charles S Boyle
-                                            </td>
-                                            <td data-column-id="lastLogin" class="gridjs-td">
-                                                Today 01:25 PM
-                                            </td>
-                                        </tr>
-                                        <tr class="gridjs-tr">
-                                            <td data-column-id="id" class="gridjs-td">
-                                                53454
-                                            </td>
-                                            <td data-column-id="name" class="gridjs-td">
-                                                Charles S Boyle
-                                            </td>
-                                            <td data-column-id="lastLogin" class="gridjs-td">
-                                                Today 01:25 PM
-                                            </td>
-                                        </tr>
-                                        <tr class="gridjs-tr">
-                                            <td data-column-id="id" class="gridjs-td">
-                                                53454
-                                            </td>
-                                            <td data-column-id="name" class="gridjs-td">
-                                                Charles S Boyle
-                                            </td>
-                                            <td data-column-id="lastLogin" class="gridjs-td">
-                                                Today 01:25 PM
-                                            </td>
-                                        </tr>
-                                        <tr class="gridjs-tr">
-                                            <td data-column-id="id" class="gridjs-td">
-                                                53454
-                                            </td>
-                                            <td data-column-id="name" class="gridjs-td">
-                                                Charles S Boyle
-                                            </td>
-                                            <td data-column-id="lastLogin" class="gridjs-td">
-                                                Today 01:25 PM
-                                            </td>
-                                        </tr>
+                                <!-- Undeline nav tabs without base -->
+                                <!-- Nav tabs -->
+                                <ul class="nav nav-underline nav-component border-bottom" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link px-3 active" data-bs-toggle="tab" data-bs-target="#_dm-coTabsHome" type="button" role="tab" aria-controls="home" aria-selected="true">고라니</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link px-3" data-bs-toggle="tab" data-bs-target="#_dm-coTabsProfile" type="button" role="tab" aria-controls="profile" aria-selected="false">Just Do it</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link px-3" data-bs-toggle="tab" data-bs-target="#_dm-coTabsContact" type="button" role="tab" aria-controls="contact" aria-selected="false">Contact</button>
+                                    </li>
+                                </ul>
 
-                                        <tr class="gridjs-tr">
-                                            <td data-column-id="id" class="gridjs-td">
-                                                53454
-                                            </td>
-                                            <td data-column-id="name" class="gridjs-td">
-                                                Charles S Boyle
-                                            </td>
-                                            <td data-column-id="lastLogin" class="gridjs-td">
-                                                Today 01:25 PM
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                                <!-- Tabs content -->
+                                <div class="tab-content p-3">
+
+                                    <div id="_dm-coTabsHome" class="tab-pane fade show active" role="tabpanel" aria-labelledby="home-tab">
+                                        <div role="complementary" class="gridjs gridjs-container" style="width: 100%;">
+                                            <div class="gridjs-wrapper" style="height: 220px;">
+                                                <table role="grid" class="gridjs-table table table-striped" style="height: auto;">
+                                                    <thead class="gridjs-thead">
+                                                    <tr class="gridjs-tr">
+                                                        <th data-column-id="id" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 53px; width: 60px;">
+                                                            <div class="gridjs-th-content">
+                                                                No.
+                                                            </div>
+                                                        </th>
+                                                        <th data-column-id="name" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 150px; width: 150px;">
+                                                            <div class="gridjs-th-content">
+                                                                제목
+                                                            </div>
+                                                        </th>
+                                                        <th data-column-id="lastLogin" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 60px; width: 60px;">
+                                                            <div class="gridjs-th-content">
+                                                                작성자
+                                                            </div>
+                                                        </th>
+                                                        <th data-column-id="lastLogin" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 90px; width: 100px;">
+                                                            <div class="gridjs-th-content">
+                                                                작성자일
+                                                            </div>
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody class="gridjs-tbody">
+                                                    <tr class="gridjs-tr">
+                                                        <td data-column-id="id" class="gridjs-td">
+                                                            1
+                                                        </td>
+                                                        <td data-column-id="lastLogin" class="gridjs-td">
+                                                            [필독] 이번주 일정 변경 공지합니다.
+                                                        </td>
+                                                        <td data-column-id="name" class="gridjs-td">
+                                                            admin
+                                                        </td>
+                                                        <td data-column-id="lastLogin" class="gridjs-td">
+                                                            2024-06-15
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="gridjs-tr">
+                                                        <td data-column-id="id" class="gridjs-td">
+                                                            1
+                                                        </td>
+                                                        <td data-column-id="lastLogin" class="gridjs-td">
+                                                            [필독] 이번주 일정 변경 공지합니다.
+                                                        </td>
+                                                        <td data-column-id="name" class="gridjs-td">
+                                                            admin
+                                                        </td>
+                                                        <td data-column-id="lastLogin" class="gridjs-td">
+                                                            2024-06-15
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="gridjs-tr">
+                                                        <td data-column-id="id" class="gridjs-td">
+                                                            1
+                                                        </td>
+                                                        <td data-column-id="lastLogin" class="gridjs-td">
+                                                            [필독] 이번주 일정 변경 공지합니다.
+                                                        </td>
+                                                        <td data-column-id="name" class="gridjs-td">
+                                                            admin
+                                                        </td>
+                                                        <td data-column-id="lastLogin" class="gridjs-td">
+                                                            2024-06-15
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="gridjs-tr">
+                                                        <td data-column-id="id" class="gridjs-td">
+                                                            1
+                                                        </td>
+                                                        <td data-column-id="lastLogin" class="gridjs-td">
+                                                            [필독] 이번주 일정 변경 공지합니다.
+                                                        </td>
+                                                        <td data-column-id="name" class="gridjs-td">
+                                                            admin
+                                                        </td>
+                                                        <td data-column-id="lastLogin" class="gridjs-td">
+                                                            2024-06-15
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="gridjs-tr">
+                                                        <td data-column-id="id" class="gridjs-td">
+                                                            1
+                                                        </td>
+                                                        <td data-column-id="lastLogin" class="gridjs-td">
+                                                            [필독] 이번주 일정 변경 공지합니다.
+                                                        </td>
+                                                        <td data-column-id="name" class="gridjs-td">
+                                                            admin
+                                                        </td>
+                                                        <td data-column-id="lastLogin" class="gridjs-td">
+                                                            2024-06-15
+                                                        </td>
+                                                    </tr>
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+
                                     </div>
+                                    <div id="_dm-coTabsProfile" class="tab-pane fade" role="tabpanel" aria-labelledby="profile-tab">
+                                        <div role="complementary" class="gridjs gridjs-container" style="width: 100%;">
+                                            <div class="gridjs-wrapper" style="height: 220px;">
+                                                <table role="grid" class="gridjs-table table table-striped" style="height: auto;">
+                                                    <thead class="gridjs-thead">
+                                                    <tr class="gridjs-tr">
+                                                        <th data-column-id="id" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 53px; width: 60px;">
+                                                            <div class="gridjs-th-content">
+                                                                No.
+                                                            </div>
+                                                        </th>
+                                                        <th data-column-id="name" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 150px; width: 150px;">
+                                                            <div class="gridjs-th-content">
+                                                                제목
+                                                            </div>
+                                                        </th>
+                                                        <th data-column-id="lastLogin" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 60px; width: 60px;">
+                                                            <div class="gridjs-th-content">
+                                                                작성자
+                                                            </div>
+                                                        </th>
+                                                        <th data-column-id="lastLogin" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 90px; width: 100px;">
+                                                            <div class="gridjs-th-content">
+                                                                작성자일
+                                                            </div>
+                                                        </th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody class="gridjs-tbody">
+                                                    <tr class="gridjs-tr">
+                                                        <td data-column-id="id" class="gridjs-td">
+                                                            1
+                                                        </td>
+                                                        <td data-column-id="lastLogin" class="gridjs-td">
+                                                            [필독] 이번주 일정 변경 공지합니다.
+                                                        </td>
+                                                        <td data-column-id="name" class="gridjs-td">
+                                                            admin
+                                                        </td>
+                                                        <td data-column-id="lastLogin" class="gridjs-td">
+                                                            2024-06-15
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="_dm-coTabsContact" class="tab-pane fade" role="tabpanel" aria-labelledby="contact-tab">
+                                        <div role="complementary" class="gridjs gridjs-container" style="width: 100%;">
+                                        <div class="gridjs-wrapper" style="height: 220px;">
+                                            <table role="grid" class="gridjs-table table table-striped" style="height: auto;">
+                                                <thead class="gridjs-thead">
+                                                <tr class="gridjs-tr">
+                                                    <th data-column-id="id" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 53px; width: 60px;">
+                                                        <div class="gridjs-th-content">
+                                                            No.
+                                                        </div>
+                                                    </th>
+                                                    <th data-column-id="name" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 150px; width: 150px;">
+                                                        <div class="gridjs-th-content">
+                                                            제목
+                                                        </div>
+                                                    </th>
+                                                    <th data-column-id="lastLogin" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 60px; width:60px;">
+                                                        <div class="gridjs-th-content">
+                                                            작성자
+                                                        </div>
+                                                    </th>
+                                                    <th data-column-id="lastLogin" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 90px; width: 100px;">
+                                                        <div class="gridjs-th-content">
+                                                            작성자일
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody class="gridjs-tbody">
+                                                <tr class="gridjs-tr">
+                                                    <td data-column-id="id" class="gridjs-td">
+                                                        1
+                                                    </td>
+                                                    <td data-column-id="lastLogin" class="gridjs-td">
+                                                        [필독] 이번주 일정 변경 공지합니다.
+                                                    </td>
+                                                    <td data-column-id="name" class="gridjs-td">
+                                                        admin
+                                                    </td>
+                                                    <td data-column-id="lastLogin" class="gridjs-td">
+                                                        2024-06-15
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <!-- END : Undeline nav tabs without base -->
+
+
+                                <div role="complementary" class="gridjs gridjs-container" style="width: 100%;">
                                     <nav class="text-align-center mt-5" aria-label="Table navigation">
-                                        <ul class="pagination justify-content-center">
+                                        <ul id="announcementList" class="pagination justify-content-center">
                                             <li class="page-item disabled">
                                                 <a class="page-link" href="#">이전</a>
                                             </li>
@@ -151,25 +294,25 @@
                             <!-- GridJS - Resizable columns -->
                             <div id="_dm-gridjsResizableCol">
                                 <div role="complementary" class="gridjs gridjs-container" style="width: 100%;">
-                                    <div class="gridjs-wrapper" style="height: auto;">
+                                    <div class="gridjs-wrapper" style="height: 290px;">
                                         <table role="grid" class="gridjs-table table table-striped" style="height: auto;">
                                             <thead class="gridjs-thead">
                                             <tr class="gridjs-tr">
-                                                <th data-column-id="id" class="gridjs-th" style="min-width: 53px; width: 70px;">
+                                                <th data-column-id="id" class="gridjs-th" style="min-width: 53px; width: 100px;">
                                                     <div class="gridjs-th-content">스터디</div>
                                                     <div class="gridjs-th gridjs-resizable"></div>
                                                 </th>
-                                                <th data-column-id="name" class="gridjs-th" style="min-width: 108px; width: 142px;">
+                                                <th data-column-id="name" class="gridjs-th" style="min-width: 100px; width: 100px;">
                                                     <div class="gridjs-th-content">모임 제목</div><div class="gridjs-th gridjs-resizable"></div>
                                                 </th>
-                                                <th data-column-id="lastLogin" class="gridjs-th" style="min-width: 132px; width: 174px;">
+                                                <th data-column-id="lastLogin" class="gridjs-th" style="min-width: 80px; width: 100px;">
                                                     <div class="gridjs-th-content">날짜</div>
                                                     <div class="gridjs-th gridjs-resizable"></div>
                                                 </th>
-                                                <th data-column-id="amount" class="gridjs-th" style="min-width: 66px; width: 87px;">
+                                                <th data-column-id="amount" class="gridjs-th" style="min-width: 90px; width: 90px;">
                                                     <div class="gridjs-th-content">시작 시간</div>
                                                 </th>
-                                                <th data-column-id="amount" class="gridjs-th" style="min-width: 66px; width: 87px;">
+                                                <th data-column-id="amount" class="gridjs-th" style="min-width: 90px; width: 90px;">
                                                     <div class="gridjs-th-content">종료 시간</div>
                                                 </th>
                                             </tr>
@@ -226,18 +369,14 @@
 
                         <!-- Right Toolbar -->
                         <div class="col-md-12 d-flex gap-1 align-items-center justify-content-md-end mb-2">
-                            <div class="form-group" style="display:inline-block;">
-                                <input type="text" placeholder="Search..." class="form-control" autocomplete="off">
-                            </div>
                             <div class="btn-group">
                                 <div class="btn-group dropdown">
                                     <button class="btn btn-icons btn-outline-light dropdown-toggle hstack gap-2" data-bs-toggle="dropdown" aria-expanded="false">
-                                        옵션
+                                        <span id="selectedOptionText">옵션</span> <!-- 기본 텍스트 설정 -->
                                         <span class="vr"></span>
                                         <span class="visually-hidden">Toggle Dropdown</span>
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-end">
-                                        <li><a class="dropdown-item" href="#" id="name">스터디 이름순</a></li>
                                         <li><a class="dropdown-item" href="#" id="studystart">등록순</a></li>
                                         <li><a class="dropdown-item" href="#" id="progress">진행순</a></li>
 
@@ -250,34 +389,34 @@
                     </div>
                 </div>
 
-                <div class="card-body">
+                <div class="card-body" style="height: 400px">
                     <div class="table-responsive">
                         <table class="table table-striped">
                             <thead>
                             <tr>
-                                <th>스터디이름</th>
-                                <th>그룹장</th>
-                                <th>상태</th>
-                                <th class="text-center">스터디진행률</th>
-                                <th>시작일</th>
-                                <th>종료일</th>
-                                <th class="text-center">카테고리</th>
+                                <th style="min-width: 150px; width: 150px;">스터디</th>
+                                <th style="min-width: 80px; width: 80px;">그룹장</th>
+                                <th style="min-width: 80px; width: 80px;">상태</th>
+                                <th class="text-center" style="min-width: 100px; width: 100px;">스터디진행률</th>
+                                <th style="min-width: 100px; width: 100px;">시작일</th>
+                                <th style="min-width: 100px; width: 100px;">종료일</th>
+                                <th class="text-center" style="min-width: 150px; width: 150px;">카테고리</th>
                             </tr>
                             </thead>
                             <tbody id="studylist">
                             <tr>
-                                <td><a href="#" class="btn-link">스터디이름1</a></td>
-                                <td>고라니1</td>
-                                <td><span class="text-body"><i class="demo-pli-clock"></i>진행중</span></td>
+                                <td><a href="#" class="btn-link"></a></td>
+                                <td></td>
+                                <td><span class="text-body"><i class="demo-pli-clock"></i></span></td>
                                 <td class="text-center fs-5">
                                     <div class="progress">
                                         <div class="progress-bar" role="progressbar" style="width: 81%;" aria-valuenow="81" aria-valuemin="0" aria-valuemax="100">
-                                            <font style="vertical-align: inherit;"><font style="vertical-align: inherit;">81%</font></font></div>
+                                            <font style="vertical-align: inherit;"><font style="vertical-align: inherit;"></font></font></div>
                                     </div>
                                 </td>
-                                <td>2024-01-01</td>
-                                <td>2024-06-01</td>
-                                <td class="text-center">문학 소설</td>
+                                <td></td>
+                                <td></td>
+                                <td class="text-center"></td>
                             </tr>
                             </tbody>
                         </table>

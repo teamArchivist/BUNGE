@@ -8,7 +8,7 @@ $(document).ready(function() {
 	let params = new URLSearchParams(window.location.search);
 	let page = params.get('page') || 1;
 	let size = params.get('size') || 5;
-	let sort = params.get('sort') || 'name';
+	let sort = params.get('sort') || 'studystart';
 
 	function generateMyStudyHtml(study) {
 		let startDate = new Date(study.studystart);
@@ -26,13 +26,13 @@ $(document).ready(function() {
 
 		// 카테고리 이름이 너무 길 경우 자르기
 		let categoryName = study.categoryName;
-		if (categoryName.length > 20) { // 원하는 길이로 설정
-			categoryName = categoryName.substring(0, 20) + '...';
+		if (categoryName.length > 17) { // 원하는 길이로 설정
+			categoryName = categoryName.substring(0, 17) + '...';
 		}
 
 		let studyTitle = study.title;
-		if (studyTitle.length > 20) { // 원하는 길이로 설정
-			studyTitle = studyTitle.substring(0, 20) + '...';
+		if (studyTitle.length > 17) { // 원하는 길이로 설정
+			studyTitle = studyTitle.substring(0, 17) + '...';
 		}
 
 		return `<tr>
@@ -86,7 +86,7 @@ $(document).ready(function() {
 	}
 
 	//스터디 목록
-	function loadMyStudyList(page = 1, size = 5, sort = 'name') {
+	function loadMyStudyList(page = 1, size = 5, sort = 'studystart') {
 
 		$.ajax({
 			url: '/user/user-studyList',
@@ -133,18 +133,17 @@ $(document).ready(function() {
 	loadMyStudyList(page,size, sort);
 
 	// 정렬 옵션 클릭 시 이벤트 처리
-	$('.dropdown-item').on('click', function() {
+	$('.dropdown-item').on('click', function(event) {
+		event.preventDefault();
 		const sort = $(this).attr('id');
+		const sortText = $(this).text();
+
+		// 선택된 옵션을 버튼 텍스트로 설정
+		$('#selectedOptionText').text(sortText);
+
 		loadMyStudyList(1, 5, sort); // 정렬 변경 시 1페이지부터 다시 로드
 	});
 
-	// 검색 이벤트 처리
-	$('input[placeholder="Search..."]').on('keypress', function(e) {
-		if (e.which === 13) { // Enter key pressed
-			keyword = $(this).val();
-			loadMyStudyList(1, size, sort, keyword); // 검색 시 1페이지부터 다시 로드
-		}
-	});
 
 	//일정 리스트
 	loadMyEventList(page, size);

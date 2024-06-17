@@ -38,7 +38,7 @@ public class UserMainController {
         public Map<String, Object> userStudyList(Principal principal,
                                                 @RequestParam(defaultValue = "1") int page,
                                                 @RequestParam(defaultValue = "5") int size,
-                                                @RequestParam(defaultValue = "name") String sort) {
+                                                @RequestParam(defaultValue = "studystart") String sort) {
 
             String memberId = principal.getName();  // 현재 로그인된 사용자의 아이디
 
