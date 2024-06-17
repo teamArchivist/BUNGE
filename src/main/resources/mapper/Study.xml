@@ -323,4 +323,15 @@
         where no = #{no}
     </update>
 
+    <select id="getStudyEventList" parameterType="int" resultType="com.bunge.study.domain.StudyEvent">
+        select *
+        from studyevent
+        where studyBoardNo = #{studyboardno}
+    </select>
+
+    <delete id="deleteStudyEvent" parameterType="int">
+        delete from studyevent
+        where no = #{no}
+    </delete>
+
 </mapper>

@@ -332,9 +332,33 @@
               <div class="flex-fill mb-3">
                 <div id="_dm-calendar"></div>
               </div>
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addEventModal">
+              <button type="button" class="btn btn-primary mb-3"
+                      th:if="${#strings.equals(studyManagement.leaderId, loginId)}"
+                      data-bs-toggle="modal" data-bs-target="#addEventModal">
                 일정 추가
               </button>
+              <div th:if="${studyEvents.size() > 0}" class="row">
+                <table class="table table-bordered">
+                  <thead>
+                    <th class="text-center">일정제목</th>
+                    <th class="text-center">시작일</th>
+                    <th class="text-center">종료일</th>
+                  </thead>
+                  <tbody>
+                    <tr th:each="studyEvent : ${studyEvents}">
+                      <td class="text-center">[[${studyEvent.title}]]
+                        <span class="badge bg-danger deleteEvent"
+                              th:data-eventno="${studyEvent.no}"
+                              >삭제</span>
+                      </td>
+                      <td class="text-center">[[${studyEvent.start}]]</td>
+                      <td class="text-center">[[${studyEvent.end}]]</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+
               <div class="modal" id="addEventModal">
                 <div class="modal-dialog">
                   <div class="modal-content">
@@ -346,14 +370,20 @@
                       <form id="addEventForm">
                         <div class="mb-3">
                           <label for="eventTitle" class="form-label">제목</label>
-                          <input type="text" class="form-control" id="eventTitle" required>
+                          <input type="text" class="form-control" required
+                                 placeholder="최대 20자까지 입력 가능합니다"
+                                 id="eventTitle" maxlength="20">
                         </div>
-                        <div class="mb-3">
+                        <div>
                           <label for="eventStart" class="form-label">시작일</label>
+                        </div>
+                        <div class="input-group mb-3">
                           <input type="date" class="form-control" id="eventStart" required>
                         </div>
-                        <div class="mb-3">
+                        <div>
                           <label for="eventEnd" class="form-label">종료일</label>
+                        </div>
+                        <div class="input-group mb-3">
                           <input type="date" class="form-control" id="eventEnd" required>
                         </div>
                         <div class="mb-3">

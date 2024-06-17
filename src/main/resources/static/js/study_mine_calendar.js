@@ -10,8 +10,9 @@ document.addEventListener( "DOMContentLoaded", () => {
    const calendar = new FullCalendar.Calendar( document.getElementById( "_dm-calendar" ), {
       locale: "ko",
       timeZone: "UTC",
-      editable: true,
-      droppable: true, // this allows things to be dropped onto the calendar
+      editable: false,
+      droppable: false,
+      selectable: true,
       dayMaxEvents: true, // allow "more" link when too many events
       headerToolbar: {
          left: "prev,next today",
@@ -29,7 +30,8 @@ document.addEventListener( "DOMContentLoaded", () => {
          nextYear: " demo-psi-arrow-right-2"
       },
 
-      events: []
+      displayEventTime : false,
+
    });
 
    calendar.render();
@@ -59,14 +61,14 @@ document.addEventListener( "DOMContentLoaded", () => {
    document.getElementById("saveEventButton").addEventListener("click", () => {
       const title = document.getElementById("eventTitle").value;
       const start = document.getElementById("eventStart").value;
-      const end = new Date(new Date(document.getElementById("eventEnd").value).getTime() + 24 * 60 * 60 * 1000).toISOString().split("T")[0]; // Add one day to end date
+      const end = document.getElementById("eventEnd").value;
       const className = document.getElementById("eventColor").value;
 
       if (title && start && end) {
          calendar.addEvent({
             title: title,
             start: start,
-            end: end,
+            end: new Date(new Date(end).getTime() + 24 * 60 * 60 * 1000),
             className: className
          });
 
@@ -88,6 +90,7 @@ document.addEventListener( "DOMContentLoaded", () => {
              .then(data => {
                 if (data.status === 'success') {
                    alert(data.message)
+                   location.reload();
                 } else {
                    alert("일정 추가에 실패했습니다")
                 }
