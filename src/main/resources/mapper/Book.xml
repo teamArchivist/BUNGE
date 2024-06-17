@@ -6,9 +6,9 @@
 
     <insert id="addBook">
         insert into book
-        (isbn13, title, author, pubDate, categoryName, description, cover, regitdate, score, page)
+        (isbn13, title, author, pubDate, categoryName, description, cover, regitdate, customerReviewRank, page)
         values
-        (#{isbn13}, #{title}, #{author}, #{pubDate}, #{categoryName}, #{description}, #{cover}, now(), 0, 0)
+        (#{isbn13}, #{title}, #{author}, #{pubDate}, #{categoryName}, #{description}, #{cover}, now(), #{customerReviewRank}, 0)
     </insert>
 
     <select id="getBookListCount" parameterType="com.bunge.memo.filter.BookFilter" resultType="int">
@@ -24,8 +24,8 @@
         <if test="category != null and category != ''">
             and category like CONCAT('%', #{category}, '%')
         </if>
-        <if test="score != null">
-            and score >= #{score}
+        <if test="customerReviewRank != null">
+            and book.customerReviewRank >= #{customerReviewRank}
         </if>
     </select>
 
@@ -42,8 +42,8 @@
         <if test="category != null and category != ''">
             and category like CONCAT('%', #{category}, '%')
         </if>
-        <if test="score != null">
-            and score >= #{score}
+        <if test="customerReviewRank != null">
+            and book.customerReviewRank >= #{customerReviewRank}
         </if>
         order by regitdate desc
         limit #{offset}, #{limit}
