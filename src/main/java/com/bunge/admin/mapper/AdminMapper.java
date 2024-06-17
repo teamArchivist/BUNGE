@@ -5,7 +5,9 @@ import com.bunge.study.domain.StudyBoard;
 import org.apache.ibatis.annotations.Mapper;
 import com.bunge.admin.domain.Visitor;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface AdminMapper {
@@ -24,7 +26,7 @@ public interface AdminMapper {
 
     int getreviewCount();
 
-    List<Member> getmemberlist();
+    List<Member> getmemberlist(Map<String, Object> map);
 
     List<StudyBoard> getstudylist();
 

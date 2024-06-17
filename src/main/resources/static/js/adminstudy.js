@@ -14,8 +14,9 @@ $(function() {
        success: function (rdata) {
            console.log(rdata);
            $(rdata).each(function (){
+               let title = this.title.length > 10 ? this.title.substring(0,10) + '...': this.title;
             let output ="<tr>"
-               + "<td><a class='btn-link'>"+ this.title+"</a></td>"
+               + "<td><a class='btn-link'>"+ title +"</a></td>"
                + "<td>" + this.id +"</td>"
                + "<td><span class='text-body'><i class='demo-pli-clock'></i>"+this.studystatus+"</span></td>"
                + "<td class='text-center fs-5'>"
@@ -25,10 +26,12 @@ $(function() {
                + "</td>"
                + "<td>"+this.challengestart+"</td>"
                + "<td>"+this.challengeend+"</td>"
-               + "<td class='text-center'>"+ this.categoryName.substring(this.categoryName.length - 8)+"</td>"
+               + "<td class='text-center'>"+ this.categoryName.substring(this.categoryName.length - 17)+"</td>"
                + "</tr>"
                $("#studylist").append(output);
            });
+
+
        }
    })
 

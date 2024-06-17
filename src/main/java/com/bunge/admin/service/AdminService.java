@@ -18,7 +18,9 @@ public interface AdminService {
 
     int getreviewCount();
 
+    List<Member> getmemberlist(int limit,int offset);
+
     List<StudyBoard> getstudylist();
 
-    List<Member> getmemberlist();
+
 }

@@ -4,12 +4,11 @@ import com.bunge.admin.domain.Visitor;
 import com.bunge.admin.mapper.AdminMapper;
 import com.bunge.member.domain.Member;
 import com.bunge.study.domain.StudyBoard;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.security.Principal;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -58,13 +57,18 @@ public class AdminServiceimpl implements AdminService {
     }
 
     @Override
-    public List<Member> getmemberlist() {
-        return adminMapper.getmemberlist();
+    public List<Member> getmemberlist(int limit, int offset) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("limit",limit);
+        map.put("offset",offset);
+
+        return adminMapper.getmemberlist(map);
     }
 
     @Override
     public List<StudyBoard> getstudylist() {
         return adminMapper.getstudylist();
     }
+
 
 }
