@@ -35,8 +35,9 @@
         select count(*) from review
     </select>
 
-    <select id="getmemberlist" parameterType="String" resultType="com.bunge.member.domain.Member">
-        select * from member
+    <select id="getmemberlist" parameterType="java.util.Map" resultType="com.bunge.member.domain.Member">
+       select * from member
+       LIMIT #{limit} OFFSET #{offset}
     </select>
 
     <select id="getstudylist" parameterType="String" resultType="com.bunge.study.domain.StudyBoard">
@@ -47,4 +48,5 @@
                  JOIN book k ON b.booktitle = k.title
         GROUP BY b.no;
     </select>
+
 </mapper>

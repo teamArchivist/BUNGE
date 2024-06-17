@@ -14,15 +14,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -69,9 +67,24 @@ public class admincontoller {
     //맴버 목록
     @ResponseBody
     @GetMapping(value = "/memberlistto")
-    public List<Member> memberlist() {
-        List<Member> list = adminservice.getmemberlist();
-        return list;
+    public Map<String, Object> memberlist(@RequestParam(defaultValue = "1") int page,
+                                          @RequestParam(defaultValue = "5") int limit) {
+
+        Map<String , Object> map = new HashMap<>();
+        int offset = (page -1)* limit;
+        try {
+            List<Member> memberlist = adminservice.getmemberlist(limit, offset);
+            int memberlistcount = adminservice.getjoinCount();
+
+            map.put("memberlist",memberlist);
+            map.put("memberlistcount",memberlistcount);
+            map.put("status","success");
+        }catch (Exception e) {
+            map.put("status","error");
+            map.put("message","목록을 불러오는 실패");
+            e.printStackTrace();
+        }
+        return map;
     }
 
     //스터디 목록 (진행중인 스터디)
