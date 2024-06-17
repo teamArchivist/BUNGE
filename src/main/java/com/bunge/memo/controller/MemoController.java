@@ -63,7 +63,7 @@ public class MemoController {
         bookFilter.setLimit(pageSize);
 
         List<Book> books = bookService.getBookList(bookFilter);
-        logger.info("books : " + books.toString());
+        //logger.info("books : " + books.toString());
 
         int totalBooks = bookService.getBookListCount(bookFilter);
 

@@ -23,7 +23,7 @@ $(function () {
                 title: type === "title" ? keyword : null,
                 author: type === "author" ? keyword : null,
                 category: type === "category" ? keyword : null,
-                score: type === "score" ? keyword : null,
+                customerReviewRank: type === "customerReviewRank" ? keyword : null,
                 page: page
             },
             success: function(response) {
@@ -40,7 +40,7 @@ $(function () {
                                         <a href="bookdetail?isbn13=${book.isbn13}" +  class='card-text link-success h5'>${book.title}</a>
                                         <p class='card-text mt-3'>${book.author}</p>
                                         <p class='card-text'>${book.categoryName}</p>
-                                        <p class='card-text'>평점 : ${book.score}</p>
+                                        <p class='card-text'>평점 : ${book.customerReviewRank}</p>
                                         <p class='card-text'>${book.description}</p>
                                     </div>
                                 </div>
@@ -118,8 +118,8 @@ $(function () {
                         data: JSON.stringify(rdata.item),
                         cache: false,
                         success: function (response) {
-                            console.log("보내는 데이터 : " + this.data);
-                           // console.log("response: " + response);
+                            //console.log("보내는 데이터 : " + this.data);
+                            console.log("response: " + response);
                             $("#searchresult").empty();
                             $("#bookpagenation").empty();
 
@@ -127,12 +127,13 @@ $(function () {
                                 alert("검색된 모든 책이 이미 등록되어 있습니다.")
                             } else {
                                 response.forEach(subject => {
-                                    //console.log(subject);
+                                    console.log(subject);
                                     let output = "<div class='col-sm-6 col-xl-2 mb-3'>" +
                                         "<div class='card mb-3 hv-grow-parent h-100'>" +
                                         "  <img class='card-img-top book-img' src='" + subject.cover +
                                         "' data-title='" + subject.title + "' data-author='" + subject.author +
                                         "' data-pubdate='" + subject.pubDate + "' data-category='" + subject.categoryName +
+                                        "' data-customer-review-rank='" + subject.customerReviewRank +
                                         "' data-description='" + subject.description + "' data-isbn13='" + subject.isbn13 +
                                         "' loading='lazy' height='350px'>" +
                                         "  <div class='card-body mt-4'>" +
@@ -140,6 +141,7 @@ $(function () {
                                         "       <p class='card-text text-opacity-75'>" + subject.author + "</p>" +
                                         "       <p class='card-text text-opacity-75'>" + subject.pubDate + "</p>" +
                                         "       <p class='card-text'>" + subject.categoryName + "</p>" +
+                                        "       <p class='card-text'>평점 : " + subject.customerReviewRank + "</p>" +
                                         "       <p class='card-text'>" + subject.description + "</p>" +
                                         "  </div>" +
                                         "</div>";
@@ -171,6 +173,7 @@ $(function () {
                 pubDate: $(this).data('pubdate'),
                 categoryName: $(this).data('category'),
                 description: $(this).data('description'),
+                customerReviewRank: $(this).data('customer-review-rank'),
                 cover: $(this).attr('src'),
             };
 
@@ -198,5 +201,9 @@ $(function () {
         } //if (answer)
 
     }); //이미지 클릭 이벤트
+
+    $("#showAll").click(function () {
+        location.href="/memo/search-main";
+    })
 
 });

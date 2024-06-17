@@ -23,7 +23,7 @@
 
                 <!-- Search form -->
                 <div class="col-md-8 offset-md-2 mb-3">
-                    <form th:action="@{/searchresult}" id="searchForm" class="searchbox input-group">
+                    <form th:action="@{/search-result}" id="searchForm" class="searchbox input-group">
                         <input id="searchKeyword" name="keyword" class="searchbox__input form-control form-control-lg" type="search" placeholder="검색어를 입력하세요. . ." aria-label="Search">
                         <div class="searchbox__btn-group">
                             <button id="searchBtn" class="searchbox__btn btn btn-icon bg-transparent shadow-none border-0 btn-sm" type="submit">
@@ -42,10 +42,10 @@
                             <option value="title">제목</option>
                             <option value="author">저자</option>
                             <option value="category">카테고리</option>
-                            <option value="score">별점</option>
+                            <option value="customerReviewRank">별점</option>
                         </select>
                     </div>
-
+                    <button class="btn btn-light" id="showAll">전체보기</button>
                     <button class="btn btn-success mb-3 mb-sm-0" id="addbook">등록하기</button>
                 </div>
                 <!-- END : Sort and categories filter -->
@@ -59,10 +59,10 @@
                         <div class="card mb-3 hv-grow-parent h-100">
                             <img th:src="${book.cover}" class="card-img-top" alt="..." height="350px">
                             <div class="card-body">
-                                <a th:href="@{'bookdetail?isbn13=' + ${book.isbn13}}" class="card-text link-success h5" th:text="${book.title}">책 제목</a>
+                                <p class="card-text link-success h5 text-decoration-underline fw-bold" th:text="${book.title}">책 제목</p>
                                 <p class="card-text mt-3" th:text="${book.author}">저자</p>
                                 <p class="card-text" th:text="${book.categoryName}">카테고리</p>
-                                <p class="card-text">평점 : [[${book.score}]]</p>
+                                <p class="card-text">평점 : [[${book.customerReviewRank}]]</p>
                                 <p class="card-text" th:text="${book.description}">설명</p>
                             </div>
                         </div>
