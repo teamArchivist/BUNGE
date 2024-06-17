@@ -115,4 +115,7 @@ public interface StudyService {
 
     //승인 후 정보 변경
     public int acceptApproval(StudyApproval studyApproval);
+
+    //거절 후 정보 변경
+    public int rejectApproval(StudyApproval studyApproval);
 }

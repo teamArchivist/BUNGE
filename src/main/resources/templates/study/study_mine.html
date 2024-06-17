@@ -288,7 +288,15 @@
                       </td>
                       <td class="text-center">[[${studyApproval.proposer}]]</td>
                       <td class="text-center">[[${studyApproval.proposeDate}]]</td>
-                      <td class="text-center">[[${studyApproval.approvalStatus}]]</td>
+                      <td th:if="${studyApproval.approvalStatus == '대기'}" class="text-center">
+                        <span class="badge bg-warning">[[${studyApproval.approvalStatus}]]</span>
+                      </td>
+                      <td th:if="${studyApproval.approvalStatus == '승인'}" class="text-center">
+                        <span class="badge bg-success">[[${studyApproval.approvalStatus}]]</span>
+                      </td>
+                      <td th:if="${studyApproval.approvalStatus == '거절'}" class="text-center">
+                        <span class="badge bg-danger">[[${studyApproval.approvalStatus}]]</span>
+                      </td>
                       <td class="text-center">[[${studyApproval.changeStatusDate}]]</td>
                     </tr>
 

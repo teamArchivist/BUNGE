@@ -317,4 +317,10 @@
         where studyboardno = #{studyboardno}
     </update>
 
+    <update id="rejectApproval" parameterType="com.bunge.study.domain.StudyApproval">
+        update studyapproval
+        set approvalStatus = #{approvalStatus}
+        where no = #{no}
+    </update>
+
 </mapper>
