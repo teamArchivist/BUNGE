@@ -19,10 +19,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -276,31 +272,6 @@ public class MemoController {
     public int changeReadState(@RequestBody ReadState readState) {
         int result = readStateService.changeReadState(readState);
         return result;
-    }
-
-    @ResponseBody
-    @PostMapping("/get-memo-chart-data")
-    public List<Map<String, Object>> getChartData() {
-        List<Map<String, Object>> data = new ArrayList<>();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/M");
-
-        LocalDate currentDate = LocalDate.now();
-        for (int i=0; i<5; i++) {
-            LocalDate date = currentDate.minusMonths(i);
-            String formattedDate = date.format(formatter);
-            //logger.info("formattedDate:" + formattedDate);
-            int createdMemo = memoService.countMemoRecord(formattedDate);
-            //int completedBooks =
-
-            Map<String, Object> record = new HashMap<String, Object>();
-            record.put("month", formattedDate);
-            record.put("createdMemo", createdMemo);
-            record.put("completedBooks", (int) (Math.random() * 10));
-
-            data.add(record);
-        }
-
-        return data;
     }
 
 }

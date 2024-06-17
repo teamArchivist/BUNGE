@@ -97,7 +97,7 @@
                 <div class="d-md-flex gap-4">
                     <div class="flex-fill">
                         <div class="row">
-                            <div class="card col-md-5">
+                            <div class="card col-md-5" style="overflow:auto;height:1000px;">
                                 <div class="card-body">
                                     <div class="row mb-3 border-bottom">
                                         <input type="hidden" th:value="${studyBoard.no}" id="studyBoardNo">
@@ -195,47 +195,40 @@
 
                                 </div>
                             </div>
-                            <div class="col-md-7">
+                            <div class="col-md-7" style="overflow:auto;height:1000px;">
                                 <div class="card mb-3">
                                     <div class="card-body">
                                         <div class="d-md-flex gap-4">
-                                            <div class="w-md-160px w-xl-200px flex-shrink-0 mb-3">
-                                                <div class="d-grid">
-                                                    <button class="btn btn-primary" type="button">도전일정</button>
-                                                </div>
-                                                <h5 class="mt-3 mb-3">Upcoming event</h5>
-                                                <div class="list-group list-group-borderless">
-                                                    <a class="bg-info list-group-item list-group-item-action mb-2" href="#">
-                                                        <h6 class="mb-2 text-white">1차 정기 회의</h6>
-                                                        <div class="d-flex justify-content-between text-white">
-                                                            <small>09:30 - 11:59</small>
-                                                            <small>5.12</small>
-                                                        </div>
-                                                    </a>
-                                                    <a class="bg-warning list-group-item list-group-item-action mb-2" href="#">
-                                                        <h6 class="mb-2 text-white">오프라인 미팅</h6>
-                                                        <div class="d-flex justify-content-between text-white-50">
-                                                            <small>02:00 - 03:30</small>
-                                                            <small>5.13</small>
-                                                        </div>
-                                                    </a>
-                                                    <a class="bg-danger list-group-item list-group-item-action mb-2" href="#">
-                                                        <h6 class="mb-2 text-white">온라인 스터디</h6>
-                                                        <div class="d-flex justify-content-between text-white-50">
-                                                            <small>09:55 - 10:55</small>
-                                                            <small>5.17</small>
-                                                        </div>
-                                                    </a>
-                                                </div>
-                                            </div>
                                             <div class="flex-fill">
                                                 <div id="_dm-calendar" class="mb-3">
 
                                                 </div>
                                                 <button th:if="${#strings.equals(loginId, studyBoard.id)}" type="button"
-                                                        class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addEventModal">
+                                                        class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#addEventModal">
                                                     일정 추가
                                                 </button>
+
+                                                <div th:if="${studyEvents.size() > 0}" class="row">
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                        <th class="text-center">일정제목</th>
+                                                        <th class="text-center">시작일</th>
+                                                        <th class="text-center">종료일</th>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr th:each="studyEvent : ${studyEvents}">
+                                                            <td class="text-center">[[${studyEvent.title}]]
+                                                                <span class="badge bg-danger deleteEvent"
+                                                                      th:data-eventno="${studyEvent.no}"
+                                                                >삭제</span>
+                                                            </td>
+                                                            <td class="text-center">[[${studyEvent.start}]]</td>
+                                                            <td class="text-center">[[${studyEvent.end}]]</td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
                                                 <div class="modal" id="addEventModal">
                                                     <div class="modal-dialog">
                                                         <div class="modal-content">

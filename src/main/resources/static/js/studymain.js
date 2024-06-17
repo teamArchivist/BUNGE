@@ -171,4 +171,5 @@ $(function() {
 
     updateStudyApplicationStatus(loginId);
 
+
 })

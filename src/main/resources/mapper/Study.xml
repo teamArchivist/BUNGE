@@ -38,12 +38,6 @@
         <if test="leader != null and leader != ''">
             and leader like CONCAT('%', #{leader}, '%')
         </if>
-        <if test="challengeperiod != null and challengeperiod != ''">
-            <![CDATA[ and DATEDIFF(challengeend, challengestart) < #{challengeperiod} ]]>
-        </if>
-        <if test="state != null and state != ''">
-            and state = #{state}
-        </if>
         group by s.no
         order by state
         limit #{offset}, #{limit}
@@ -58,12 +52,6 @@
         </if>
         <if test="leader != null and leader != ''">
             and leader like CONCAT('%', #{leader}, '%')
-        </if>
-        <if test="challengeperiod != null and challengeperiod != ''">
-            <![CDATA[ and DATEDIFF(challengeend, challengestart) < #{challengeperiod} ]]>
-        </if>
-        <if test="state != null and state != ''">
-            and state = #{state}
         </if>
     </select>
 

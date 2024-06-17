@@ -88,6 +88,7 @@ document.addEventListener( "DOMContentLoaded", () => {
              .then(data => {
                 if (data.status === 'success') {
                    alert(data.message)
+                   location.reload();
                 } else {
                    alert("일정 추가에 실패했습니다")
                 }

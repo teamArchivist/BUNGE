@@ -538,7 +538,40 @@ $(function () {
                 }
             })
         }
-    })
+    }) //$("body").on("click", "#cancelApplication", function() end
+
+
+    $(".deleteEvent").click(function () {
+        let no = $(this).data("eventno");
+        //console.log(no);
+        let answer = confirm("정말로 일정을 삭제하시겠습니까?")
+        if (answer) {
+            $.ajax({
+                url: "/study/delete-study-event",
+                method: "post",
+                data: { no : no },
+                beforeSend: function (xhr) {
+                    if (header && token) {
+                        xhr.setRequestHeader(header, token);
+                    }
+                },
+                success: function (data) {
+                    if (data === 1) {
+                        alert("이벤트 삭제 완료");
+                        location.reload();
+                    } else {
+                        alert("이벤트 삭제 실패. 다시 시도해주세요")
+                    }
+                },
+                error: function(status, error) {
+                    console.log("ajax 요청 실패")
+                    console.log("상태:" + status)
+                    console.log("오류:" + error)
+                    alert("이벤트 삭제 실패. 다시 시도해주세요")
+                }
+            })
+        }
+    }) // $("#deleteEvent").click(function () end
 
 
 }) //ready end
