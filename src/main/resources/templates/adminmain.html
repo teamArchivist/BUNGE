@@ -148,13 +148,16 @@
                             </tr>
                             </thead>
                             <tbody id="memberlist">
-
+                            <!-- 회원목록 데이터 ajax-->
+                            </tbody>
+                        </table>
+                    </div>
                             <!-- modal-->
                             <div class="modal fade" id="authority" tabindex="-1" aria-labelledby="verticalCenteredLabel" aria-hidden="true" style="display: none;">
                                 <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
-                                        <form th:action="@{/admin/report-process}" method="post">
-                                            <input type="hidden" name="reportid" value="a1234">
+                                        <form th:action="@{/admin/update-process}" method="post">
+
                                             <div class="modal-header">
                                                 <h1 class="modal-title fs-5" id="verticalCenteredLabel">회원상태수정</h1>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫다"></button>
@@ -169,44 +172,20 @@
                                                     </ul>
                                                 </div>
                                                  -->
-                                                <h4 style="padding-top: 10px;">회원신고</h4>
-                                                <div class="card-body">
-                                                    <div class="card-body">
-                                                        <h5 class="card-title">신고사유</h5>
-                                                        <div class="mt-4 d-flex flex-wrap justify-content-center gap-2">
+                                                        <div class="table-responsive">
+                                                            <table class="table table-striped">
+                                                                <thead>
+                                                                <tr>
+                                                                    <th>신고 내용</th>
+                                                                    <th>신고 날짜</th>
+                                                                </tr>
+                                                                </thead>
+                                                                <tbody id="reportlist">
+                                                                <!-- ajax 모달 정보-->
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
 
-                                                            <div class="mb-3">
-                                                                <label for="reporterId" class="form-label">신고자 아이디</label>
-                                                                <input type="text" class="form-control" name="reporttargetid" id="reporterId" value="admin" readonly>
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <label for="reportDate" class="form-label">신고 제출일</label>
-                                                                <input type="text" class="form-control" id="reportDate" value="2024-06-17" readonly>
-                                                            </div>
-                                                            <!-- 신고사유 체크박스 -->
-                                                            <div class="btn-group" role="group" aria-label="신고사유 체크박스" >
-                                                                <input type="checkbox" name="reportreason" class="btn-check" id="reportreason1" autocomplete="off" th:value="|음란물 유포|">
-                                                                <label class="btn btn-outline-primary" for="reportreason1">음란물유포</label>
-
-                                                                <input type="checkbox" name="reportreason"  class="btn-check" id="reportreason2" autocomplete="off" th:value="|불법정보 유포|">
-                                                                <label class="btn btn-outline-primary" for="reportreason2">불법정보 유포</label>
-
-                                                                <input type="checkbox" name="reportreason"  class="btn-check" id="reportreason3" autocomplete="off" th:value="|개인정보 노출|">
-                                                                <label class="btn btn-outline-primary" for="reportreason3">개인정보 노출</label>
-
-                                                                <input type="checkbox" name="reportreason"  class="btn-check" id="reportreason4" autocomplete="off" th:value="|불쾌한표현 사용|">
-                                                                <label class="btn btn-outline-primary" for="reportreason4">불쾌한 표현사용</label>
-
-                                                                <input type="checkbox" name="reportreason"  class="btn-check" id="reportreason5" autocomplete="off" th:value="|갈등조장 및 허위사실유포|">
-                                                                <label class="btn btn-outline-primary" for="reportreason5">갈등조장및 허위 사실 유포</label>
-
-                                                                <input type="checkbox" name="reportreason"  class="btn-check" id="reportreason6" autocomplete="off" th:value="|영리목적 홍보성|">
-                                                                <label class="btn btn-outline-primary" for="reportreason6">영리목적 홍보성</label>
-                                                            </div>
-                                                        <!-- END : Button groups with checkboxes -->
-                                                    </div>
-                                                </div>
-                                                    <div class="card-body">
                                                         <h5 class="card-title">처벌내용</h5>
                                                         <div class="mt-4 d-flex flex-wrap justify-content-center gap-2">
                                                             <div class="btn-group" role="group" aria-label="처벌내용">
@@ -220,20 +199,17 @@
                                                                 <label class="btn btn-outline-dark" for="report4">회원탈퇴</label>
                                                             </div>
                                                         </div>
+
+                                                        <div class="modal-footer">
+                                                            <button type="submit" class="btn btn-primary">변경</button>
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="submit" class="btn btn-primary">변경</button>
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                                                </div>
-                                            </div>
-                                        </form>
+                                                <input type="hidden" name="reporterid" id="hiddenReporterId">
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            </tbody>
-                        </table>
-                    </div>
 
                     <nav class="text-align-center mt-5" aria-label="Table navigation">
                         <ul id="pagination" class="pagination justify-content-center">
