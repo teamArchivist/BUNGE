@@ -601,8 +601,126 @@ $(function () {
                 }
             })
         }
-    })
+    }) // $("#deleteStudy").click(function()
 
+    $("#updateAim").click(function () {
+        if ($(this).text() === "취소") {
+            $(this).text("수정").removeClass("bg-danger").addClass("bg-warning");
+            $("#originBookArea").show();
+            $("#changeBookArea").empty();
+            $("#submitUpdateBook").remove();
+        } else {
+            $(this).text("취소").removeClass("bg-warning").addClass("bg-danger");
+            $(this).after("<span class='badge bg-success' id='submitUpdateBook'>제출</span>")
+            let originBookCover = $("#originBookCover").attr("src")
+            $("#originBookArea").hide();
+            let output =
+                "<div class='input-group mb-3'>" +
+                "   <input type='text' class='form-control' placeholder='책 제목을 입력하세요(최대 20자)' maxlength='20' id='inputBookTitle'>" +
+                "   <button type='button' class='btn btn-success' id='searchUpdateBook'>검색</button>" +
+                "</div>" +
+                "<select class='form-select mb-3' id='searchCondition' name='booktitle' style='display:none;'>" +
+                "</select>" +
+                "<div class='row mb-3'>" +
+                "   <div id='searchedBookCover' style='display:none'>" +
+                "       <span>수정 전</span><img id='originBookCoverShow' src='' alt='Book Cover' width='100px' height='150px' style='display:none;'>" +
+                "       <span>수정 후</span><img id='bookCover' src='' alt='Book Cover' width='100px' height='150px' style='display:none;'>" +
+                "   </div>" +
+                "</div>" +
+                "<input type='hidden' name='booktitle' id='submittedBookTitle'>" +
+                "<input type='hidden' name='bookcover' id='inputBookCover'>"
+
+            $("#changeBookArea").append(output)
+        }
+
+        $("#searchCondition").change(function () {
+            let selectedOption = $(this).find("option:selected");
+            let selectedOptionValue = selectedOption.val();
+            let selectedCover = selectedOption.data("cover");
+
+            console.log(selectedOptionValue);
+
+            if (selectedCover) {
+                $("#searchedBookCover").show();
+                $("#bookCover").attr("src", selectedCover).show()
+                $("#originBookCoverShow").attr("src", $("#originBookCover").attr("src")).show()
+                $("#submittedBookTitle").val(selectedOptionValue);
+                $("#inputBookCover").val(selectedCover);
+            } else {
+                $("#bookCover").hide();
+            }
+        }) // $("#searchCondition").change(function () end
+
+        $("#submitUpdateBook").click(function() {
+            let booktitle = $("#submittedBookTitle").val();
+            let bookcover = $("#inputBookCover").val();
+
+            $.ajax({
+                url: "/study/update-enroll-book",
+                method: "post",
+                data: {
+                    no:studyboardno,
+                    booktitle : booktitle,
+                    bookcover : bookcover
+                },
+                cache: false,
+                beforeSend: function (xhr) {
+                    if (header && token) {
+                        xhr.setRequestHeader(header, token);
+                    }
+                },
+                success: function (data) {
+                    if (data === 1) {
+                        alert("수정 성공")
+                        location.reload();
+                    } else {
+                        alert("수정 실패. 다시 시도해주세요")
+                    }
+                },
+                error: function(status, error) {
+                    console.log("ajax 요청 실패")
+                    console.log("상태:" + status)
+                    console.log("오류:" + error)
+                    alert("책 수정 중 오류가 발생했습니다. 다시 시도해주세요")
+                }
+            })
+        }) //$("#submitUpdateBook").click(function() end
+
+    }) // $("#updateAim").click(function () end
+
+
+    $("body").on("click", "#searchUpdateBook", function () {
+        let title = $("#inputBookTitle").val()
+
+        $.ajax({
+            url: "search-book",
+            method: "post",
+            data: {title},
+            cache: false,
+            beforeSend: function (xhr) {
+                if (header && token) {
+                    xhr.setRequestHeader(header, token);
+                }
+            },
+            success: function (data) {
+                console.log(data)
+                if (data.length != 0) {
+                    data.forEach(subject => {
+                        let option = $("<option>").val(subject.title).text(subject.title).data("cover", subject.cover);
+                        $("#searchCondition").append(option).css("display", "block")
+                    })
+                } else {
+                    $("#inputBookTitle").val("검색 결과가 없습니다. 다른 검색어를 입력하세요");
+                }
+            },
+            error: function(status, error) {
+                console.log("ajax 요청 실패")
+                console.log("상태:" + status)
+                console.log("오류:" + error)
+                alert("책 검색 중 오류가 발생했습니다. 다시 시도해주세요")
+            }
+        })
+    })
 
 }) //ready end
 
