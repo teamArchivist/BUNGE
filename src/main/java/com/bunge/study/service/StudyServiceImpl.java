@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -172,11 +173,6 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
-    public List<StudyManagement> getMyStudyList(String loginId) {
-        return studyMapper.getMyStudyList(loginId);
-    }
-
-    @Override
     public StudyManagement getStudyManagement(int studyboardno) {
         return studyMapper.getStudyManagement(studyboardno);
     }
@@ -250,7 +246,21 @@ public class StudyServiceImpl implements StudyService {
 
     @Override
     public List<StudyManagement> getMyStudyListByFilter(String loginId, StudyBoardFilter studyBoardFilter) {
-        return studyMapper.getMyStudyListByFilter(loginId, studyBoardFilter);
+        List<StudyManagement> result = studyMapper.getMyStudyListByFilter(loginId, studyBoardFilter);
+        List<StudyManagement> updatedResults = new ArrayList<>();
+        LocalDate now = LocalDate.now();
+
+        for (StudyManagement studyManagement : result) {
+            LocalDate endDate = LocalDate.parse(studyManagement.getStudyend());
+            long daysUntilEnd = ChronoUnit.DAYS.between(now, endDate);
+
+            if (daysUntilEnd < 0) {
+                studyMapper.updateStudyManagementStatus(studyManagement);
+            }
+            updatedResults.add(studyManagement);
+        }
+
+        return updatedResults;
     }
 
     @Override

@@ -19,7 +19,7 @@ public interface StudyService {
     //스터디 글 생성
     public void createStudyBoard(StudyBoard studyBoard);
 
-    //스터디 모집글 리스트
+    //스터디 모집글 리스트, 불러오면서 현재시간과
     public List<StudyBoard> getStudyList(StudyBoardFilter studyBoardFilter);
 
     //스터디 모집글 갯수
@@ -90,9 +90,6 @@ public interface StudyService {
 
     //참여 인원 스터디 멤버 테이블에 추가
     public void createStudyMembers(int studyboardno, List<String> memberIdList);
-
-    //나의 스터디 리스트 조회
-    public List<StudyManagement> getMyStudyList(String loginId);
 
     //현재 진행중인 스터디 모임 페이지
     public StudyManagement getStudyManagement(int studyboardno);
