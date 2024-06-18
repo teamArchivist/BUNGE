@@ -332,4 +332,8 @@ $(function () {
         }
     }) // $("#deleteEvent").click(function () end
 
+    $("#showAll").click(function () {
+        location.href = "/study/mine-list"
+    })
+
 }) //ready end

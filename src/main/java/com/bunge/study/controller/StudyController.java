@@ -344,14 +344,35 @@ public class StudyController {
     }
 
     @GetMapping("/mine-list")
-    public String mineList(Model model) {
+    public String mineList(Model model,
+                           @ModelAttribute StudyBoardFilter studyBoardFilter,
+                           @RequestParam(value="page", defaultValue="1") Integer page) {
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String loginId = authentication.getName();
 
-        List<StudyManagement> myStudyList = studyService.getMyStudyList(loginId);
-        //logger.info(myStudyList.toString());
+        int pageSize = 15;
+        int offset = (page - 1) * pageSize;
+        studyBoardFilter.setPage(page);
+        studyBoardFilter.setOffset(offset);
+        studyBoardFilter.setLimit(pageSize);
 
+        logger.info(studyBoardFilter.toString());
+
+        List<StudyManagement> myStudyList = studyService.getMyStudyListByFilter(loginId, studyBoardFilter);
+        //logger.info(myStudyList.toString());
+        int totalMyStudyList = studyService.getMyStudyListCountByFilter(loginId, studyBoardFilter);
+
+        int maxPage = (int) Math.ceil((double) totalMyStudyList / pageSize );
+        int startPage = Math.max(1, page - 5);
+        int endPage = Math.min(maxPage, page + 4);
+
+        model.addAttribute("currentPage", page);
+        model.addAttribute("maxPage", maxPage);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
         model.addAttribute("myStudyList", myStudyList);
+
         return "study/study_mine_list";
     }
 

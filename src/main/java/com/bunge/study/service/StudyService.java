@@ -9,9 +9,7 @@ import com.bunge.study.parameter.CheckApplicationRequest;
 import com.bunge.study.parameter.RejectApplicationRequest;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 public interface StudyService {
 
@@ -133,4 +131,8 @@ public interface StudyService {
 
     //스터디 모집글 댓글 삭제
     public int deleteStudyComm(int no);
+
+    //나의 스터디 리스트 조회 (검색 포함)
+    public List<StudyManagement> getMyStudyListByFilter(String loginId, StudyBoardFilter studyBoardFilter);
+    public int getMyStudyListCountByFilter(String loginId, StudyBoardFilter studyBoardFilter);
 }

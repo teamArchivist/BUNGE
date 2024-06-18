@@ -338,4 +338,46 @@
         where no = #{no}
     </delete>
 
+    <select id="getMyStudyListByFilter" parameterType="map" resultType="com.bunge.study.domain.StudyManagement">
+        SELECT sm.*, sb.title,
+               GROUP_CONCAT(sm2.memberId SEPARATOR ',') AS memberIds
+        FROM studymanagement sm
+                 JOIN studyboard sb ON sm.studyboardno = sb.no
+                 LEFT JOIN studymember sm2 ON sm.studyboardno = sm2.studyboardno
+        WHERE sm.studyboardno IN (
+            SELECT studyboardno
+            FROM studymember
+            WHERE memberId = #{loginId}
+        )
+        <if test="studyBoardFilter.category == 'booktitle' and studyBoardFilter.keyword != null and studyBoardFilter.keyword != ''">
+            AND sm.booktitle LIKE CONCAT('%', #{studyBoardFilter.keyword}, '%')
+        </if>
+        <if test="studyBoardFilter.category == 'leader' and studyBoardFilter.keyword != null and studyBoardFilter.keyword != ''">
+            AND sm.leaderId LIKE CONCAT('%', #{studyBoardFilter.keyword}, '%')
+        </if>
+        GROUP BY sm.studyboardno, sb.title
+        limit #{studyBoardFilter.offset}, #{studyBoardFilter.limit}
+    </select>
+
+    <select id="getMyStudyListCountByFilter" parameterType="map" resultType="int">
+        SELECT COUNT(*) FROM (
+                        SELECT sm.studyboardno
+                        FROM studymanagement sm
+                        JOIN studyboard sb ON sm.studyboardno = sb.no
+                        LEFT JOIN studymember sm2 ON sm.studyboardno = sm2.studyboardno
+                        WHERE sm.studyboardno IN (
+                                                    SELECT studyboardno
+                                                    FROM studymember
+                                                    WHERE memberId = #{loginId}
+                                                    )
+        <if test="studyBoardFilter.category == 'booktitle' and studyBoardFilter.keyword != null and studyBoardFilter.keyword != ''">
+            AND sm.booktitle LIKE CONCAT('%', #{studyBoardFilter.keyword}, '%')
+        </if>
+        <if test="studyBoardFilter.category == 'leader' and studyBoardFilter.keyword != null and studyBoardFilter.keyword != ''">
+            AND sm.leaderId LIKE CONCAT('%', #{studyBoardFilter.keyword}, '%')
+        </if>
+        GROUP BY sm.studyboardno, sb.title
+        ) AS countTable
+    </select>
+
 </mapper>
