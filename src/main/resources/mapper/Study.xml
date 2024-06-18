@@ -322,4 +322,9 @@
         where no = #{no}
     </delete>
 
+    <delete id="deleteStudy" parameterType="int">
+        delete from studyboard
+        where no = #{no}
+    </delete>
+
 </mapper>
