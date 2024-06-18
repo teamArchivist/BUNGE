@@ -235,4 +235,6 @@ $(document).ready(function() {
 			}
 		})
 	}
-})
+
+});
+

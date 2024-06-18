@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bunge.study.mapper.NoticeMapper">
+    <insert id="insertNotice" parameterType="Notice">
+        INSERT INTO notice (title, content, authorId, studyboardno, noticeNo, createdAt)
+        VALUES (#{title}, #{content}, #{authorId}, #{studyboardno}, #{noticeNo}, NOW())
+    </insert>
+
+    <select id="selectNoticesByStudyNo" parameterType="int" resultType="Notice">
+        SELECT * FROM notice WHERE studyboardno = #{studyboardno} ORDER BY createdAt ASC
+    </select>
+
+    <select id="countByStudyNo" parameterType="int" resultType="int">
+        SELECT count(*) AS total_count FROM notice WHERE studyboardno = #{studyboardno}
+    </select>
+
+    <select id="getMaxNoticeNoByStudyboardNo" resultType="int">
+        SELECT COALESCE(MAX(noticeNo), 0) FROM notice WHERE studyboardno = #{studyboardno}
+    </select>
+
+
+
+</mapper>

@@ -1,7 +1,6 @@
 package com.bunge.usermain.service;
 
-import com.bunge.study.domain.StudyEvent;
-import com.bunge.study.domain.StudyManagement;
+import com.bunge.study.domain.*;
 import com.bunge.usermain.mapper.UserMainMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +56,38 @@ public class UserMainServiceImpl implements UserMainService {
         int count = userMainMapper.countMyEvent(params);
 //        log.info("Total events count for member {}: {}", memberId, count); // 디버깅 출력
         return count;
+    }
+
+    @Override
+    public List<Notice> selectNoticesByStudyNo(int studyboardno, int page, int size) {
+        int offset = (page - 1) * size;
+        return userMainMapper.selectNoticesByStudyNo(studyboardno, size, offset);
+    }
+
+    @Override
+    public int countByStudyNo(int studyboardno) {
+        return userMainMapper.countByStudyNo(studyboardno);
+    }
+
+    @Override
+    public int getMaxNoticeNoByStudyboardNo(int studyboardno) {
+        return userMainMapper.getMaxNoticeNoByStudyboardNo(studyboardno);
+    }
+
+    @Override
+    public List<Notice> selectStudiesByMemberId(String memberId) {
+        return userMainMapper.selectStudiesByMemberId(memberId);
+    }
+
+    @Override
+    public List<Notice> getNoticesByStudyBoardNo(int studyboardno, int page, int size) {
+        int offset = (page - 1) * size;
+        return userMainMapper.selectNoticesByStudyBoardNo(studyboardno, size, offset);
+    }
+
+    @Override
+    public int countNoticesByStudyBoardNo(int studyboardno) {
+        return userMainMapper.countNoticesByStudyBoardNo(studyboardno);
     }
 
 }

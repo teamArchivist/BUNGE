@@ -7,16 +7,19 @@ import com.bunge.study.parameter.ApproveApplicationRequest;
 import com.bunge.study.parameter.BookSearchRequest;
 import com.bunge.study.parameter.CheckApplicationRequest;
 import com.bunge.study.parameter.RejectApplicationRequest;
+import com.bunge.study.service.NoticeService;
 import com.bunge.study.service.StudyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -31,10 +34,12 @@ public class StudyController {
     private static Logger logger = LoggerFactory.getLogger(StudyController.class);
 
     private final StudyService studyService;
+    private final NoticeService noticeService;
 
     @Autowired
-    public StudyController(StudyService studyService) {
+    public StudyController(StudyService studyService, NoticeService noticeService) {
         this.studyService = studyService;
+        this.noticeService = noticeService;
     }
 
     @GetMapping("/main")
@@ -488,4 +493,33 @@ public class StudyController {
         return studyService.deleteStudy(no);
     }
 
+    //공지사항 추가
+    @ResponseBody
+    @PostMapping("/add-notice")
+    public Map<String, String> addNotice(@RequestBody Notice notice, Principal principal) {
+        String authorId = principal.getName();
+        notice.setAuthorId(authorId);  // Notice 객체에 authorId 설정
+        Map<String, String> response = new HashMap<>();
+        try {
+            noticeService.addNotice(notice);
+            response.put("status", "success");
+            response.put("message", "Notice added successfully");
+        } catch (Exception e) {
+            response.put("status", "error");
+            response.put("message", "Failed to add notice: " + e.getMessage());
+        }
+        return response;
+    }
+
+    @GetMapping("/notices/{studyboardno}")
+    public ResponseEntity<Map<String, Object>> getNotices(@PathVariable int studyboardno) {
+        List<Notice> notices = noticeService.selectNoticesByStudyNo(studyboardno);
+        int countNotices = noticeService.countByStudyNo(studyboardno);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("notices", notices);
+        response.put("count", countNotices);
+
+        return ResponseEntity.ok(response);
+    }
 }
