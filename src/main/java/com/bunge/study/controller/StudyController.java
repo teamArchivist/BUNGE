@@ -494,4 +494,10 @@ public class StudyController {
         return studyService.updateEnrollBook(studyBoard);
     }
 
+    @ResponseBody
+    @PostMapping("/delete-comm")
+    public int deleteStudyComm(@RequestParam int no) {
+        return studyService.deleteStudyComm(no);
+    }
+
 }

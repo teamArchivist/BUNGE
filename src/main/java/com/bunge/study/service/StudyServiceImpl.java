@@ -244,4 +244,9 @@ public class StudyServiceImpl implements StudyService {
     public int updateEnrollBook(StudyBoard studyBoard) {
         return studyMapper.updateEnrollBook(studyBoard);
     }
+
+    @Override
+    public int deleteStudyComm(int no) {
+        return studyMapper.deleteStudyComm(no);
+    }
 }

@@ -85,10 +85,19 @@ $(function () {
     }
 
     function renderComments(comments) {
+        console.log(comments);
         let commentList = $('#commentList');
         commentList.empty(); // 기존 댓글 삭제
 
         comments.forEach(comment => {
+            let buttonHtml = '';
+
+            if (comment.id === id) {
+                buttonHtml += ` <button class="btn btn-icon btn-outline-warning btn-xs rounded-circle deleteCommBtn" data-deletecommno="${comment.no}">
+                                    <ion-icon name="trash-outline"></ion-icon>
+                                </button>`;
+            }
+
             let commentHtml = `
                 <div class="d-flex mb-2">
                     <div class="flex-shrink-0">
@@ -98,16 +107,9 @@ $(function () {
                         <div class="mb-1">
                             <a class="h6 btn-link">${comment.id}</a>
                             <small class="ms-2 text-body-secondary mb-0">${comment.created}</small>
-                            &nbsp;
-                            <button class="btn btn-icon btn-outline-primary btn-xs rounded-circle">
-                                <ion-icon name="settings-outline"></ion-icon>
-                            </button>
-                            <button class="btn btn-icon btn-outline-warning btn-xs rounded-circle">
-                                <ion-icon name="trash-outline"></ion-icon>
-                            </button>
+                            ${buttonHtml}
                         </div>
                         <span>${comment.content}</span>
-                        <a class="btn btn-xs btn-outline-light">Reply</a>
                     </div>
                 </div>`;
 
@@ -720,7 +722,40 @@ $(function () {
                 alert("책 검색 중 오류가 발생했습니다. 다시 시도해주세요")
             }
         })
-    })
+    }) // $("body").on("click", "#searchUpdateBook", function () end
+
+    $("body").on("click", ".deleteCommBtn", function() {
+        //console.log($(this).data("deletecommno"));
+        let no = $(this).data("deletecommno");
+        let answer = confirm("정말 삭제하시겠습니까?")
+        if (answer) {
+            $.ajax({
+                url: "/study/delete-comm",
+                method: "post",
+                data: {no : no},
+                cache: false,
+                beforeSend: function (xhr) {
+                    if (header && token) {
+                        xhr.setRequestHeader(header, token);
+                    }
+                },
+                success: function (data) {
+                    if (data === 1) {
+                        alert("댓글 삭제 완료")
+                        getStudyCommentList(studyboardno)
+                    } else {
+                        alert("댓글 삭제 실패. 다시 시도해주세요")
+                    }
+                },
+                error: function(status, error) {
+                    console.log("ajax 요청 실패")
+                    console.log("상태:" + status)
+                    console.log("오류:" + error)
+                    alert("댓글 삭제 중 오류가 발생했습니다. 다시 시도해주세요")
+                }
+            })
+        }
+    }) //    $("body").on("click", ".deleteCommBtn", function() end
 
 }) //ready end
 
