@@ -253,8 +253,6 @@
 
               </div>
 
-
-
               <div class="row">
                 <dt class="col-sm-3">승인 수신 목록</dt>
               </div>
@@ -411,8 +409,103 @@
             </div>
           </div>
 
+          <!--            공지 사항           -->
+          <div class="mb-3">
+            <div class="card">
+              <div class="card-body">
+                <div>
+                  <div class="mb-2 d-flex justify-content-between align-items-center">
+                    <h3 class="h4 card-title align-self-start"><i class="pli-speaker-2"></i>&nbsp; 공지사항</h3>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addNotice">
+                      공지사항 추가
+                    </button>
+                  </div>
+                </div><hr>
+
+                <!-- 공지사항 등록 모달 -->
+                <div class="modal col-md-6 mb-3" id="addNotice">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title">공지사항 추가</h5>
+                        </div>
+
+                        <div class="modal-body">
+                          <form id="addNoticeForm">
+                            <div class="mb-3">
+                              <label for="noticeLeaderId" class="form-label">작성자</label>
+                              <input type="text" class="form-control" id="noticeLeaderId" readonly>
+                            </div>
+
+                            <div class="mb-3">
+                              <label for="noticeTitle" class="form-label">제목</label>
+                              <input type="text" class="form-control" id="noticeTitle" required>
+                            </div>
+
+                            <div class="col-sm-12">
+                              <textarea class="form-control" placeholder="Message" rows="14" maxlength="500" style="resize: none;"></textarea>
+                              <p class="float-end">0/500</p>
+                            </div><br>
+
+                            <div class="d-flex justify-content-center">
+                              <button type="button" class="btn btn-primary" id="addButton">등록</button>
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                            </div>
+
+                          </form>
+                      </div>
+                      <!-- 공지사항 등록 모달 -->
+
+
+                    </div>
+                  </div>
+                </div>
+
+                <!-- GridJS - Resizable columns -->
+                  <div role="complementary" class="gridjs gridjs-container" style="width: 100%;">
+                    <div class="gridjs-wrapper" style="height: 275px;">
+
+                      <div class="mb-2">
+                        &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/7.png}" alt="Profile Picture" loading="lazy"><a href="#">"고라니 (24.05.15)" 님에 대한 강퇴 투표가 시작되었습니다. 과반 이상 찬성 시 승인 절차 진행합니다.</a>
+                      </div>
+
+                      <div class="mb-2">
+                        &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">김레오 (24.05.15) 과제 제출 신속히 부탁
+                      </div>
+
+                      <div class="mb-2">
+                        &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">박칼린 (24.05.14) 이번에 스터디 어디서 해요??
+                      </div>
+
+                      <div class="mb-2">
+                        &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy"><a href="#">"목표도서 변경" 안건에 대한 승인 절차가 진행 중입니다.</a>
+                      </div>
+
+                      <div class="mb-2">
+                        &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">고라니 (24.05.13) 탈퇴 / 강퇴 / 신고기능 있나요??
+                      </div>
+
+                      <div class="mb-2">
+                        &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">고라니 (24.05.13) 리더가 관리할 수 있는 기능 있나요??
+                      </div>
+                      <div class="mb-2">
+                        &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">고라니 (24.05.12) 리더가 관리할 수 있는 기능 있나요??
+                      </div>
+
+                    </div>
+                    <div id="gridjs-temp" class="gridjs-temp"></div>
+
+                  </div>
+                </div>
+                <!-- END : GridJS - Resizable columns -->
+
+              </div>
+            </div>
+          <!--          공지사항         -->
+
+          </div>
+
         </div>
-      </div>
 
 
       <div class="col-md-6">
