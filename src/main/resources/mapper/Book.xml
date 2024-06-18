@@ -8,7 +8,7 @@
         insert into book
         (isbn13, title, author, pubDate, categoryName, description, cover, regitdate, customerReviewRank, page)
         values
-        (#{isbn13}, #{title}, #{author}, #{pubDate}, #{categoryName}, #{description}, #{cover}, now(), #{customerReviewRank}, 0)
+        (#{isbn13}, #{title}, #{author}, #{pubDate}, #{categoryName}, #{description}, #{cover}, now(), #{customerReviewRank}, #{page})
     </insert>
 
     <select id="getBookListCount" parameterType="com.bunge.memo.filter.BookFilter" resultType="int">

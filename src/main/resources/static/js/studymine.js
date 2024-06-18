@@ -401,4 +401,8 @@ $(function () {
     // 페이지 로드 시 공지사항 목록 로드
     loadNotices();
 
+    $("#showAll").click(function () {
+        location.href = "/study/mine-list"
+    })
+
 }) //ready end

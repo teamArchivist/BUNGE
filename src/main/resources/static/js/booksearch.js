@@ -119,7 +119,7 @@ $(function () {
                         cache: false,
                         success: function (response) {
                             //console.log("보내는 데이터 : " + this.data);
-                            console.log("response: " + response);
+                            //console.log("response: " + response);
                             $("#searchresult").empty();
                             $("#bookpagenation").empty();
 
@@ -127,7 +127,7 @@ $(function () {
                                 alert("검색된 모든 책이 이미 등록되어 있습니다.")
                             } else {
                                 response.forEach(subject => {
-                                    console.log(subject);
+                                    //console.log(subject);
                                     let output = "<div class='col-sm-6 col-xl-2 mb-3'>" +
                                         "<div class='card mb-3 hv-grow-parent h-100'>" +
                                         "  <img class='card-img-top book-img' src='" + subject.cover +
@@ -161,43 +161,69 @@ $(function () {
 
     // 이미지 클릭 이벤트 리스너 추가
     $("body").on("click", ".book-img", function () {
+        let isbn13 = $(this).data("isbn13");
+        let title = $(this).data("title");
+        let author = $(this).data("author");
+        let pubDate = $(this).data("pubdate");
+        let categoryName = $(this).data("category");
+        let description = $(this).data("description");
+        let customerReviewRank = $(this).data("customer-review-rank");
+        let cover = $(this).attr("src");
 
         let answer = confirm("해당 책을 등록하시겠습니까?")
 
         if (answer) {
 
-            let bookData = {
-                isbn13: $(this).data('isbn13'),
-                title: $(this).data('title'),
-                author: $(this).data('author'),
-                pubDate: $(this).data('pubdate'),
-                categoryName: $(this).data('category'),
-                description: $(this).data('description'),
-                customerReviewRank: $(this).data('customer-review-rank'),
-                cover: $(this).attr('src'),
-            };
-
             $.ajax({
-                url: "add-book",  // 서버에 책 정보를 저장하는 엔드포인트
-                type: "POST",
-                contentType: "application/json; charset=utf-8",
+                url: "http://www.aladin.co.kr/ttb/api/ItemLookUp.aspx",
+                data: {
+                    "ttbkey" : "ttbyyy24941308001",
+                    "itemIdType" : "ISBN13",
+                    "ItemId" : isbn13,
+                    "output" : "JS",
+                    "Version" : "20131101",
+                },
                 dataType: "json",
                 cache: false,
-                beforeSend: function (xhr) {
-                    if (header && token) {
-                        xhr.setRequestHeader(header, token);
-                    }
-                },
-                data: JSON.stringify(bookData),
-                success: function (response) {
-                    alert("책 정보가 저장되었습니다.");
-                    location.href = response.message;
-                },
-                error: function (error) {
-                    alert("책 정보 저장에 실패했습니다.")
-                    console.error("저장 중 오류 발생:", error);
+                success: function (data) {
+                    let itemPage = data.item[0].subInfo.itemPage
+                    //console.log(itemPage)
+
+                    let bookData = {
+                        isbn13: isbn13,
+                        title: title,
+                        author: author,
+                        pubDate: pubDate,
+                        categoryName: categoryName,
+                        description: description,
+                        customerReviewRank: customerReviewRank,
+                        cover: cover,
+                        page: itemPage
+                    };
+
+                    $.ajax({
+                        url: "add-book",
+                        type: "post",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        cache: false,
+                        beforeSend: function (xhr) {
+                            if (header && token) {
+                                xhr.setRequestHeader(header, token);
+                            }
+                        },
+                        data: JSON.stringify(bookData),
+                        success: function (response) {
+                            alert("책 정보가 저장되었습니다.");
+                            location.href = response.message;
+                        },
+                        error: function (error) {
+                            alert("책 정보 저장에 실패했습니다.")
+                            console.error("저장 중 오류 발생:", error);
+                        }
+                    })
                 }
-            });
+            })
         } //if (answer)
 
     }); //이미지 클릭 이벤트

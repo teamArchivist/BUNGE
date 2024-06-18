@@ -17,4 +17,5 @@ public class reportmanagement {
     private LocalDate reportstart;       //처벌시작일
     private LocalDate reportend;         //처벌종료일
     private Date reportdate;        //신고접수일
+    private int reportprocessing; //신고처리상태
 }

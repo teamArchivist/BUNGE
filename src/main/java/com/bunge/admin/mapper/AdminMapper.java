@@ -30,5 +30,11 @@ public interface AdminMapper {
 
     List<StudyBoard> getstudylist();
 
-    void insertsavereport(reportmanagement report);
+    void updateReport(reportmanagement report);
+
+    List<reportmanagement> getreportlist(Map<String, Object> map);
+
+    int  getreportlistcount();
+
+    List<reportmanagement> memberreportlist(String reporterid);
 }

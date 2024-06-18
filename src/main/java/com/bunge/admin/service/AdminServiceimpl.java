@@ -68,12 +68,31 @@ public class AdminServiceimpl implements AdminService {
     }
 
     @Override
+    public List<reportmanagement> getreportlist(int limit, int offset) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("limit", limit);
+        map.put("offset", offset);
+
+        return adminMapper.getreportlist(map);
+    }
+
+    @Override
+    public int getreportlistcount() {
+        return adminMapper.getreportlistcount();
+    }
+
+    @Override
+    public List<reportmanagement> memberreportlist(String reporterid) {
+        return adminMapper.memberreportlist(reporterid);
+    }
+
+    @Override
     public List<StudyBoard> getstudylist() {
         return adminMapper.getstudylist();
     }
 
     @Override
-    public void saveReport(reportmanagement report) {
+    public void updateReport(reportmanagement report) {
         LocalDate today = LocalDate.now();
         LocalDate endDate = null;
 
@@ -96,6 +115,8 @@ public class AdminServiceimpl implements AdminService {
         report.setReportstart(today);
         report.setReportend(endDate);
 
-        adminMapper.insertsavereport(report);
+        adminMapper.updateReport(report);
         }
-    }
+
+
+}
