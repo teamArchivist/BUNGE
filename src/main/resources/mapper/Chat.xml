@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bunge.chat.repository.ChatMapper">
+
+    <insert id="save" parameterType="ChatRequestDto" useGeneratedKeys="true" keyProperty="chatroomId">
+        INSERT INTO chatroom (state)
+        VALUES (#{state});
+    </insert>
+
+    <insert id="saveRelation" parameterType="ChatRequestDto">
+        INSERT INTO chat_relation
+        VALUES (#{chatroomId}, #{loginId}), (#{chatroomId}, #{memberId});
+    </insert>
+
+</mapper>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Title</title>
+    <links>
+    </links>
+</head>
+<body>
+<section id="content" class="content">
+    <div class="content__header content__boxed mb-3 overlapping">
+        <div class="content__wrap"></div>
+    </div>
+
+    <div class="container" style="max-width: 600px">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>닉네임</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <form th:each="member : ${members}" th:action method="post">
+                <tr>
+                    <td>
+                        <input type="text" name="id" th:value="${member.id}" readonly>
+                    </td>
+                    <td>
+                        <input type="text" name="nick" th:value="${member.nick}" readonly>
+                    </td>
+                    <td>
+                        <button type="submit" class="w-100 btn btn-primary btn-lg">채팅</button>
+                    </td>
+                </tr>
+            </form>
+            </tbody>
+        </table>
+    </div>
+</section>
+</body>
+</html>

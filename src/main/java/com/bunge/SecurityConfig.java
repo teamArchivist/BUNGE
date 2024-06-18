@@ -57,6 +57,8 @@ public class SecurityConfig {
 							.hasAnyAuthority("admin", "superadmin")
 						.requestMatchers("/inquiry/**","/comment/**")
 							.hasAnyAuthority("member","admin","superadmin")
+						.requestMatchers("/chat/**")
+							.hasAnyAuthority("member","admin","superadmin")
 						.requestMatchers("/**").permitAll()
 
 		);
