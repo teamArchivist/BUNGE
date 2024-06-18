@@ -573,6 +573,36 @@ $(function () {
         }
     }) // $("#deleteEvent").click(function () end
 
+    $("#deleteStudy").click(function() {
+        let answer = confirm("정말 삭제하시겠습니까?")
+        if (answer) {
+            $.ajax({
+                url: "/study/delete-study",
+                method: "post",
+                data: { no : studyboardno },
+                beforeSend: function (xhr) {
+                    if (header && token) {
+                        xhr.setRequestHeader(header, token);
+                    }
+                },
+                success: function (data) {
+                    if (data === 1) {
+                        alert("모집글 삭제 성공")
+                        location.href="/study/main"
+                    } else {
+                        alert("모집글 삭제 실패. 다시 시도해주세요")
+                    }
+                },
+                error: function(status, error) {
+                    console.log("ajax 요청 실패")
+                    console.log("상태:" + status)
+                    console.log("오류:" + error)
+                    alert("모집글 삭제 실패. 다시 시도해주세요")
+                }
+            })
+        }
+    })
+
 
 }) //ready end
 

@@ -125,4 +125,7 @@ public interface StudyMapper {
     //스터디 이벤트 삭제
     public int deleteStudyEvent(int no);
 
+    //스터디 모집글 삭제
+    public int deleteStudy(int no);
+
 }

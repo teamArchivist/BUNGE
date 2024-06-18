@@ -482,4 +482,10 @@ public class StudyController {
         return response;
     }
 
+    @ResponseBody
+    @PostMapping("/delete-study")
+    public int deleteStudy(@RequestParam int no) {
+        return studyService.deleteStudy(no);
+    }
+
 }

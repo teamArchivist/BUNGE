@@ -234,4 +234,9 @@ public class StudyServiceImpl implements StudyService {
     public int deleteStudyEvent(int no) {
         return studyMapper.deleteStudyEvent(no);
     }
+
+    @Override
+    public int deleteStudy(int no) {
+        return studyMapper.deleteStudy(no);
+    }
 }
