@@ -41,7 +41,7 @@
                                         <div class="d-flex justify-content-between">
                                             <a
                                                class="h6 d-block mb-1 stretched-link text-nowrap text-truncate text-decoration-none pe-2" th:text="${chatroom.nick}"></a>
-                                            <small class="text-body-secondary text-nowrap" th:text="${chatroom.createDate}"></small>
+                                            <small class="text-body-secondary text-nowrap" th:text="${#temporals.format(chatroom.createDate, 'yyyy-MM-dd HH:mm')}"></small>
                                         </div>
                                         <div class="d-flex justify-content-between">
                                             <small class="text-body-secondary text-truncate pe-2" th:text="${chatroom.data}"></small>
