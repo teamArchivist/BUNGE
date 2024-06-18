@@ -131,4 +131,7 @@ public interface StudyMapper {
     //스터디 목표 책 변경
     public int updateEnrollBook(StudyBoard studyBoard);
 
+    //스터디 모집글 댓글 삭제
+    public int deleteStudyComm(int no);
+
 }
