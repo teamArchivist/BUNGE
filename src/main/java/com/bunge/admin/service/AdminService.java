@@ -23,6 +23,13 @@ public interface AdminService {
 
     List<StudyBoard> getstudylist();
 
-    void saveReport(reportmanagement report);
+    void updateReport(reportmanagement report);
+
+    List<reportmanagement> getreportlist(int limit,int offset);
+
+    int  getreportlistcount();
+
+    List<reportmanagement> memberreportlist(String reporterid);
+
 
 }

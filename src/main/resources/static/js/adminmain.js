@@ -3,6 +3,42 @@ $(function() {
     let page = params.get('page') || 1;
     let limit = params.get('limit') || 5;
 
+    $("body").on('click','.clickmodel', function (){
+        const id = $(this).parent().parent().parent().find(".findid").text();
+        console.log(id);
+        $.ajax({
+            url: "reporterlist",
+            method: "get",
+            data: {reporterid : id},
+            success: function (rdata) {
+                console.log(rdata)
+                let output='';
+                $("#authority").modal("show");
+                $("#hiddenReporterId").val(id);
+                    if(rdata.length == 0) {
+                        output+="<tr>"
+                            + "<td>"+'신고된 내용이없습니다.'+"</td>"
+                            + "</tr>"
+                    }else {
+                        $.each(rdata, function (index, report) {
+                            if(report.reportprocessing ==1) {
+                                output += "<tr>"
+                                    + "<td>" + report.reportreason + "</td>"
+                                    + "<td>" + report.reportdate + "</td>"
+                                    + "</tr>";
+                            }
+                            else {
+                                output+="<tr>"
+                                    + "<td>"+'신고된 내용이없습니다.'+"</td>"
+                                    + "</tr>"
+                            }
+                        });
+                    }
+                        $("#reportlist").html(output);
+                }
+            })
+        });
+
     function memberlistcount(totalCount, currentPage, pageSize) {
         const totalPage = Math.ceil(totalCount / pageSize);
         const startPage = Math.max(1, currentPage - 5);
@@ -55,15 +91,15 @@ $(function() {
                 let profileSrc = '/upload' + this.profile;
                  output += "<tr>"
                     + "<td><img class='img-sm rounded' src='"+ profileSrc + "'alt='thumbs'></td>"
-                    + "<td><a class='btn-link text-body-emphasis text-decoration-underline text-truncate mb-0'>" + this.id + "</a></td>"
+                    + "<td><p class='btn-link text-body-emphasis text-decoration-underline text-truncate mb-0 findid'>" + this.id + "</p></td>"
                     + "<td><span class='text-nowrap text-body-secondary'>" + this.name + "</span></td>"
                     + "<td>" + this.nick + "</td>"
-                    + "<td><a class='btn-link text-nowrap'>" + this.addr1 + "</a></td>"
+                    + "<td><p class='btn-link text-nowrap'>" + this.addr1 + "</p></td>"
                     + "<td></td>"
-                    + "<td>+"+this.role+"</td>"
+                    + "<td>"+this.role+"</td>"
                     + "<td>"
                     + "<div class='text-nowrap text-center'>"
-                    + "<a class='btn btn-icon btn-sm btn-hover bg-body-tertiary' data-bs-toggle='modal' data-bs-target='#authority'>"
+                    + "<a class='btn btn-icon btn-sm btn-hover bg-body-tertiary clickmodel'>"
                     + "<i class='demo-pli-gear fs-5'></i></a>"
                     + "</div></td>"
                     + "</tr>"
@@ -76,5 +112,4 @@ $(function() {
         }
     })
 }
-
 });
