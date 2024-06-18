@@ -14,9 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class StudyServiceImpl implements StudyService {
@@ -248,5 +246,15 @@ public class StudyServiceImpl implements StudyService {
     @Override
     public int deleteStudyComm(int no) {
         return studyMapper.deleteStudyComm(no);
+    }
+
+    @Override
+    public List<StudyManagement> getMyStudyListByFilter(String loginId, StudyBoardFilter studyBoardFilter) {
+        return studyMapper.getMyStudyListByFilter(loginId, studyBoardFilter);
+    }
+
+    @Override
+    public int getMyStudyListCountByFilter(String loginId, StudyBoardFilter studyBoardFilter) {
+        return studyMapper.getMyStudyListCountByFilter(loginId, studyBoardFilter);
     }
 }

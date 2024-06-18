@@ -10,7 +10,6 @@ import com.bunge.study.parameter.RejectApplicationRequest;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
-import java.util.Map;
 
 @Mapper
 public interface StudyMapper {
@@ -133,5 +132,9 @@ public interface StudyMapper {
 
     //스터디 모집글 댓글 삭제
     public int deleteStudyComm(int no);
+
+    //나의 스터디 리스트 조회 (검색 포함)
+    public List<StudyManagement> getMyStudyListByFilter(@Param("loginId")String loginId, @Param("studyBoardFilter") StudyBoardFilter studyBoardFilter);
+    public int getMyStudyListCountByFilter(@Param("loginId") String loginId, @Param("studyBoardFilter") StudyBoardFilter studyBoardFilter);
 
 }
