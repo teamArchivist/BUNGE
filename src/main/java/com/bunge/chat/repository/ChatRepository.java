@@ -9,7 +9,9 @@ public interface ChatRepository {
 
     ChatRequestDto save(ChatRequestDto requestDto);
 
-    ChatRequestDto saveRelation(ChatRequestDto requestDto);
+    void saveRelation(ChatRequestDto requestDto);
+
+    Chatroom findById(Integer id);
 
     List<ChatListDto> findAllByMemberId(String memberId);
 }

@@ -20,9 +20,13 @@ public class MyBatisChatRepository implements ChatRepository{
     }
 
     @Override
-    public ChatRequestDto saveRelation(ChatRequestDto requestDto) {
+    public void saveRelation(ChatRequestDto requestDto) {
         chatMapper.saveRelation(requestDto);
-        return requestDto;
+    }
+
+    @Override
+    public Chatroom findById(Integer id) {
+        return chatMapper.findById(id);
     }
 
     @Override
