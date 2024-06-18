@@ -216,9 +216,8 @@ $(document).ready(function() {
 							let output = ` <tr class="gridjs-tr">
                                                 <td data-column-id="id" class="gridjs-td"><a href="/study/mine?studyboardno=${study.studyBoardNo}" class="btn-link">${studySubject}</a></td>
                                                 <td data-column-id="name" class="gridjs-td">${study.eventTitle}</td>
-                                                <td data-column-id="lastLogin" class="gridjs-td">${study.start}</td>
-                                                <td data-column-id="amount" class="gridjs-td">${study.start}</td>
-                                                <td data-column-id="amount" class="gridjs-td">${study.end}</td>
+                                                <td data-column-id="start" class="gridjs-td">${study.start}</td>
+                                                <td data-column-id="end" class="gridjs-td">${study.end}</td>
                                             </tr>`;
 							console.log("output: ", output);
 							$('#eventList').append(output);
