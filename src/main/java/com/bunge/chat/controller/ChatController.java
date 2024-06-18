@@ -1,5 +1,6 @@
 package com.bunge.chat.controller;
 
+import com.bunge.chat.domain.ChatListDto;
 import com.bunge.chat.domain.ChatRequestDto;
 import com.bunge.chat.service.ChatService;
 import com.bunge.member.domain.Member;
@@ -21,7 +22,12 @@ public class ChatController {
     private final MemberService memberService;
 
     @GetMapping
-    public String showChatMainPage() {
+    public String getChatList(@AuthenticationPrincipal Member loginMember,
+                              Model model) {
+        // TODO:
+        //  - 채팅 페이지 클릭 후 로그인 시 바로 채팅 페이지로 Redirect
+        List<ChatListDto> chatrooms = service.findChatrooms(loginMember.getId());
+        model.addAttribute("chatrooms", chatrooms);
         return "chat/chat";
     }
 
