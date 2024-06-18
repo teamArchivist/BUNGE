@@ -55,7 +55,6 @@
 
                     <button th:if="!${#strings.equals(studyBoard.id, loginId)}" class="btn btn-success text-nowrap" id="application" data-bs-toggle="modal" data-bs-target="#applicationModal">스터디 신청</button>
                     <button th:if="${#strings.equals(studyBoard.id, loginId)}" class="btn btn-info text-nowrap" data-bs-toggle="modal" data-bs-target="#exampleModal" id="studyApprove">스터디 승인</button>
-                    <button th:if="${#strings.equals(studyBoard.id, loginId)}" class="btn btn-warning text-nowrap" id="updateStudy">스터디 수정</button>
                     <button th:if="${#strings.equals(studyBoard.id, loginId)}" class="btn btn-danger text-nowrap" id="deleteStudy">스터디 삭제</button>
                 </div>
             </div>
@@ -115,25 +114,31 @@
                                         </div>
                                     </div>
                                     <div class="row mb-3 border-bottom">
-                                        <div class="col-sm-3 fs-5">목표</div>
-                                        <div class="col-sm-9">
+                                        <div class="col-sm-3 fs-5">
+                                            <span>목표</span>
+                                            <span th:if="${#strings.equals(studyBoard.id, loginId)}" class="badge bg-warning" id="updateAim">수정</span>
+                                        </div>
+                                        <div class="col-sm-9" id="originBookArea">
                                             <div class="row mb-3">
                                                 <div class="col-md-3">
-                                                    <img th:src="${studyBoard.bookcover}" width="100%" height="90%">
+                                                    <img th:src="${studyBoard.bookcover}" width="100%" height="90%" id="originBookCover">
                                                 </div>
                                                 <div class="col-md-9">
                                                     <p th:text="${studyBoard.booktitle}" id="booktitle"></p>
                                                     <p th:text="${studyBoard.author}"></p>
                                                     <p>[[${studyBoard.page}]] page</p>
-                                                    <div class="col-md-2">
-                                                        <span class="d-block badge bg-warning">[[${studyBoard.score}]]점</span>
-                                                    </div>
+                                                    <p>[[${studyBoard.customerReviewRank}]]점</p>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="col-sm-9" id="changeBookArea">
+
+                                        </div>
                                     </div>
                                     <div class="row mb-3 border-bottom">
-                                        <div class="col-sm-3 fs-5">모집기간</div>
+                                        <div class="col-sm-3 fs-5">
+                                            <span>모집기간</span>
+                                        </div>
                                         <div class="col-sm-9">
                                             <p>[[${studyBoard.startdate}]] ~ [[${studyBoard.enddate}]]</p>
                                         </div>
@@ -142,13 +147,17 @@
                                         <div class="col-sm-3 fs-5" id="challengeDate"
                                              th:data-challengestart="${studyBoard.challengestart}"
                                              th:data-challengeend="${studyBoard.challengeend}"
-                                             th:data-challengeperiod="${studyBoard.challengeperiod}">도전기간</div>
+                                             th:data-challengeperiod="${studyBoard.challengeperiod}">
+                                            <span>도전기간</span>
+                                        </div>
                                         <div class="col-sm-9">
                                             <p>[[${studyBoard.challengeperiod}]]일 ([[${studyBoard.challengestart}]] ~ [[${studyBoard.challengeend}]])</p>
                                         </div>
                                     </div>
                                     <div class="row mb-3 border-bottom">
-                                        <div class="col-sm-3 fs-5">참여인원</div>
+                                        <div class="col-sm-3 fs-5">
+                                            <span>참여인원</span>
+                                        </div>
                                         <div class="col-sm-9 mb-3">
                                             <span th:each="studyMember:${studyMember}">
                                                 <img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}"
@@ -158,7 +167,9 @@
                                         </div>
                                     </div>
                                     <div class="row mb-3 border-bottom">
-                                        <div class="col-sm-3 fs-5">스터디 소개</div>
+                                        <div class="col-sm-3 fs-5">
+                                            <span>스터디 소개</span>
+                                        </div>
                                         <div class="col-sm-9 mb-3">
                                             <textarea class="form-control" th:text="${studyBoard.content}" rows="10" readonly style="resize:none"></textarea>
                                         </div>

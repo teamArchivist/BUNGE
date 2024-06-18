@@ -27,7 +27,7 @@ public class StudyBoard {
     private String pubDate;
     private String categoryName;
     private String description;
-    private int score;
+    private int customerReviewRank;
     private int page;
     private int countcomm;
     private int pendingcount;

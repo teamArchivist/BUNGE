@@ -1,6 +1,6 @@
 package com.bunge.chat.service;
 
-import com.bunge.chat.domain.ChatListDto;
+//import com.bunge.chat.domain.ChatListDto;
 import com.bunge.chat.domain.ChatRequestDto;
 import com.bunge.chat.repository.ChatRepository;
 import lombok.RequiredArgsConstructor;

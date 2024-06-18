@@ -488,4 +488,10 @@ public class StudyController {
         return studyService.deleteStudy(no);
     }
 
+    @ResponseBody
+    @PostMapping("/update-enroll-book")
+    public int updateEnrollBook(@ModelAttribute StudyBoard studyBoard) {
+        return studyService.updateEnrollBook(studyBoard);
+    }
+
 }

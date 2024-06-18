@@ -127,4 +127,7 @@ public interface StudyService {
 
     //스터디 모집글 삭제
     public int deleteStudy(int no);
+
+    //스터디 목표 책 변경
+    public int updateEnrollBook(StudyBoard studyBoard);
 }

@@ -327,4 +327,10 @@
         where no = #{no}
     </delete>
 
+    <update id="updateEnrollBook" parameterType="com.bunge.study.domain.StudyBoard">
+        update studyboard
+        set booktitle = #{booktitle}, bookcover = #{bookcover}
+        where no = #{no}
+    </update>
+
 </mapper>
