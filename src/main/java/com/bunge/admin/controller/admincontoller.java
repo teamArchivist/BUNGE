@@ -1,5 +1,6 @@
 package com.bunge.admin.controller;
 
+import com.bunge.admin.domain.adminReportListFile;
 import com.bunge.admin.domain.reportmanagement;
 import com.bunge.admin.service.AdminService;
 import com.bunge.member.domain.Member;
@@ -8,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -47,9 +49,6 @@ public class admincontoller {
     @GetMapping(value = "/adminstudy2")
     public String adminstudy2() {return "admin/adminstudy2";}
 
-    @GetMapping(value = "/adminreport")
-    public String adminreport(){return "admin/adminreport";}
-
     //맴버 목록
     @ResponseBody
     @GetMapping(value = "/memberlistto")
@@ -80,24 +79,38 @@ public class admincontoller {
         List<StudyBoard> list = adminservice.getstudylist();
         return list;
     }
-    //신고 리스트
-    @GetMapping(value = "/reportlist")
-    public Map<String, Object> reportlist(@RequestParam(defaultValue = "1") int page,
-                                          @RequestParam(defaultValue = "5") int limit) {
-        Map<String , Object> map = new HashMap<>();
+    @GetMapping(value = "/adminreport")
+    public String adminreport(adminReportListFile adminreportlistfile,
+                              @RequestParam(defaultValue = "1") int page,
+                              Model model){
+
+        int limit = 10;
         int offset = (page -1)* limit;
+
+        adminreportlistfile.setPage(page);
+        adminreportlistfile.setOffset(offset);
+        adminreportlistfile.setLimit(limit);
         try {
-            List<reportmanagement> reportlist = adminservice.getreportlist(limit , offset);
-            int reportcount = adminservice.getreportlistcount();
+            List<reportmanagement> reportList = adminservice.getreportlist(adminreportlistfile);
+            int reportCount = adminservice.getreportlistcount(adminreportlistfile);
 
-            map.put("reportlist", reportlist);
-            map.put("reportcount", reportcount);
+            int maxPage = (int) Math.ceil((double) reportCount / limit);
+            int startPage = Math.max(1, page -10);
+            int endPage = Math.min(maxPage, page +10);
+
+
+            model.addAttribute("reportList", reportList);
+            model.addAttribute("reportCount", reportCount);
+            model.addAttribute("currentPage", page);
+            model.addAttribute("maxPage",maxPage);
+            model.addAttribute("startPage",startPage);
+            model.addAttribute("endPage",endPage);
+
         } catch (Exception e) {
-            map.put("message", "목록 불러오는데 실패");
+            model.addAttribute("message", "목록 불러오는데 실패");
         }
-        return map;
+        return "admin/adminreport";
     }
-
     //신고자 신고내용 리스트
     @ResponseBody
     @GetMapping(value = "/reporterlist")

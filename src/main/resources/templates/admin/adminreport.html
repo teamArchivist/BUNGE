@@ -50,7 +50,10 @@
 
     <div class="content__boxed">
         <div class="content__wrap">
-            <div class="card">
+            <div th:if="${reportList.size() == 0}">
+                <p class="fs-1 text-decoration-underline text-white fw-bold">조회할 신고 내용이없습니다.</p>
+            </div>
+            <div class="card" th:if="${reportList.size() > 0}">
                 <div class="card-body">
 
                     <!-- Blog post lists -->
@@ -58,27 +61,21 @@
                         <table class="table table-striped align-middle">
                             <thead>
                             <tr>
-                                <th width="55">프로필</th>
                                 <th>아이디</th>
-                                <th class="text-nowrap">이름</th>
-                                <th>닉네임</th>
-                                <th>주소</th>
+                                <th>정지사유</th>
                                 <th>정지시작일</th>
                                 <th>정지종료일</th>
                                 <th class="text-center">회원상태</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="reportlist : ${repoetlist}">
-                                <td><img class="img-sm rounded" src="./assets/img/megamenu/img-1.jpg" alt="thumbs"></td>
-                                <td><a class="btn-link text-body-emphasis text-decoration-underline text-truncate mb-0" th:text="${repoetlist.id}"></a></td>
-                                <td><span class="text-nowrap text-body-secondary">이름1</span></td>
-                                <td>닉네임3</td>
-                                <td><a href="#" class="btn-link text-nowrap">서울시 목동1</a></td>
-                                <td>리더</td>
-                                <td>1990-04-01</td>
+                            <tr th:each="report:${reportList}">
+                                <td><a class="btn-link text-body-emphasis text-decoration-underline text-truncate mb-0">[[${report.reporterid}]]</a></td>
+                                <td>[[${report.reportreason}]]</td>
+                                <td>[[${report.reportstart}]]</td>
+                                <td>[[${report.reportend}]]</td>
                                 <td class="h5">
-                                    <div class="d-block badge bg-black">스터디활동정지</div>
+                                    <div class="d-block badge bg-black">[[${report.reportstatus}]]</div>
                                 </td>
                                 <td>
                                     <div class="text-nowrap text-center">
@@ -91,30 +88,33 @@
                     </div>
                     <!-- END : Blog post lists -->
 
-                    <div class="mt-4 d-flex justify-content-center">
-
-                        <!-- Pagination - Disabled and active states -->
-                        <nav aria-label="Page navigation">
-                            <ul class="pagination">
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">이전</a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item active" aria-current="page">
-                                    <a class="page-link" href="#">2</a>
-                                </li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#">4</a></li>
-                                <li class="page-item"><a class="page-link" href="#">5</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">다음</a>
-                                </li>
-                            </ul>
-                        </nav>
-                        <!-- END : Pagination - Disabled and active states -->
-                    </div>
-
                 </div>
+            </div>
+
+            <div class="mt-4 d-flex justify-content-center">
+
+                <!-- Pagination - Disabled and active states -->
+                <nav th:if="${maxPage > 1 and myStudyList.size() != 0}" class="text-align-center mt-5" aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        <li th:if="${currentPage == 1}" class="page-item">
+                            <a class="page-link disabled">이전</a>
+                        </li>
+                        <li th:if="${currentPage > 1}" class="page-item">
+                            <a th:href="@{'/study/mine-list?page=' + ${currentPage - 1}}" class="page-link">이전</a>
+                        </li>
+                        <li th:each="pageNum : ${#numbers.sequence(startPage, endPage)}" th:classappend="${pageNum == currentPage} ? 'active'">
+                            <a th:href="@{'/study/mine-list?page=' + ${pageNum}}" class="page-link" th:text="${pageNum}">1</a>
+                        </li>
+                        <li th:if="${currentPage < maxPage}" class="page-item">
+                            <a th:href="@{'/study/mine-list?page=' + ${currentPage + 1}}" class="page-link">다음</a>
+                        </li>
+                        <li th:if="${currentPage >= maxPage}" class="page-item">
+                            <a class="page-link disabled">다음</a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- END : Pagination - Disabled and active states -->
+
             </div>
 
         </div>

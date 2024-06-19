@@ -53,12 +53,8 @@
         GROUP BY b.no;
     </select>
 
-    <select id="getreportlist" parameterType="java.util.Map" resultType="com.bunge.admin.domain.reportmanagement">
-        select m.*,
-               r.*
-               from reportmanagement r
-               left outer join member m on m.id = r.reporterid
-               group by r.reporterid
+    <select id="getreportlist" resultType="com.bunge.admin.domain.reportmanagement">
+        select * from reportmanagement
         LIMIT #{limit} OFFSET #{offset}
     </select>
 
