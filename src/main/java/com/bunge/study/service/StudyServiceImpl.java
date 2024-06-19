@@ -1,5 +1,6 @@
 package com.bunge.study.service;
 
+import com.bunge.admin.domain.reportmanagement;
 import com.bunge.memo.domain.Book;
 import com.bunge.study.domain.*;
 import com.bunge.study.filter.StudyBoardFilter;
@@ -271,5 +272,10 @@ public class StudyServiceImpl implements StudyService {
     @Override
     public int getMyStudyListCountByFilter(String loginId, StudyBoardFilter studyBoardFilter) {
         return studyMapper.getMyStudyListCountByFilter(loginId, studyBoardFilter);
+    }
+
+    @Override
+    public int submitReport(reportmanagement rm) {
+        return studyMapper.submitReport(rm);
     }
 }

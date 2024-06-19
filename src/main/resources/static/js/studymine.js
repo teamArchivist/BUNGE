@@ -12,8 +12,54 @@ window.showReportModal = function (memberId) {
     $("#reportModal").modal("show");
 }
 
-window.resetReportModal = function () {
-    $("#reportReason").val("")
+function resetReportModal() {
+    document.getElementById("reportForm").reset();
+    document.getElementById("reportMemberId").value = '';
+    document.getElementById("reporterId").value = '';
+    document.getElementById("reportDate").value = new Date().toLocaleDateString();
+}
+
+function submitReport() {
+    // 모달에서 입력된 신고 정보 가져오기
+    const reportMemberId = document.getElementById("reportMemberId").value;
+    const reporterId = document.getElementById("reporterId").value;
+    console.log(reportMemberId)
+    console.log(reporterId)
+
+    // 체크된 신고 사유 가져오기
+    const reportReasons = [];
+    document.querySelectorAll('input[name="reportreason"]:checked').forEach((checkbox) => {
+        reportReasons.push(checkbox.nextElementSibling.textContent.trim());
+    });
+    console.log(reportReasons)
+
+    // 신고 내용을 JSON 객체로 구성
+    const reportData = {
+        reporttargetid: reportMemberId,
+        reporterid: reporterId,
+        reportreason: reportReasons
+    };
+
+    // AJAX 요청 보내기
+    $.ajax({
+        url: '/study/report', // 서버의 신고 처리 엔드포인트
+        type: 'POST',
+        data: reportData,
+        beforeSend: function (xhr) {
+            if (header && token) {
+                xhr.setRequestHeader(header, token);
+            }
+        },
+        success: function(response) {
+            if (response === 1) {
+                $('#reportModal').modal('hide');
+                alert('신고가 성공적으로 제출되었습니다.');
+            }
+        },
+        error: function(error) {
+            alert('신고 제출 중 오류가 발생했습니다. 다시 시도해주세요.');
+        }
+    });
 }
 
 window.showModifyBookModal = function () {

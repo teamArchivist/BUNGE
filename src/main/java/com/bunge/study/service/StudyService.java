@@ -1,5 +1,6 @@
 package com.bunge.study.service;
 
+import com.bunge.admin.domain.reportmanagement;
 import com.bunge.memo.domain.Book;
 import com.bunge.study.domain.*;
 import com.bunge.study.filter.StudyBoardFilter;
@@ -135,4 +136,7 @@ public interface StudyService {
     //나의 스터디 리스트 조회 (검색 포함)
     public List<StudyManagement> getMyStudyListByFilter(String loginId, StudyBoardFilter studyBoardFilter);
     public int getMyStudyListCountByFilter(String loginId, StudyBoardFilter studyBoardFilter);
+
+    //신고제출
+    public int submitReport(reportmanagement rm);
 }

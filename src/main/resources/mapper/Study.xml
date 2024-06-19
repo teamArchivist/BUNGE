@@ -361,4 +361,11 @@
         where studyboardno = #{studyboardno}
     </update>
 
+    <insert id="submitReport" parameterType="com.bunge.admin.domain.reportmanagement">
+        insert into reportmanagement
+        (reporttargetid, reporterid, reportreason, reportdate)
+        values
+        (#{reporttargetid}, #{reporterid}, #{reportreason}, now())
+    </insert>
+
 </mapper>
