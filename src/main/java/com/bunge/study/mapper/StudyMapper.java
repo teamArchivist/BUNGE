@@ -82,6 +82,12 @@ public interface StudyMapper {
     //스터디 시작
     public int startStudy(StudyManagement studyManagement);
     public void insertLeaderToStudyMember(StudyManagement studyManagement);
+    //스터디 미리 시작한 경우 studyboard 테이블 수정
+    public int updateChallengeDate(StudyBoard studyBoard);
+    //스터디 시작 중 에러 발생 시 studymanagement 데이터 삭제
+    public int deleteStudyManagement(StudyManagement studyManagement);
+    //스터디 시작 시 studyboard 테이블의 state 수정
+    public int updateStudyBoardState(StudyBoard studyBoard);
 
     //해당 스터디 모집글의 스터디 도전 진행 여부 확인
     public StudyManagement checkStudyStatus(StudyManagement studyManagement);

@@ -30,7 +30,13 @@ $(function() {
             success: function (rdata) {
                 if (rdata.length != 0) {
                     $("#searchCondition").css("display", "block");
-                    rdata.forEach(subject => {
+
+                    if (rdata.length > 0) {
+                        $("#bookCover").attr("src", rdata[0].cover).css("display", "block");
+                        $("#inputBookCover").val(rdata[0].cover);
+                    }
+
+                    rdata.forEach((subject, index) => {
                         //console.log(subject)
                         let option = $("<option>").val(subject.title).text(subject.title).data("cover", subject.cover);
                         $("#searchCondition").append(option);
