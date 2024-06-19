@@ -4,7 +4,7 @@
 
 <mapper namespace="com.bunge.study.mapper.NoticeMapper">
 
-    <insert id="insertNotice" parameterType="Notice">
+    <insert id="insertNotice" parameterType="com.bunge.study.domain.Notice">
         INSERT INTO notice (title, content, authorId, studyboardno, noticeNo, createdAt)
         VALUES (#{title}, #{content}, #{authorId}, #{studyboardno}, #{noticeNo}, NOW())
     </insert>
