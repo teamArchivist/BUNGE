@@ -24,6 +24,7 @@
 <body class="out-quart">
 <div id="root" class="root mn--max sb--stuck tm--expanded-hd">
 <section id="content" class="content">
+<input type="hidden" th:value="${studyManagement.studystatus}" id="studyStatus">
   <div class="content__wrap">
     <div class="row">
       <div class="col-md-6 mb-3">
@@ -345,6 +346,7 @@
               </div>
               <button type="button" class="btn btn-primary mb-3"
                       th:if="${#strings.equals(studyManagement.leaderId, loginId)}"
+                      id="addEventBtn"
                       data-bs-toggle="modal" data-bs-target="#addEventModal">
                 일정 추가
               </button>

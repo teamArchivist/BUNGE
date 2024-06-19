@@ -39,7 +39,7 @@
             and s.id like CONCAT('%', #{keyword}, '%')
         </if>
         group by s.no
-        order by state
+        order by s.state, s.startdate desc
         limit #{offset}, #{limit}
     </select>
 
@@ -330,6 +330,7 @@
             AND sm.leaderId LIKE CONCAT('%', #{studyBoardFilter.keyword}, '%')
         </if>
         GROUP BY sm.studyboardno, sb.title
+        ORDER BY sm.studystatus desc
         limit #{studyBoardFilter.offset}, #{studyBoardFilter.limit}
     </select>
 

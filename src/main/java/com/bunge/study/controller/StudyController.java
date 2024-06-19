@@ -114,6 +114,7 @@ public class StudyController {
         List<StudyApplication> studyMember = studyService.getStudyMember(no);
         //logger.info(studyMember.toString());
         List<StudyEvent> studyEvents = studyService.getStudyEventList(studyboardno);
+        StudyManagement studyManagement = studyService.getStudyManagement(studyboardno);
 
 
         model.addAttribute("loginId", loginId);
@@ -122,7 +123,7 @@ public class StudyController {
         model.addAttribute("countStudyComm", countStudyComm);
         model.addAttribute("studyMember", studyMember);
         model.addAttribute("studyEvents", studyEvents);
-
+        model.addAttribute("studyManagement", studyManagement);
 
         return "study/study_detail";
 

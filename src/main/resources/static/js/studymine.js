@@ -33,9 +33,18 @@ window.resetModifyBookModal = function () {
 }
 
 $(function () {
-
     let urlParams = new URLSearchParams(window.location.search);
     let studyboardno = urlParams.get("studyboardno");
+    let studyStatus = $("#studyStatus").val();
+
+    if (studyStatus === 'end') {
+        $("#modifyChallengeBook").attr("disabled", "true");
+        $(".report").attr("disabled", "true");
+        $(".ban").attr("disabled", "true");
+        $("#addEventBtn").attr("disabled", "true");
+        $(".deleteEvent").css("display", "none");
+
+    }
 
     $("#reportModal").on("hidden.bs.modal", function () {
         resetReportModal();
