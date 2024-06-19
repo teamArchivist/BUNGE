@@ -7,18 +7,7 @@
     <links>
         <script th:src="@{/js/usermain.js}"></script>
     </links>
-
-
 </head>
-<style>
-    /* styles.css */
-    table td {
-        height: 50px; !important;/* 원하는 높이로 설정 */
-        overflow: hidden; !important;/* 텍스트가 넘칠 경우 숨김 */
-        text-overflow: ellipsis; !important;/* 넘치는 텍스트는 말줄임 표시 */
-        white-space: nowrap; !important;/* 텍스트가 줄바꿈 되지 않도록 설정 */
-    }
-</style>
 <body th:with="firstStudyboardno=${studies[0].studyboardno}">
 <section sec:authorize="hasAnyAuthority('member')">
     <div class="content__header content__boxed overlapping">
@@ -77,7 +66,9 @@
                                                     </tr>
                                                     <tr th:each="notice : ${studyNotices.get(study.studyboardno)}" class="gridjs-tr">
                                                         <td th:text="${notice.noticeNo}"></td>
-                                                        <td th:text="${notice.noticeTitle}"></td>
+                                                        <td>
+                                                            <a th:href="@{/study/mine(studyboardno=${study.studyboardno})}" th:text="${notice.noticeTitle}"></a>
+                                                        </td>
                                                         <td th:text="${notice.authorId}"></td>
                                                         <td th:text="${notice.createdAt}"></td>
                                                     </tr>
@@ -86,7 +77,9 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                <div th:if="${studies.isEmpty()}" class="alert alert-light" style="height: 335px;">
+                                    공지사항이 없습니다.
+                                </div>
                                 <!-- END : Undeline nav tabs without base -->
 
 
