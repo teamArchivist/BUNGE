@@ -45,4 +45,9 @@
         FROM message
         WHERE chatroom_id = #{id};
     </select>
+
+    <insert id="saveMessage" parameterType="Message">
+        INSERT INTO message(chatroom_id, member_id, data)
+        VALUES (#{chatroomId}, #{memberId}, #{data});
+    </insert>
 </mapper>
