@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.bunge.admin.domain.Visitor;
 import com.bunge.admin.service.AdminService;
+import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     @Autowired
     private AdminService adminService;
+    @Autowired
+    private HttpSession  httpSession;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -30,8 +33,10 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
         String username = authentication.getName();
         adminService.insertVisitor(username);
 
+        String message = "로그인 성공";
 
         if(username.equals("admin")){
+            message = "관리자 로그인했습니다.";
             String url = request.getContextPath()+"/admin/adminmain";
             response.sendRedirect(url);
         }else{
