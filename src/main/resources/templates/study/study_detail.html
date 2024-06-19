@@ -21,7 +21,7 @@
                     <div class="d-inline-flex align-items-center position-relative pt-xl-3 mb-3">
                         <div class="flex-grow-1 ms-4">
                             <span class="h3 text-body-emphasis fw-bold">[[${studyBoard.title}]]</span>
-                            <span class="m-0">([[${studyBoard.quota}]]명 모집 중)</span>
+                            <span class="m-0" id="enrollComment">([[${studyBoard.quota}]]명 모집 중)</span>
                             <button th:if="${#strings.equals(loginId, studyBoard.id)}" type="button" class="btn btn-light" id="startStudy">도전시작</button>
                         </div>
                     </div>
@@ -53,7 +53,7 @@
                     </div>
                     <!-- Study Application Modal emd -->
 
-                    <button th:if="!${#strings.equals(studyBoard.id, loginId)}" class="btn btn-success text-nowrap" id="application" data-bs-toggle="modal" data-bs-target="#applicationModal">스터디 신청</button>
+                    <button th:if=" !${#strings.equals(studyBoard.id, loginId)}" class="btn btn-success text-nowrap" id="application" data-bs-toggle="modal" data-bs-target="#applicationModal">스터디 신청</button>
                     <button th:if="${#strings.equals(studyBoard.id, loginId)}" class="btn btn-info text-nowrap" data-bs-toggle="modal" data-bs-target="#exampleModal" id="studyApprove">스터디 승인</button>
                     <button th:if="${#strings.equals(studyBoard.id, loginId)}" class="btn btn-danger text-nowrap" id="deleteStudy">스터디 삭제</button>
                 </div>
