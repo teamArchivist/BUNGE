@@ -266,7 +266,11 @@
                 <dt class="col-sm-3">승인 수신 목록</dt>
               </div>
 
-              <div class="table-responsive">
+              <div th:if="${studyApprovals.size() == 0}">
+                <span class="fs-4 fw-bold text-decoration-underline">진행 중이거나 종료된 수신 목록이 없습니다</span>
+              </div>
+
+              <div th:if="${studyApprovals.size() > 0}" class="table-responsive">
                 <table class="table table-bordered">
                   <thead>
                   <tr>
