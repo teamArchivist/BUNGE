@@ -1,5 +1,6 @@
 package com.bunge.admin.mapper;
 
+import com.bunge.admin.domain.adminReportListFile;
 import com.bunge.admin.domain.reportmanagement;
 import com.bunge.member.domain.Member;
 import com.bunge.study.domain.StudyBoard;
@@ -30,5 +31,11 @@ public interface AdminMapper {
 
     List<StudyBoard> getstudylist();
 
-    void insertsavereport(reportmanagement report);
+    void updateReport(reportmanagement report);
+
+    List<reportmanagement> getreportlist(adminReportListFile adminreportlistfile);
+
+    int  getreportlistcount(adminReportListFile adminreportlistfile);
+
+    List<reportmanagement> memberreportlist(String reporterid);
 }

@@ -1,15 +1,15 @@
 package com.bunge.admin.controller;
 
+import com.bunge.admin.domain.adminReportListFile;
 import com.bunge.admin.domain.reportmanagement;
 import com.bunge.admin.service.AdminService;
 import com.bunge.member.domain.Member;
-import com.bunge.member.service.MemberService;
 import com.bunge.study.domain.StudyBoard;
-import com.bunge.study.service.StudyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -23,15 +23,10 @@ import java.util.Map;
 public class admincontoller {
     private  static  final Logger logger = LoggerFactory.getLogger((admincontoller.class));
 
-    private MemberService memberservice;
-    private StudyService studyService;
     private AdminService adminservice;
 
     @Autowired
-    public admincontoller(MemberService memberservice , StudyService  studyService,
-                          AdminService adminservice) {
-        this.memberservice=memberservice;
-        this.studyService=studyService;
+    public admincontoller(AdminService adminservice) {
         this.adminservice=adminservice;
     }
     //관리자페이지 웹페이지 정보
@@ -54,9 +49,6 @@ public class admincontoller {
     @GetMapping(value = "/adminstudy2")
     public String adminstudy2() {return "admin/adminstudy2";}
 
-    @GetMapping(value = "/adminreport")
-    public String adminreport(){return "admin/adminreport";}
-
     //맴버 목록
     @ResponseBody
     @GetMapping(value = "/memberlistto")
@@ -75,7 +67,6 @@ public class admincontoller {
         }catch (Exception e) {
             map.put("status","error");
             map.put("message","목록을 불러오는 실패");
-            e.printStackTrace();
         }
         return map;
     }
@@ -84,28 +75,63 @@ public class admincontoller {
     @ResponseBody
     @GetMapping(value = "/studylist")
     public List<StudyBoard> studylist(){
+
         List<StudyBoard> list = adminservice.getstudylist();
         return list;
     }
+    @GetMapping(value = "/adminreport")
+    public String adminreport(adminReportListFile adminreportlistfile,
+                              @RequestParam(defaultValue = "1") int page,
+                              Model model){
 
-    @PostMapping(value = "/report-process")
-    public ModelAndView reportprocess(@RequestParam(value = "reporttargetid") String reporttargetid,
-                                      @RequestParam(value = "reportid") String reportid,
-                                      @RequestParam(value = "reportreason") String[] reportreasons,
-                                      @RequestParam(value = "report") String reportstatus, ModelAndView mav,
-                                      RedirectAttributes redirectAttributes){
+        int limit = 10;
+        int offset = (page -1)* limit;
 
-        //체크박스로 선택된 신고 사유들을 하나의 문자열로 합침
-        String reportreason = String.join("," ,reportreasons);
+        adminreportlistfile.setPage(page);
+        adminreportlistfile.setOffset(offset);
+        adminreportlistfile.setLimit(limit);
+        try {
+            List<reportmanagement> reportList = adminservice.getreportlist(adminreportlistfile);
+            int reportCount = adminservice.getreportlistcount(adminreportlistfile);
+
+            int maxPage = (int) Math.ceil((double) reportCount / limit);
+            int startPage = Math.max(1, page -10);
+            int endPage = Math.min(maxPage, page +10);
+
+
+            model.addAttribute("reportList", reportList);
+            model.addAttribute("reportCount", reportCount);
+            model.addAttribute("currentPage", page);
+            model.addAttribute("maxPage",maxPage);
+            model.addAttribute("startPage",startPage);
+            model.addAttribute("endPage",endPage);
+
+        } catch (Exception e) {
+            model.addAttribute("message", "목록 불러오는데 실패");
+        }
+        return "admin/adminreport";
+    }
+    //신고자 신고내용 리스트
+    @ResponseBody
+    @GetMapping(value = "/reporterlist")
+    public List<reportmanagement> reporterlist(@RequestParam("reporterid") String reporterid) {
+        List<reportmanagement>  reporterlist = adminservice.memberreportlist(reporterid);
+        return reporterlist;
+    }
+
+
+    @PostMapping(value = "/update-process")
+    public ModelAndView reportprocess(@RequestParam(value = "reporterid") String reporterid,
+                                      @RequestParam(value = "report") String reportstatus,
+                                      ModelAndView mav, RedirectAttributes redirectAttributes){
 
         reportmanagement report = new reportmanagement();
-        report.setReporttargetid(reporttargetid);
-        report.setReporterid(reportid);
-        report.setReportreason(reportreason);
+        report.setReporterid(reporterid);
         report.setReportstatus(reportstatus);
-        //신고 정보를 데이터베이스 저장
-        adminservice.saveReport(report);
+
+        adminservice.updateReport(report);
         redirectAttributes.addFlashAttribute("message","처리완료");
+        logger.info(reportstatus);
         mav.setViewName("redirect:adminmain");
         return mav;
     }

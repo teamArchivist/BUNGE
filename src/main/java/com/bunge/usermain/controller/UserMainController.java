@@ -1,10 +1,13 @@
 package com.bunge.usermain.controller;
 
+import com.bunge.study.domain.Notice;
 import com.bunge.study.domain.StudyEvent;
 import com.bunge.study.domain.StudyManagement;
+import com.bunge.study.service.NoticeService;
 import com.bunge.usermain.service.UserMainService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,17 +22,27 @@ import java.util.Map;
 @RequestMapping("/user")
 public class UserMainController {
 
-    @Autowired
-    private UserMainService userMainService;
+    private final UserMainService userMainService;
+
+    public UserMainController(UserMainService userMainService) {
+        this.userMainService = userMainService;
+    }
 
     @GetMapping("/main")
     public String userMainView(Model model,Principal principal) {
+        String memberId = principal.getName();
 
-        String loginId = principal.getName();
+        List<Notice> studies = userMainService.selectStudiesByMemberId(memberId);
+        model.addAttribute("memberId", memberId);
+        model.addAttribute("studies", studies);
 
-        model.addAttribute("loginId",loginId);
+        Map<Integer, List<Notice>> studyNotices = new HashMap<>();
+        for (Notice study : studies) {
+            List<Notice> notices = userMainService.getNoticesByStudyBoardNo(study.getStudyboardno(), 1, 5);
+            studyNotices.put(study.getStudyboardno(), notices);
+        }
+        model.addAttribute("studyNotices", studyNotices);
 
-        System.out.println("여기는 main");
         return "user_main";
     }
 

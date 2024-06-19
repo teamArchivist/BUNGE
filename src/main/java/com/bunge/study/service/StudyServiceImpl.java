@@ -16,7 +16,6 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class StudyServiceImpl implements StudyService {
@@ -174,11 +173,6 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
-    public List<StudyManagement> getMyStudyList(String loginId) {
-        return studyMapper.getMyStudyList(loginId);
-    }
-
-    @Override
     public StudyManagement getStudyManagement(int studyboardno) {
         return studyMapper.getStudyManagement(studyboardno);
     }
@@ -238,5 +232,39 @@ public class StudyServiceImpl implements StudyService {
     @Override
     public int deleteStudy(int no) {
         return studyMapper.deleteStudy(no);
+    }
+
+    @Override
+    public int updateEnrollBook(StudyBoard studyBoard) {
+        return studyMapper.updateEnrollBook(studyBoard);
+    }
+
+    @Override
+    public int deleteStudyComm(int no) {
+        return studyMapper.deleteStudyComm(no);
+    }
+
+    @Override
+    public List<StudyManagement> getMyStudyListByFilter(String loginId, StudyBoardFilter studyBoardFilter) {
+        List<StudyManagement> result = studyMapper.getMyStudyListByFilter(loginId, studyBoardFilter);
+        List<StudyManagement> updatedResults = new ArrayList<>();
+        LocalDate now = LocalDate.now();
+
+        for (StudyManagement studyManagement : result) {
+            LocalDate endDate = LocalDate.parse(studyManagement.getStudyend());
+            long daysUntilEnd = ChronoUnit.DAYS.between(now, endDate);
+
+            if (daysUntilEnd < 0) {
+                studyMapper.updateStudyManagementStatus(studyManagement);
+            }
+            updatedResults.add(studyManagement);
+        }
+
+        return updatedResults;
+    }
+
+    @Override
+    public int getMyStudyListCountByFilter(String loginId, StudyBoardFilter studyBoardFilter) {
+        return studyMapper.getMyStudyListCountByFilter(loginId, studyBoardFilter);
     }
 }

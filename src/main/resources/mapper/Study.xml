@@ -39,7 +39,7 @@
             and s.id like CONCAT('%', #{keyword}, '%')
         </if>
         group by s.no
-        order by state
+        order by s.state, s.startdate desc
         limit #{offset}, #{limit}
     </select>
 
@@ -212,32 +212,6 @@
         (#{studyboardno}, #{memberId})
     </insert>
 
-    <select id="getMyStudyList" parameterType="String" resultMap="studyManagementResultMap">
-        SELECT sm.*, sb.title,
-               GROUP_CONCAT(sm2.memberId SEPARATOR ',') AS memberIds
-        FROM studymanagement sm
-                 JOIN studyboard sb ON sm.studyboardno = sb.no
-                 LEFT JOIN studymember sm2 ON sm.studyboardno = sm2.studyboardno
-        WHERE sm.studyboardno IN (
-            SELECT studyboardno
-            FROM studymember
-            WHERE memberId = #{loginId}
-        )
-        GROUP BY sm.studyboardno, sb.title;
-    </select>
-
-    <resultMap id="studyManagementResultMap" type="com.bunge.study.domain.StudyManagement">
-        <result property="studyboardno" column="studyboardno"/>
-        <result property="studystart" column="studystart"/>
-        <result property="studyend" column="studyend"/>
-        <result property="studyperiod" column="studyperiod"/>
-        <result property="leaderId" column="leaderId"/>
-        <result property="booktitle" column="booktitle"/>
-        <result property="studystatus" column="studystatus"/>
-        <result property="title" column="title"/>
-        <result property="memberIds" column="memberIds"/>
-    </resultMap>
-
     <select id="getStudyManagement" parameterType="int" resultType="com.bunge.study.domain.StudyManagement">
         SELECT sm.*,
                sb.title, sb.bookcover, sb.content, sb.startdate, sb.enddate, sb.challengestart, sb.challengeend, sb.quota, sb.state,
@@ -326,5 +300,65 @@
         delete from studyboard
         where no = #{no}
     </delete>
+
+    <update id="updateEnrollBook" parameterType="com.bunge.study.domain.StudyBoard">
+        update studyboard
+        set booktitle = #{booktitle}, bookcover = #{bookcover}
+        where no = #{no}
+    </update>
+
+    <delete id="deleteStudyComm" parameterType="int">
+        delete from studyboardcomm
+        where no = #{no}
+    </delete>
+
+    <select id="getMyStudyListByFilter" parameterType="map" resultType="com.bunge.study.domain.StudyManagement">
+        SELECT sm.*, sb.title,
+               GROUP_CONCAT(sm2.memberId SEPARATOR ',') AS memberIds
+        FROM studymanagement sm
+                 JOIN studyboard sb ON sm.studyboardno = sb.no
+                 LEFT JOIN studymember sm2 ON sm.studyboardno = sm2.studyboardno
+        WHERE sm.studyboardno IN (
+            SELECT studyboardno
+            FROM studymember
+            WHERE memberId = #{loginId}
+        )
+        <if test="studyBoardFilter.category == 'booktitle' and studyBoardFilter.keyword != null and studyBoardFilter.keyword != ''">
+            AND sm.booktitle LIKE CONCAT('%', #{studyBoardFilter.keyword}, '%')
+        </if>
+        <if test="studyBoardFilter.category == 'leader' and studyBoardFilter.keyword != null and studyBoardFilter.keyword != ''">
+            AND sm.leaderId LIKE CONCAT('%', #{studyBoardFilter.keyword}, '%')
+        </if>
+        GROUP BY sm.studyboardno, sb.title
+        ORDER BY sm.studystatus desc
+        limit #{studyBoardFilter.offset}, #{studyBoardFilter.limit}
+    </select>
+
+    <select id="getMyStudyListCountByFilter" parameterType="map" resultType="int">
+        SELECT COUNT(*) FROM (
+                        SELECT sm.studyboardno
+                        FROM studymanagement sm
+                        JOIN studyboard sb ON sm.studyboardno = sb.no
+                        LEFT JOIN studymember sm2 ON sm.studyboardno = sm2.studyboardno
+                        WHERE sm.studyboardno IN (
+                                                    SELECT studyboardno
+                                                    FROM studymember
+                                                    WHERE memberId = #{loginId}
+                                                    )
+        <if test="studyBoardFilter.category == 'booktitle' and studyBoardFilter.keyword != null and studyBoardFilter.keyword != ''">
+            AND sm.booktitle LIKE CONCAT('%', #{studyBoardFilter.keyword}, '%')
+        </if>
+        <if test="studyBoardFilter.category == 'leader' and studyBoardFilter.keyword != null and studyBoardFilter.keyword != ''">
+            AND sm.leaderId LIKE CONCAT('%', #{studyBoardFilter.keyword}, '%')
+        </if>
+        GROUP BY sm.studyboardno, sb.title
+        ) AS countTable
+    </select>
+
+    <update id="updateStudyManagementStatus" parameterType="com.bunge.study.domain.StudyManagement">
+        update studymanagement
+        set studystatus = 'end'
+        where studyboardno = #{studyboardno}
+    </update>
 
 </mapper>

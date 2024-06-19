@@ -9,9 +9,7 @@ import com.bunge.study.parameter.CheckApplicationRequest;
 import com.bunge.study.parameter.RejectApplicationRequest;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 public interface StudyService {
 
@@ -21,7 +19,7 @@ public interface StudyService {
     //스터디 글 생성
     public void createStudyBoard(StudyBoard studyBoard);
 
-    //스터디 모집글 리스트
+    //스터디 모집글 리스트, 불러오면서 현재시간과
     public List<StudyBoard> getStudyList(StudyBoardFilter studyBoardFilter);
 
     //스터디 모집글 갯수
@@ -93,9 +91,6 @@ public interface StudyService {
     //참여 인원 스터디 멤버 테이블에 추가
     public void createStudyMembers(int studyboardno, List<String> memberIdList);
 
-    //나의 스터디 리스트 조회
-    public List<StudyManagement> getMyStudyList(String loginId);
-
     //현재 진행중인 스터디 모임 페이지
     public StudyManagement getStudyManagement(int studyboardno);
 
@@ -127,4 +122,14 @@ public interface StudyService {
 
     //스터디 모집글 삭제
     public int deleteStudy(int no);
+
+    //스터디 목표 책 변경
+    public int updateEnrollBook(StudyBoard studyBoard);
+
+    //스터디 모집글 댓글 삭제
+    public int deleteStudyComm(int no);
+
+    //나의 스터디 리스트 조회 (검색 포함)
+    public List<StudyManagement> getMyStudyListByFilter(String loginId, StudyBoardFilter studyBoardFilter);
+    public int getMyStudyListCountByFilter(String loginId, StudyBoardFilter studyBoardFilter);
 }

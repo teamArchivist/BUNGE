@@ -11,10 +11,20 @@
     <!-- Initialize [ SAMPLE ] -->
     <script th:src="@{/js/study_mine_calendar.js}"></script>
   </links>
+  <style>
+    .notice-content {
+      background-color: #ffffff; /* 밝은 배경색 */
+      border: 1px solid rgba(223, 221, 221, 0.36); /* 테두리 */
+      padding: 10px; /* 내부 여백 */
+      margin-top: 5px; /* 상단 여백 */
+      border-radius: 5px; /* 모서리 둥글게 */
+    }
+  </style>
 </head>
 <body class="out-quart">
 <div id="root" class="root mn--max sb--stuck tm--expanded-hd">
 <section id="content" class="content">
+<input type="hidden" th:value="${studyManagement.studystatus}" id="studyStatus">
   <div class="content__wrap">
     <div class="row">
       <div class="col-md-6 mb-3">
@@ -253,13 +263,15 @@
 
               </div>
 
-
-
               <div class="row">
                 <dt class="col-sm-3">승인 수신 목록</dt>
               </div>
 
-              <div class="table-responsive">
+              <div th:if="${studyApprovals.size() == 0}">
+                <span class="fs-4 fw-bold text-decoration-underline">진행 중이거나 종료된 수신 목록이 없습니다</span>
+              </div>
+
+              <div th:if="${studyApprovals.size() > 0}" class="table-responsive">
                 <table class="table table-bordered">
                   <thead>
                   <tr>
@@ -334,6 +346,7 @@
               </div>
               <button type="button" class="btn btn-primary mb-3"
                       th:if="${#strings.equals(studyManagement.leaderId, loginId)}"
+                      id="addEventBtn"
                       data-bs-toggle="modal" data-bs-target="#addEventModal">
                 일정 추가
               </button>
@@ -411,8 +424,97 @@
             </div>
           </div>
 
+          <!--            공지 사항           -->
+          <div class="mb-3">
+            <div class="card">
+              <div class="card-body">
+                <div>
+                  <div class="mb-2 d-flex justify-content-between align-items-center">
+                    <h3 class="h4 card-title align-self-start"><i class="pli-speaker-2"></i>&nbsp; 공지사항</h3>
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#noticeModal">
+                      공지사항 추가
+                    </button>
+                  </div>
+                </div><hr>
+
+                <!-- 공지사항 등록 모달 -->
+                <div class="modal col-md-6 mb-3" id="noticeModal">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title">공지사항 추가</h5>
+                        </div>
+
+                        <div class="modal-body">
+                          <form id="addNoticeForm">
+                            <div class="mb-3">
+                              <label for="noticeLeaderId" class="form-label">작성자</label>
+                              <input type="text" class="form-control" id="noticeLeaderId" readonly>
+                            </div>
+
+                            <div class="mb-3">
+                              <label for="noticeTitle" class="form-label">제목</label>
+                              <input type="text" class="form-control" id="noticeTitle" required>
+                            </div>
+
+                            <div class="col-sm-12">
+                              <textarea id="noticeContent" class="form-control" placeholder="Message" rows="14" maxlength="500" style="resize: none;"></textarea>
+                              <p class="float-end"><span id="charCount">0</span>/500</p>
+                            </div><br>
+
+                            <div class="d-flex justify-content-center">
+                              <button type="button" class="btn btn-primary" id="addButton">등록</button>
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                            </div>
+
+                          </form>
+                      </div>
+                      <!-- 공지사항 등록 모달 -->
+
+
+                    </div>
+                  </div>
+                </div>
+
+                <!-- GridJS - Resizable columns -->
+                  <div id="noticesList" role="complementary" class="gridjs gridjs-container" style="width: 100%;">
+                    <div class="gridjs-wrapper" style="height: 275px;">
+
+                      <div class="mb-2">
+                        <table class="table">
+                          <thead>
+                          <tr>
+                            <th style="min-width:80px; width:80px">번호</th>
+                            <th style="min-width:200px; width:200px">제목</th>
+                            <th style="min-width:100px; width:100px">작성자</th>
+                            <th style="min-width:100px; width:100px">작성일</th>
+                          </tr>
+                          <thead>
+                          <tbody id="noticeTable">
+                          <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                          </tr>
+                          </tbody>
+                        </table>
+                      </div>
+
+                    </div>
+                    <div id="gridjs-temp" class="gridjs-temp"></div>
+
+                  </div>
+                </div>
+                <!-- END : GridJS - Resizable columns -->
+
+              </div>
+            </div>
+          <!--          공지사항         -->
+
+          </div>
+
         </div>
-      </div>
 
 
       <div class="col-md-6">

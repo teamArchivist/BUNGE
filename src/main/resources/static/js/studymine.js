@@ -1,3 +1,6 @@
+let token = $("meta[name='_csrf']").attr("content");
+let header = $("meta[name='_csrf_header']").attr("content");
+
 window.showReportModal = function (memberId) {
     const reporterId = $("#loginId").text();
     const currentDate = new Date().toISOString().slice(0, 10);
@@ -30,9 +33,18 @@ window.resetModifyBookModal = function () {
 }
 
 $(function () {
-
     let urlParams = new URLSearchParams(window.location.search);
     let studyboardno = urlParams.get("studyboardno");
+    let studyStatus = $("#studyStatus").val();
+
+    if (studyStatus === 'end') {
+        $("#modifyChallengeBook").attr("disabled", "true");
+        $(".report").attr("disabled", "true");
+        $(".ban").attr("disabled", "true");
+        $("#addEventBtn").attr("disabled", "true");
+        $(".deleteEvent").css("display", "none");
+
+    }
 
     $("#reportModal").on("hidden.bs.modal", function () {
         resetReportModal();
@@ -331,5 +343,107 @@ $(function () {
             })
         }
     }) // $("#deleteEvent").click(function () end
+
+    // 공지사항 목록 로드
+    function loadNotices() {
+        $.ajax({
+            url: '/study/notices/' + studyboardno,
+            method: 'GET',
+            success: function(response) {
+                const noticeTable = $('#noticeTable');
+                noticeTable.empty();
+
+                if (response.count === 0) {
+                    noticeTable.append('<tr><td colspan="4">공지사항이 없습니다.</td></tr>');
+                } else {
+                    response.notices.forEach(notice => {
+                        const noticeRow = `
+                            <tr>
+                                <td>${notice.noticeNo}</td>
+                                <td><a href="#" class="notice-title" data-id="${notice.noticeId}">${notice.title}</a></td>
+                                <td>${notice.authorId}</td>
+                                <td>${notice.createdAt}</td>
+                            </tr>
+                            <tr id="notice-content-${notice.noticeId}" class="notice-content-row" style="display: none;">
+                                <td colspan="4"><div class="notice-content">${notice.content}</div></td>
+                            </tr>`;
+                        noticeTable.append(noticeRow);
+                    });
+
+                    // 제목 클릭 이벤트 핸들러 추가
+                    $('.notice-title').on('click', function(event) {
+                        event.preventDefault();
+                        const noticeId = $(this).data('id');
+                        const contentRow = $(`#notice-content-${noticeId}`);
+                        contentRow.toggle();
+                    });
+                }
+            },
+            error: function(error) {
+                console.error("공지사항 로드에 실패했습니다", error);
+            }
+        });
+    }
+
+    // 모달이 열릴 때마다 로그인된 아이디를 작성자 필드에 설정
+    $('#noticeModal').on('show.bs.modal', function (e) {
+        let authorId = $('#loginId').text(); // 로그인된 아이디 가져오기
+        $('#noticeLeaderId').val(authorId); // 작성자 필드에 설정
+
+        // 입력 필드 초기화
+        $('#noticeTitle').val('');
+        $('#noticeContent').val('');
+        $('#charCount').text(0); // 글자 수 초기화
+    });
+
+    // 키업 이벤트 핸들러
+    $('#noticeContent').on('keyup', function() {
+        let charCount = $(this).val().length;
+        $('#charCount').text(charCount);
+        console.log('Characters counted:', charCount); // 디버깅 로그 추가
+    });
+
+    $('#addButton').on('click', function() {
+        const notice = {
+            title: $('#noticeTitle').val(),
+            content: $('#noticeContent').val(),
+            authorId: $('#noticeLeaderId').val(),
+            studyboardno: studyboardno
+        };
+
+        console.log("Sending notice:", notice); // 디버깅 로그 추가
+
+        $.ajax({
+            url: '/study/add-notice',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(notice),
+            beforeSend: function (xhr) {
+                if (header && token) {
+                    xhr.setRequestHeader(header, token);
+                }
+            },
+            success: function(response) {
+                if (response.status === 'success') {
+                    alert('공지사항이 추가되었습니다.');
+                    $('#noticeModal').modal('hide'); // 모달창 닫기
+                    loadNotices(); // 공지사항 목록 다시 로드
+                } else {
+                    alert("공지사항 추가에 실패했습니다: " + response.message);
+                }
+            },
+            error: function(error) {
+                alert("공지사항 추가에 실패했습니다: " + (error.responseJSON ? error.responseJSON.message : "Unknown error"));
+                console.error("Error:", error); // 서버 응답 로그 출력
+            }
+        });
+    });
+
+    // 페이지 로드 시 공지사항 목록 로드
+    loadNotices();
+
+    $("#showAll").click(function () {
+        location.href = "/study/mine-list"
+    })
 
 }) //ready end

@@ -40,6 +40,10 @@
        LIMIT #{limit} OFFSET #{offset}
     </select>
 
+    <select id="memberreportlist" resultType="com.bunge.admin.domain.reportmanagement">
+        select * from reportmanagement where reporterid = #{reporterid}
+    </select>
+
     <select id="getstudylist" parameterType="String" resultType="com.bunge.study.domain.StudyBoard">
         SELECT b.*, e.*, m.*, k.categoryName
         FROM studyboard b
@@ -49,8 +53,17 @@
         GROUP BY b.no;
     </select>
 
-    <insert id="insertsavereport" parameterType="com.bunge.admin.domain.reportmanagement">
-        INSERT INTO reportmanagement (reporttargetid, reporterid, reportreason, reportstatus, reportstart, reportend, reportdate)
-        VALUES (#{reporttargetid}, #{reporterid}, #{reportreason}, #{reportstatus}, #{reportstart}, #{reportend}, #{reportdate})
-    </insert>
+    <select id="getreportlist" resultType="com.bunge.admin.domain.reportmanagement">
+        select * from reportmanagement
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="getreportlistcount" parameterType="com.bunge.admin.domain.reportmanagement" resultType="int">
+        select count(*) from reportmanagement
+    </select>
+
+    <update id="updateReport" parameterType="com.bunge.admin.domain.reportmanagement">
+        update reportmanagement set
+            reportstatus = #{reportstatus}, reportprocessing = 2 , reportstart = #{reportstart} where reporterid = #{reporterid}
+    </update>
 </mapper>

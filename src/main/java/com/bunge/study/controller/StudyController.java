@@ -7,16 +7,19 @@ import com.bunge.study.parameter.ApproveApplicationRequest;
 import com.bunge.study.parameter.BookSearchRequest;
 import com.bunge.study.parameter.CheckApplicationRequest;
 import com.bunge.study.parameter.RejectApplicationRequest;
+import com.bunge.study.service.NoticeService;
 import com.bunge.study.service.StudyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -31,10 +34,12 @@ public class StudyController {
     private static Logger logger = LoggerFactory.getLogger(StudyController.class);
 
     private final StudyService studyService;
+    private final NoticeService noticeService;
 
     @Autowired
-    public StudyController(StudyService studyService) {
+    public StudyController(StudyService studyService, NoticeService noticeService) {
         this.studyService = studyService;
+        this.noticeService = noticeService;
     }
 
     @GetMapping("/main")
@@ -109,6 +114,7 @@ public class StudyController {
         List<StudyApplication> studyMember = studyService.getStudyMember(no);
         //logger.info(studyMember.toString());
         List<StudyEvent> studyEvents = studyService.getStudyEventList(studyboardno);
+        StudyManagement studyManagement = studyService.getStudyManagement(studyboardno);
 
 
         model.addAttribute("loginId", loginId);
@@ -117,7 +123,7 @@ public class StudyController {
         model.addAttribute("countStudyComm", countStudyComm);
         model.addAttribute("studyMember", studyMember);
         model.addAttribute("studyEvents", studyEvents);
-
+        model.addAttribute("studyManagement", studyManagement);
 
         return "study/study_detail";
 
@@ -344,14 +350,35 @@ public class StudyController {
     }
 
     @GetMapping("/mine-list")
-    public String mineList(Model model) {
+    public String mineList(Model model,
+                           @ModelAttribute StudyBoardFilter studyBoardFilter,
+                           @RequestParam(value="page", defaultValue="1") Integer page) {
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String loginId = authentication.getName();
 
-        List<StudyManagement> myStudyList = studyService.getMyStudyList(loginId);
-        //logger.info(myStudyList.toString());
+        int pageSize = 15;
+        int offset = (page - 1) * pageSize;
+        studyBoardFilter.setPage(page);
+        studyBoardFilter.setOffset(offset);
+        studyBoardFilter.setLimit(pageSize);
 
+        logger.info(studyBoardFilter.toString());
+
+        List<StudyManagement> myStudyList = studyService.getMyStudyListByFilter(loginId, studyBoardFilter);
+        //logger.info(myStudyList.toString());
+        int totalMyStudyList = studyService.getMyStudyListCountByFilter(loginId, studyBoardFilter);
+
+        int maxPage = (int) Math.ceil((double) totalMyStudyList / pageSize );
+        int startPage = Math.max(1, page - 5);
+        int endPage = Math.min(maxPage, page + 4);
+
+        model.addAttribute("currentPage", page);
+        model.addAttribute("maxPage", maxPage);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
         model.addAttribute("myStudyList", myStudyList);
+
         return "study/study_mine_list";
     }
 
@@ -487,5 +514,49 @@ public class StudyController {
     public int deleteStudy(@RequestParam int no) {
         return studyService.deleteStudy(no);
     }
+
+
+    //공지사항 추가
+    @ResponseBody
+    @PostMapping("/add-notice")
+    public Map<String, String> addNotice(@RequestBody Notice notice, Principal principal) {
+        String authorId = principal.getName();
+        notice.setAuthorId(authorId);  // Notice 객체에 authorId 설정
+        Map<String, String> response = new HashMap<>();
+        try {
+            noticeService.addNotice(notice);
+            response.put("status", "success");
+            response.put("message", "Notice added successfully");
+        } catch (Exception e) {
+            response.put("status", "error");
+            response.put("message", "Failed to add notice: " + e.getMessage());
+        }
+        return response;
+    }
+
+    @GetMapping("/notices/{studyboardno}")
+    public ResponseEntity<Map<String, Object>> getNotices(@PathVariable int studyboardno) {
+        List<Notice> notices = noticeService.selectNoticesByStudyNo(studyboardno);
+        int countNotices = noticeService.countByStudyNo(studyboardno);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("notices", notices);
+        response.put("count", countNotices);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @ResponseBody
+    @PostMapping("/update-enroll-book")
+    public int updateEnrollBook(@ModelAttribute StudyBoard studyBoard) {
+        return studyService.updateEnrollBook(studyBoard);
+    }
+
+    @ResponseBody
+    @PostMapping("/delete-comm")
+    public int deleteStudyComm(@RequestParam int no) {
+        return studyService.deleteStudyComm(no);
+    }
+
 
 }

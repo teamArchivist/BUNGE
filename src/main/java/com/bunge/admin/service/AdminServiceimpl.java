@@ -1,6 +1,7 @@
 package com.bunge.admin.service;
 
 import com.bunge.admin.domain.Visitor;
+import com.bunge.admin.domain.adminReportListFile;
 import com.bunge.admin.domain.reportmanagement;
 import com.bunge.admin.mapper.AdminMapper;
 import com.bunge.member.domain.Member;
@@ -68,12 +69,27 @@ public class AdminServiceimpl implements AdminService {
     }
 
     @Override
+    public List<reportmanagement> getreportlist(adminReportListFile adminreportlistfile) {
+        return adminMapper.getreportlist(adminreportlistfile);
+    }
+
+    @Override
+    public int getreportlistcount(adminReportListFile adminreportlistfile) {
+        return adminMapper.getreportlistcount(adminreportlistfile);
+    }
+
+    @Override
+    public List<reportmanagement> memberreportlist(String reporterid) {
+        return adminMapper.memberreportlist(reporterid);
+    }
+
+    @Override
     public List<StudyBoard> getstudylist() {
         return adminMapper.getstudylist();
     }
 
     @Override
-    public void saveReport(reportmanagement report) {
+    public void updateReport(reportmanagement report) {
         LocalDate today = LocalDate.now();
         LocalDate endDate = null;
 
@@ -96,6 +112,8 @@ public class AdminServiceimpl implements AdminService {
         report.setReportstart(today);
         report.setReportend(endDate);
 
-        adminMapper.insertsavereport(report);
+        adminMapper.updateReport(report);
         }
-    }
+
+
+}
