@@ -40,4 +40,6 @@ public interface AdminMapper {
     List<reportmanagement> memberreportlist(String reporterid);
 
     void updateeverday();
+
+    void updatemember(reportmanagement report);
 }
