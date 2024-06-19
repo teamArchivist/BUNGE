@@ -227,6 +227,32 @@
         .home-button a:hover {
             text-decoration: underline; /* 밑줄 추가 */
         }
+
+        .context-menu {
+            display: none;
+            position: absolute;
+            z-index: 1000;
+            width: 100px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+        }
+
+        .context-menu-item {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background: none;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .context-menu-item:hover {
+            background-color: #f0f0f0;
+        }
+
     </style>
 
     <script>
@@ -293,6 +319,38 @@
             });
         });
     </script>
+    <script th:inline="javascript">
+        function showContextMenu(event, type, name) {
+            event.preventDefault();
+
+            var contextMenu = document.getElementById('contextMenu');
+            contextMenu.innerHTML = ''; // 기존의 메뉴 초기화
+
+            var deleteAction = document.createElement('div');
+            deleteAction.textContent = (type === 'folder') ? '폴더 삭제' : '파일 삭제';
+            deleteAction.classList.add('context-menu-item');
+            deleteAction.addEventListener('click', function() {
+                // 삭제 로직을 여기에 구현
+                if (type === 'folder') {
+                    alert('폴더 ' + name + ' 삭제');
+                } else {
+                    alert('파일 ' + name + ' 삭제');
+                }
+            });
+            contextMenu.appendChild(deleteAction);
+
+            // 컨텍스트 메뉴의 위치 조정
+            contextMenu.style.top = event.clientY + 'px';
+            contextMenu.style.left = event.clientX + 'px';
+            contextMenu.style.display = 'block';
+
+            // 다른 곳을 클릭하면 컨텍스트 메뉴를 숨김
+            document.addEventListener('click', function() {
+                contextMenu.style.display = 'none';
+            });
+        }
+    </script>
+
 </head>
 <body>
 <div class="button-container">
@@ -342,27 +400,34 @@
 </div>
 <div class="main-content">
 <h1>목록 보기</h1>
-<ul>
-    <li th:each="folder : ${folders}">
-        <a th:if="${folder.directory}"
-           th:href="@{|/study/mine/filesharing?studyboardno=${studyboardno}&directoryPath=${currentPath}/${folder.name}|}"
-           class="folder-link">
-            <div class="link-content">
-                <img src="https://i.ibb.co/XLG39JD/free-icon-folder-5613750.png" alt="folder-icon" />
-                <span th:text="${folder.name}"></span>
-            </div>
-        </a>
-        <a th:unless="${folder.directory}"
-           th:href="@{|/study/mine/filedownload?remoteFilePath=${currentPath}/${folder.name}|}"
-           class="file-link">
-            <div class="link-content">
-                <img src="https://i.ibb.co/HgRjhK9/file-icon.png" alt="file-icon" />
-                <span th:text="${folder.name}"></span>
-            </div>
-        </a>
-    </li>
-</ul>
+    <ul>
+        <li th:each="folder : ${folders}">
+            <a th:if="${folder.directory}"
+               th:href="@{|/study/mine/filesharing?studyboardno=${studyboardno}&directoryPath=${currentPath}/${folder.name}|}"
+               class="folder-link"
+               oncontextmenu="showContextMenu(event, 'folder', '${folder.name}')">
+                <div class="link-content">
+                    <img src="https://i.ibb.co/XLG39JD/free-icon-folder-5613750.png" alt="folder-icon" />
+                    <span th:text="${folder.name}"></span>
+                </div>
+            </a>
+            <a th:unless="${folder.directory}"
+               th:href="@{|/study/file/download?remoteFilePath=${currentPath}/${folder.name}|}"
+               class="file-link"
+               oncontextmenu="showContextMenu(event, 'file', '${folder.name}')">
+                <div class="link-content">
+                    <img src="https://i.ibb.co/HgRjhK9/file-icon.png" alt="file-icon" />
+                    <span th:text="${folder.name}"></span>
+                </div>
+            </a>
+        </li>
+    </ul>
 </div>
+
+<div id="contextMenu" class="context-menu">
+    <button id="deleteButton" class="context-menu-item" onclick="deleteItem()">삭제</button>
+</div>
+
 
 </body>
 </html>

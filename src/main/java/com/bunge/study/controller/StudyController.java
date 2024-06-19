@@ -10,9 +10,15 @@ import com.bunge.study.parameter.RejectApplicationRequest;
 import com.bunge.study.service.NoticeService;
 import com.bunge.study.service.SftpService;
 import com.bunge.study.service.StudyService;
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.SftpException;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,6 +30,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -433,7 +443,10 @@ public class StudyController {
     }
 
     @RequestMapping("/mine/filesharing")
-    public String filesharing(Model model, @RequestParam int studyboardno, @RequestParam String directoryPath) {
+    public String filesharing(Model model,
+                              @RequestParam int studyboardno,
+                              @RequestParam String directoryPath,
+                              @ModelAttribute StudyBoardFilter studyBoardFilter) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String loginId = authentication.getName();
@@ -457,6 +470,10 @@ public class StudyController {
         model.addAttribute("countApprovalReject", countApprovalReject);
         model.addAttribute("studyApprovals", studyApprovals);
         model.addAttribute("studyEvents", studyEvents);
+
+        List<StudyManagement> myStudyList = studyService.getMyStudyList(loginId);
+        model.addAttribute("myStudyList", myStudyList);
+
         try {
             // 폴더가 존재하지 않으면 생성
             sftpService.createFolder(directoryPath);
@@ -522,6 +539,46 @@ public class StudyController {
             }
         }
         return "redirect:/study/mine/filesharing?studyboardno=" + studyboardno + "&directoryPath=" + currentPath;
+    }
+
+    @RequestMapping(value = "/file/download", method = RequestMethod.GET)
+    public ResponseEntity<ByteArrayResource> downloadFile(
+            @RequestParam("remoteFilePath") String remoteFilePath) throws JSchException, SftpException, IOException {
+
+        // 로컬에 저장될 파일 경로
+        String localFilePath = "/Users/songjaehyuk/Desktop/" + remoteFilePath.substring(remoteFilePath.lastIndexOf('/') + 1);
+
+        try {
+            // 파일 다운로드 메서드 호출
+            sftpService.downloadFile(remoteFilePath, localFilePath);
+
+            // 다운로드 성공 시, 로컬 파일을 읽어서 ByteArrayResource로 변환
+            Path localPath = Paths.get(localFilePath);
+            byte[] fileContent = Files.readAllBytes(localPath);
+            ByteArrayResource resource = new ByteArrayResource(fileContent);
+
+            // 다운로드를 위한 HttpHeaders 설정
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            headers.setContentLength(fileContent.length);
+            headers.setContentDispositionFormData("attachment", localPath.getFileName().toString());
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .body(resource);
+        } finally {
+            // 파일 다운로드 후 로컬에 저장된 파일 삭제 (옵션)
+            // Files.deleteIfExists(Paths.get(localFilePath));
+        }
+    }
+
+    @PostMapping("/study/item/delete")
+    public String deleteItem(@RequestParam String currentPath, @RequestParam String studyboardno) {
+        // currentPath를 이용하여 파일 또는 폴더를 삭제합니다.
+        // 로직은 파일 시스템 또는 데이터베이스를 업데이트하는 데 필요합니다.
+
+        // 삭제 후 페이지를 다시 로드하거나 필요한 다른 작업을 수행합니다.
+        return "redirect:/study/mine/filesharing?studyboardno=" + studyboardno + "&directoryPath=" + currentPath.substring(0, currentPath.lastIndexOf('/'));
     }
 
 
