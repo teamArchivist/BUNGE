@@ -29,6 +29,7 @@ $(function() {
             },
             success: function (rdata) {
                 if (rdata.length != 0) {
+                    $("#searchCondition").css("display", "block");
                     rdata.forEach(subject => {
                         //console.log(subject)
                         let option = $("<option>").val(subject.title).text(subject.title).data("cover", subject.cover);
@@ -46,6 +47,10 @@ $(function() {
                             $("#bookCover").hide();
                         }
                     })
+                } else {
+                    alert("검색 결과가 없습니다");
+                    $("#inputBookTitle").val("");
+                    $("#inputAuthor").val("");
                 }
             }, //success end
             error: function(status, error) {
@@ -175,4 +180,28 @@ $(function() {
         location.href = "/study/main";
     })
 
-})
+    function getTodayDate() {
+        let today = new Date();
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+        let yyyy = today.getFullYear();
+
+        return yyyy + '-' + mm + '-' + dd;
+    }
+
+    let today = getTodayDate();
+
+    $('#startDate').attr('min', today);
+    $('#studyStartDate').attr('min', today);
+
+    $('#startDate').on('change', function() {
+        let startDate = $(this).val();
+        $('#endDate').attr('min', startDate);
+    });
+
+    $('#studyStartDate').on('change', function() {
+        let studyStartDate = $(this).val();
+        $('#studyEndDate').attr('min', studyStartDate);
+    });
+
+}) // ready end

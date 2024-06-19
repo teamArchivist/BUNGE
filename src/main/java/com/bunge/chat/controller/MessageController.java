@@ -31,7 +31,7 @@ public class MessageController {
         producerService.sendMessage(KafkaTopic.TEMP, JsonUtils.getString(beforeMessage));
     }
 
-    @KafkaListener(topics = KafkaTopic.TEMP, groupId = "kafka-consumer-group")
+    @KafkaListener(topics = KafkaTopic.TEMP, groupId = "kafka-consumer-group3")
     public void consumeMessage(String message, Acknowledgment ack) {
         consumerService.handleMessage(KafkaTopic.TEMP, message, ack);
     }

@@ -26,9 +26,9 @@ import java.util.Vector;
 public class SftpService {
 
     private static final String USER = "ec2-user";
-    private static final String HOST = "ec2-54-243-17-84.compute-1.amazonaws.com";
+    private static final String HOST = "ec2-43-203-221-59.ap-northeast-2.compute.amazonaws.com";
     private static final int PORT = 22;
-    private static final String PEM_FILE = "/Users/songjaehyuk/Desktop/file/test3.pem";
+    private static final String PEM_FILE = "/home/ec2-user/bunge.pem";
 
     private ChannelSftp setupJsch() throws JSchException {
         JSch jsch = new JSch();
