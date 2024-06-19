@@ -69,9 +69,13 @@ dependencies {
 
     // guava
     implementation 'com.google.guava:guava:33.2.0-jre'
-    
+
     //no main manifest issue
     implementation group: 'org.springframework.boot', name: 'spring-boot-maven-plugin', version: '3.1.12'
+
+    //Jsch
+    implementation 'com.github.mwiede:jsch:0.2.16'
+
 }
 
 tasks.named('bootBuildImage') {

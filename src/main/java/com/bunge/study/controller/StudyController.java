@@ -8,6 +8,7 @@ import com.bunge.study.parameter.BookSearchRequest;
 import com.bunge.study.parameter.CheckApplicationRequest;
 import com.bunge.study.parameter.RejectApplicationRequest;
 import com.bunge.study.service.NoticeService;
+import com.bunge.study.service.SftpService;
 import com.bunge.study.service.StudyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,14 +19,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.security.Principal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/study")
@@ -35,11 +37,13 @@ public class StudyController {
 
     private final StudyService studyService;
     private final NoticeService noticeService;
+    private final SftpService sftpService;
 
     @Autowired
-    public StudyController(StudyService studyService, NoticeService noticeService) {
+    public StudyController(StudyService studyService, NoticeService noticeService, SftpService sftpService) {
         this.studyService = studyService;
         this.noticeService = noticeService;
+        this.sftpService = sftpService;
     }
 
     @GetMapping("/main")
@@ -362,10 +366,10 @@ public class StudyController {
         studyBoardFilter.setPage(page);
         studyBoardFilter.setOffset(offset);
         studyBoardFilter.setLimit(pageSize);
-
         logger.info(studyBoardFilter.toString());
 
         List<StudyManagement> myStudyList = studyService.getMyStudyListByFilter(loginId, studyBoardFilter);
+
         //logger.info(myStudyList.toString());
         int totalMyStudyList = studyService.getMyStudyListCountByFilter(loginId, studyBoardFilter);
 
@@ -401,6 +405,19 @@ public class StudyController {
         List<StudyEvent> studyEvents = studyService.getStudyEventList(studyboardno);
         logger.info(studyEvents.toString());
 
+        // Retrieve files and folders from SFTP server
+        String sftpDirectoryPath = "/home/ec2-user/" + studyboardno; // Adjust as per your SFTP directory structure
+        List<FolderItem> folderItems = null;
+        try {
+            folderItems = sftpService.listItems(sftpDirectoryPath);
+        } catch (Exception e) {
+            // Handle SFTP error
+            model.addAttribute("error", "Failed to retrieve folder items from SFTP server.");
+            e.printStackTrace();
+        }
+
+
+
 
         model.addAttribute("loginId", loginId);
         model.addAttribute("studyManagement", studyManagement);
@@ -409,9 +426,106 @@ public class StudyController {
         model.addAttribute("countApprovalReject", countApprovalReject);
         model.addAttribute("studyApprovals", studyApprovals);
         model.addAttribute("studyEvents", studyEvents);
+        model.addAttribute("studyboardno", studyboardno);
+        model.addAttribute("folderItems", folderItems);
 
         return "study/study_mine";
     }
+
+    @RequestMapping("/mine/filesharing")
+    public String filesharing(Model model, @RequestParam int studyboardno, @RequestParam String directoryPath) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loginId = authentication.getName();
+
+
+
+        StudyManagement studyManagement = studyService.getStudyManagement(studyboardno);
+        int countApprovalReady = studyService.countApprovalReady(studyboardno);
+        int countApprovalComplete = studyService.countApprovalComplete(studyboardno);
+        int countApprovalReject = studyService.countApprovalReject(studyboardno);
+        List<StudyApproval> studyApprovals = studyService.getStudyApprovalList(studyboardno);
+        List<StudyEvent> studyEvents = studyService.getStudyEventList(studyboardno);
+        logger.info(studyEvents.toString());
+
+
+
+        model.addAttribute("loginId", loginId);
+        model.addAttribute("studyManagement", studyManagement);
+        model.addAttribute("countApprovalReady", countApprovalReady);
+        model.addAttribute("countApprovalComplete", countApprovalComplete);
+        model.addAttribute("countApprovalReject", countApprovalReject);
+        model.addAttribute("studyApprovals", studyApprovals);
+        model.addAttribute("studyEvents", studyEvents);
+        try {
+            // 폴더가 존재하지 않으면 생성
+            sftpService.createFolder(directoryPath);
+            // 파일 목록 조회
+            List<FolderItem> items = sftpService.listItems(directoryPath);
+            List<FolderItem> folders = new ArrayList<>();
+            List<FolderItem> files = new ArrayList<>();
+            for (FolderItem item : items) {
+                if (item.isDirectory()) {
+                    folders.add(item);
+                } else {
+                    files.add(item);
+                }
+            }
+            List<FolderItem> sortedItems = new ArrayList<>();
+            sortedItems.addAll(folders);
+            sortedItems.addAll(files);
+            model.addAttribute("folders", sortedItems);
+            model.addAttribute("currentPath", directoryPath); // 현재 디렉토리 경로를 템플릿에 전달
+        } catch (Exception e) {
+            // 예외 처리
+            model.addAttribute("error", "Error occurred while listing folders: " + e.getMessage());
+        }
+        model.addAttribute("studyboardno", studyboardno); // studyboardno를 템플릿에 전달
+        return "study/study_filesharing";
+
+    }
+
+
+
+    @PostMapping("/folder/create")
+    public ModelAndView createFolder(@RequestParam String currentPath, @RequestParam String folderName, @RequestParam int studyboardno, RedirectAttributes redirectAttributes) {
+        try {
+            // 폴더 생성 로직을 호출합니다.
+            sftpService.createFolder(currentPath + "/" + folderName);
+
+        } catch (Exception e) {
+            // 예외가 발생하면 에러 메시지를 추가합니다.
+            redirectAttributes.addFlashAttribute("error", "폴더 생성에 실패하였습니다: " + e.getMessage());
+
+        }
+        // 폴더 생성 후 직전 경로로 리디렉션합니다.
+        return new ModelAndView("redirect:/study/mine/filesharing?studyboardno=" + studyboardno + "&directoryPath=" + currentPath);
+    }
+
+
+
+    @PostMapping("/file/upload")
+    public String handleFileUpload(@RequestParam("file") MultipartFile file,
+                                   @RequestParam String currentPath,
+                                   @RequestParam int studyboardno,
+                                   RedirectAttributes redirectAttributes) {
+        if (file.isEmpty()) {
+            redirectAttributes.addFlashAttribute("error", "업로드할 파일을 선택해주세요.");
+        } else {
+            try {
+                // 파일을 업로드합니다.
+                sftpService.uploadFile(file.getInputStream(), currentPath, file.getOriginalFilename());
+            } catch (Exception e) {
+                logger.error("파일 업로드 중 오류 발생: " + e.getMessage());
+                redirectAttributes.addFlashAttribute("error", "파일 업로드 중 오류가 발생했습니다: " + e.getMessage());
+
+            }
+        }
+        return "redirect:/study/mine/filesharing?studyboardno=" + studyboardno + "&directoryPath=" + currentPath;
+    }
+
+
+
 
     @ResponseBody
     @PostMapping("/submit-change-book")

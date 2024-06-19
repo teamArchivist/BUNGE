@@ -245,6 +245,11 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
+    public List<StudyManagement> getMyStudyList(String loginId) {
+        return studyMapper.getMyStudyList(loginId);
+    }
+
+    @Override
     public List<StudyManagement> getMyStudyListByFilter(String loginId, StudyBoardFilter studyBoardFilter) {
         List<StudyManagement> result = studyMapper.getMyStudyListByFilter(loginId, studyBoardFilter);
         List<StudyManagement> updatedResults = new ArrayList<>();
