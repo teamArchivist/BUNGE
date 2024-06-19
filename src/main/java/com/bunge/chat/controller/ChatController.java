@@ -64,9 +64,11 @@ public class ChatController {
     }
 
     @GetMapping("/rooms")
-    public String showCreatePage(Model model) {
+    public String showCreatePage(Model model,
+                                 @AuthenticationPrincipal Member loginMember) {
         List<Member> members = memberService.findMembers();
         model.addAttribute("members", members);
+        model.addAttribute("loginId", loginMember.getId());
         return "chat/chat-enter";
     }
 }
