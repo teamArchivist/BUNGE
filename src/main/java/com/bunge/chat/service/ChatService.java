@@ -1,12 +1,17 @@
 package com.bunge.chat.service;
 
-//import com.bunge.chat.domain.ChatListDto;
+import com.bunge.chat.domain.ChatListDto;
+import com.bunge.chat.domain.ChatMessageDto;
 import com.bunge.chat.domain.ChatRequestDto;
 import com.bunge.chat.repository.ChatRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -20,5 +25,17 @@ public class ChatService {
         ChatRequestDto save = repository.save(requestDto);
         repository.saveRelation(requestDto);
         return save;
+    }
+
+    public List<ChatListDto> findChatrooms(String loginMemberId) {
+         return repository.findAllByMemberId(loginMemberId).stream()
+                 .sorted(Comparator.comparing(ChatListDto::getCreateDate).reversed())
+                 .collect(Collectors.toList());
+    }
+
+    public ChatMessageDto findChatroom(Integer id) {
+        ChatMessageDto messageDto = new ChatMessageDto();
+        messageDto.setMessages(repository.findById(id));
+        return messageDto;
     }
 }

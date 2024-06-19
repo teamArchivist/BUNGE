@@ -499,9 +499,23 @@ $(function () {
         success: function (data) {
             if (data.studystatus === "progress") {
                 $("#startStudy").text("진행중").attr("disabled", true)
-                $("#studyApprove").remove()
-                $("#updateStudy").remove()
-                $("#deleteStudy").remove()
+                $("#enrollComment").text("(진행중)")
+
+                $("#application").remove();
+                $("#studyApprove").remove();
+                $("#updateStudy").remove();
+                $("#deleteStudy").remove();
+                $("#cancelApplication").remove();
+
+            } else if (data.studystatus === "end") {
+                $("#startStudy").text("종료").attr("disabled", true)
+                $("#enrollComment").text("(종료)")
+
+                $("#application").remove();
+                $("#studyApprove").remove();
+                $("#updateStudy").remove();
+                $("#deleteStudy").remove();
+                $("#cancelApplication").remove();
             }
 
         },

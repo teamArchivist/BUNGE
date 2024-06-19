@@ -1,5 +1,6 @@
 package com.bunge.study.service;
 
+import com.bunge.admin.domain.reportmanagement;
 import com.bunge.memo.domain.Book;
 import com.bunge.study.domain.*;
 import com.bunge.study.filter.StudyBoardFilter;
@@ -245,6 +246,11 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
+    public List<StudyManagement> getMyStudyList(String loginId) {
+        return studyMapper.getMyStudyList(loginId);
+    }
+
+    @Override
     public List<StudyManagement> getMyStudyListByFilter(String loginId, StudyBoardFilter studyBoardFilter) {
         List<StudyManagement> result = studyMapper.getMyStudyListByFilter(loginId, studyBoardFilter);
         List<StudyManagement> updatedResults = new ArrayList<>();
@@ -266,5 +272,10 @@ public class StudyServiceImpl implements StudyService {
     @Override
     public int getMyStudyListCountByFilter(String loginId, StudyBoardFilter studyBoardFilter) {
         return studyMapper.getMyStudyListCountByFilter(loginId, studyBoardFilter);
+    }
+
+    @Override
+    public int submitReport(reportmanagement rm) {
+        return studyMapper.submitReport(rm);
     }
 }

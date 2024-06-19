@@ -39,7 +39,7 @@
             and s.id like CONCAT('%', #{keyword}, '%')
         </if>
         group by s.no
-        order by state
+        order by s.state, s.challengeend desc
         limit #{offset}, #{limit}
     </select>
 
@@ -312,6 +312,32 @@
         where no = #{no}
     </delete>
 
+    <select id="getMyStudyList" parameterType="String" resultMap="studyManagementResultMap">
+        SELECT sm.*, sb.title,
+               GROUP_CONCAT(sm2.memberId SEPARATOR ',') AS memberIds
+        FROM studymanagement sm
+                 JOIN studyboard sb ON sm.studyboardno = sb.no
+                 LEFT JOIN studymember sm2 ON sm.studyboardno = sm2.studyboardno
+        WHERE sm.studyboardno IN (
+            SELECT studyboardno
+            FROM studymember
+            WHERE memberId = #{loginId}
+        )
+        GROUP BY sm.studyboardno, sb.title;
+    </select>
+
+    <resultMap id="studyManagementResultMap" type="com.bunge.study.domain.StudyManagement">
+        <result property="studyboardno" column="studyboardno"/>
+        <result property="studystart" column="studystart"/>
+        <result property="studyend" column="studyend"/>
+        <result property="studyperiod" column="studyperiod"/>
+        <result property="leaderId" column="leaderId"/>
+        <result property="booktitle" column="booktitle"/>
+        <result property="studystatus" column="studystatus"/>
+        <result property="title" column="title"/>
+        <result property="memberIds" column="memberIds"/>
+    </resultMap>
+
     <select id="getMyStudyListByFilter" parameterType="map" resultType="com.bunge.study.domain.StudyManagement">
         SELECT sm.*, sb.title,
                GROUP_CONCAT(sm2.memberId SEPARATOR ',') AS memberIds
@@ -330,6 +356,7 @@
             AND sm.leaderId LIKE CONCAT('%', #{studyBoardFilter.keyword}, '%')
         </if>
         GROUP BY sm.studyboardno, sb.title
+        ORDER BY sm.studystatus desc
         limit #{studyBoardFilter.offset}, #{studyBoardFilter.limit}
     </select>
 
@@ -359,5 +386,12 @@
         set studystatus = 'end'
         where studyboardno = #{studyboardno}
     </update>
+
+    <insert id="submitReport" parameterType="com.bunge.admin.domain.reportmanagement">
+        insert into reportmanagement
+        (reporttargetid, reporterid, reportreason, reportdate)
+        values
+        (#{reporttargetid}, #{reporterid}, #{reportreason}, now())
+    </insert>
 
 </mapper>

@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Folder List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .button-container {
+            margin-bottom: 20px;
+        }
+
+        .create-folder-button,
+        .upload-file-button,
+        .confirm-upload-button,
+        .go-to-parent-button {
+            margin-right: 10px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .create-folder-button:hover,
+        .upload-file-button:hover,
+        .confirm-upload-button:hover,
+        .go-to-parent-button:hover {
+            background-color: #0056b3;
+        }
+
+        .confirm-upload-button {
+            background-color: #28a745;
+            cursor: not-allowed;
+        }
+
+        .confirm-upload-button.enabled {
+            cursor: pointer;
+            background-color: #28a745;
+        }
+
+        .confirm-upload-button.enabled:hover {
+            background-color: #218838;
+        }
+
+        .create-folder-form,
+        .upload-file-form {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .create-folder-form h2,
+        .upload-file-form h2 {
+            margin-top: 0;
+            margin-bottom: 10px;
+        }
+
+        .create-folder-form form,
+        .upload-file-form form {
+            margin-top: 10px;
+        }
+
+        .create-folder-form label,
+        .upload-file-form label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .create-folder-form input[type="text"],
+        .upload-file-form input[type="file"] {
+            width: 300px;
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .main-content {
+            background-color: #c3bdbd; /* 원하는 배경색 지정 */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        li {
+            width: 150px;
+            height: 150px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background-size: contain; /* 이미지가 요소 안에 맞게 조정 */
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: #fff; /* 배경색 추가 */
+        }
+
+        /* 폴더 아이콘 */
+        .folder-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .folder-link:hover {
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
+
+        .folder-link .link-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+        }
+
+        .folder-link img {
+            max-width: 80px; /* 이미지 최대 너비 설정 */
+            max-height: 80px; /* 이미지 최대 높이 설정 */
+        }
+
+        /* 파일 아이콘 */
+        .file-link {
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .file-link:hover {
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
+
+        .file-link .link-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+        }
+
+        .file-link img {
+            max-width: 80px; /* 이미지 최대 너비 설정 */
+            max-height: 80px; /* 이미지 최대 높이 설정 */
+        }
+
+        .link-content span {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .clickable-box {
+            display: block;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .clickable-box a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        .clickable-box:hover {
+            background-color: #f0f0f0;
+        }
+
+        .home-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            margin-right: 10px;
+            padding: 10px 20px;
+            background-color: #bd0606;
+            color: #ffffff; /* 흰색으로 변경 */
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .home-button a {
+            text-decoration: none;
+            color: #ffffff; /* 흰색으로 설정 */
+        }
+
+        .home-button a:hover {
+            text-decoration: underline; /* 밑줄 추가 */
+        }
+
+        .context-menu {
+            display: none;
+            position: absolute;
+            z-index: 1000;
+            width: 100px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+        }
+
+        .context-menu-item {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background: none;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .context-menu-item:hover {
+            background-color: #f0f0f0;
+        }
+
+    </style>
+
+    <script>
+        function goToParentDirectory() {
+            var currentPath = document.getElementById('currentPath').value;
+            var studyboardno = document.getElementById('studyboardno').value;
+
+            if (currentPath === '/home/ec2-user/' + studyboardno) {
+                return; // 루트 경로이면 상위 폴더로 이동하지 않음
+            }
+
+            var lastIndex = currentPath.lastIndexOf('/');
+            var parentPath = currentPath.substring(0, lastIndex);
+
+            window.location.href = '/study/mine/filesharing?studyboardno=' + studyboardno + '&directoryPath=' + parentPath;
+        }
+
+        window.onload = function() {
+            var currentPath = document.getElementById('currentPath').value;
+            var studyboardno = document.getElementById('studyboardno').value;
+
+            if (currentPath === '/home/ec2-user/' + studyboardno) {
+                var goToParentButton = document.getElementById('goToParentButton');
+                goToParentButton.style.display = 'none'; // 루트 경로이면 상위 폴더로 이동 버튼 숨김
+            }
+        };
+
+        function toggleCreateFolderForm() {
+            var form = document.querySelector('.create-folder-form');
+            form.style.display = (form.style.display === 'none' || form.style.display === '') ? 'block' : 'none';
+        }
+
+        function toggleUploadFileForm() {
+            var form = document.querySelector('.upload-file-form');
+            form.style.display = (form.style.display === 'none' || form.style.display === '') ? 'block' : 'none';
+        }
+    </script>
+    <script th:inline="javascript">
+        function truncateName(name, maxLength) {
+            if (name.length <= maxLength) {
+                return name;
+            } else {
+                var truncatedName = name.substr(0, maxLength - 3) + '...';
+                return truncatedName;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var folderLinks = document.querySelectorAll('.folder-link span');
+            var fileLinks = document.querySelectorAll('.file-link span');
+
+            folderLinks.forEach(function(link) {
+                var originalName = link.textContent;
+                var truncatedName = truncateName(originalName, 15);
+                link.textContent = truncatedName;
+                link.setAttribute('title', originalName); // 원본 이름을 title 속성에 추가하여 마우스 오버 시 전체 이름을 보여줌
+            });
+
+            fileLinks.forEach(function(link) {
+                var originalName = link.textContent;
+                var truncatedName = truncateName(originalName, 15);
+                link.textContent = truncatedName;
+                link.setAttribute('title', originalName); // 원본 이름을 title 속성에 추가하여 마우스 오버 시 전체 이름을 보여줌
+            });
+        });
+    </script>
+    <script th:inline="javascript">
+        function showContextMenu(event, type, name) {
+            event.preventDefault();
+
+            var contextMenu = document.getElementById('contextMenu');
+            contextMenu.innerHTML = ''; // 기존의 메뉴 초기화
+
+            var deleteAction = document.createElement('div');
+            deleteAction.textContent = (type === 'folder') ? '폴더 삭제' : '파일 삭제';
+            deleteAction.classList.add('context-menu-item');
+            deleteAction.addEventListener('click', function() {
+                // 삭제 로직을 여기에 구현
+                if (type === 'folder') {
+                    alert('폴더 ' + name + ' 삭제');
+                } else {
+                    alert('파일 ' + name + ' 삭제');
+                }
+            });
+            contextMenu.appendChild(deleteAction);
+
+            // 컨텍스트 메뉴의 위치 조정
+            contextMenu.style.top = event.clientY + 'px';
+            contextMenu.style.left = event.clientX + 'px';
+            contextMenu.style.display = 'block';
+
+            // 다른 곳을 클릭하면 컨텍스트 메뉴를 숨김
+            document.addEventListener('click', function() {
+                contextMenu.style.display = 'none';
+            });
+        }
+    </script>
+
+</head>
+<body>
+<div class="button-container">
+    <button class="go-to-parent-button" id="goToParentButton" onclick="goToParentDirectory()">상위 폴더로 이동</button>
+    <button class="create-folder-button" onclick="toggleCreateFolderForm()">새 폴더 생성</button>
+    <button class="upload-file-button" onclick="toggleUploadFileForm()">파일 업로드</button>
+</div>
+<div class="home-button">
+    <a th:if="${not #lists.isEmpty(myStudyList)}"
+       th:href="@{/study/mine(studyboardno=${studyboardno})}" class="home-link">🔙메인으로</a>
+</div>
+
+<div class="create-folder-form">
+    <h2>새 폴더 생성</h2>
+    <form id="createForm" th:action="@{/study/folder/create}" method="post">
+        <input type="hidden" id="currentPath" name="currentPath" th:value="${currentPath}">
+        <input type="hidden" id="studyboardno" name="studyboardno" th:value="${studyboardno}">
+        <label for="folderName">폴더 이름:</label>
+        <input type="text" id="folderName" name="folderName" required>
+        <button type="submit">폴더 생성</button>
+    </form>
+</div>
+
+<div class="upload-file-form">
+    <h2>파일 업로드</h2>
+    <form id="uploadForm" th:action="@{/study/file/upload}" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="currentPath" th:value="${currentPath}">
+        <input type="hidden" name="studyboardno" th:value="${studyboardno}">
+        <input type="file" name="file" required>
+        <button type="submit">확인</button>
+    </form>
+</div>
+
+<!-- 파일 다운로드 폼 -->
+<div class="download-file-form" th:if="${not #lists.isEmpty(filesToDownload)}">
+    <h2>파일 다운로드</h2>
+    <ul>
+        <li th:each="file : ${filesToDownload}">
+            <form th:action="@{/study/file/download}" method="post">
+                <input type="hidden" name="currentPath" th:value="${currentPath}">
+                <input type="hidden" name="studyboardno" th:value="${studyboardno}">
+                <input type="hidden" name="fileName" th:value="${file.name}">
+                <button type="submit" th:text="${file.name}" th:download="${file.name}"></button>
+            </form>
+        </li>
+    </ul>
+</div>
+<div class="main-content">
+<h1>목록 보기</h1>
+    <ul>
+        <li th:each="folder : ${folders}">
+            <a th:if="${folder.directory}"
+               th:href="@{|/study/mine/filesharing?studyboardno=${studyboardno}&directoryPath=${currentPath}/${folder.name}|}"
+               class="folder-link"
+               oncontextmenu="showContextMenu(event, 'folder', '${folder.name}')">
+                <div class="link-content">
+                    <img src="https://i.ibb.co/XLG39JD/free-icon-folder-5613750.png" alt="folder-icon" />
+                    <span th:text="${folder.name}"></span>
+                </div>
+            </a>
+            <a th:unless="${folder.directory}"
+               th:href="@{|/study/file/download?remoteFilePath=${currentPath}/${folder.name}|}"
+               class="file-link"
+               oncontextmenu="showContextMenu(event, 'file', '${folder.name}')">
+                <div class="link-content">
+                    <img src="https://i.ibb.co/HgRjhK9/file-icon.png" alt="file-icon" />
+                    <span th:text="${folder.name}"></span>
+                </div>
+            </a>
+        </li>
+    </ul>
+</div>
+
+<div id="contextMenu" class="context-menu">
+    <button id="deleteButton" class="context-menu-item" onclick="deleteItem()">삭제</button>
+</div>
+
+
+</body>
+</html>

@@ -1,6 +1,7 @@
 package com.bunge.admin.service;
 
 import com.bunge.admin.domain.Visitor;
+import com.bunge.admin.domain.adminReportListFile;
 import com.bunge.admin.domain.reportmanagement;
 import com.bunge.admin.mapper.AdminMapper;
 import com.bunge.member.domain.Member;
@@ -68,17 +69,13 @@ public class AdminServiceimpl implements AdminService {
     }
 
     @Override
-    public List<reportmanagement> getreportlist(int limit, int offset) {
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("limit", limit);
-        map.put("offset", offset);
-
-        return adminMapper.getreportlist(map);
+    public List<reportmanagement> getreportlist(adminReportListFile adminreportlistfile) {
+        return adminMapper.getreportlist(adminreportlistfile);
     }
 
     @Override
-    public int getreportlistcount() {
-        return adminMapper.getreportlistcount();
+    public int getreportlistcount(adminReportListFile adminreportlistfile) {
+        return adminMapper.getreportlistcount(adminreportlistfile);
     }
 
     @Override

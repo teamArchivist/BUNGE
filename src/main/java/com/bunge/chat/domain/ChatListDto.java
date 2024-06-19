@@ -1,16 +1,16 @@
 package com.bunge.chat.domain;
 
 import lombok.Getter;
-import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
-public class Message {
-    private int id;
-    private int chatroomId;
-    private String memberId;
+@ToString
+public class ChatListDto {
+    private Integer chatroomId;
+    private String nick;
+    private String state;
     private String type;
     private String data;
     private LocalDateTime createDate;

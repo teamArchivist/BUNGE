@@ -19,13 +19,13 @@
         white-space: nowrap; !important;/* 텍스트가 줄바꿈 되지 않도록 설정 */
     }
 </style>
-<body>
+<body th:with="firstStudyboardno=${studies[0].studyboardno}">
 <section sec:authorize="hasAnyAuthority('member')">
     <div class="content__header content__boxed overlapping">
         <!-- member 페이지-->
         <div class="content__wrap">
             <!-- Page title and information -->
-            <h1 class="page-title mb-2">[[${loginId}]]님</h1>
+            <h1 class="page-title mb-2">[[${memberId}]]님</h1>
         </div>
     </div>
     <div class="content__boxed">
@@ -37,249 +37,77 @@
                             <h3 class="h4 card-title"><i class="pli-megaphone"></i>&nbsp;&nbsp;공지사항</h3>
                             <!-- GridJS - Sorting -->
                             <div id="_dm-gridjsSorting">
-                                <!-- Undeline nav tabs without base -->
-                                <!-- Nav tabs -->
                                 <ul class="nav nav-underline nav-component border-bottom" role="tablist">
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link px-3 active" data-bs-toggle="tab" data-bs-target="#_dm-coTabsHome" type="button" role="tab" aria-controls="home" aria-selected="true">고라니</button>
+                                    <li th:each="study, iterStat : ${studies}" th:if="${iterStat.index < 4}" class="nav-item" role="presentation">
+                                        <button th:classappend="${iterStat.index == 0} ? ' active' : ''" class="nav-link px-3"
+                                                data-bs-toggle="tab"
+                                                th:data-bs-target="'#tab-' + ${study.studyboardno}"
+                                                type="button" role="tab"
+                                                th:aria-controls="'tab-' + ${study.studyboardno}"
+                                                th:aria-selected="${iterStat.index == 0} ? 'true' : 'false'"
+                                                th:data-studyboardno="${study.studyboardno}">
+                                            <span th:text="${study.studyTitle.length() > 10} ? ${study.studyTitle.substring(0, 10)} + '...' : ${study.studyTitle}"></span>
+                                        </button>
                                     </li>
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link px-3" data-bs-toggle="tab" data-bs-target="#_dm-coTabsProfile" type="button" role="tab" aria-controls="profile" aria-selected="false">Just Do it</button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link px-3" data-bs-toggle="tab" data-bs-target="#_dm-coTabsContact" type="button" role="tab" aria-controls="contact" aria-selected="false">Contact</button>
+                                    <li th:if="${studies.size() > 4}" class="nav-item" role="presentation">
+                                        <button class="nav-link px-3"
+                                                type="button" role="tab"
+                                                onclick="location.href='/study/mine-list'">
+                                            공지사항 더보기
+                                        </button>
                                     </li>
                                 </ul>
 
-                                <!-- Tabs content -->
                                 <div class="tab-content p-3">
-
-                                    <div id="_dm-coTabsHome" class="tab-pane fade show active" role="tabpanel" aria-labelledby="home-tab">
+                                    <div th:each="study, iterStat : ${studies}" th:if="${iterStat.index < 4}" th:id="'tab-' + ${study.studyboardno}" th:classappend="${iterStat.index == 0} ? ' show active' : ''" class="tab-pane fade" role="tabpanel">
                                         <div role="complementary" class="gridjs gridjs-container" style="width: 100%;">
-                                            <div class="gridjs-wrapper" style="height: 220px;">
+                                            <div class="gridjs-wrapper" style="height: 320px;">
                                                 <table role="grid" class="gridjs-table table table-striped" style="height: auto;">
                                                     <thead class="gridjs-thead">
                                                     <tr class="gridjs-tr">
-                                                        <th data-column-id="id" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 53px; width: 60px;">
-                                                            <div class="gridjs-th-content">
-                                                                No.
-                                                            </div>
-                                                        </th>
-                                                        <th data-column-id="name" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 150px; width: 150px;">
-                                                            <div class="gridjs-th-content">
-                                                                제목
-                                                            </div>
-                                                        </th>
-                                                        <th data-column-id="lastLogin" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 60px; width: 60px;">
-                                                            <div class="gridjs-th-content">
-                                                                작성자
-                                                            </div>
-                                                        </th>
-                                                        <th data-column-id="lastLogin" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 90px; width: 100px;">
-                                                            <div class="gridjs-th-content">
-                                                                작성자일
-                                                            </div>
-                                                        </th>
+                                                        <th>No.</th>
+                                                        <th>제목</th>
+                                                        <th>작성자</th>
+                                                        <th>작성자일</th>
                                                     </tr>
                                                     </thead>
-                                                    <tbody class="gridjs-tbody">
-                                                    <tr class="gridjs-tr">
-                                                        <td data-column-id="id" class="gridjs-td">
-                                                            1
-                                                        </td>
-                                                        <td data-column-id="lastLogin" class="gridjs-td">
-                                                            [필독] 이번주 일정 변경 공지합니다.
-                                                        </td>
-                                                        <td data-column-id="name" class="gridjs-td">
-                                                            admin
-                                                        </td>
-                                                        <td data-column-id="lastLogin" class="gridjs-td">
-                                                            2024-06-15
-                                                        </td>
+                                                    <tbody class="gridjs-tbody" id="notice-list-${study.studyboardno}">
+                                                    <tr th:if="${#lists.isEmpty(studyNotices.get(study.studyboardno))}">
+                                                        <td colspan="4">공지사항이 없습니다.</td>
                                                     </tr>
-                                                    <tr class="gridjs-tr">
-                                                        <td data-column-id="id" class="gridjs-td">
-                                                            1
-                                                        </td>
-                                                        <td data-column-id="lastLogin" class="gridjs-td">
-                                                            [필독] 이번주 일정 변경 공지합니다.
-                                                        </td>
-                                                        <td data-column-id="name" class="gridjs-td">
-                                                            admin
-                                                        </td>
-                                                        <td data-column-id="lastLogin" class="gridjs-td">
-                                                            2024-06-15
-                                                        </td>
+                                                    <tr th:each="notice : ${studyNotices.get(study.studyboardno)}" class="gridjs-tr">
+                                                        <td th:text="${notice.noticeNo}"></td>
+                                                        <td th:text="${notice.noticeTitle}"></td>
+                                                        <td th:text="${notice.authorId}"></td>
+                                                        <td th:text="${notice.createdAt}"></td>
                                                     </tr>
-                                                    <tr class="gridjs-tr">
-                                                        <td data-column-id="id" class="gridjs-td">
-                                                            1
-                                                        </td>
-                                                        <td data-column-id="lastLogin" class="gridjs-td">
-                                                            [필독] 이번주 일정 변경 공지합니다.
-                                                        </td>
-                                                        <td data-column-id="name" class="gridjs-td">
-                                                            admin
-                                                        </td>
-                                                        <td data-column-id="lastLogin" class="gridjs-td">
-                                                            2024-06-15
-                                                        </td>
-                                                    </tr>
-                                                    <tr class="gridjs-tr">
-                                                        <td data-column-id="id" class="gridjs-td">
-                                                            1
-                                                        </td>
-                                                        <td data-column-id="lastLogin" class="gridjs-td">
-                                                            [필독] 이번주 일정 변경 공지합니다.
-                                                        </td>
-                                                        <td data-column-id="name" class="gridjs-td">
-                                                            admin
-                                                        </td>
-                                                        <td data-column-id="lastLogin" class="gridjs-td">
-                                                            2024-06-15
-                                                        </td>
-                                                    </tr>
-                                                    <tr class="gridjs-tr">
-                                                        <td data-column-id="id" class="gridjs-td">
-                                                            1
-                                                        </td>
-                                                        <td data-column-id="lastLogin" class="gridjs-td">
-                                                            [필독] 이번주 일정 변경 공지합니다.
-                                                        </td>
-                                                        <td data-column-id="name" class="gridjs-td">
-                                                            admin
-                                                        </td>
-                                                        <td data-column-id="lastLogin" class="gridjs-td">
-                                                            2024-06-15
-                                                        </td>
-                                                    </tr>
-
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                    <div id="_dm-coTabsProfile" class="tab-pane fade" role="tabpanel" aria-labelledby="profile-tab">
-                                        <div role="complementary" class="gridjs gridjs-container" style="width: 100%;">
-                                            <div class="gridjs-wrapper" style="height: 220px;">
-                                                <table role="grid" class="gridjs-table table table-striped" style="height: auto;">
-                                                    <thead class="gridjs-thead">
-                                                    <tr class="gridjs-tr">
-                                                        <th data-column-id="id" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 53px; width: 60px;">
-                                                            <div class="gridjs-th-content">
-                                                                No.
-                                                            </div>
-                                                        </th>
-                                                        <th data-column-id="name" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 150px; width: 150px;">
-                                                            <div class="gridjs-th-content">
-                                                                제목
-                                                            </div>
-                                                        </th>
-                                                        <th data-column-id="lastLogin" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 60px; width: 60px;">
-                                                            <div class="gridjs-th-content">
-                                                                작성자
-                                                            </div>
-                                                        </th>
-                                                        <th data-column-id="lastLogin" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 90px; width: 100px;">
-                                                            <div class="gridjs-th-content">
-                                                                작성자일
-                                                            </div>
-                                                        </th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody class="gridjs-tbody">
-                                                    <tr class="gridjs-tr">
-                                                        <td data-column-id="id" class="gridjs-td">
-                                                            1
-                                                        </td>
-                                                        <td data-column-id="lastLogin" class="gridjs-td">
-                                                            [필독] 이번주 일정 변경 공지합니다.
-                                                        </td>
-                                                        <td data-column-id="name" class="gridjs-td">
-                                                            admin
-                                                        </td>
-                                                        <td data-column-id="lastLogin" class="gridjs-td">
-                                                            2024-06-15
-                                                        </td>
-                                                    </tr>
-                                                    </tbody>
                                                 </table>
                                             </div>
                                         </div>
                                     </div>
-                                    <div id="_dm-coTabsContact" class="tab-pane fade" role="tabpanel" aria-labelledby="contact-tab">
-                                        <div role="complementary" class="gridjs gridjs-container" style="width: 100%;">
-                                        <div class="gridjs-wrapper" style="height: 220px;">
-                                            <table role="grid" class="gridjs-table table table-striped" style="height: auto;">
-                                                <thead class="gridjs-thead">
-                                                <tr class="gridjs-tr">
-                                                    <th data-column-id="id" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 53px; width: 60px;">
-                                                        <div class="gridjs-th-content">
-                                                            No.
-                                                        </div>
-                                                    </th>
-                                                    <th data-column-id="name" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 150px; width: 150px;">
-                                                        <div class="gridjs-th-content">
-                                                            제목
-                                                        </div>
-                                                    </th>
-                                                    <th data-column-id="lastLogin" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 60px; width:60px;">
-                                                        <div class="gridjs-th-content">
-                                                            작성자
-                                                        </div>
-                                                    </th>
-                                                    <th data-column-id="lastLogin" class="gridjs-th gridjs-th-sort" tabindex="0" style="min-width: 90px; width: 100px;">
-                                                        <div class="gridjs-th-content">
-                                                            작성자일
-                                                        </div>
-                                                    </th>
-                                                </tr>
-                                                </thead>
-                                                <tbody class="gridjs-tbody">
-                                                <tr class="gridjs-tr">
-                                                    <td data-column-id="id" class="gridjs-td">
-                                                        1
-                                                    </td>
-                                                    <td data-column-id="lastLogin" class="gridjs-td">
-                                                        [필독] 이번주 일정 변경 공지합니다.
-                                                    </td>
-                                                    <td data-column-id="name" class="gridjs-td">
-                                                        admin
-                                                    </td>
-                                                    <td data-column-id="lastLogin" class="gridjs-td">
-                                                        2024-06-15
-                                                    </td>
-                                                </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        </div>
-                                    </div>
-
                                 </div>
+
                                 <!-- END : Undeline nav tabs without base -->
 
 
                                 <div role="complementary" class="gridjs gridjs-container" style="width: 100%;">
-                                    <nav class="text-align-center mt-5" aria-label="Table navigation">
-                                        <ul id="announcementList" class="pagination justify-content-center">
-                                            <li class="page-item disabled">
-                                                <a class="page-link" href="#">이전</a>
-                                            </li>
-                                            <li class="page-item active" aria-current="page">
-                                                <span class="page-link">1</span>
-                                            </li>
-                                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                            <li class="page-item disabled"><a class="page-link" href="#">...</a></li>
-                                            <li class="page-item"><a class="page-link" href="#">5</a></li>
-                                            <li class="page-item">
-                                                <a class="page-link" href="#">다음</a>
-                                            </li>
-                                        </ul>
-                                    </nav>
+<!--                                    <nav class="text-align-center mt-5" aria-label="Table navigation">-->
+<!--                                        <ul id="pagination-${study.studyboardno}" class="pagination justify-content-center">-->
+<!--                                            <li class="page-item disabled">-->
+<!--                                                <a class="page-link" href="#">이전</a>-->
+<!--                                            </li>-->
+<!--                                            <li class="page-item active" aria-current="page">-->
+<!--                                                <span class="page-link">1</span>-->
+<!--                                            </li>-->
+<!--                                            <li class="page-item"><a class="page-link" href="#">2</a></li>-->
+<!--                                            <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+<!--                                            <li class="page-item disabled"><a class="page-link" href="#">...</a></li>-->
+<!--                                            <li class="page-item"><a class="page-link" href="#">5</a></li>-->
+<!--                                            <li class="page-item">-->
+<!--                                                <a class="page-link" href="#">다음</a>-->
+<!--                                            </li>-->
+<!--                                        </ul>-->
+<!--                                    </nav>-->
                                 </div>
                             </div>
                             <!-- END : GridJS - Sorting -->

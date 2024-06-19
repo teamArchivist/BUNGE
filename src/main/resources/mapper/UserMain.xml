@@ -21,7 +21,7 @@
         CASE
         WHEN CURRENT_DATE &lt; sm.studystart THEN 0
         WHEN CURRENT_DATE &gt; sm.studyend THEN 100
-        ELSE (DATEDIFF(CURRENT_DATE, sm.studystart) / DATEDIFF(sm.studyend, sm.studystart)) * 100
+        ELSE ROUND((DATEDIFF(CURRENT_DATE, sm.studystart) / DATEDIFF(sm.studyend, sm.studystart)) * 100,2)
         END AS progress,
         CASE
         WHEN CURRENT_DATE = sm.studystart THEN 1
@@ -43,10 +43,13 @@
                 sm.studystart ASC
             </when>
             <when test="sort == 'progress'">
-                progress DESC,
                 is_today DESC,
+                progress DESC,
                 sm.studystart ASC
             </when>
+            <otherwise>
+                sm.studystart ASC
+            </otherwise>
         </choose>
         LIMIT #{size} OFFSET #{offset}
     </select>
@@ -102,6 +105,67 @@
         WHERE
             smm.memberId = #{memberId}
             AND end &gt;= CURRENT_DATE
+    </select>
+
+    <select id="selectNoticesByStudyNo" parameterType="int" resultType="com.bunge.study.domain.Notice">
+        SELECT * FROM notice
+        WHERE studyboardno = #{studyboardno}
+        ORDER BY createdAt DESC
+        LIMIT #{size} OFFSET #{offset}
+    </select>
+
+    <select id="countByStudyNo" parameterType="int" resultType="int">
+        SELECT count(*) AS total_count
+        FROM notice
+        WHERE studyboardno = #{studyboardno}
+    </select>
+
+    <select id="getMaxNoticeNoByStudyboardNo" resultType="int">
+        SELECT COALESCE(MAX(noticeNo), 0)
+        FROM notice
+        WHERE studyboardno = #{studyboardno}
+    </select>
+
+    <select id="selectStudiesByMemberId" resultType="com.bunge.study.domain.Notice">
+        SELECT sb.no AS studyboardno, sb.title AS studyTitle
+        FROM studymember sm
+                 JOIN studyboard sb ON sm.studyboardno = sb.no
+        WHERE sm.memberId = #{memberId}
+    </select>
+
+    <select id="selectNoticesByStudyBoardNo" resultType="com.bunge.study.domain.Notice">
+        SELECT n.noticeNo,
+               n.title AS noticeTitle,
+               n.content,
+               n.authorId,
+               n.createdAt,
+               n.studyboardno,
+               sb.title AS studyTitle
+        FROM notice n
+                 JOIN studyboard sb ON n.studyboardno = sb.no
+        WHERE n.studyboardno = #{studyboardno}
+        ORDER BY n.createdAt DESC
+            LIMIT #{size} OFFSET #{offset}
+    </select>
+
+    <select id="countNoticesByStudyBoardNo" resultType="int">
+        SELECT COUNT(*)
+        FROM notice
+        WHERE studyboardno = #{studyboardno}
+    </select>
+
+    <select id="selectNoticesByMemberId" resultType="com.bunge.study.domain.Notice">
+        SELECT sb.title AS studyTitle,
+               n.noticeNo,
+               n.title AS noticeTitle,
+               n.content,
+               n.authorId,
+               n.createdAt
+        FROM studymember sm
+                 JOIN studyboard sb ON sm.studyboardno = sb.no
+                 JOIN notice n ON sb.no = n.studyboardno
+        WHERE sm.memberId = #{memberId}
+        ORDER BY sb.challengestart;
     </select>
 
 </mapper>

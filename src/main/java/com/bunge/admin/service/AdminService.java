@@ -1,6 +1,7 @@
 package com.bunge.admin.service;
 
 
+import com.bunge.admin.domain.adminReportListFile;
 import com.bunge.admin.domain.reportmanagement;
 import com.bunge.member.domain.Member;
 import com.bunge.study.domain.StudyBoard;
@@ -25,9 +26,9 @@ public interface AdminService {
 
     void updateReport(reportmanagement report);
 
-    List<reportmanagement> getreportlist(int limit,int offset);
+    List<reportmanagement> getreportlist(adminReportListFile adminreportlistfile);
 
-    int  getreportlistcount();
+    int  getreportlistcount(adminReportListFile adminreportlistfile);
 
     List<reportmanagement> memberreportlist(String reporterid);
 

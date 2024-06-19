@@ -5,126 +5,255 @@
   <title>나의 스터디</title>
   <links>
     <script th:src="@{/js/studymine.js}"></script>
+    </script>
+
+    <script th:inline="javascript">
+      function getType(filename) {
+        var extension = filename.split('.').pop().toLowerCase();
+        var type = '';
+        switch (extension) {
+          case 'png':
+          case 'jpg':
+          case 'jpeg':
+          case 'gif':
+            type = 'image';
+            break;
+          case 'zip':
+          case 'rar':
+          case '7z':
+          case 'tar':
+            type = 'compressed';
+            break;
+          case 'html':
+            type = 'html';
+            break;
+          case 'txt':
+            type = 'text';
+            break;
+          case 'mp4':
+          case 'avi':
+          case 'mov':
+          case 'wmv':
+            type = 'video';
+            break;
+          default:
+            type = 'unknown';
+        }
+        return type;
+      }
+
+      function formatDateTime(timestamp) {
+        var date = new Date(timestamp);
+        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        var month = months[date.getMonth()];
+        var day = date.getDate();
+        var hour = date.getHours();
+        var minute = date.getMinutes();
+        var ampm = hour >= 12 ? 'pm' : 'am';
+        hour = hour % 12;
+        hour = hour ? hour : 12; // 0 시간을 12로 설정
+        minute = minute < 10 ? '0' + minute : minute; // 1분 미만의 경우 0 추가
+        var time = month + ' ' + day + ', ' + hour + ':' + minute + ' ' + ampm;
+        return time;
+      }
+    </script>
+
+    <script>
+      $(document).ready(function () {
+        $('#fileSharing').click(function () {
+          // 파일 공유 페이지로 이동합니다.
+          window.location.href = 'http://localhost:8080/study/mine/filesharing';
+        });
+      });
+    </script>
     <script type="module" th:src="@{/vendors/ionicons/ionicons.js}"></script>
     <!-- Fullcalendar Scripts [ OPTIONAL ] -->
     <script th:src="@{/vendors/fullcalendar/index.global.min.js}"></script>
     <!-- Initialize [ SAMPLE ] -->
     <script th:src="@{/js/study_mine_calendar.js}"></script>
+
+    <style>
+      /* 폴더 및 파일 목록 스타일 */
+      .folder-item-list {
+        list-style-type: none; /* 목록 기호 제거 */
+        padding: 0; /* 목록 패딩 제거 */
+        margin: 0; /* 목록 마진 제거 */
+      }
+
+      .folder-item, .file-item {
+        display: flex; /* 항목을 가로로 배치 */
+        align-items: center; /* 항목을 수직 중앙 정렬 */
+        padding: 10px 0; /* 각 항목의 상하 패딩 설정 */
+        border-bottom: 1px solid #ddd; /* 항목 사이 구분선 */
+      }
+
+      .folder-icon, .file-icon {
+        width: 24px; /* 이미지 너비 설정 */
+        height: auto; /* 이미지 높이 자동 조정 */
+        margin-right: 10px; /* 아이콘과 텍스트 사이 간격 설정 */
+      }
+
+      .item-name {
+        flex-grow: 1; /* 텍스트가 가능한 한 많이 확장될 수 있도록 설정 */
+      }
+
+      /* 에러 메시지 스타일 */
+      .error-message {
+        color: #dc3545; /* 에러 메시지 텍스트 색상 */
+        font-style: italic; /* 이탤릭체 텍스트 스타일 */
+        margin-top: 10px; /* 위쪽 여백 설정 */
+      }
+    </style>
+    <style>
+      .file-sharing-button {
+        background-color: #007bff; /* 버튼 배경색 */
+        color: #fff; /* 버튼 텍스트 색상 */
+        border: none; /* 테두리 없음 */
+        padding: 8px 16px; /* 내부 패딩 */
+        font-size: 14px; /* 폰트 크기 */
+        cursor: pointer; /* 커서 포인터로 변경 */
+        text-decoration: none; /* 텍스트에 밑줄 없음 */
+        border-radius: 5px; /* 둥근 모서리 반경 */
+        transition: background-color 0.3s; /* 배경색 변경 애니메이션 */
+      }
+
+      .file-sharing-button:hover {
+        background-color: #0056b3; /* 호버 시 배경색 */
+      }
+    </style>
+    <style>
+      .notice-content {
+        background-color: #ffffff; /* 밝은 배경색 */
+        border: 1px solid rgba(223, 221, 221, 0.36); /* 테두리 */
+        padding: 10px; /* 내부 여백 */
+        margin-top: 5px; /* 상단 여백 */
+        border-radius: 5px; /* 모서리 둥글게 */
+      }
+
+    </style>
   </links>
+
+
+
 </head>
 <body class="out-quart">
 <div id="root" class="root mn--max sb--stuck tm--expanded-hd">
-<section id="content" class="content">
-  <div class="content__wrap">
-    <div class="row">
-      <div class="col-md-6 mb-3">
-        <div class="tab-base">
+  <section id="content" class="content">
+    <input type="hidden" th:value="${studyManagement.studystatus}" id="studyStatus">
+    <div class="content__wrap">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <div class="tab-base">
 
-          <!-- Nav tabs -->
-          <ul class="nav nav-tabs" role="tablist">
-            <li class="nav-item active" role="presentation">
-              <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#_dm-tabsSummary" type="button" role="tab" aria-selected="true">개요</button>
-            </li>
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+              <li class="nav-item active" role="presentation">
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#_dm-tabsSummary" type="button"
+                        role="tab" aria-selected="true">개요
+                </button>
+              </li>
 
-            <li class="nav-item" role="presentation">
-              <button th:if="${#strings.equals(studyManagement.leaderId, loginId)}" class="nav-link" data-bs-toggle="tab" data-bs-target="#_dm-tabsAdmin" type="button" role="tab" aria-selected="false"
-                      tabindex="-1">관리·승인
-                <span class="badge bg-danger ms-auto">[[${countApprovalReady}]]</span>
-              </button>
-            </li>
-          </ul>
+              <li class="nav-item" role="presentation">
+                <button th:if="${#strings.equals(studyManagement.leaderId, loginId)}" class="nav-link"
+                        data-bs-toggle="tab" data-bs-target="#_dm-tabsAdmin" type="button" role="tab"
+                        aria-selected="false"
+                        tabindex="-1">관리·승인
+                  <span class="badge bg-danger ms-auto">[[${countApprovalReady}]]</span>
+                </button>
+              </li>
+            </ul>
 
 
-          <!-- Tabs content -->
-          <div class="tab-content mb-3">
+            <!-- Tabs content -->
+            <div class="tab-content mb-3">
 
-            <div class="tab-pane fade active show" role="tabpanel" aria-labelledby="profile-tab" id="_dm-tabsSummary">
+              <div class="tab-pane fade active show" role="tabpanel" aria-labelledby="profile-tab" id="_dm-tabsSummary">
 
-              <div class="row mb-3">
-                <div class="row">
-                  <p class="fw-bold text-decoration-underline fs-4 text-black">스터디 이름</p>
+                <div class="row mb-3">
+                  <div class="row">
+                    <p class="fw-bold text-decoration-underline fs-4 text-black">스터디 이름</p>
+                  </div>
+                  <div class="input-group mb-3">
+                    <input type="text" class="form-control"
+                           th:value="${studyManagement.title}"
+                           aria-describedby="button-addon1"
+                           readonly>
+                  </div>
                 </div>
-                <div class="input-group mb-3">
-                  <input type="text" class="form-control"
-                         th:value="${studyManagement.title}"
-                         aria-describedby="button-addon1"
-                         readonly>
+
+                <div class="row mb-3">
+                  <p class="fw-bold text-decoration-underline fs-4 text-black">도전 책</p>
+                  <div class="input-group mb-3">
+                    <input type="text" class="form-control"
+                           th:value="${studyManagement.booktitle}"
+                           id="originBookTitle"
+                           readonly>
+                    <input type="hidden" th:value="${studyManagement.bookcover}" id="originBookCover">
+                    <input type="hidden" th:value="${studyManagement.author}" id="originAuthor">
+                    <input type="hidden" th:value="${studyManagement.page}" id="originPage">
+                    <input type="hidden" th:value="${studyManagement.pubDate}" id="originPubDate">
+                    <button type="button" class="btn btn-warning"
+                            onclick="showModifyBookModal()"
+                            id="modifyChallengeBook">수정요청
+                    </button>
+                  </div>
                 </div>
-              </div>
 
-              <div class="row mb-3">
-                <p class="fw-bold text-decoration-underline fs-4 text-black">도전 책</p>
-                <div class="input-group mb-3">
-                  <input type="text" class="form-control"
-                         th:value="${studyManagement.booktitle}"
-                         id="originBookTitle"
-                         readonly>
-                  <input type="hidden" th:value="${studyManagement.bookcover}" id="originBookCover">
-                  <input type="hidden" th:value="${studyManagement.author}" id="originAuthor">
-                  <input type="hidden" th:value="${studyManagement.page}" id="originPage">
-                  <input type="hidden" th:value="${studyManagement.pubDate}" id="originPubDate">
-                  <button type="button" class="btn btn-warning"
-                          onclick="showModifyBookModal()"
-                          id="modifyChallengeBook">수정요청
-                  </button>
-                </div>
-              </div>
+                <!-- 도전 책 수정 모달 -->
+                <div class="modal fade" id="modifyBookModal" tabindex="-1" aria-labelledby="modifyBookModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="modifyBookModalLabel">책 수정 요청</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
 
-              <!-- 도전 책 수정 모달 -->
-              <div class="modal fade" id="modifyBookModal" tabindex="-1" aria-labelledby="modifyBookModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="modifyBookModalLabel">책 수정 요청</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-
-                      <!-- 책 검색 및 선택 폼 -->
-                      <div class="input-group mb-2">
+                        <!-- 책 검색 및 선택 폼 -->
+                        <div class="input-group mb-2">
                         <textarea class="form-control" placeholder="책 제목(최대 20글자)" id="inputBookTitle"
                                   maxlength="20" style="resize:none;" rows="1" required></textarea>
-                        <textarea class="form-control" placeholder="지은이(최대 10글자)" id="inputAuthor"
-                                  maxlength="10" style="resize:none;" rows="1"></textarea>
-                        <button type="button" class="btn btn-primary" id="searchBook">검색</button>
-                      </div>
-                      <select class="form-select mb-3" id="searchCondition" name="booktitle" style="display:none">
-
-                      </select>
-                      <div class="row mb-3">
-                        <div class="col-md-4">
-                          <img id="bookCover" src="" alt="Book Cover" width="150px" height="200px" style="display:none">
+                          <textarea class="form-control" placeholder="지은이(최대 10글자)" id="inputAuthor"
+                                    maxlength="10" style="resize:none;" rows="1"></textarea>
+                          <button type="button" class="btn btn-primary" id="searchBook">검색</button>
                         </div>
-                        <div class="col-md-8" style="display:none" id="searchBookInfo">
-                          <p id="searchAuthor"></p>
-                          <p id="searchCategoryName"></p>
-                          <p id="searchPage"></p>
-                          <p id="searchPubDate"></p>
-                          <input type="hidden" value="" id="approvalBookTitle">
-                        </div>
-                      </div>
+                        <select class="form-select mb-3" id="searchCondition" name="booktitle" style="display:none">
 
-                      <div class="input-group mb-2">
+                        </select>
+                        <div class="row mb-3">
+                          <div class="col-md-4">
+                            <img id="bookCover" src="" alt="Book Cover" width="150px" height="200px" style="display:none">
+                          </div>
+                          <div class="col-md-8" style="display:none" id="searchBookInfo">
+                            <p id="searchAuthor"></p>
+                            <p id="searchCategoryName"></p>
+                            <p id="searchPage"></p>
+                            <p id="searchPubDate"></p>
+                            <input type="hidden" value="" id="approvalBookTitle">
+                          </div>
+                        </div>
+
+                        <div class="input-group mb-2">
                         <textarea class="form-control" placeholder="제안 내용을 입력해주세요(최대 200자)" id="approvalContent"
                                   maxlength="200" style="resize:none;" rows="4" required></textarea>
+                        </div>
+
                       </div>
 
-                    </div>
 
-
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                      <button type="button" class="btn btn-primary" id="submitChangeBook">전송</button>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                        <button type="button" class="btn btn-primary" id="submitChangeBook">전송</button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
 
-              <div class="row mb-3">
-                <p class="fw-bold text-decoration-underline fs-4 text-black">참여 인원</p>
-                <div class="row">
-                  <div class="col-md-8">
+                <div class="row mb-3">
+                  <p class="fw-bold text-decoration-underline fs-4 text-black">참여 인원</p>
+                  <div class="row">
+                    <div class="col-md-8">
                     <span th:each="memberId : ${#strings.listSplit(studyManagement.memberIds,',')}">
                       <img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">
                       <span class="btn-group" th:if="!${#strings.equals(studyManagement.leaderId, memberId)}">
@@ -134,143 +263,187 @@
                         </button>
                         <ul class="dropdown-menu" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 40px);" data-popper-placement="bottom-start">
                           <li><button class="dropdown-item report"
-                                      th:onclick="'showReportModal(\'' + memberId + '\')'"
+                                      onclick="showReportModal(this.getAttribute('data-reportid'))"
                                       th:data-reportid="${memberId}"
                                       th:id="${#strings.append('report', memberId)}">신고</button></li>
-                          <li><button class="dropdown-item ban"
-                                      th:data-banid="${memberId}"
-                                      th:id="${#strings.append('ban', memberId)}">강퇴</button></li>
                         </ul>
                       </span>
                       <span class="btn-group" th:if="${#strings.equals(studyManagement.leaderId, memberId)}">
                         <button type="button" class="btn btn-link dropdown-toggle hstack gap-2"
+                                th:data-reportid="${memberId}"
                                 data-bs-toggle="dropdown" aria-expanded="false">[[${memberId}]](리더)
                           <span class="vr"></span>
                         </button>
                         <ul class="dropdown-menu" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 40px);" data-popper-placement="bottom-start">
-                          <li><button class="dropdown-item report"
+                          <li>
+                            <button class="dropdown-item report"
                                       th:data-reportid="${memberId}"
-                                      th:onclick="'showReportModal(\'' + memberId + '\')'"
-                                      th:id="${#strings.append('report', memberId)}">신고</button></li>
+                                      onclick="showReportModal(this.getAttribute('data-reportid'))"
+                                      th:id="${#strings.append('report', memberId)}">신고
+                            </button>
+                          </li>
                         </ul>
                       </span>
                     </span>
 
-                    <!-- 신고 모달 -->
-                    <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="reportModalLabel">신고 사유 입력</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                          </div>
-                          <div class="modal-body">
-                            <form id="reportForm">
-                              <input type="hidden" id="reportMemberId">
-                              <div class="mb-3">
-                                <label for="reporterId" class="form-label">신고자 아이디</label>
-                                <input type="text" class="form-control" id="reporterId" readonly>
-                              </div>
-                              <div class="mb-3">
-                                <label for="reportDate" class="form-label">신고 제출일</label>
-                                <input type="text" class="form-control" id="reportDate" readonly>
-                              </div>
-                              <div class="mb-3">
-                                <label for="reportReason" class="form-label">신고 사유</label>
-                                <textarea class="form-control" id="reportReason" rows="3"
-                                          maxlength="50" placeholder="최대 50자까지 입력 가능합니다"
-                                          required></textarea>
-                              </div>
-                            </form>
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="resetReportModal()">닫기</button>
-                            <button type="button" class="btn btn-primary" onclick="submitReport()">제출</button>
+                      <!-- 신고 모달 -->
+                      <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="reportModalLabel">신고 사유 입력</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              <form id="reportForm">
+                                <input type="hidden" id="reportMemberId">
+                                <div class="mb-3">
+                                  <label for="reporterId" class="form-label">신고자 아이디</label>
+                                  <input type="text" class="form-control" id="reporterId" readonly>
+                                </div>
+                                <div class="mb-3">
+                                  <label for="reportDate" class="form-label">신고 제출일</label>
+                                  <input type="text" class="form-control" id="reportDate" readonly>
+                                </div>
+                                <div class="row mb-3">
+                                  <label class="col-sm-3 col-form-label">신고사유</label>
+                                  <div class="col-sm-9 py-2">
+                                    <div class="form-check mb-2">
+                                      <input id="_dm-blockCheckboxes" class="form-check-input" type="checkbox" name="reportreason">
+                                      <label for="_dm-blockCheckboxes" class="form-check-label">
+                                        음란물 유포
+                                      </label>
+                                    </div>
+
+                                    <div class="form-check mb-2">
+                                      <input id="_dm-blockCheckbox2" class="form-check-input" type="checkbox" name="reportreason">
+                                      <label for="_dm-blockCheckbox2" class="form-check-label">
+                                        불법정보 유포
+                                      </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                      <input id="_dm-blockCheckbox3" class="form-check-input" type="checkbox" name="reportreason">
+                                      <label for="_dm-blockCheckbox3" class="form-check-label">
+                                        개인정보 노출
+                                      </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                      <input id="_dm-blockCheckbox4" class="form-check-input" type="checkbox" name="reportreason">
+                                      <label for="_dm-blockCheckbox4" class="form-check-label">
+                                        불쾌한 표현 사용
+                                      </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                      <input id="_dm-blockCheckbox5" class="form-check-input" type="checkbox" name="reportreason">
+                                      <label for="_dm-blockCheckbox5" class="form-check-label">
+                                        갈등 조장 및 허위 사실 유포
+                                      </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                      <input id="_dm-blockCheckbox6" class="form-check-input" type="checkbox" name="reportreason">
+                                      <label for="_dm-blockCheckbox6" class="form-check-label">
+                                        영리목적 홍보성
+                                      </label>
+                                    </div>
+                                  </div>
+                                </div>
+                              </form>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="resetReportModal()">닫기</button>
+                              <button type="button" class="btn btn-primary" onclick="submitReport()">제출</button>
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
 
 
-                  </div>
-                </div>
-              </div>
-
-              <div class="row mb-3">
-                <p class="fw-bold text-decoration-underline fs-4 text-black">도전 기간
-                  <span>([[${studyManagement.studyperiod}]]일)</span>
-                </p>
-                <div class="input-group">
-                  <input type="date" class="form-control"
-                         th:value="${studyManagement.studystart}"
-                         readonly>
-                  <input type="date" class="form-control"
-                         th:value="${studyManagement.studyend}"
-                         readonly>
-                </div>
-              </div>
-
-            </div>
-
-            <div id="_dm-tabsAdmin" class="tab-pane fade" role="tabpanel">
-              <dt class="col-sm-9 mb-2">승인현황</dt>
-              <div class="row mb-3">
-                <div class="col-sm-4">
-                  <div class="d-flex align-items-stretch">
-                    <div class="d-flex align-items-center justify-content-center flex-shrink-0 text-bg-warning px-4 rounded-start">
-                      <i class="demo-psi-speech-bubble-3 fs-1"></i>
-                    </div>
-                    <div class="flex-grow-1 py-3 ms-3">
-                      <h5 class="h2 mb-0 fw-bold text-warning">[[${countApprovalReady}]]</h5>
-                      <p class="mb-0">대기</p>
                     </div>
                   </div>
                 </div>
 
-                <div class="col-sm-4 mb-3">
-                  <div class="d-flex align-items-stretch">
-                    <div class="d-flex align-items-center justify-content-center flex-shrink-0 text-bg-success px-4 rounded-start">
-                      <i class="demo-psi-speech-bubble-3 fs-1"></i>
-                    </div>
-                    <div class="flex-grow-1 py-3 ms-3">
-                      <h5 class="h2 mb-0 fw-bold text-success">[[${countApprovalComplete}]]</h5>
-                      <p class="mb-0">완료</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-sm-4">
-                  <div class="d-flex align-items-stretch">
-                    <div class="d-flex align-items-center justify-content-center flex-shrink-0 text-bg-danger px-4 rounded-start">
-                      <i class="demo-psi-speech-bubble-3 fs-1"></i>
-                    </div>
-                    <div class="flex-grow-1 py-3 ms-3">
-                      <h5 class="h2 mb-0 fw-bold text-danger">[[${countApprovalReject}]]</h5>
-                      <p class="mb-0">거절</p>
-                    </div>
+                <div class="row mb-3">
+                  <p class="fw-bold text-decoration-underline fs-4 text-black">도전 기간
+                    <span>([[${studyManagement.studyperiod}]]일)</span>
+                  </p>
+                  <div class="input-group">
+                    <input type="date" class="form-control"
+                           th:value="${studyManagement.studystart}"
+                           readonly>
+                    <input type="date" class="form-control"
+                           th:value="${studyManagement.studyend}"
+                           readonly>
                   </div>
                 </div>
 
               </div>
 
-              <div class="row">
-                <dt class="col-sm-3">승인 수신 목록</dt>
-              </div>
+              <div id="_dm-tabsAdmin" class="tab-pane fade" role="tabpanel">
+                <dt class="col-sm-9 mb-2">승인현황</dt>
+                <div class="row mb-3">
+                  <div class="col-sm-4">
+                    <div class="d-flex align-items-stretch">
+                      <div class="d-flex align-items-center justify-content-center flex-shrink-0 text-bg-warning px-4 rounded-start">
+                        <i class="demo-psi-speech-bubble-3 fs-1"></i>
+                      </div>
+                      <div class="flex-grow-1 py-3 ms-3">
+                        <h5 class="h2 mb-0 fw-bold text-warning">[[${countApprovalReady}]]</h5>
+                        <p class="mb-0">대기</p>
+                      </div>
+                    </div>
+                  </div>
 
-              <div class="table-responsive">
-                <table class="table table-bordered">
-                  <thead>
-                  <tr>
-                    <th class="text-center">번호</th>
-                    <th class="text-center">종류</th>
-                    <th class="text-center">제안내용</th>
-                    <th class="text-center">제안자</th>
-                    <th class="text-center">제안일</th>
-                    <th class="text-center">상태</th>
-                    <th class="text-center">처리일</th>
-                  </tr>
-                  </thead>
-                  <tbody>
+                  <div class="col-sm-4 mb-3">
+                    <div class="d-flex align-items-stretch">
+                      <div class="d-flex align-items-center justify-content-center flex-shrink-0 text-bg-success px-4 rounded-start">
+                        <i class="demo-psi-speech-bubble-3 fs-1"></i>
+                      </div>
+                      <div class="flex-grow-1 py-3 ms-3">
+                        <h5 class="h2 mb-0 fw-bold text-success">[[${countApprovalComplete}]]</h5>
+                        <p class="mb-0">완료</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <div class="d-flex align-items-stretch">
+                      <div class="d-flex align-items-center justify-content-center flex-shrink-0 text-bg-danger px-4 rounded-start">
+                        <i class="demo-psi-speech-bubble-3 fs-1"></i>
+                      </div>
+                      <div class="flex-grow-1 py-3 ms-3">
+                        <h5 class="h2 mb-0 fw-bold text-danger">[[${countApprovalReject}]]</h5>
+                        <p class="mb-0">거절</p>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                <div class="row">
+                  <dt class="col-sm-3">승인 수신 목록</dt>
+                </div>
+
+                <div th:if="${studyApprovals.size() == 0}">
+                  <span class="fs-4 fw-bold text-decoration-underline">진행 중이거나 종료된 수신 목록이 없습니다</span>
+                </div>
+                <div th:if="${studyApprovals.size() > 0}" class="table-responsive">
+                  <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                      <th class="text-center">번호</th>
+                      <th class="text-center">종류</th>
+                      <th class="text-center">제안내용</th>
+                      <th class="text-center">제안자</th>
+                      <th class="text-center">제안일</th>
+                      <th class="text-center">상태</th>
+                      <th class="text-center">처리일</th>
+                    </tr>
+                    </thead>
+                    <tbody>
                     <tr th:each="studyApproval:${studyApprovals}">
                       <td class="text-center">#[[${studyApproval.no}]]</td>
                       <td class="text-center">[[${studyApproval.sort}]]</td>
@@ -298,132 +471,133 @@
                       <td class="text-center">[[${studyApproval.changeStatusDate}]]</td>
                     </tr>
 
-                  </tbody>
-                </table>
-              </div>
+                    </tbody>
+                  </table>
+                </div>
 
-              <!-- Approval Content Modal -->
-              <div class="modal fade" id="approvalContentModal" tabindex="-1" aria-labelledby="approvalContentModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="approvalContentModalLabel">제안 내용</h5>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body" id="approvalBookContent">
+                <!-- Approval Content Modal -->
+                <div class="modal fade" id="approvalContentModal" tabindex="-1" aria-labelledby="approvalContentModalLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="approvalContentModalLabel">제안 내용</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body" id="approvalBookContent">
 
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                      <button type="button" class="btn btn-success" id="acceptApproval">승인</button>
-                      <button type="button" class="btn btn-danger" id="rejectApproval">거절</button>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                        <button type="button" class="btn btn-success" id="acceptApproval">승인</button>
+                        <button type="button" class="btn btn-danger" id="rejectApproval">거절</button>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
+
             </div>
 
-          </div>
-
-          <div class="card mb-3">
-            <div class="card-body">
-              <div class="flex-fill mb-3">
-                <div id="_dm-calendar"></div>
-              </div>
-              <button type="button" class="btn btn-primary mb-3"
-                      th:if="${#strings.equals(studyManagement.leaderId, loginId)}"
-                      data-bs-toggle="modal" data-bs-target="#addEventModal">
-                일정 추가
-              </button>
-              <div th:if="${studyEvents.size() > 0}" class="row">
-                <table class="table table-bordered">
-                  <thead>
+            <div class="card mb-3">
+              <div class="card-body">
+                <div class="flex-fill mb-3">
+                  <div id="_dm-calendar"></div>
+                </div>
+                <button type="button" class="btn btn-primary mb-3"
+                        th:if="${#strings.equals(studyManagement.leaderId, loginId)}"
+                        id="addEventBtn"
+                        data-bs-toggle="modal" data-bs-target="#addEventModal">
+                  일정 추가
+                </button>
+                <div th:if="${studyEvents.size() > 0}" class="row">
+                  <table class="table table-bordered">
+                    <thead>
                     <th class="text-center">일정제목</th>
                     <th class="text-center">시작일</th>
                     <th class="text-center">종료일</th>
-                  </thead>
-                  <tbody>
+                    </thead>
+                    <tbody>
                     <tr th:each="studyEvent : ${studyEvents}">
                       <td class="text-center">[[${studyEvent.title}]]
                         <span class="badge bg-danger deleteEvent"
                               th:data-eventno="${studyEvent.no}"
-                              >삭제</span>
+                        >삭제</span>
                       </td>
                       <td class="text-center">[[${studyEvent.start}]]</td>
                       <td class="text-center">[[${studyEvent.end}]]</td>
                     </tr>
-                  </tbody>
-                </table>
-              </div>
+                    </tbody>
+                  </table>
+                </div>
 
 
-              <div class="modal" id="addEventModal">
-                <div class="modal-dialog">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h4 class="modal-title">일정 추가</h4>
-                      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                      <form id="addEventForm">
-                        <div class="mb-3">
-                          <label for="eventTitle" class="form-label">제목</label>
-                          <input type="text" class="form-control" required
-                                 placeholder="최대 20자까지 입력 가능합니다"
-                                 id="eventTitle" maxlength="20">
-                        </div>
-                        <div>
-                          <label for="eventStart" class="form-label">시작일</label>
-                        </div>
-                        <div class="input-group mb-3">
-                          <input type="date" class="form-control" id="eventStart" required>
-                        </div>
-                        <div>
-                          <label for="eventEnd" class="form-label">종료일</label>
-                        </div>
-                        <div class="input-group mb-3">
-                          <input type="date" class="form-control" id="eventEnd" required>
-                        </div>
-                        <div class="mb-3">
-                          <label for="eventColor" class="form-label">색상</label>
-                          <select class="form-select" id="eventColor" required>
-                            <option value="bg-primary" selected>Primary</option>
-                            <option value="bg-secondary">Secondary</option>
-                            <option value="bg-success">Success</option>
-                            <option value="bg-danger">Danger</option>
-                            <option value="bg-warning">Warning</option>
-                            <option value="bg-info">Info</option>
-                            <option value="bg-light">Light</option>
-                            <option value="bg-dark">Dark</option>
-                          </select>
-                        </div>
-                      </form>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                      <button type="button" class="btn btn-primary" id="saveEventButton">저장</button>
+                <div class="modal" id="addEventModal">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h4 class="modal-title">일정 추가</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                      </div>
+                      <div class="modal-body">
+                        <form id="addEventForm">
+                          <div class="mb-3">
+                            <label for="eventTitle" class="form-label">제목</label>
+                            <input type="text" class="form-control" required
+                                   placeholder="최대 20자까지 입력 가능합니다"
+                                   id="eventTitle" maxlength="20">
+                          </div>
+                          <div>
+                            <label for="eventStart" class="form-label">시작일</label>
+                          </div>
+                          <div class="input-group mb-3">
+                            <input type="date" class="form-control" id="eventStart" required>
+                          </div>
+                          <div>
+                            <label for="eventEnd" class="form-label">종료일</label>
+                          </div>
+                          <div class="input-group mb-3">
+                            <input type="date" class="form-control" id="eventEnd" required>
+                          </div>
+                          <div class="mb-3">
+                            <label for="eventColor" class="form-label">색상</label>
+                            <select class="form-select" id="eventColor" required>
+                              <option value="bg-primary" selected>Primary</option>
+                              <option value="bg-secondary">Secondary</option>
+                              <option value="bg-success">Success</option>
+                              <option value="bg-danger">Danger</option>
+                              <option value="bg-warning">Warning</option>
+                              <option value="bg-info">Info</option>
+                              <option value="bg-light">Light</option>
+                              <option value="bg-dark">Dark</option>
+                            </select>
+                          </div>
+                        </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                        <button type="button" class="btn btn-primary" id="saveEventButton">저장</button>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <!--            공지 사항           -->
-          <div class="mb-3">
-            <div class="card">
-              <div class="card-body">
-                <div>
-                  <div class="mb-2 d-flex justify-content-between align-items-center">
-                    <h3 class="h4 card-title align-self-start"><i class="pli-speaker-2"></i>&nbsp; 공지사항</h3>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addNotice">
-                      공지사항 추가
-                    </button>
-                  </div>
-                </div><hr>
+            <!--            공지 사항           -->
+            <div class="mb-3">
+              <div class="card">
+                <div class="card-body">
+                  <div>
+                    <div class="mb-2 d-flex justify-content-between align-items-center">
+                      <h3 class="h4 card-title align-self-start"><i class="pli-speaker-2"></i>&nbsp; 공지사항</h3>
+                      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#noticeModal">
+                        공지사항 추가
+                      </button>
+                    </div>
+                  </div><hr>
 
-                <!-- 공지사항 등록 모달 -->
-                <div class="modal col-md-6 mb-3" id="addNotice">
+                  <!-- 공지사항 등록 모달 -->
+                  <div class="modal col-md-6 mb-3" id="noticeModal">
                     <div class="modal-dialog">
                       <div class="modal-content">
                         <div class="modal-header">
@@ -443,8 +617,8 @@
                             </div>
 
                             <div class="col-sm-12">
-                              <textarea class="form-control" placeholder="Message" rows="14" maxlength="500" style="resize: none;"></textarea>
-                              <p class="float-end">0/500</p>
+                              <textarea id="noticeContent" class="form-control" placeholder="Message" rows="14" maxlength="500" style="resize: none;"></textarea>
+                              <p class="float-end"><span id="charCount">0</span>/500</p>
                             </div><br>
 
                             <div class="d-flex justify-content-center">
@@ -453,45 +627,42 @@
                             </div>
 
                           </form>
+                        </div>
+                        <!-- 공지사항 등록 모달 -->
+
+
                       </div>
-                      <!-- 공지사항 등록 모달 -->
-
-
                     </div>
                   </div>
-                </div>
 
-                <!-- GridJS - Resizable columns -->
-                  <div role="complementary" class="gridjs gridjs-container" style="width: 100%;">
+                  <!-- GridJS - Resizable columns -->
+                  <div id="noticesList" role="complementary" class="gridjs gridjs-container" style="width: 100%;">
                     <div class="gridjs-wrapper" style="height: 275px;">
 
                       <div class="mb-2">
-                        &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/7.png}" alt="Profile Picture" loading="lazy"><a href="#">"고라니 (24.05.15)" 님에 대한 강퇴 투표가 시작되었습니다. 과반 이상 찬성 시 승인 절차 진행합니다.</a>
-                      </div>
+                        &nbsp;&nbsp;<table class="table">
 
-                      <div class="mb-2">
-                        &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">김레오 (24.05.15) 과제 제출 신속히 부탁
-                      </div>
 
-                      <div class="mb-2">
-                        &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">박칼린 (24.05.14) 이번에 스터디 어디서 해요??
-                      </div>
+                        <thead>
 
-                      <div class="mb-2">
-                        &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy"><a href="#">"목표도서 변경" 안건에 대한 승인 절차가 진행 중입니다.</a>
-                      </div>
+                        <tr>
+                          <th style="min-width:80px; width:80px">번호</th>
+                          <th style="min-width:200px; width:200px">제목</th>
+                          <th style="min-width:100px; width:100px">작성자</th>
+                          <th style="min-width:100px; width:100px">작성일</th>
+                        </tr>
 
-                      <div class="mb-2">
-                        &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">고라니 (24.05.13) 탈퇴 / 강퇴 / 신고기능 있나요??
+                        <thead>
+                        <tbody id="noticeTable">
+                        <tr>
+                          <th></th>
+                          <th></th>
+                          <th></th>
+                          <th></th>
+                        </tr>
+                        </tbody>
+                      </table>
                       </div>
-
-                      <div class="mb-2">
-                        &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">고라니 (24.05.13) 리더가 관리할 수 있는 기능 있나요??
-                      </div>
-                      <div class="mb-2">
-                        &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">고라니 (24.05.12) 리더가 관리할 수 있는 기능 있나요??
-                      </div>
-
                     </div>
                     <div id="gridjs-temp" class="gridjs-temp"></div>
 
@@ -501,593 +672,117 @@
 
               </div>
             </div>
-          <!--          공지사항         -->
+            <!--          공지사항         -->
 
           </div>
 
         </div>
 
 
-      <div class="col-md-6">
-        <div class="tab-base">
+        <div class="col-md-6">
+          <div class="tab-base">
 
-          <!-- Nav tabs -->
-          <ul class="nav nav-tabs" role="tablist">
-            <li class="nav-item active" role="presentation">
-              <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#_dm-tabsFeed" type="button" role="tab" aria-controls="summary" aria-selected="true" tabindex="-1">담벼락</button>
-            </li>
-          </ul>
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+              <li class="nav-item active" role="presentation">
+                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#_dm-tabsFeed" type="button" role="tab" aria-controls="summary" aria-selected="true" tabindex="-1">담벼락</button>
+              </li>
+            </ul>
 
-          <!-- Tabs content -->
-          <div class="tab-content mb-3">
+            <!-- Tabs content -->
+            <div class="tab-content mb-3">
 
-            <div id="_dm-tabsFeed" class="tab-pane fade active show" role="tabpanel" aria-labelledby="profile-tab">
-              <div class="mb-2">
-                <button type="button" class="btn btn-primary rounded-pill">담벼락 글 추가</button>
-              </div>
-              <div class="mb-2">
-                &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/7.png}" alt="Profile Picture" loading="lazy"><a href="#">"고라니 (24.05.15)" 님에 대한 강퇴 투표가 시작되었습니다. 과반 이상 찬성 시 승인 절차 진행합니다.</a>
-              </div>
+              <div id="_dm-tabsFeed" class="tab-pane fade active show" role="tabpanel" aria-labelledby="profile-tab">
+                <div class="mb-2">
+                  <button type="button" class="btn btn-primary rounded-pill">담벼락 글 추가</button>
+                </div>
+                <div class="mb-2">
+                  &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/7.png}" alt="Profile Picture" loading="lazy"><a href="#">"고라니 (24.05.15)" 님에 대한 강퇴 투표가 시작되었습니다. 과반 이상 찬성 시 승인 절차 진행합니다.</a>
+                </div>
 
-              <div class="mb-2">
-                &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">김레오 (24.05.15) 과제 제출 신속히 부탁
-              </div>
+                <div class="mb-2">
+                  &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">김레오 (24.05.15) 과제 제출 신속히 부탁
+                </div>
 
-              <div class="mb-2">
-                &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">박칼린 (24.05.14) 이번에 스터디 어디서 해요??
-              </div>
+                <div class="mb-2">
+                  &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">박칼린 (24.05.14) 이번에 스터디 어디서 해요??
+                </div>
 
-              <div class="mb-2">
-                &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy"><a href="#">"목표도서 변경" 안건에 대한 승인 절차가 진행 중입니다.</a>
-              </div>
+                <div class="mb-2">
+                  &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy"><a href="#">"목표도서 변경" 안건에 대한 승인 절차가 진행 중입니다.</a>
+                </div>
 
-              <div class="mb-2">
-                &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">고라니 (24.05.13) 탈퇴 / 강퇴 / 신고기능 있나요??
-              </div>
+                <div class="mb-2">
+                  &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">고라니 (24.05.13) 탈퇴 / 강퇴 / 신고기능 있나요??
+                </div>
 
-              <div class="mb-2">
-                &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">고라니 (24.05.13) 리더가 관리할 수 있는 기능 있나요??
-              </div>
-              <div class="mb-2">
-                &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">고라니 (24.05.12) 리더가 관리할 수 있는 기능 있나요??
-              </div>
-              <div class="mb-2">
-                &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy"><a href="#">"도전기간 변경" 안건에 대한 승인 절차가 진행 중입니다.</a>
-              </div>
-              <div class="mb-2">
-                &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">고라니 (24.05.11) 리더가 관리할 수 있는 기능 있나요??
-              </div>
-              <div class="mb-2">
-                &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">고라니 (24.05.10) 리더가 관리할 수 있는 기능 있나요??
+                <div class="mb-2">
+                  &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">고라니 (24.05.13) 리더가 관리할 수 있는 기능 있나요??
+                </div>
+                <div class="mb-2">
+                  &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">고라니 (24.05.12) 리더가 관리할 수 있는 기능 있나요??
+                </div>
+                <div class="mb-2">
+                  &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy"><a href="#">"도전기간 변경" 안건에 대한 승인 절차가 진행 중입니다.</a>
+                </div>
+                <div class="mb-2">
+                  &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">고라니 (24.05.11) 리더가 관리할 수 있는 기능 있나요??
+                </div>
+                <div class="mb-2">
+                  &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">고라니 (24.05.10) 리더가 관리할 수 있는 기능 있나요??
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="card">
-            <div class="card-body">
-
-
-              <div class="d-md-flex gap-4">
-
-
-                <!-- File manager sidebar -->
-                <div class="w-md-160px w-xl-200px flex-shrink-0">
-
-                  <h5 class="px-3 mb-3">Folders</h5>
-                  <div class="list-group list-group-borderless gap-1">
-                    <a href="#" class="list-group-item list-group-item-action">
-                      <i class="demo-pli-folder fs-5 me-2"></i> ...
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action active">
-                      <i class="demo-pli-folder fs-5 me-2"></i> Documents
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action">
-                      <i class="demo-pli-folder fs-5 me-2"></i> Data
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action">
-                      <i class="demo-pli-folder fs-5 me-2"></i> PDF
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action">
-                      <i class="demo-pli-folder fs-5 me-2"></i> Illustration
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action">
-                      <i class="demo-pli-folder fs-5 me-2"></i> Github
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action">
-                      <i class="demo-pli-folder fs-5 me-2"></i> Server
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action disabled" tabindex="-1" aria-disabled="true">
-                      <i class="demo-pli-folder fs-5 me-2"></i> Deleted files
-                    </a>
-                  </div>
-
-
-                  <h5 class="px-3 mt-5 mb-3">Favorites</h5>
-                  <div class="list-group list-group-borderless gap-1">
-                    <a href="#" class="list-group-item list-group-item-action">
-                      <i class="demo-pli-folder-with-document fs-5 me-2"></i> User folders
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action">
-                      <i class="demo-pli-camera-2 fs-5 me-2"></i> Photos
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action">
-                      <i class="demo-pli-video fs-5 me-2"></i> Videos
-                    </a>
-                  </div>
-
-
-                  <h5 class="px-3 mt-5 mb-3">Tags</h5>
-                  <div class="d-flex flex-wrap gap-2 px-3">
-                    <a href="#" class="btn btn-warning btn-xs">Family</a>
-                    <a href="#" class="btn btn-info btn-xs">Home</a>
-                    <a href="#" class="btn btn-danger btn-xs">Work</a>
-                    <a href="#" class="btn btn-secondary btn-xs">Films</a>
-                    <a href="#" class="btn btn-success btn-xs">Musics</a>
-                    <a href="#" class="btn btn-primary btn-xs">Videos</a>
-                  </div>
-
-
-                </div>
-                <!-- END : File manager sidebar -->
-
-
-                <div class="vr"></div>
-
+            <div class="card">
+              <div class="card-body">
 
                 <!-- File manager content -->
                 <div class="flex-fill">
 
                   <!-- Folder name and path -->
                   <h2 class="d-flex align-items-center gap-3">
-                    <i class="demo-pli-folder-with-document fs-4"></i> Documents
+                    <i class="demo-pli-folder-with-document fs-4"></i> 파일 공유하기
                   </h2>
-                  <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Public</a></li>
-                    <li class="breadcrumb-item"><a href="#">Data</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Documents</li>
-                  </ol>
-                  <!-- END : Folder name and path -->
 
 
-                  <div class="row py-3">
+                  <div th:if="${not #lists.isEmpty(folderItems)}">
+                    <ul class="folder-item-list">
+                      <li th:each="item : ${folderItems}" th:if="${item.directory}" class="folder-item">
+                        <div class="link-content">
+                          <img class="folder-icon" src="https://i.ibb.co/XLG39JD/free-icon-folder-5613750.png" alt="folder-icon" />
+                          <span class="item-name" th:text="${item.name}"></span>
+                        </div>
+                      </li>
+                    </ul>
 
-                    <!-- Left toolbar -->
-                    <div class="col-md-6 d-flex gap-1 align-items-center mb-3">
-                      <button class="btn btn-icon btn-outline-light">
-                        <i class="demo-pli-home fs-5"></i>
-                      </button>
-                      <button class="btn btn-outline-light text-nowrap hstack gap-2">
-                        <i class="demo-pli-reload-3 fs-5"></i>
-                        <span class="vr"></span>
-                        <span class="d-none d-lg-inline-block ms-lg-2">
-                                          Refresh
-                                       </span>
-                      </button>
-                      <div class="btn-group">
-                        <button class="btn btn-icon btn-outline-light"><i class="demo-pli-file-add fs-5"></i></button>
-                        <button class="btn btn-icon btn-outline-light"><i class="demo-pli-file-edit fs-5"></i></button>
-                        <button class="btn btn-icon btn-outline-light"><i class="demo-pli-recycling fs-5"></i></button>
-                      </div>
-                    </div>
-                    <!-- END : Left toolbar -->
-
-                    <!-- Right Toolbar -->
-                    <div class="col-md-6 d-flex gap-1 align-items-center justify-content-md-end mb-3">
-                      <div class="form-group">
-                        <input type="text" placeholder="Search files or folders..." class="form-control" autocomplete="off">
-                      </div>
-
-                      <div class="dropdown">
-                        <button class="btn btn-icon btn-outline-light" data-bs-toggle="dropdown" aria-expanded="false">
-                          <i class="demo-pli-dot-horizontal fs-5"></i>
-                          <span class="visually-hidden">Toggle Dropdown</span>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                          <li><a class="dropdown-item" href="#">Action</a></li>
-                          <li><a class="dropdown-item" href="#">Another action</a></li>
-                          <li><a class="dropdown-item" href="#">Something else here</a></li>
-                          <li>
-                            <hr class="dropdown-divider">
-                          </li>
-                          <li><a class="dropdown-item" href="#">Separated link</a></li>
-                        </ul>
-                      </div>
-                    </div>
-                    <!-- END : Right Toolbar -->
-
+                    <ul class="folder-item-list">
+                      <li th:each="item : ${folderItems}" th:unless="${item.directory}" class="file-item">
+                        <div class="link-content">
+                          <img class="file-icon" src="https://i.ibb.co/HgRjhK9/file-icon.png" alt="file-icon" />
+                          <span class="item-name" th:text="${item.name}"></span>
+                        </div>
+                      </li>
+                    </ul>
                   </div>
 
-
-                  <!-- Folder view -->
-                  <div class="table-responsive pb-4">
-                    <table class="table table-striped align-middle">
-                      <thead>
-                      <tr>
-                        <th style="width: 40px"></th>
-                        <th class="w-100w">Name</th>
-                        <th class="text-center">Type</th>
-                        <th class="text-center" style="width: 100px">Size</th>
-                        <th class="text-center" style="width: 150px">Date Modified</th>
-                        <th class="text-center" style="width: 40px">Options</th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                      <tr>
-                        <td>
-                          <input class="form-check-input" type="checkbox">
-                        </td>
-                        <td>
-                          <div class="d-flex align-items-center position-relative">
-                            <div class="flex-shrink-0">
-                              <i class="demo-psi-folder fs-3 text-orange-400"></i>
-                            </div>
-                            <div class="flex-grow-1 ms-2">
-                              <a href="#" class="stretched-link text-reset btn-link">. . .</a>
-                            </div>
-                          </div>
-                        </td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <input class="form-check-input" type="checkbox">
-                        </td>
-                        <td>
-                          <div class="d-flex align-items-center position-relative">
-                            <div class="flex-shrink-0">
-                              <i class="demo-psi-folder fs-3 text-orange-400"></i>
-                            </div>
-                            <div class="flex-grow-1 ms-2">
-                              <a href="#" class="stretched-link text-reset btn-link">My Project</a>
-                            </div>
-                          </div>
-                        </td>
-                        <td class="text-center">Folder</td>
-                        <td class="text-center">225 MB</td>
-                        <td class="text-center">Yesterday, 07:55PM</td>
-                        <td class="text-center">
-                          <div class="dropdown">
-                            <button class="btn btn-icon btn-xs btn-hover btn-primary" data-bs-toggle="dropdown" aria-expanded="false">
-                              <i class="demo-pli-dot-horizontal"></i>
-                              <span class="visually-hidden">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                              <li><a class="dropdown-item" href="#">Action</a></li>
-                              <li><a class="dropdown-item" href="#">Another action</a></li>
-                              <li><a class="dropdown-item" href="#">Something else here</a></li>
-                              <li>
-                                <hr class="dropdown-divider">
-                              </li>
-                              <li><a class="dropdown-item" href="#">Separated link</a></li>
-                            </ul>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <input class="form-check-input" type="checkbox">
-                        </td>
-                        <td>
-                          <div class="d-flex align-items-center position-relative">
-                            <div class="flex-shrink-0">
-                              <i class="demo-psi-folder fs-3 text-orange-400"></i>
-                            </div>
-                            <div class="flex-grow-1 ms-2">
-                              <a href="#" class="stretched-link text-reset btn-link">Photos</a>
-                            </div>
-                          </div>
-                        </td>
-                        <td class="text-center">Folder</td>
-                        <td class="text-center">225 MB</td>
-                        <td class="text-center">Yesterday, 10:45PM</td>
-                        <td class="text-center">
-                          <div class="dropdown">
-                            <button class="btn btn-icon btn-xs btn-hover btn-primary" data-bs-toggle="dropdown" aria-expanded="false">
-                              <i class="demo-pli-dot-horizontal"></i>
-                              <span class="visually-hidden">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                              <li><a class="dropdown-item" href="#">Action</a></li>
-                              <li><a class="dropdown-item" href="#">Another action</a></li>
-                              <li><a class="dropdown-item" href="#">Something else here</a></li>
-                              <li>
-                                <hr class="dropdown-divider">
-                              </li>
-                              <li><a class="dropdown-item" href="#">Separated link</a></li>
-                            </ul>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <input class="form-check-input" type="checkbox">
-                        </td>
-                        <td>
-                          <div class="d-flex align-items-center position-relative">
-                            <div class="flex-shrink-0">
-                              <i class="demo-psi-folder fs-3 text-orange-400"></i>
-                            </div>
-                            <div class="flex-grow-1 ms-2">
-                              <a href="#" class="stretched-link text-reset btn-link">Downloads</a>
-                            </div>
-                          </div>
-                        </td>
-                        <td class="text-center">Folder</td>
-                        <td class="text-center">498 MB</td>
-                        <td class="text-center">Today, 11:23AM</td>
-                        <td class="text-center">
-                          <div class="dropdown">
-                            <button class="btn btn-icon btn-xs btn-hover btn-primary" data-bs-toggle="dropdown" aria-expanded="false">
-                              <i class="demo-pli-dot-horizontal"></i>
-                              <span class="visually-hidden">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                              <li><a class="dropdown-item" href="#">Action</a></li>
-                              <li><a class="dropdown-item" href="#">Another action</a></li>
-                              <li><a class="dropdown-item" href="#">Something else here</a></li>
-                              <li>
-                                <hr class="dropdown-divider">
-                              </li>
-                              <li><a class="dropdown-item" href="#">Separated link</a></li>
-                            </ul>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <input class="form-check-input" type="checkbox">
-                        </td>
-                        <td>
-                          <div class="d-flex align-items-center position-relative">
-                            <div class="flex-shrink-0">
-                              <i class="demo-psi-folder-zip fs-3 text-orange"></i>
-                            </div>
-                            <div class="flex-grow-1 ms-2">
-                              <a href="#" class="stretched-link text-reset btn-link">Package.zip</a>
-                            </div>
-                          </div>
-                        </td>
-                        <td class="text-center">Compressed</td>
-                        <td class="text-center">25 MB</td>
-                        <td class="text-center">Nov 23, 09:11AM</td>
-                        <td class="text-center">
-                          <div class="dropdown">
-                            <button class="btn btn-icon btn-xs btn-hover btn-primary" data-bs-toggle="dropdown" aria-expanded="false">
-                              <i class="demo-pli-dot-horizontal"></i>
-                              <span class="visually-hidden">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                              <li><a class="dropdown-item" href="#">Action</a></li>
-                              <li><a class="dropdown-item" href="#">Another action</a></li>
-                              <li><a class="dropdown-item" href="#">Something else here</a></li>
-                              <li>
-                                <hr class="dropdown-divider">
-                              </li>
-                              <li><a class="dropdown-item" href="#">Separated link</a></li>
-                            </ul>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <input class="form-check-input" type="checkbox">
-                        </td>
-                        <td>
-                          <div class="d-flex align-items-center position-relative">
-                            <div class="flex-shrink-0 text-primary">
-                              <i class="demo-psi-file-html fs-3"></i>
-                            </div>
-                            <div class="flex-grow-1 ms-2">
-                              <a href="#" class="stretched-link text-reset btn-link">index.html</a>
-                            </div>
-                          </div>
-                        </td>
-                        <td class="text-center">HTML</td>
-                        <td class="text-center">182KB</td>
-                        <td class="text-center">Oct 22, 07:11AM</td>
-                        <td class="text-center">
-                          <div class="dropdown">
-                            <button class="btn btn-icon btn-xs btn-hover btn-primary" data-bs-toggle="dropdown" aria-expanded="false">
-                              <i class="demo-pli-dot-horizontal"></i>
-                              <span class="visually-hidden">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                              <li><a class="dropdown-item" href="#">Action</a></li>
-                              <li><a class="dropdown-item" href="#">Another action</a></li>
-                              <li><a class="dropdown-item" href="#">Something else here</a></li>
-                              <li>
-                                <hr class="dropdown-divider">
-                              </li>
-                              <li><a class="dropdown-item" href="#">Separated link</a></li>
-                            </ul>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <input class="form-check-input" type="checkbox">
-                        </td>
-                        <td>
-                          <div class="d-flex align-items-center position-relative">
-                            <div class="flex-shrink-0">
-                              <i class="demo-pli-file-txt fs-3"></i>
-                            </div>
-                            <div class="flex-grow-1 ms-2">
-                              <a href="#" class="stretched-link text-reset btn-link">robot.txt</a>
-                            </div>
-                          </div>
-                        </td>
-                        <td class="text-center">Text</td>
-                        <td class="text-center">2KB</td>
-                        <td class="text-center">Aug 11, 05:22AM</td>
-                        <td class="text-center">
-                          <div class="dropdown">
-                            <button class="btn btn-icon btn-xs btn-hover btn-primary" data-bs-toggle="dropdown" aria-expanded="false">
-                              <i class="demo-pli-dot-horizontal"></i>
-                              <span class="visually-hidden">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                              <li><a class="dropdown-item" href="#">Action</a></li>
-                              <li><a class="dropdown-item" href="#">Another action</a></li>
-                              <li><a class="dropdown-item" href="#">Something else here</a></li>
-                              <li>
-                                <hr class="dropdown-divider">
-                              </li>
-                              <li><a class="dropdown-item" href="#">Separated link</a></li>
-                            </ul>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <input class="form-check-input" type="checkbox">
-                        </td>
-                        <td>
-                          <div class="d-flex align-items-center position-relative">
-                            <div class="flex-shrink-0">
-                              <i class="demo-pli-video fs-3"></i>
-                            </div>
-                            <div class="flex-grow-1 ms-2">
-                              <a href="#" class="stretched-link text-reset btn-link">highland.mp4</a>
-                            </div>
-                          </div>
-                        </td>
-                        <td class="text-center">Video</td>
-                        <td class="text-center">540Mb</td>
-                        <td class="text-center">Des 5, 09:17AM</td>
-                        <td class="text-center">
-                          <div class="dropdown">
-                            <button class="btn btn-icon btn-xs btn-hover btn-primary" data-bs-toggle="dropdown" aria-expanded="false">
-                              <i class="demo-pli-dot-horizontal"></i>
-                              <span class="visually-hidden">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                              <li><a class="dropdown-item" href="#">Action</a></li>
-                              <li><a class="dropdown-item" href="#">Another action</a></li>
-                              <li><a class="dropdown-item" href="#">Something else here</a></li>
-                              <li>
-                                <hr class="dropdown-divider">
-                              </li>
-                              <li><a class="dropdown-item" href="#">Separated link</a></li>
-                            </ul>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <input class="form-check-input" type="checkbox">
-                        </td>
-                        <td>
-                          <div class="d-flex align-items-center position-relative">
-                            <div class="flex-shrink-0">
-                              <i class="demo-pli-file-word fs-3"></i>
-                            </div>
-                            <div class="flex-grow-1 ms-2">
-                              <a href="#" class="stretched-link text-reset btn-link">Company Overview.doc</a>
-                            </div>
-                          </div>
-                        </td>
-                        <td class="text-center">Document</td>
-                        <td class="text-center">9KB</td>
-                        <td class="text-center">Oct 14, 03:14PM</td>
-                        <td class="text-center">
-                          <div class="dropdown">
-                            <button class="btn btn-icon btn-xs btn-hover btn-primary" data-bs-toggle="dropdown" aria-expanded="false">
-                              <i class="demo-pli-dot-horizontal"></i>
-                              <span class="visually-hidden">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                              <li><a class="dropdown-item" href="#">Action</a></li>
-                              <li><a class="dropdown-item" href="#">Another action</a></li>
-                              <li><a class="dropdown-item" href="#">Something else here</a></li>
-                              <li>
-                                <hr class="dropdown-divider">
-                              </li>
-                              <li><a class="dropdown-item" href="#">Separated link</a></li>
-                            </ul>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <input class="form-check-input" type="checkbox">
-                        </td>
-                        <td>
-                          <div class="d-flex align-items-center position-relative">
-                            <div class="flex-shrink-0">
-                              <i class="demo-pli-file-jpg fs-3"></i>
-                            </div>
-                            <div class="flex-grow-1 ms-2">
-                              <a href="#" class="stretched-link text-reset btn-link">Nature.jpeg</a>
-                            </div>
-                          </div>
-                        </td>
-                        <td class="text-center">Image</td>
-                        <td class="text-center">55KB</td>
-                        <td class="text-center">Des 15, 08:34PM</td>
-                        <td class="text-center">
-                          <div class="dropdown">
-                            <button class="btn btn-icon btn-xs btn-hover btn-primary" data-bs-toggle="dropdown" aria-expanded="false">
-                              <i class="demo-pli-dot-horizontal"></i>
-                              <span class="visually-hidden">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                              <li><a class="dropdown-item" href="#">Action</a></li>
-                              <li><a class="dropdown-item" href="#">Another action</a></li>
-                              <li><a class="dropdown-item" href="#">Something else here</a></li>
-                              <li>
-                                <hr class="dropdown-divider">
-                              </li>
-                              <li><a class="dropdown-item" href="#">Separated link</a></li>
-                            </ul>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <input class="form-check-input" type="checkbox">
-                        </td>
-                        <td>
-                          <div class="d-flex align-items-center position-relative">
-                            <div class="flex-shrink-0">
-                              <i class="demo-pli-video fs-3"></i>
-                            </div>
-                            <div class="flex-grow-1 ms-2">
-                              <a href="#" class="stretched-link text-reset btn-link">CSS3-tutorial.mp4</a>
-                            </div>
-                          </div>
-                        </td>
-                        <td class="text-center">Video</td>
-                        <td class="text-center">320Mb</td>
-                        <td class="text-center">Des 5, 09:17AM</td>
-                        <td class="text-center">
-                          <div class="dropdown">
-                            <button class="btn btn-icon btn-xs btn-hover btn-primary" data-bs-toggle="dropdown" aria-expanded="false">
-                              <i class="demo-pli-dot-horizontal"></i>
-                              <span class="visually-hidden">Toggle Dropdown</span>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                              <li><a class="dropdown-item" href="#">Action</a></li>
-                              <li><a class="dropdown-item" href="#">Another action</a></li>
-                              <li><a class="dropdown-item" href="#">Something else here</a></li>
-                              <li>
-                                <hr class="dropdown-divider">
-                              </li>
-                              <li><a class="dropdown-item" href="#">Separated link</a></li>
-                            </ul>
-                          </div>
-                        </td>
-                      </tr>
-                      </tbody>
-                    </table>
+                  <div th:if="${#lists.isEmpty(folderItems)}">
+                    <div class="no-items-message">
+                      <p>아직 공유 폴더가 활성화 되지 않았습니다. 파일 공유 페이지로 이동해서 활동을 시작 해보세요!</p>
+                    </div>
                   </div>
-                  <!-- END : Folder view -->
 
                 </div>
                 <!-- END : File manager content -->
+
+                <!-- File sharing button -->
+                <div class="text-end mt-3">
+                  <a th:href="@{/study/mine/filesharing(studyboardno=${studyboardno}, directoryPath='/home/ec2-user/'+${studyboardno})}"
+                     class="file-sharing-button btn btn-primary">
+                    파일 공유 페이지로 이동
+                  </a>
+                </div>
+                <!-- END : File sharing button -->
 
               </div>
             </div>
@@ -1095,8 +790,7 @@
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 </div>
 </body>
 </html>

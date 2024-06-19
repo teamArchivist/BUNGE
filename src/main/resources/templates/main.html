@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-<html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-    <title>메인페이지</title>
-    <links>
+                            <html th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::links}, ~{::section})}"
+                                  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+                            <head>
+                                <title>메인페이지</title>
+                                <links>
 
-    </links>
+                                </links>
 
-</head>
-<body>
-<section sec:authorize="hasAnyAuthority('member')">
-    <div class="content__boxed">
-        <div class="content__wrap">
-            <div class="row">
-                <div class="col-xl-6 mb-3">
-                    <div class="card">
-                        <div class="card-body">
-                            <h3 class="h4 card-title">공지사항</h3>
+                            </head>
+                            <body>
+                            <section sec:authorize="hasAnyAuthority('member')">
+                                <div class="content__boxed">
+                                    <div class="content__wrap">
+                                        <div class="row">
+                                            <div class="col-xl-6 mb-3">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h3 class="h4 card-title">공지사항</h3>
                             <!-- GridJS - Sorting -->
                             <div id="_dm-gridjsSorting">
                                 <div role="complementary" class="gridjs gridjs-container" style="width: 100%;">

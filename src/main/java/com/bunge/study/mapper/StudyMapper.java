@@ -1,5 +1,6 @@
 package com.bunge.study.mapper;
 
+import com.bunge.admin.domain.reportmanagement;
 import com.bunge.memo.domain.Book;
 import com.bunge.study.domain.*;
 import com.bunge.study.filter.StudyBoardFilter;
@@ -137,5 +138,8 @@ public interface StudyMapper {
     public List<StudyManagement> getMyStudyListByFilter(@Param("loginId")String loginId, @Param("studyBoardFilter") StudyBoardFilter studyBoardFilter);
     public int getMyStudyListCountByFilter(@Param("loginId") String loginId, @Param("studyBoardFilter") StudyBoardFilter studyBoardFilter);
     public void updateStudyManagementStatus(StudyManagement studyManagement);
+
+    //신고제출
+    public int submitReport(reportmanagement rm);
 
 }

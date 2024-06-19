@@ -1,5 +1,6 @@
 package com.bunge.study.controller;
 
+import com.bunge.admin.domain.reportmanagement;
 import com.bunge.memo.domain.Book;
 import com.bunge.study.domain.*;
 import com.bunge.study.filter.StudyBoardFilter;
@@ -7,22 +8,37 @@ import com.bunge.study.parameter.ApproveApplicationRequest;
 import com.bunge.study.parameter.BookSearchRequest;
 import com.bunge.study.parameter.CheckApplicationRequest;
 import com.bunge.study.parameter.RejectApplicationRequest;
+import com.bunge.study.service.NoticeService;
+import com.bunge.study.service.SftpService;
 import com.bunge.study.service.StudyService;
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.SftpException;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.security.Principal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/study")
@@ -31,10 +47,14 @@ public class StudyController {
     private static Logger logger = LoggerFactory.getLogger(StudyController.class);
 
     private final StudyService studyService;
+    private final NoticeService noticeService;
+    private final SftpService sftpService;
 
     @Autowired
-    public StudyController(StudyService studyService) {
+    public StudyController(StudyService studyService, NoticeService noticeService, SftpService sftpService) {
         this.studyService = studyService;
+        this.noticeService = noticeService;
+        this.sftpService = sftpService;
     }
 
     @GetMapping("/main")
@@ -109,6 +129,7 @@ public class StudyController {
         List<StudyApplication> studyMember = studyService.getStudyMember(no);
         //logger.info(studyMember.toString());
         List<StudyEvent> studyEvents = studyService.getStudyEventList(studyboardno);
+        StudyManagement studyManagement = studyService.getStudyManagement(studyboardno);
 
 
         model.addAttribute("loginId", loginId);
@@ -117,7 +138,7 @@ public class StudyController {
         model.addAttribute("countStudyComm", countStudyComm);
         model.addAttribute("studyMember", studyMember);
         model.addAttribute("studyEvents", studyEvents);
-
+        model.addAttribute("studyManagement", studyManagement);
 
         return "study/study_detail";
 
@@ -356,10 +377,10 @@ public class StudyController {
         studyBoardFilter.setPage(page);
         studyBoardFilter.setOffset(offset);
         studyBoardFilter.setLimit(pageSize);
-
         logger.info(studyBoardFilter.toString());
 
         List<StudyManagement> myStudyList = studyService.getMyStudyListByFilter(loginId, studyBoardFilter);
+
         //logger.info(myStudyList.toString());
         int totalMyStudyList = studyService.getMyStudyListCountByFilter(loginId, studyBoardFilter);
 
@@ -395,6 +416,53 @@ public class StudyController {
         List<StudyEvent> studyEvents = studyService.getStudyEventList(studyboardno);
         logger.info(studyEvents.toString());
 
+        // Retrieve files and folders from SFTP server
+        String sftpDirectoryPath = "/home/ec2-user/" + studyboardno; // Adjust as per your SFTP directory structure
+        List<FolderItem> folderItems = null;
+        try {
+            folderItems = sftpService.listItems(sftpDirectoryPath);
+        } catch (Exception e) {
+            // Handle SFTP error
+            model.addAttribute("error", "Failed to retrieve folder items from SFTP server.");
+            e.printStackTrace();
+        }
+
+
+
+
+        model.addAttribute("loginId", loginId);
+        model.addAttribute("studyManagement", studyManagement);
+        model.addAttribute("countApprovalReady", countApprovalReady);
+        model.addAttribute("countApprovalComplete", countApprovalComplete);
+        model.addAttribute("countApprovalReject", countApprovalReject);
+        model.addAttribute("studyApprovals", studyApprovals);
+        model.addAttribute("studyEvents", studyEvents);
+        model.addAttribute("studyboardno", studyboardno);
+        model.addAttribute("folderItems", folderItems);
+
+        return "study/study_mine";
+    }
+
+    @RequestMapping("/mine/filesharing")
+    public String filesharing(Model model,
+                              @RequestParam int studyboardno,
+                              @RequestParam String directoryPath,
+                              @ModelAttribute StudyBoardFilter studyBoardFilter) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loginId = authentication.getName();
+
+
+
+        StudyManagement studyManagement = studyService.getStudyManagement(studyboardno);
+        int countApprovalReady = studyService.countApprovalReady(studyboardno);
+        int countApprovalComplete = studyService.countApprovalComplete(studyboardno);
+        int countApprovalReject = studyService.countApprovalReject(studyboardno);
+        List<StudyApproval> studyApprovals = studyService.getStudyApprovalList(studyboardno);
+        List<StudyEvent> studyEvents = studyService.getStudyEventList(studyboardno);
+        logger.info(studyEvents.toString());
+
+
 
         model.addAttribute("loginId", loginId);
         model.addAttribute("studyManagement", studyManagement);
@@ -404,8 +472,118 @@ public class StudyController {
         model.addAttribute("studyApprovals", studyApprovals);
         model.addAttribute("studyEvents", studyEvents);
 
-        return "study/study_mine";
+        List<StudyManagement> myStudyList = studyService.getMyStudyList(loginId);
+        model.addAttribute("myStudyList", myStudyList);
+
+        try {
+            // 폴더가 존재하지 않으면 생성
+            sftpService.createFolder(directoryPath);
+            // 파일 목록 조회
+            List<FolderItem> items = sftpService.listItems(directoryPath);
+            List<FolderItem> folders = new ArrayList<>();
+            List<FolderItem> files = new ArrayList<>();
+            for (FolderItem item : items) {
+                if (item.isDirectory()) {
+                    folders.add(item);
+                } else {
+                    files.add(item);
+                }
+            }
+            List<FolderItem> sortedItems = new ArrayList<>();
+            sortedItems.addAll(folders);
+            sortedItems.addAll(files);
+            model.addAttribute("folders", sortedItems);
+            model.addAttribute("currentPath", directoryPath); // 현재 디렉토리 경로를 템플릿에 전달
+        } catch (Exception e) {
+            // 예외 처리
+            model.addAttribute("error", "Error occurred while listing folders: " + e.getMessage());
+        }
+        model.addAttribute("studyboardno", studyboardno); // studyboardno를 템플릿에 전달
+        return "study/study_filesharing";
+
     }
+
+
+
+    @PostMapping("/folder/create")
+    public ModelAndView createFolder(@RequestParam String currentPath, @RequestParam String folderName, @RequestParam int studyboardno, RedirectAttributes redirectAttributes) {
+        try {
+            // 폴더 생성 로직을 호출합니다.
+            sftpService.createFolder(currentPath + "/" + folderName);
+
+        } catch (Exception e) {
+            // 예외가 발생하면 에러 메시지를 추가합니다.
+            redirectAttributes.addFlashAttribute("error", "폴더 생성에 실패하였습니다: " + e.getMessage());
+
+        }
+        // 폴더 생성 후 직전 경로로 리디렉션합니다.
+        return new ModelAndView("redirect:/study/mine/filesharing?studyboardno=" + studyboardno + "&directoryPath=" + currentPath);
+    }
+
+
+
+    @PostMapping("/file/upload")
+    public String handleFileUpload(@RequestParam("file") MultipartFile file,
+                                   @RequestParam String currentPath,
+                                   @RequestParam int studyboardno,
+                                   RedirectAttributes redirectAttributes) {
+        if (file.isEmpty()) {
+            redirectAttributes.addFlashAttribute("error", "업로드할 파일을 선택해주세요.");
+        } else {
+            try {
+                // 파일을 업로드합니다.
+                sftpService.uploadFile(file.getInputStream(), currentPath, file.getOriginalFilename());
+            } catch (Exception e) {
+                logger.error("파일 업로드 중 오류 발생: " + e.getMessage());
+                redirectAttributes.addFlashAttribute("error", "파일 업로드 중 오류가 발생했습니다: " + e.getMessage());
+
+            }
+        }
+        return "redirect:/study/mine/filesharing?studyboardno=" + studyboardno + "&directoryPath=" + currentPath;
+    }
+
+    @RequestMapping(value = "/file/download", method = RequestMethod.GET)
+    public ResponseEntity<ByteArrayResource> downloadFile(
+            @RequestParam("remoteFilePath") String remoteFilePath) throws JSchException, SftpException, IOException {
+
+        // 로컬에 저장될 파일 경로
+        String localFilePath = "/Users/songjaehyuk/Desktop/" + remoteFilePath.substring(remoteFilePath.lastIndexOf('/') + 1);
+
+        try {
+            // 파일 다운로드 메서드 호출
+            sftpService.downloadFile(remoteFilePath, localFilePath);
+
+            // 다운로드 성공 시, 로컬 파일을 읽어서 ByteArrayResource로 변환
+            Path localPath = Paths.get(localFilePath);
+            byte[] fileContent = Files.readAllBytes(localPath);
+            ByteArrayResource resource = new ByteArrayResource(fileContent);
+
+            // 다운로드를 위한 HttpHeaders 설정
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+            headers.setContentLength(fileContent.length);
+            headers.setContentDispositionFormData("attachment", localPath.getFileName().toString());
+
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .body(resource);
+        } finally {
+            // 파일 다운로드 후 로컬에 저장된 파일 삭제 (옵션)
+            // Files.deleteIfExists(Paths.get(localFilePath));
+        }
+    }
+
+    @PostMapping("/study/item/delete")
+    public String deleteItem(@RequestParam String currentPath, @RequestParam String studyboardno) {
+        // currentPath를 이용하여 파일 또는 폴더를 삭제합니다.
+        // 로직은 파일 시스템 또는 데이터베이스를 업데이트하는 데 필요합니다.
+
+        // 삭제 후 페이지를 다시 로드하거나 필요한 다른 작업을 수행합니다.
+        return "redirect:/study/mine/filesharing?studyboardno=" + studyboardno + "&directoryPath=" + currentPath.substring(0, currentPath.lastIndexOf('/'));
+    }
+
+
+
 
     @ResponseBody
     @PostMapping("/submit-change-book")
@@ -509,6 +687,37 @@ public class StudyController {
         return studyService.deleteStudy(no);
     }
 
+
+    //공지사항 추가
+    @ResponseBody
+    @PostMapping("/add-notice")
+    public Map<String, String> addNotice(@RequestBody Notice notice, Principal principal) {
+        String authorId = principal.getName();
+        notice.setAuthorId(authorId);  // Notice 객체에 authorId 설정
+        Map<String, String> response = new HashMap<>();
+        try {
+            noticeService.addNotice(notice);
+            response.put("status", "success");
+            response.put("message", "Notice added successfully");
+        } catch (Exception e) {
+            response.put("status", "error");
+            response.put("message", "Failed to add notice: " + e.getMessage());
+        }
+        return response;
+    }
+
+    @GetMapping("/notices/{studyboardno}")
+    public ResponseEntity<Map<String, Object>> getNotices(@PathVariable int studyboardno) {
+        List<Notice> notices = noticeService.selectNoticesByStudyNo(studyboardno);
+        int countNotices = noticeService.countByStudyNo(studyboardno);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("notices", notices);
+        response.put("count", countNotices);
+
+        return ResponseEntity.ok(response);
+    }
+
     @ResponseBody
     @PostMapping("/update-enroll-book")
     public int updateEnrollBook(@ModelAttribute StudyBoard studyBoard) {
@@ -520,5 +729,13 @@ public class StudyController {
     public int deleteStudyComm(@RequestParam int no) {
         return studyService.deleteStudyComm(no);
     }
+
+    @ResponseBody
+    @PostMapping("/report")
+    public int submitReport(@ModelAttribute reportmanagement rm) {
+        return studyService.submitReport(rm);
+    }
+
+
 
 }

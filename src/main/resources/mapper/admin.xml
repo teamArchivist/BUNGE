@@ -53,7 +53,8 @@
         GROUP BY b.no;
     </select>
 
-    <select id="getreportlist" parameterType="java.util.Map" resultType="com.bunge.admin.domain.reportmanagement">
+    <select id="getreportlist" resultType="com.bunge.admin.domain.reportmanagement">
+
         select * from reportmanagement
         LIMIT #{limit} OFFSET #{offset}
     </select>
