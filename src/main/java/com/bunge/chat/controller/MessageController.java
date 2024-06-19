@@ -4,12 +4,9 @@ import com.bunge.chat.constant.KafkaTopic;
 import com.bunge.chat.service.KafkaConsumerService;
 import com.bunge.chat.service.KafkaProducerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 
 @Controller
