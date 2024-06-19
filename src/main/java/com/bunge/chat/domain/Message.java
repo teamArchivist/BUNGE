@@ -1,24 +1,15 @@
 package com.bunge.chat.domain;
 
-import lombok.*;
+import lombok.Getter;
+
+import java.time.LocalDateTime;
 
 @Getter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class Message {
-
+    private int id;
+    private int chatroomId;
+    private String memberId;
     private String type;
-    @Setter
-    private String sender;
-    private String channelId;
-    private Object data;
-
-    public void newConnect() {
-        this.type = "new";
-    }
-
-    public void closeConnect() {
-        this.type = "close";
-    }
+    private String data;
+    private LocalDateTime createDate;
 }

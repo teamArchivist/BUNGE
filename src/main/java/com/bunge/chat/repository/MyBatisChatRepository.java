@@ -2,6 +2,7 @@ package com.bunge.chat.repository;
 
 import com.bunge.chat.domain.ChatListDto;
 import com.bunge.chat.domain.ChatRequestDto;
+import com.bunge.chat.domain.Message;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,7 +26,7 @@ public class MyBatisChatRepository implements ChatRepository{
     }
 
     @Override
-    public Chatroom findById(Integer id) {
+    public List<Message> findById(Integer id) {
         return chatMapper.findById(id);
     }
 

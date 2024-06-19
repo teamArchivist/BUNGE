@@ -47,4 +47,10 @@
             )
           AND member_id != #{loginMemberId};
     </select>
+
+    <select id="findById" parameterType="Integer" resultType="Message">
+        SELECT *
+        FROM message
+        WHERE chatroom_id = #{id};
+    </select>
 </mapper>

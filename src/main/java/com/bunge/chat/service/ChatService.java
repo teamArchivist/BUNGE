@@ -1,6 +1,7 @@
 package com.bunge.chat.service;
 
 import com.bunge.chat.domain.ChatListDto;
+import com.bunge.chat.domain.ChatMessageDto;
 import com.bunge.chat.domain.ChatRequestDto;
 import com.bunge.chat.repository.ChatRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,5 +31,11 @@ public class ChatService {
          return repository.findAllByMemberId(loginMemberId).stream()
                  .sorted(Comparator.comparing(ChatListDto::getCreateDate).reversed())
                  .collect(Collectors.toList());
+    }
+
+    public ChatMessageDto findChatroom(Integer id) {
+        ChatMessageDto messageDto = new ChatMessageDto();
+        messageDto.setMessages(repository.findById(id));
+        return messageDto;
     }
 }
