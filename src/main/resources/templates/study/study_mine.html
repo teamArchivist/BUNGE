@@ -588,29 +588,31 @@
 
         <div class="col-md-6">
 
-          <!--            공지 사항           -->
+          <!-- 공지 사항 -->
           <div class="mb-3">
             <div class="card">
               <div class="card-body">
                 <div>
                   <div class="mb-2 d-flex justify-content-between align-items-center">
                     <h3 class="h4 card-title align-self-start"><i class="pli-speaker-2"></i>&nbsp; 공지사항</h3>
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#noticeModal">
+                    <button type="button" class="btn btn-primary" id="addNoticeButton" data-bs-toggle="modal" data-bs-target="#noticeModal"
+                            th:if="${role == 'leader'}">
                       공지사항 추가
                     </button>
                   </div>
-                </div><hr>
+                </div>
 
                 <!-- 공지사항 등록 모달 -->
                 <div class="modal col-md-6 mb-3" id="noticeModal">
                   <div class="modal-dialog">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title">공지사항 추가</h5>
+                        <h5 class="modal-title" id="modalTitle">공지사항 추가</h5>
                       </div>
 
                       <div class="modal-body">
-                        <form id="addNoticeForm">
+                        <form id="noticeForm">
+                          <input type="hidden" id="editNoticeId">
                           <div class="mb-3">
                             <label for="noticeLeaderId" class="form-label">작성자</label>
                             <input type="text" class="form-control" id="noticeLeaderId" readonly>
@@ -626,16 +628,13 @@
                             <p class="float-end"><span id="charCount">0</span>/500</p>
                           </div><br>
 
-                          <div class="d-flex justify-content-center">
-                            <button type="button" class="btn btn-primary" id="addButton">등록</button>
+                          <div class="d-flex justify-content-center" id="addButtonGroup">
+                            <button type="button" class="btn btn-primary" id="addButton" data-action="add">등록</button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
                           </div>
 
                         </form>
                       </div>
-                      <!-- 공지사항 등록 모달 -->
-
-
                     </div>
                   </div>
                 </div>
@@ -646,18 +645,15 @@
 
                     <div class="mb-2">
                       &nbsp;&nbsp;<table class="table">
-
-
                       <thead>
-
                       <tr>
                         <th style="min-width:80px; width:80px">번호</th>
                         <th style="min-width:200px; width:200px">제목</th>
                         <th style="min-width:100px; width:100px">작성자</th>
                         <th style="min-width:100px; width:100px">작성일</th>
+                        <th style="min-width:50px; width:50px"></th>
                       </tr>
-
-                      <thead>
+                      </thead>
                       <tbody id="noticeTable">
                       <tr>
                         <th></th>
@@ -670,16 +666,16 @@
                     </div>
                   </div>
                   <div id="gridjs-temp" class="gridjs-temp"></div>
-
                 </div>
               </div>
               <!-- END : GridJS - Resizable columns -->
 
             </div>
           </div>
-          <!--          공지사항         -->
+          <!-- 공지 사항 -->
 
-            <div class="card">
+
+          <div class="card">
               <div class="card-body">
 
                 <!-- File manager content -->

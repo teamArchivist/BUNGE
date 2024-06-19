@@ -43,6 +43,10 @@ public class UserMainController {
         }
         model.addAttribute("studyNotices", studyNotices);
 
+        if (studies.isEmpty()) {
+            model.addAttribute("noStudiesMessage", "가입되어 있는 스터디가 없습니다.");
+        }
+
         return "user_main";
     }
 
