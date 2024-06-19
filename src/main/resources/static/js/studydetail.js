@@ -505,6 +505,8 @@ $(function () {
                 $("#studyApprove").remove();
                 $("#updateStudy").remove();
                 $("#deleteStudy").remove();
+                $("#cancelApplication").remove();
+
             } else if (data.studystatus === "end") {
                 $("#startStudy").text("종료").attr("disabled", true)
                 $("#enrollComment").text("(종료)")
@@ -513,6 +515,7 @@ $(function () {
                 $("#studyApprove").remove();
                 $("#updateStudy").remove();
                 $("#deleteStudy").remove();
+                $("#cancelApplication").remove();
             }
 
         },

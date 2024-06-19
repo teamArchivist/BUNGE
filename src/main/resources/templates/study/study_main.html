@@ -100,9 +100,10 @@
                                         <a class="btn-link text-nowrap">[[${list.id}]]</a>
                                     </td>
                                     <td th:id="${#strings.append('status-', list.no)}" class="h5">
-                                        <div th:if="${list.state == 0} and !${list.studystatus == 'progress'}" class="d-block badge bg-success">모집중</div>
-                                        <div th:if="${list.state == 1} and !${list.studystatus == 'progress'}" class="d-block badge bg-danger">마감</div>
+                                        <div th:if="${list.state == 0}" class="d-block badge bg-success">모집중</div>
+                                        <div th:if="${list.state == 1}" class="d-block badge bg-danger">마감</div>
                                         <div th:if="${list.studystatus == 'progress'}" class="d-block badge bg-info">진행중</div>
+                                        <div th:if="${list.studystatus == 'end'}" class="d-block badge bg-secondary">종료</div>
                                         <div th:if="${#strings.equals(list.id, loginId)} and ${list.pendingcount > 0}" class="d-block badge bg-warning">승인대기[[${list.pendingcount}]]</div>
                                     </td>
                                 </tr>
