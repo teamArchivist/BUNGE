@@ -129,6 +129,9 @@ public interface StudyService {
     //스터디 모집글 댓글 삭제
     public int deleteStudyComm(int no);
 
+    //나의 스터디 리스트 조회
+    public List<StudyManagement> getMyStudyList(String loginId);
+
     //나의 스터디 리스트 조회 (검색 포함)
     public List<StudyManagement> getMyStudyListByFilter(String loginId, StudyBoardFilter studyBoardFilter);
     public int getMyStudyListCountByFilter(String loginId, StudyBoardFilter studyBoardFilter);
