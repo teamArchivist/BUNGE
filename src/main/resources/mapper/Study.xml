@@ -186,6 +186,23 @@
         (#{studyboardno}, #{studystart}, #{studyend}, #{studyperiod}, #{leaderId}, #{booktitle}, #{studystatus})
     </insert>
 
+    <update id="updateChallengeDate" parameterType="com.bunge.study.domain.StudyBoard">
+        update studyboard
+        set challengestart = #{challengestart}, challengeend = #{challengeend}
+        where no = #{no}
+    </update>
+
+    <delete id="deleteStudyManagement" parameterType="com.bunge.study.domain.StudyManagement">
+        delete from studymanagement
+        where studyboardno = #{studyboardno}
+    </delete>
+
+    <update id="updateStudyBoardState" parameterType="com.bunge.study.domain.StudyBoard">
+        update studyboard
+        set state = 1
+        where no = #{no}
+    </update>
+
     <select id="checkStudyStatus" parameterType="com.bunge.study.domain.StudyManagement" resultType="com.bunge.study.domain.StudyManagement">
         select *
         from studymanagement

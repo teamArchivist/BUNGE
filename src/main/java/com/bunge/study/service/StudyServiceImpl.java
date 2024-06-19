@@ -157,6 +157,21 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
+    public int updateChallengeDate(StudyBoard studyBoard) {
+        return studyMapper.updateChallengeDate(studyBoard);
+    }
+
+    @Override
+    public int deleteStudyManagement(StudyManagement studyManagement) {
+        return studyMapper.deleteStudyManagement(studyManagement);
+    }
+
+    @Override
+    public int updateStudyBoardState(StudyBoard studyBoard) {
+        return studyMapper.updateStudyBoardState(studyBoard);
+    }
+
+    @Override
     public StudyManagement checkStudyStatus(StudyManagement studyManagement) {
         return studyMapper.checkStudyStatus(studyManagement);
     }

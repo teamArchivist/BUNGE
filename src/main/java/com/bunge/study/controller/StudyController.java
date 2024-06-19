@@ -352,6 +352,25 @@ public class StudyController {
     }
 
     @ResponseBody
+    @PostMapping("/update-challenge-date")
+    public int updateChallengeDate(@ModelAttribute StudyBoard studyBoard) {
+        return studyService.updateChallengeDate(studyBoard);
+    }
+
+    @ResponseBody
+    @PostMapping("/delete-studymanagement")
+    public int deleteStudyManagement(@ModelAttribute StudyManagement studyManagement) {
+        return studyService.deleteStudyManagement(studyManagement);
+    }
+
+    @ResponseBody
+    @PostMapping("/update-studyboard-state")
+    public int updateStudyBoardState(@ModelAttribute StudyBoard studyBoard) {
+        return studyService.updateStudyBoardState(studyBoard);
+    }
+
+
+    @ResponseBody
     @PostMapping("/check-study-status")
     public StudyManagement checkStudyStatus(@ModelAttribute StudyManagement studyManagement) {
         return studyService.checkStudyStatus(studyManagement);
