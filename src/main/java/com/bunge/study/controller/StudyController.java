@@ -1,5 +1,6 @@
 package com.bunge.study.controller;
 
+import com.bunge.admin.domain.reportmanagement;
 import com.bunge.memo.domain.Book;
 import com.bunge.study.domain.*;
 import com.bunge.study.filter.StudyBoardFilter;
@@ -671,6 +672,13 @@ public class StudyController {
     public int deleteStudyComm(@RequestParam int no) {
         return studyService.deleteStudyComm(no);
     }
+
+    @ResponseBody
+    @PostMapping("/report")
+    public int submitReport(@ModelAttribute reportmanagement rm) {
+        return studyService.submitReport(rm);
+    }
+
 
 
 }

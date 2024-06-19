@@ -263,24 +263,25 @@
                         </button>
                         <ul class="dropdown-menu" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 40px);" data-popper-placement="bottom-start">
                           <li><button class="dropdown-item report"
-                                      th:onclick="'showReportModal(\'' + memberId + '\')'"
+                                      onclick="showReportModal(this.getAttribute('data-reportid'))"
                                       th:data-reportid="${memberId}"
                                       th:id="${#strings.append('report', memberId)}">신고</button></li>
-                          <li><button class="dropdown-item ban"
-                                      th:data-banid="${memberId}"
-                                      th:id="${#strings.append('ban', memberId)}">강퇴</button></li>
                         </ul>
                       </span>
                       <span class="btn-group" th:if="${#strings.equals(studyManagement.leaderId, memberId)}">
                         <button type="button" class="btn btn-link dropdown-toggle hstack gap-2"
+                                th:data-reportid="${memberId}"
                                 data-bs-toggle="dropdown" aria-expanded="false">[[${memberId}]](리더)
                           <span class="vr"></span>
                         </button>
                         <ul class="dropdown-menu" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate(0px, 40px);" data-popper-placement="bottom-start">
-                          <li><button class="dropdown-item report"
+                          <li>
+                            <button class="dropdown-item report"
                                       th:data-reportid="${memberId}"
-                                      th:onclick="'showReportModal(\'' + memberId + '\')'"
-                                      th:id="${#strings.append('report', memberId)}">신고</button></li>
+                                      onclick="showReportModal(this.getAttribute('data-reportid'))"
+                                      th:id="${#strings.append('report', memberId)}">신고
+                            </button>
+                          </li>
                         </ul>
                       </span>
                     </span>
@@ -304,11 +305,51 @@
                                   <label for="reportDate" class="form-label">신고 제출일</label>
                                   <input type="text" class="form-control" id="reportDate" readonly>
                                 </div>
-                                <div class="mb-3">
-                                  <label for="reportReason" class="form-label">신고 사유</label>
-                                  <textarea class="form-control" id="reportReason" rows="3"
-                                            maxlength="50" placeholder="최대 50자까지 입력 가능합니다"
-                                            required></textarea>
+                                <div class="row mb-3">
+                                  <label class="col-sm-3 col-form-label">신고사유</label>
+                                  <div class="col-sm-9 py-2">
+                                    <div class="form-check mb-2">
+                                      <input id="_dm-blockCheckboxes" class="form-check-input" type="checkbox" name="reportreason">
+                                      <label for="_dm-blockCheckboxes" class="form-check-label">
+                                        음란물 유포
+                                      </label>
+                                    </div>
+
+                                    <div class="form-check mb-2">
+                                      <input id="_dm-blockCheckbox2" class="form-check-input" type="checkbox" name="reportreason">
+                                      <label for="_dm-blockCheckbox2" class="form-check-label">
+                                        불법정보 유포
+                                      </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                      <input id="_dm-blockCheckbox3" class="form-check-input" type="checkbox" name="reportreason">
+                                      <label for="_dm-blockCheckbox3" class="form-check-label">
+                                        개인정보 노출
+                                      </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                      <input id="_dm-blockCheckbox4" class="form-check-input" type="checkbox" name="reportreason">
+                                      <label for="_dm-blockCheckbox4" class="form-check-label">
+                                        불쾌한 표현 사용
+                                      </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                      <input id="_dm-blockCheckbox5" class="form-check-input" type="checkbox" name="reportreason">
+                                      <label for="_dm-blockCheckbox5" class="form-check-label">
+                                        갈등 조장 및 허위 사실 유포
+                                      </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                      <input id="_dm-blockCheckbox6" class="form-check-input" type="checkbox" name="reportreason">
+                                      <label for="_dm-blockCheckbox6" class="form-check-label">
+                                        영리목적 홍보성
+                                      </label>
+                                    </div>
+                                  </div>
                                 </div>
                               </form>
                             </div>

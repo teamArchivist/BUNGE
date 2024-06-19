@@ -1,5 +1,6 @@
 package com.bunge.study.mapper;
 
+import com.bunge.admin.domain.reportmanagement;
 import com.bunge.memo.domain.Book;
 import com.bunge.study.domain.*;
 import com.bunge.study.filter.StudyBoardFilter;
@@ -133,11 +134,12 @@ public interface StudyMapper {
     //스터디 모집글 댓글 삭제
     public int deleteStudyComm(int no);
 
-
-
     //나의 스터디 리스트 조회 (검색 / 기간 경과 포함)
     public List<StudyManagement> getMyStudyListByFilter(@Param("loginId")String loginId, @Param("studyBoardFilter") StudyBoardFilter studyBoardFilter);
     public int getMyStudyListCountByFilter(@Param("loginId") String loginId, @Param("studyBoardFilter") StudyBoardFilter studyBoardFilter);
     public void updateStudyManagementStatus(StudyManagement studyManagement);
+
+    //신고제출
+    public int submitReport(reportmanagement rm);
 
 }
