@@ -7,6 +7,7 @@ function connect() {
     stompClient.connect({}, function () {
         stompClient.subscribe('/topic-test', function (frame) {
             parseMessage(frame);
+            $(".bg-body-tertiary").scrollTop($(".bg-body-tertiary")[0].scrollHeight);
         });
     });
 }
@@ -72,6 +73,7 @@ $(function () {
 
     $(".btn-send").click(function () {
         send();
+        $(".bg-body-tertiary").scrollTop($(".bg-body-tertiary")[0].scrollHeight);
     });
 
     $(".chat-message-input").keydown(function (e) {
