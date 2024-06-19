@@ -14,37 +14,29 @@
     </insert>
 
     <select id="findAllByMemberId" parameterType="String" resultType="ChatListDto">
-        WITH latest_messages AS (
-            SELECT m1.chatroom_id, m1.type, m1.data, m1.create_date
-            FROM message m1
-                     JOIN (
-                SELECT chatroom_id, MAX(create_date) AS max_create_date
-                FROM message
-                GROUP BY chatroom_id
-            ) m2 ON m1.chatroom_id = m2.chatroom_id AND m1.create_date = m2.max_create_date
-        )
+        WITH latest_messages AS (SELECT m1.chatroom_id, m1.type, m1.data, m1.create_date
+                                 FROM message m1
+                                          JOIN (SELECT chatroom_id, MAX(create_date) AS max_create_date
+                                                FROM message
+                                                GROUP BY chatroom_id) m2
+                                               ON m1.chatroom_id = m2.chatroom_id AND m1.create_date = m2.max_create_date)
 
-        SELECT
-            chatroom.id AS chatroom_id,
-            member.nick AS nick,
-            chatroom.state AS state,
-            message.type AS type,
-            message.data AS data,
-            message.create_date AS create_date
-        FROM
-            chatroom
-                JOIN
-            chat_relation ON chatroom.id = chat_relation.chatroom_id
-                JOIN
-            member ON member.id = chat_relation.member_id
-                JOIN
-            latest_messages message ON chatroom.id = message.chatroom_id
-        WHERE
-            chatroom.id IN (
-                SELECT chatroom_id
-                FROM chat_relation
-                WHERE member_id = #{loginMemberId}
-            )
+        SELECT chatroom.id         AS chatroom_id,
+               member.nick         AS nick,
+               chatroom.state      AS state,
+               message.type        AS type,
+               message.data        AS data,
+               message.create_date AS create_date
+        FROM chatroom
+                 JOIN
+             chat_relation ON chatroom.id = chat_relation.chatroom_id
+                 JOIN
+             member ON member.id = chat_relation.member_id
+                 JOIN
+             latest_messages message ON chatroom.id = message.chatroom_id
+        WHERE chatroom.id IN (SELECT chatroom_id
+                              FROM chat_relation
+                              WHERE member_id = #{loginMemberId})
           AND member_id != #{loginMemberId};
     </select>
 
@@ -53,4 +45,9 @@
         FROM message
         WHERE chatroom_id = #{id};
     </select>
+
+    <insert id="saveMessage" parameterType="Message">
+        INSERT INTO message(chatroom_id, member_id, data)
+        VALUES (#{chatroomId}, #{memberId}, #{data});
+    </insert>
 </mapper>

@@ -17,4 +17,6 @@ public interface ChatMapper {
     List<Message> findById(Integer id);
 
     List<ChatListDto> findAllByMemberId(String memberId);
+
+    void saveMessage(Message message);
 }
