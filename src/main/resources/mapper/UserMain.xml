@@ -107,7 +107,7 @@
             AND end &gt;= CURRENT_DATE
     </select>
 
-    <select id="selectNoticesByStudyNo" parameterType="int" resultType="Notice">
+    <select id="selectNoticesByStudyNo" parameterType="int" resultType="com.bunge.study.domain.Notice">
         SELECT * FROM notice
         WHERE studyboardno = #{studyboardno}
         ORDER BY createdAt DESC
