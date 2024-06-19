@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -82,20 +83,21 @@ public class admincontoller {
     }
     //신고 리스트
     @GetMapping(value = "/reportlist")
-    public Map<String, Object> reportlist(@RequestParam(defaultValue = "1") int page,
-                                          @RequestParam(defaultValue = "5") int limit) {
+    public String reportlist(@RequestParam(defaultValue = "1") int page,
+                             @RequestParam(defaultValue = "5") int limit,
+                            Model model) {
         Map<String , Object> map = new HashMap<>();
         int offset = (page -1)* limit;
         try {
             List<reportmanagement> reportlist = adminservice.getreportlist(limit , offset);
             int reportcount = adminservice.getreportlistcount();
 
-            map.put("reportlist", reportlist);
-            map.put("reportcount", reportcount);
+            model.addAttribute("reportlist", reportlist);
+            model.addAttribute("reportcount", reportcount);
         } catch (Exception e) {
             map.put("message", "목록 불러오는데 실패");
         }
-        return map;
+        return "admin/adminreportlist";
     }
 
     //신고자 신고내용 리스트

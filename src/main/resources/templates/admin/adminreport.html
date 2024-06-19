@@ -58,24 +58,18 @@
                         <table class="table table-striped align-middle">
                             <thead>
                             <tr>
-                                <th width="55">프로필</th>
                                 <th>아이디</th>
-                                <th class="text-nowrap">이름</th>
-                                <th>닉네임</th>
-                                <th>주소</th>
+                                <th>신고사유</th>
                                 <th>정지시작일</th>
                                 <th>정지종료일</th>
                                 <th class="text-center">회원상태</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="reportlist : ${repoetlist}">
-                                <td><img class="img-sm rounded" src="./assets/img/megamenu/img-1.jpg" alt="thumbs"></td>
-                                <td><a class="btn-link text-body-emphasis text-decoration-underline text-truncate mb-0" th:text="${repoetlist.id}"></a></td>
-                                <td><span class="text-nowrap text-body-secondary">이름1</span></td>
+                            <tr th:each="reportlist : ${reportlist}">
+                                <td><a class="btn-link text-body-emphasis text-decoration-underline text-truncate mb-0" th:text="${repoetlist.re}"></a></td>
                                 <td>닉네임3</td>
-                                <td><a href="#" class="btn-link text-nowrap">서울시 목동1</a></td>
-                                <td>리더</td>
+                                <td>1990-04-01</td>
                                 <td>1990-04-01</td>
                                 <td class="h5">
                                     <div class="d-block badge bg-black">스터디활동정지</div>

@@ -54,11 +54,7 @@
     </select>
 
     <select id="getreportlist" parameterType="java.util.Map" resultType="com.bunge.admin.domain.reportmanagement">
-        select m.*,
-               r.*
-               from reportmanagement r
-               left outer join member m on m.id = r.reporterid
-               group by r.reporterid
+        select * from reportmanagement
         LIMIT #{limit} OFFSET #{offset}
     </select>
 
@@ -68,6 +64,23 @@
 
     <update id="updateReport" parameterType="com.bunge.admin.domain.reportmanagement">
         update reportmanagement set
-            reportstatus = #{reportstatus}, reportprocessing = 2 , reportstart = #{reportstart} where reporterid = #{reporterid}
+            reportstatus = #{reportstatus},
+            reportprocessing = 1,
+            reportstart = #{reportstart} ,
+            reportend = #{reportend}
+            where reporterid = #{reporterid}
     </update>
+    <update id="updatemember">
+        update member set
+            suspended = 1,
+            suspensionenddate = #{reportend}
+        where id = #{reporterid}
+    </update>
+
+    <update id="updateeverday">
+        update member set
+        suspended = 0 , suspensionenddate= null
+        where suspended = 1 and DATEDIFF(suspensionenddate, now()) &lt;= 0
+    </update>
+
 </mapper>

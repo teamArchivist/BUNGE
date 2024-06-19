@@ -98,16 +98,13 @@ public class AdminServiceimpl implements AdminService {
 
         switch (report.getReportstatus()) {
             case "3일정지":
-                endDate = today.plusDays(3);
+                endDate = today.plusDays(2);
                 break;
             case "5일정지":
-                endDate = today.plusDays(5);
+                endDate = today.plusDays(4);
                 break;
             case "10일정지":
-                endDate = today.plusDays(10);
-                break;
-            case "회원탈퇴":
-                endDate = null;
+                endDate = today.plusDays(9);
                 break;
             default:
                 break;
@@ -116,6 +113,7 @@ public class AdminServiceimpl implements AdminService {
         report.setReportend(endDate);
 
         adminMapper.updateReport(report);
+        adminMapper.updatemember(report);
         }
 
 

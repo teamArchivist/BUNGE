@@ -7,7 +7,6 @@ import com.bunge.member.domain.Member;
 import com.bunge.member.service.MemberService;
 import com.bunge.mypage.service.MypageSendEmail;
 import com.bunge.mypage.service.MypageService;
-import com.bunge.mypage.service.MypageServicelmpi;
 import com.bunge.mypage.service.ProfileService;
 import com.bunge.review.domain.Review;
 import org.slf4j.Logger;

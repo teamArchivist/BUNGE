@@ -32,9 +32,13 @@ public interface AdminMapper {
 
     void updateReport(reportmanagement report);
 
+    void updatemember(reportmanagement report);
+
     List<reportmanagement> getreportlist(Map<String, Object> map);
 
     int  getreportlistcount();
 
     List<reportmanagement> memberreportlist(String reporterid);
+
+    void updateeverday();
 }

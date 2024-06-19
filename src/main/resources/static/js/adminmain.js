@@ -21,13 +21,14 @@ $(function() {
                             + "</tr>"
                     }else {
                         $.each(rdata, function (index, report) {
-                            if(report.reportprocessing ==1) {
+                            let reportdate =report.reportdate.substring(0, 10);
+                            if(report.reportprocessing == 0) {
                                 output += "<tr>"
                                     + "<td>" + report.reportreason + "</td>"
-                                    + "<td>" + report.reportdate + "</td>"
+                                    + "<td>" + reportdate + "</td>"
                                     + "</tr>";
                             }
-                            else {
+                            else if(report.reportprocessing == 1){
                                 output+="<tr>"
                                     + "<td>"+'신고된 내용이없습니다.'+"</td>"
                                     + "</tr>"

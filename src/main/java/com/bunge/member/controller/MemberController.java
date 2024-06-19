@@ -50,16 +50,14 @@ public class MemberController {
     @GetMapping (value ="/login")
     public ModelAndView login(ModelAndView mav,
                               @CookieValue(value = "remember-me", required = false) Cookie readCookie,
-                              HttpSession session,
-                              RedirectAttributes redirectAttributes)  {
+                              HttpSession session)  {
         if (readCookie != null) {
-            redirectAttributes.addFlashAttribute("message" , "로그인에 성공하셨습니다.");
             mav.setViewName("redirect:member/index");
         } else {
-            redirectAttributes.addFlashAttribute("message" , "아이디나 비밀번호가 틀렸습니다.");
             mav.setViewName("member/login");
 
             mav.addObject("loginfail", session.getAttribute("loginfail"));
+            mav.addObject("message", session.getAttribute("message"));
             session.removeAttribute("loginfail");
         }
         return mav;
@@ -205,4 +203,5 @@ public class MemberController {
             return "member/pwdset";
         }
     }
+
 }
