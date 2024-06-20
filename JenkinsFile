@@ -97,5 +97,19 @@ pipeline {
                      }
                  }
              }
+
+             stage('multiline ssh') {
+                         steps {
+                             sshagent (credentials: ['deploy-ec2']) {
+                             sh """
+                                 ssh -o StrictHostKeyChecking=no ${TARGET_HOST} '
+                                 sudo docker-compose down --rmi all
+                                 sudo docker-compose up -d
+                                 '
+                             """
+                             }
+                        }
+                  }
+
           }//stages
      }//pipeline
