@@ -13,25 +13,31 @@ function connect() {
 }
 
 function parseMessage(frame) {
-    let message = JSON.parse(frame.body);
 
+    let message = JSON.parse(frame.body);
+    message.createDate = message.createDate.toString().substring(0, 16);
+
+    let chat;
     if (loginId == message.memberId) {
-        return;
+        chat = $(`
+            <div class="d-flex mb-2 justify-content-end">
+                <div class="bubble bubble-primary">
+                    <p class="mb-1">${message.data}</p>
+                    <small class="opacity-50">${message.createDate}</small>
+                </div>
+            </div>
+        `);
+    } else {
+        chat = $(`
+            <div class="d-flex mb-2">
+                <div class="bubble">
+                    <p class="mb-1">${message.data}</p>
+                    <small class="opacity-50">${message.createDate}</small>
+                </div>
+            </div>
+        `);
     }
 
-    console.log("messageDt" + message.createDate);
-    var dateArray = message.createDate.toString().split(",");
-    console.log("dateArray=", dateArray);
-    var dateTime = dateArray[0] + "-" + dateArray[1] + "-" + dateArray[2] + " " + dateArray[3] + ":" + dateArray[4];
-
-    const chat = $(`
-        <div class="d-flex mb-2">
-            <div class="bubble">
-                <p class="mb-1">${message.data}</p>
-                <small class="opacity-50">${dateTime}</small>
-            </div>
-        </div>
-    `)
     $(".bg-body-tertiary > .justify-content-end").append(chat);
 }
 
@@ -45,18 +51,6 @@ function send() {
     message.createDate = moment().format("yyyy-MM-DD HH:mm:ss");
 
     stompClient.send("/pub/hello", {}, JSON.stringify(message));
-    console.log("보낸 메세지: " + JSON.stringify(message));
-    const dateTime = moment().format("yyyy-MM-DD HH:mm");
-
-    const chat = $(`
-        <div class="d-flex mb-2 justify-content-end">
-            <div class="bubble bubble-primary">
-                <p class="mb-1">${message.data}</p>
-                <small class="opacity-50">${dateTime}</small>
-            </div>
-        </div>
-    `)
-    $(".bg-body-tertiary > .justify-content-end").append(chat);
 }
 
 function handleEnterKey(e) {
