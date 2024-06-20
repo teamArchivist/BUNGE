@@ -40,7 +40,10 @@ function send() {
     const href = $(".active a").prop("href");
     message.chatroomId = href.slice(href.lastIndexOf("/") + 1);
     message.memberId = loginId;
+    message.type = "T";
     message.data = $(".chat-message-input").val();
+    message.createDate = moment().format("yyyy-MM-DD HH:mm:ss");
+
     stompClient.send("/pub/hello", {}, JSON.stringify(message));
     console.log("보낸 메세지: " + JSON.stringify(message));
     const dateTime = moment().format("yyyy-MM-DD HH:mm");

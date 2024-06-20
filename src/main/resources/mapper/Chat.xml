@@ -55,7 +55,7 @@
     </select>
 
     <insert id="saveMessage" parameterType="Message">
-        INSERT INTO message(chatroom_id, member_id, data)
-        VALUES (#{chatroomId}, #{memberId}, #{data});
+        INSERT INTO message(chatroom_id, member_id, data, type, create_date)
+        VALUES (#{chatroomId}, #{memberId}, #{data}, #{type}, #{createDate});
     </insert>
 </mapper>
