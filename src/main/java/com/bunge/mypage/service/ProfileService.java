@@ -51,6 +51,7 @@ public class ProfileService {
             member.setProfile_original(fileName);
 
             String fileDBName = fileDBName(fileName, saveFolder);
+            System.out.println(saveFolder+fileDBName);
             uploadfile.transferTo(new File(saveFolder + fileDBName));
             member.setProfile(fileDBName);
         } else {

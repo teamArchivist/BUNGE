@@ -10,6 +10,11 @@
 <body>
 <th:block sec:authorize="isAnonymous()">
     <section id="content" class="content">
+        <script th:inline="javascript">
+            let result = [[${message}]];
+            if(result != null)
+                alert(result);
+        </script>
         <!--/* 본문 content 영역 */-->
             <div class="content__boxed w-100 min-vh-100 d-flex flex-column align-items-center justify-content-center">
                 <div class="content__wrap">

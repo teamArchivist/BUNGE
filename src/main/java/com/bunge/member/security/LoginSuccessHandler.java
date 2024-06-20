@@ -30,16 +30,20 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
         logger.info("로그인 성공 : LoginSuccessHandler");
+        HttpSession session = request.getSession();
         String username = authentication.getName();
         adminService.insertVisitor(username);
 
-        String message = "로그인 성공";
+        String message = null;
 
         if(username.equals("admin")){
             message = "관리자 로그인했습니다.";
             String url = request.getContextPath()+"/admin/adminmain";
+            session.setAttribute("message",message);
             response.sendRedirect(url);
         }else{
+            message ="환영합니다 "+ username +"회원이 로그인하셨습니다.";
+            session.setAttribute("message",message);
             String url = request.getContextPath()+"/user/main";
             response.sendRedirect(url);
         }

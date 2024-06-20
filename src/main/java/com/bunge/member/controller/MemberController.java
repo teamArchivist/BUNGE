@@ -56,9 +56,8 @@ public class MemberController {
         } else {
             mav.setViewName("member/login");
 
-            mav.addObject("loginfail", session.getAttribute("loginfail"));
             mav.addObject("message", session.getAttribute("message"));
-            session.removeAttribute("loginfail");
+            session.removeAttribute("message");
         }
         return mav;
     }
