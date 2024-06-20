@@ -194,6 +194,16 @@
                               th:href="@{/user/main}">
                               <i class="demo-pli-male fs-5 me-2"></i> 마이페이지
                            </a>
+                           <a th:if="${#authorization.expression('hasAuthority(''admin'') or hasAuthority(''superadmin'')')}"
+                              class="nav-link"
+                              th:href="@{/mypage/myinfo}">
+                              <i class="demo-pli-gear fs-5 me-2"></i> 회원정보 변경
+                           </a>
+                           <a th:if="${#authorization.expression('hasAuthority(''member'')')}"
+                              class="nav-link"
+                              th:href="@{/mypage/myinfo}">
+                              <i class="demo-pli-gear fs-5 me-2"></i> 회원정보 변경
+                           </a>
                            <form th:action="@{/member/logout}" method="post" style="margin-bottom:0px" name="logout">
                               <a th:href="@{logout}" class="list-group-item list-group-item-action logout">
                                  <i class="demo-pli-unlock fs-5 me-2"></i> Logout</a>

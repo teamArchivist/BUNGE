@@ -79,8 +79,8 @@ public class AdminServiceimpl implements AdminService {
     }
 
     @Override
-    public List<reportmanagement> memberreportlist(String reporterid) {
-        return adminMapper.memberreportlist(reporterid);
+    public List<reportmanagement> memberreportlist(String reporttargetid) {
+        return adminMapper.memberreportlist(reporttargetid);
     }
 
     @Override

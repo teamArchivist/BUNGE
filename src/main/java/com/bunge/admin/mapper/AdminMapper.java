@@ -37,7 +37,7 @@ public interface AdminMapper {
 
     int  getreportlistcount(adminReportListFile adminreportlistfile);
 
-    List<reportmanagement> memberreportlist(String reporterid);
+    List<reportmanagement> memberreportlist(String reporttargetid);
 
     void updateeverday();
 

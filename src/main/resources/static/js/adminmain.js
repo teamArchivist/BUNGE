@@ -9,7 +9,7 @@ $(function() {
         $.ajax({
             url: "reporterlist",
             method: "get",
-            data: {reporterid : id},
+            data: {reporttargetid : id},
             success: function (rdata) {
                 console.log(rdata)
                 let output='';

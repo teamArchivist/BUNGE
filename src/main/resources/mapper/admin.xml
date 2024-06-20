@@ -41,7 +41,7 @@
     </select>
 
     <select id="memberreportlist" resultType="com.bunge.admin.domain.reportmanagement">
-        select * from reportmanagement where reporterid = #{reporterid}
+        select * from reportmanagement where reporttargetid = #{reporttargetid}
     </select>
 
     <select id="getstudylist" parameterType="String" resultType="com.bunge.study.domain.StudyBoard">
@@ -69,13 +69,13 @@
             reportprocessing = 1,
             reportstart = #{reportstart} ,
             reportend = #{reportend}
-            where reporterid = #{reporterid}
+            where reporttargetid = #{reporttargetid}
     </update>
     <update id="updatemember">
         update member set
             suspended = 1,
             suspensionenddate = #{reportend}
-        where id = #{reporterid}
+        where id = #{reporttargetid}
     </update>
 
     <update id="updateeverday">
