@@ -15,11 +15,11 @@ public class KafkaProducerService {
 
     private final KafkaTemplate<String, String> kafkaTemplate;
     private final ChatRepository repository;
+    private final JsonUtils jsonUtils;
 
     public void sendMessage(String topic, String data) throws JsonProcessingException {
-        log.info("producer message={}", data);
         kafkaTemplate.send(topic, data);
-        repository.saveMessage(JsonUtils.getObject(data));
+        repository.saveMessage(jsonUtils.getObject(data));
     }
 }
 
