@@ -1,4 +1,9 @@
 pipeline {
+    environment {
+       // dockerhub : jenkins에 등록해 놓은 docker hub credentials 이름
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+
+    }
     agent any
 
     stages {
@@ -18,5 +23,79 @@ pipeline {
             }
        
      }
-    }
-}
+
+     stage('Dockerizing'){
+                 steps{
+                         sh 'echo " Image Bulid Start"'
+                         sh 'docker build . -t $DOCKERHUB_CREDENTIALS_USR/security:$BUILD_NUMBER'  //예) 빌드 번호가 10번인 경우      도커허브_username/security:10  이름의 이미지 생성
+                         sh 'docker build . -t $DOCKERHUB_CREDENTIALS_USR/security'                          // 도커허브_username/security:latest 이름의 이미지 생성
+
+                 }
+                     post {
+                         success {
+                             sh 'echo "Bulid Docker Image Success"'
+                         }
+
+                         failure {
+                             sh 'echo "Bulid Docker Image Fail"'
+                             exit 1
+                         }
+                     }
+             }
+
+             stage('Login'){
+                 steps{
+                    //도커 허브에 로그인
+                     sh 'docker login -u $DOCKERHUB_CREDENTIALS_USR -p $DOCKERHUB_CREDENTIALS_PSW'
+
+                 }
+
+                 post {
+                     success {
+                         sh 'echo "Docker Login Success"'
+                     }
+
+                     failure {
+                         sh 'echo "Docker Login Fail"'
+                         exit 1
+                     }
+                 }
+             }
+
+             stage('Docker hub push'){
+                 steps{
+                     sh 'echo " docker hub push"'
+                     sh 'docker push  $DOCKERHUB_CREDENTIALS_USR/security:$BUILD_NUMBER'
+                     sh 'docker push  $DOCKERHUB_CREDENTIALS_USR/security'
+                 }
+                 post {
+                     success {
+                         sh 'echo "Docker hub push Success"'
+                     }
+
+                     failure {
+                         sh 'echo "Docker hub push Fail"'
+                         exit 1
+                     }
+                 }
+             }
+
+          stage('Cleaning up'){
+                 steps{
+                     sh 'echo " docker image rmi"'
+                     sh "docker rmi $DOCKERHUB_CREDENTIALS_USR/security:$BUILD_NUMBER" // docker image 제거
+                     sh "docker rmi $DOCKERHUB_CREDENTIALS_USR/security"              // docker image 제거
+                 }
+                 post {
+                     success {
+                         sh 'echo " image rmi Success"'
+                     }
+
+                     failure {
+                         sh 'echo " image rmi Fail"'
+                         exit 1
+                     }
+                 }
+             }
+          }//stages
+     }//pipeline
