@@ -36,7 +36,7 @@ $(document).ready(function() {
 		}
 
 		return `<tr>
-			<td><a href="/study/detail?no=${study.no}" class="btn-link">${studyTitle}</a></td>
+			<td><a href="/study/detail?no=${study.studyboardno}" class="btn-link">${studyTitle}</a></td>
 			<td>${study.leaderId}</td>
 			<td><span class="text-body"><i class="demo-pli-clock"></i>&nbsp;${statusText}</span></td>
 			<td class="text-center fs-5">
@@ -113,7 +113,7 @@ $(document).ready(function() {
 					let output = '';
 
 					response.studyMyList.forEach(function (study) {
-//						console.log("study object: ", study);
+						console.log("study object: ", study);
 						output += generateMyStudyHtml(study);
 					});
 					$('#studylist').html(output);
