@@ -39,7 +39,7 @@
             and s.id like CONCAT('%', #{keyword}, '%')
         </if>
         group by s.no
-        order by s.state, s.challengeend desc
+        order by s.state, s.no desc
         limit #{offset}, #{limit}
     </select>
 
@@ -154,10 +154,11 @@
     </update>
 
     <select id="getStudyMember" parameterType="int" resultType="com.bunge.study.domain.StudyApplication">
-        select *
-        from studyapplication
-        where studyboardno = #{studyboardno}
-        and status = '승인'
+        select s.*, m.profile as profile, m.nick as nick
+        from studyapplication s
+                 join member m on s.applicationId = m.id
+        where s.studyboardno = #{studyboardno}
+          and s.status = '승인';
     </select>
 
     <select id="getMyApplicationList" parameterType="String" resultType="com.bunge.study.domain.StudyApplication">

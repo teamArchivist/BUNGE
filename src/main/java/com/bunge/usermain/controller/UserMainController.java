@@ -5,6 +5,7 @@ import com.bunge.study.domain.StudyEvent;
 import com.bunge.study.domain.StudyManagement;
 import com.bunge.study.service.NoticeService;
 import com.bunge.usermain.service.UserMainService;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +30,7 @@ public class UserMainController {
     }
 
     @GetMapping("/main")
-    public String userMainView(Model model,Principal principal) {
+    public String userMainView(Model model,Principal principal , HttpSession session) {
         String memberId = principal.getName();
 
         List<Notice> studies = userMainService.selectStudiesByMemberId(memberId);
@@ -47,6 +48,8 @@ public class UserMainController {
             model.addAttribute("noStudiesMessage", "가입되어 있는 스터디가 없습니다.");
         }
 
+        model.addAttribute("message", session.getAttribute("message"));
+        session.removeAttribute("message");
         return "user_main";
     }
 

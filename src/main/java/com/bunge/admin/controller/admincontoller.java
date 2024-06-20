@@ -5,6 +5,7 @@ import com.bunge.admin.domain.reportmanagement;
 import com.bunge.admin.service.AdminService;
 import com.bunge.member.domain.Member;
 import com.bunge.study.domain.StudyBoard;
+import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class admincontoller {
     }
     //관리자페이지 웹페이지 정보
     @GetMapping(value = "/adminmain")
-    public ModelAndView showMainPage( ModelAndView mav) {
+    public ModelAndView showMainPage( ModelAndView mav ,  HttpSession session) {
         int visitorCount = adminservice.getVisitorCount();
         int joinCount = adminservice.getjoinCount();
         int studyCount = adminservice.getstudyCount();
@@ -40,6 +41,8 @@ public class admincontoller {
         mav.addObject("joinCount", joinCount);
         mav.addObject("studyCount", studyCount);
         mav.addObject("reviewCount", reviewCount);
+        mav.addObject("message", session.getAttribute("message"));
+        session.removeAttribute("message");
         mav.setViewName("adminmain");
         return mav;
     }

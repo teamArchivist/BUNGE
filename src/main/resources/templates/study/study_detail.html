@@ -160,7 +160,7 @@
                                         </div>
                                         <div class="col-sm-9 mb-3">
                                             <span th:each="studyMember:${studyMember}">
-                                                <img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}"
+                                                <img class="img-xs rounded-circle" th:src="|/upload${studyMember.profile}|"
                                                      alt="Profile Picture" loading="lazy">
                                                 <span class="member-id">[[${studyMember.applicationId}]]</span>
                                             </span>

@@ -15,5 +15,7 @@ public class StudyApplication {
     private String status;
     private String requestdate;
     private String responsedate;
+    private String profile;
+    private String nick;
 
 }
