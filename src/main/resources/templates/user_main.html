@@ -10,6 +10,11 @@
 </head>
 <body th:with="firstStudyboardno=${studies[0].studyboardno}">
 <section sec:authorize="hasAnyAuthority('member')">
+    <script th:inline="javascript">
+        let result = [[${message}]];
+        if(result != null)
+            alert(result);
+    </script>
     <div class="content__header content__boxed overlapping">
         <!-- member 페이지-->
         <div class="content__wrap">

@@ -26,8 +26,9 @@ private static final Logger logger = LoggerFactory.getLogger(LoginFailHandeler.c
                                         AuthenticationException exception) throws IOException, ServletException{
         HttpSession session = request.getSession();
         logger.info("로그인실패");
+        logger.info(exception.getMessage());
 
-        String username = request.getParameter("username");
+        String username = request.getParameter("id");
 
         String message = null;
 
@@ -43,7 +44,6 @@ private static final Logger logger = LoggerFactory.getLogger(LoginFailHandeler.c
                 message ="아이디나 비밀번호가 틀렸습니다.";
         }
         session.setAttribute("message",message);
-        session.setAttribute("loginfail","loginFilMsg");
         String url = request.getContextPath()+"/member/login";
         response.sendRedirect(url);
     }

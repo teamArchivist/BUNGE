@@ -5,10 +5,8 @@ import com.bunge.member.domain.Member;
 import com.bunge.member.service.JoinSendMail;
 import com.bunge.member.service.MemberService;
 import com.bunge.member.service.SendMail;
-import com.mysql.cj.Session;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,9 +21,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.security.Principal;
 
 @Controller
 @RequestMapping(value = "/member")
@@ -56,9 +51,8 @@ public class MemberController {
         } else {
             mav.setViewName("member/login");
 
-            mav.addObject("loginfail", session.getAttribute("loginfail"));
             mav.addObject("message", session.getAttribute("message"));
-            session.removeAttribute("loginfail");
+            session.removeAttribute("message");
         }
         return mav;
     }
@@ -107,8 +101,8 @@ public class MemberController {
 
             // 삽입이 된 경우
             if (result == 1) {
-                rattr.addFlashAttribute("result","joinSuccess");
-                return "redirect:login";
+                model.addAttribute("message", "회원가입을 축하합니다.");
+                return "member/login";
             }else {
                 model.addAttribute("message", "회원 가입 실패");
                 model.addAttribute("url", request.getRequestURL());
