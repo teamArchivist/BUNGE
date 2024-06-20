@@ -71,7 +71,7 @@
 
                   <!-- Brand title -->
                   <div class="brand-title">
-                     <a th:if="${#authorization.expression('hasAuthority(''admin'') or hasAuthority(''superadmin'')')}" th:href="@{/main}">BUNGE</a>
+                     <a th:if="${#authorization.expression('hasAuthority(''admin'') or hasAuthority(''superadmin'')')}" th:href="@{/admin/adminmain}">BUNGE</a>
                      <a th:if="${#authorization.expression('hasAuthority(''member'')')}" th:href="@{/user/main}">BUNGE</a>
                      <!-- Anonymous user (not logged in) -->
                      <a th:if="${#authorization.expression('isAnonymous()')}" th:href="@{/member/login}">BUNGE</a>
@@ -121,7 +121,14 @@
                            <div class="flex-grow-1 ms-3">
                               <span class="fw-bolder fs-5" sec:authentication="name"></span>
                               <span class="text-body-secondary" sec:authentication="principal.email"></span>
-                              <a th:href="@{/mypage/main}" class="list-group-item list-group-item-action mt-2">
+                              <a th:if="${#authorization.expression('hasAuthority(''admin'') or hasAuthority(''superadmin'')')}"
+                                 class="list-group-item list-group-item-action mt-2"
+                                 th:href="@{/admin/adminmain}">
+                                 <i class="demo-pli-male fs-5 me-2"></i> 마이페이지
+                              </a>
+                              <a th:if="${#authorization.expression('hasAuthority(''member'')')}"
+                                 class="list-group-item list-group-item-action mt-2"
+                                 th:href="@{/user/main}">
                                  <i class="demo-pli-male fs-5 me-2"></i> 마이페이지
                               </a>
                               <form th:action="@{/member/logout}" method="post" name="logout" class="mt-2">
@@ -177,9 +184,15 @@
 
                         <!-- Collapsed user menu -->
                         <div id="usernav" class="nav flex-column collapse">
-                           <a th:href="@{/mypage/main}" class="nav-link">
-                              <i class="demo-pli-male fs-5 me-2"></i>
-                              <span class="ms-1">마이페이지</span>
+                           <a th:if="${#authorization.expression('hasAuthority(''admin'') or hasAuthority(''superadmin'')')}"
+                              class="nav-link"
+                              th:href="@{/admin/adminmain}">
+                              <i class="demo-pli-male fs-5 me-2"></i> 마이페이지
+                           </a>
+                           <a th:if="${#authorization.expression('hasAuthority(''member'')')}"
+                              class="nav-link"
+                              th:href="@{/user/main}">
+                              <i class="demo-pli-male fs-5 me-2"></i> 마이페이지
                            </a>
                            <form th:action="@{/member/logout}" method="post" style="margin-bottom:0px" name="logout">
                               <a th:href="@{logout}" class="list-group-item list-group-item-action logout">
