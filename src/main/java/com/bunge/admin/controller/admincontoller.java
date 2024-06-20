@@ -116,24 +116,23 @@ public class admincontoller {
     //신고자 신고내용 리스트
     @ResponseBody
     @GetMapping(value = "/reporterlist")
-    public List<reportmanagement> reporterlist(@RequestParam("reporterid") String reporterid) {
-        List<reportmanagement>  reporterlist = adminservice.memberreportlist(reporterid);
+    public List<reportmanagement> reporterlist(@RequestParam("reporttargetid") String reporttargetid) {
+        List<reportmanagement>  reporterlist = adminservice.memberreportlist(reporttargetid);
         return reporterlist;
     }
 
 
     @PostMapping(value = "/update-process")
-    public ModelAndView reportprocess(@RequestParam(value = "reporterid") String reporterid,
+    public ModelAndView reportprocess(@RequestParam(value = "reporttargetid") String reporttargetid,
                                       @RequestParam(value = "report") String reportstatus,
                                       ModelAndView mav, RedirectAttributes redirectAttributes){
 
         reportmanagement report = new reportmanagement();
-        report.setReporterid(reporterid);
+        report.setReporttargetid(reporttargetid);
         report.setReportstatus(reportstatus);
 
         adminservice.updateReport(report);
         redirectAttributes.addFlashAttribute("message","처리완료");
-        logger.info(reportstatus);
         mav.setViewName("redirect:adminmain");
         return mav;
     }

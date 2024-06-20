@@ -25,29 +25,29 @@
                         <p>bunger 커뮤니티에 참여해보세요! 계정을 설정해 보겠습니다.</p>
                     </div>
 
-                    <form class="mt-5" name="join" th:action="@{/member/joinProcess}" method="post">
+                    <form class="mt-5" id="joinForm" th:action="@{/member/joinProcess}" method="post">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                         <div class="w-md-400px d-inline-flex row g-3 mb-4">
                             <div class="col-12 mt-2">
-                                <input type="text" name="id" class="form-control" placeholder="아이디 입력(5~15자)" required>
+                                <input type="text" id="id" name="id" class="form-control" placeholder="아이디 입력(5~15자)" maxlength="15">
                             </div>
                             <div class="col-12 mt-2">
                                 <span id="id_message"></span>
                             </div>
                             <div class="col-12 mt-2">
-                                <input type="password" name="pwd" class="form-control" placeholder="비밀번호 입력" required>
+                                <input type="password" id="pwd" name="pwd" class="form-control" placeholder="비밀번호 입력" maxlength="15">
                             </div>
                             <div class="col-12 mt-2">
                                 <span id="pwd_message"></span>
                             </div>
                             <div class="col-12 mt-2">
-                                <input type="text" name="name" class="form-control" placeholder="이름을 입력" required>
+                                <input type="text" id="name" name="name" class="form-control" placeholder="이름을 입력">
                             </div>
                             <div class="col-12 mt-2">
                                 <span id="name_message"></span>
                             </div>
                             <div class="col-12 mt-2">
-                                <input type="text" name="nick" class="form-control" placeholder="닉네임 입력" required>
+                                <input type="text" id="nick" name="nick" class="form-control" placeholder="닉네임 입력">
                             </div>
                             <div class="col-12 mt-2">
                                 <span id="nick_message"></span>
@@ -63,29 +63,32 @@
                                 <span id="gender_message"></span>
                             </div>
                             <div class="col-sm-7">
-                                <input type="text" name="zipcode" placeholder="우편번호" class="form-control" required readonly>
+                                <input type="text" id="zipcode" name="zipcode" placeholder="우편번호" class="form-control" readonly>
                             </div>
                             <div class="col-sm-5">
                                 <input type="button" class="btn btn-primary" value="우편검색" name="postcode">
                             </div>
                             <div class="col-12 mt-2">
-                                <input type="text" name="addr1" class="form-control" placeholder="주소를 입력해주세요" required readonly >
+                                <input type="text" id="addr1" name="addr1" class="form-control" placeholder="주소를 입력해주세요" readonly >
+                            </div>
+                            <div class="col-12 mt-1">
+                                <span id="addr1_message"></span>
                             </div>
                             <div class="col-12 mt-2">
-                                <input type="text" name="addr2" class="form-control" placeholder="상세주소를 입력해주세요" required>
+                                <input type="text" id="addr2" name="addr2" class="form-control" placeholder="상세주소를 입력해주세요">
                             </div>
                             <div class="col-12 mt-1">
                                 <span id="addr2_message"></span>
                             </div>
                             <div class="col-12 mt-2">
-                                <input type="text" name="phone" class="form-control" placeholder="핸드폰번호를 입력해주세요" required>
+                                <input type="text" id="phone" name="phone" class="form-control" placeholder="핸드폰번호를 입력해주세요" maxlength="11">
                             </div>
                             <div class="col-12 mt-2">
                                 <span id="pho_message"></span>
                             </div>
                             <div class="d-inline-flex">
                                 <div class="col-7 mt-2">
-                                    <input type="email" name="email" class="form-control" placeholder="Email" aria-label="Email"required>
+                                    <input type="email" id="email" name="email" class="form-control" placeholder="Email" aria-label="Email">
                                 </div>
                                 <div class="col-4 mt-2" style="margin-left: 10px;">
                                     <button type="button" class="btn btn-primary" id="emailVerifyButton" name="checkemail">이메일 인증</button>
@@ -95,29 +98,21 @@
                                 <span id="email_message"></span>
                             </div>
                             <div class="col-6 mt-1">
-                                <input type="hidden" id="emailCode" name="emailcode" class="form-control" placeholder="인증코드 입력" required>
+                                <input type="hidden" id="emailCode" name="emailcode" class="form-control" placeholder="인증코드 입력">
                                 <span id="emailcode_message"></span>
                             </div>
                             <div class="col-12 mt-2">
-                                <input type="date" name="birthdate" class="form-control" placeholder="생년월일" min="1900-01-01" required>
+                                <input type="date" id="birthdate" name="birthdate" class="form-control" placeholder="생년월일" min="1900-01-01">
                             </div>
                             <div class="col-12 mt-2">
-                                <span id="birth_message"></span>
+                                <span id="birthdate_message"></span>
                             </div>
-                        </div>
-
-                        <div class="form-check">
-                            <input id="_dm-registerCheck" class="form-check-input" type="checkbox">
-                            <label for="_dm-registerCheck" class="form-check-label">
-                                이용약관<a href="#" class="btn-link text-decoration-underline">에 동의합니다.</a>
-                            </label>
                         </div>
 
                         <div class="mt-4 d-grid gap-2">
-                            <button class="btn btn-primary btn-lg" type="submit">회원가입</button>
+                            <button class="btn btn-primary btn-lg" id="submitButton" type="submit" >회원가입</button>
                             <button class="btn btn-light" onclick="window.history.back()">돌아가기</button>
                         </div>
-                        <input type="hidden" name="result" value="${result}">
                     </form>
                 </div>
             </div>
