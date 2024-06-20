@@ -1,0 +1,22 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Git Pull') {
+            steps {
+                 //  GitHub 저장소에서 코드를 가져오는 작업을 수행합니다.
+                git branch: 'main', credentialsId: 'github', url: 'https://github.com/teamArchivist/BUNGE'
+            }
+        }
+         
+        stage('Build') {
+            steps {    
+                      //clone 받은 프로젝트 안의 Spring10_Security_Thymeleaf_Jenkins 디렉토리에서 stage 실행  
+                           sh "chmod +x gradlew"
+                           sh "./gradlew clean build -x test"  
+                      
+            }
+       
+     }
+    }
+}
