@@ -34,4 +34,30 @@ public class NoticeServiceImpl implements NoticeService {
     public int getMaxNoticeNoByStudyboardNo(int studyboardno) {
         return noticeMapper.getMaxNoticeNoByStudyboardNo(studyboardno);
     }
+
+    @Override
+    public Notice getNoticeById(int noticeId) {
+        return noticeMapper.getNoticeById(noticeId);
+    }
+
+    @Override
+    public boolean updateNotice(Notice notice) {
+        System.out.println("Updating notice: " + notice); // 디버깅 로그 추가
+        int result = noticeMapper.updateNotice(notice);
+        System.out.println("Update result: " + result); // 디버깅 로그 추가
+        return result > 0;
+    }
+
+    @Override
+    public boolean deleteNotice(int noticeId) {
+        return noticeMapper.deleteNotice(noticeId) > 0;
+    }
+
+    @Override
+    public String selectRoleByStudy(int studyboardno, String memberId) {
+        System.out.println("Getting user role for memberId: " + memberId + ", studyboardno: " + studyboardno); // 디버깅 로그 추가
+        String role = noticeMapper.selectRoleByStudy(studyboardno, memberId);
+        System.out.println("Retrieved role: " + role); // 디버깅 로그 추가
+        return role;
+    }
 }

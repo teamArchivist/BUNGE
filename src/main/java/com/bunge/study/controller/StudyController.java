@@ -1,5 +1,6 @@
 package com.bunge.study.controller;
 
+import com.bunge.admin.domain.reportmanagement;
 import com.bunge.memo.domain.Book;
 import com.bunge.study.domain.*;
 import com.bunge.study.filter.StudyBoardFilter;
@@ -18,6 +19,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -351,6 +353,25 @@ public class StudyController {
     }
 
     @ResponseBody
+    @PostMapping("/update-challenge-date")
+    public int updateChallengeDate(@ModelAttribute StudyBoard studyBoard) {
+        return studyService.updateChallengeDate(studyBoard);
+    }
+
+    @ResponseBody
+    @PostMapping("/delete-studymanagement")
+    public int deleteStudyManagement(@ModelAttribute StudyManagement studyManagement) {
+        return studyService.deleteStudyManagement(studyManagement);
+    }
+
+    @ResponseBody
+    @PostMapping("/update-studyboard-state")
+    public int updateStudyBoardState(@ModelAttribute StudyBoard studyBoard) {
+        return studyService.updateStudyBoardState(studyBoard);
+    }
+
+
+    @ResponseBody
     @PostMapping("/check-study-status")
     public StudyManagement checkStudyStatus(@ModelAttribute StudyManagement studyManagement) {
         return studyService.checkStudyStatus(studyManagement);
@@ -404,6 +425,8 @@ public class StudyController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String loginId = authentication.getName();
 
+        String role = noticeService.selectRoleByStudy(studyboardno, loginId);
+
         //logger.info(String.valueOf(studyboardno));
         StudyManagement studyManagement = studyService.getStudyManagement(studyboardno);
         //logger.info(studyManagement.toString());
@@ -438,6 +461,7 @@ public class StudyController {
         model.addAttribute("studyEvents", studyEvents);
         model.addAttribute("studyboardno", studyboardno);
         model.addAttribute("folderItems", folderItems);
+        model.addAttribute("role", role);
 
         return "study/study_mine";
     }
@@ -717,6 +741,42 @@ public class StudyController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/notice/{noticeId}")
+    public ResponseEntity<Notice> getNotice(@PathVariable int noticeId) {
+        Notice notice = noticeService.getNoticeById(noticeId);
+        if (notice != null) {
+            return ResponseEntity.ok(notice);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    @PutMapping("/edit-notice")
+    public ResponseEntity<Map<String, Object>> editNotice(@RequestBody Notice notice) {
+        boolean success = noticeService.updateNotice(notice);
+        Map<String, Object> response = new HashMap<>();
+        if (success) {
+            response.put("status", "success");
+        } else {
+            response.put("status", "failure");
+            response.put("message", "Failed to update notice");
+        }
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/delete-notice/{noticeId}")
+    public ResponseEntity<Map<String, Object>> deleteNotice(@PathVariable int noticeId) {
+        boolean success = noticeService.deleteNotice(noticeId);
+        Map<String, Object> response = new HashMap<>();
+        if (success) {
+            response.put("status", "success");
+        } else {
+            response.put("status", "failure");
+            response.put("message", "Failed to delete notice");
+        }
+        return ResponseEntity.ok(response);
+    }
+
     @ResponseBody
     @PostMapping("/update-enroll-book")
     public int updateEnrollBook(@ModelAttribute StudyBoard studyBoard) {
@@ -728,6 +788,13 @@ public class StudyController {
     public int deleteStudyComm(@RequestParam int no) {
         return studyService.deleteStudyComm(no);
     }
+
+    @ResponseBody
+    @PostMapping("/report")
+    public int submitReport(@ModelAttribute reportmanagement rm) {
+        return studyService.submitReport(rm);
+    }
+
 
 
 }

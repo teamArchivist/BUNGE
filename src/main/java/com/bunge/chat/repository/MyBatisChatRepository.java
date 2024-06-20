@@ -35,4 +35,9 @@ public class MyBatisChatRepository implements ChatRepository{
         return chatMapper.findAllByMemberId(loginMemberId);
     }
 
+    @Override
+    public void saveMessage(Message message) {
+        chatMapper.saveMessage(message);
+    }
+
 }

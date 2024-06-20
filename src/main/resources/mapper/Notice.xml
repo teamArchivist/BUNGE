@@ -21,4 +21,26 @@
         SELECT COALESCE(MAX(noticeNo), 0) FROM notice WHERE studyboardno = #{studyboardno}
     </select>
 
+    <select id="getNoticeById" resultType="com.bunge.study.domain.Notice">
+        SELECT * FROM notice WHERE noticeId = #{noticeId}
+    </select>
+
+    <update id="updateNotice" parameterType="com.bunge.study.domain.Notice">
+        UPDATE notice
+        SET title = #{title}, content = #{content}
+        WHERE noticeId = #{noticeId}
+    </update>
+
+    <delete id="deleteNotice">
+        DELETE FROM notice
+               WHERE noticeId = #{noticeId}
+    </delete>
+
+    <select id="selectRoleByStudy" resultType="String">
+        SELECT role
+        FROM studymember sm
+        JOIN studyboard sb ON sm.studyboardno = sb.no
+        WHERE memberId = #{memberId} and sm.studyboardno = #{studyboardno}
+    </select>
+
 </mapper>

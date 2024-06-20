@@ -1,5 +1,6 @@
 package com.bunge.study.service;
 
+import com.bunge.admin.domain.reportmanagement;
 import com.bunge.memo.domain.Book;
 import com.bunge.study.domain.*;
 import com.bunge.study.filter.StudyBoardFilter;
@@ -81,6 +82,12 @@ public interface StudyService {
 
     //스터디 시작
     public int startStudy(StudyManagement studyManagement);
+    //스터디 미리 시작한 경우 studyboard 테이블의 challenge 관련 날짜 수정
+    public int updateChallengeDate(StudyBoard studyBoard);
+    //스터디 시작 중 에러 발생 시 studymanagement 데이터 삭제
+    public int deleteStudyManagement(StudyManagement studyManagement);
+    //스터디 시작 시 studyboard 테이블의 state 수정
+    public int updateStudyBoardState(StudyBoard studyBoard);
 
     //해당 스터디 모집글의 스터디 도전 진행 여부 확인
     public StudyManagement checkStudyStatus(StudyManagement studyManagement);
@@ -135,4 +142,7 @@ public interface StudyService {
     //나의 스터디 리스트 조회 (검색 포함)
     public List<StudyManagement> getMyStudyListByFilter(String loginId, StudyBoardFilter studyBoardFilter);
     public int getMyStudyListCountByFilter(String loginId, StudyBoardFilter studyBoardFilter);
+
+    //신고제출
+    public int submitReport(reportmanagement rm);
 }

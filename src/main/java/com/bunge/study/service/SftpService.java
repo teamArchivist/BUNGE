@@ -26,6 +26,7 @@ import java.util.Vector;
 @Service
 public class SftpService {
 
+
     @Value("${sftp.user}")
     private String USER;
 
@@ -37,6 +38,7 @@ public class SftpService {
 
     @Value("${sftp.pem-file}")
     private String PEM_FILE;
+
 
     private ChannelSftp setupJsch() throws JSchException {
         JSch jsch = new JSch();

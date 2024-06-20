@@ -188,7 +188,7 @@
                                                               maxlength="10" style="resize:none;" rows="1"></textarea>
                                                     <button type="button" class="btn btn-primary" id="searchBook">검색</button>
                                                 </div>
-                                                <select class="form-select" id="searchCondition" name="booktitle">
+                                                <select class="form-select" id="searchCondition" name="booktitle" style="display:none" required>
 
                                                 </select>
                                                 <img id="bookCover" src="" alt="Book Cover" height="240px" style="display:none">
@@ -230,8 +230,8 @@
                                             <label class="col-sm-2 col-form-label">도전기간</label>
                                             <div class="col-sm-10">
                                                 <div class="input-group">
-                                                    <input name="challengestart" type="date" class="form-control" id="studyStartDate">
-                                                    <input name="challengeend" type="date" class="form-control" id="studyEndDate">
+                                                    <input name="challengestart" type="date" class="form-control" id="studyStartDate" required>
+                                                    <input name="challengeend" type="date" class="form-control" id="studyEndDate" required>
                                                 </div>
                                             </div>
                                         </div>

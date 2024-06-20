@@ -182,6 +182,7 @@ $(function () {
 
                     let requestDateTd = document.createElement("td");
                     requestDateTd.innerText = application.requestdate;
+                    requestDateTd.className = "text-nowrap";
                     row.appendChild(requestDateTd);
 
                     let actionsTd = document.createElement("td");
@@ -193,7 +194,7 @@ $(function () {
                         actionsTd.innerHTML = `<button class="btn btn-primary rounded-pill btn-xs" onclick="approveApplication(${application.no})">승인</button>
                                                &nbsp;<button class="btn btn-danger rounded-pill btn-xs" onclick="rejectApplication(${application.no})">거절</button>`;
                     }
-                    actionsTd.className = "status-area text-center";
+                    actionsTd.className = "status-area text-center text-nowrap";
                     row.appendChild(actionsTd);
 
                     applicationsList.appendChild(row);
@@ -217,7 +218,6 @@ $(function () {
             .then(data => {
                 if (data.status === "success") {
                     alert("승인 성공");
-                    // 승인 상태 업데이트
                     let applicationRow = $(`button[onclick="approveApplication(${applicationNo})"]`).closest('tr');
                     applicationRow.find('.status-area').html("<button class='btn btn-link btn-sm' onclick=cancelApplication(" + applicationNo +")>승인취소</button>");
                 } else {
@@ -336,10 +336,30 @@ $(function () {
         }
     })
 
+    function deleteStudyManagement(studyboardno) {
+        $.ajax({
+            url: "/study/delete-studymanagement",
+            method: "post",
+            data: {studyboardno : studyboardno},
+            beforeSend : function (xhr) {
+                if (header && token) {
+                    xhr.setRequestHeader(header, token);
+                }
+            },
+            success: function (data) {
+                alert("도전 시작이 원활히 진행되지 않았습니다. 다시 시도해주세요");
+            },
+            error: function (status, error) {
+                console.log("ajax 요청 실패");
+                console.log("상태:" + status);
+                console.log("오류:" + error);
+            }
+        })
+    }
+
     $("#startStudy").click(function() {
         let leaderId = $("#leaderId").text();
-        let studystart = $("#challengeDate").data("challengestart");
-        let studyend = $("#challengeDate").data("challengeend");
+        let studystart = new Date(); // 현재 날짜로 설정
         let studyperiod = $("#challengeDate").data("challengeperiod");
         let booktitle = $("#booktitle").text();
         let memberIds = [];
@@ -348,6 +368,18 @@ $(function () {
         });
 
         console.log(memberIds);
+
+        function formatDate(date) {
+            let dd = String(date.getDate()).padStart(2, '0');
+            let mm = String(date.getMonth() + 1).padStart(2, '0');
+            let yyyy = date.getFullYear();
+            return yyyy + '-' + mm + '-' + dd;
+        }
+
+        studystart = formatDate(studystart);
+        let studyend = new Date();
+        studyend.setDate(studyend.getDate() + studyperiod);
+        studyend = formatDate(studyend);
 
         $.ajax({
             url: "/study/get-study-info",
@@ -361,79 +393,125 @@ $(function () {
                 }
             },
             success: function (data) {
-                let answer = confirm("도전을 시작하시겠습니까? 도전기간 : " + data.challengeperiod + "일, 참여인원 : " + data.approved + "명 입니다."  )
-                if (answer) {
-                    $.ajax({
-                        url: "/study/start-study",
-                        method: "post",
-                        data: {
-                            studyboardno: studyboardno,
-                            studystart: studystart,
-                            studyend: studyend,
-                            studyperiod: studyperiod,
-                            leaderId: leaderId,
-                            booktitle: booktitle,
-                            studystatus: 'progress',
-                        },
-                        beforeSend : function (xhr) {
-                            if (header && token) {
-                                xhr.setRequestHeader(header, token);
-                            }
-                        },
-                        success: function (data) {
-                            if (data == 1) {
-                                alert("스터디 도전이 시작되었습니다. 꼭 완독하세요!")
-                                $("#startStudy").text("진행중").attr("disabled", true)
-                                $("#studyApprove").remove()
-                                $("#updateStudy").remove()
-                                $("#deleteStudy").remove()
-                            } else {
-                                alert("도전 시작 중 에러가 발생했습니다. 다시 시도해주세요")
-                            }
-                        },
-                        error: function (status, error) {
-                            console.log("ajax 요청 실패");
-                            console.log("상태:" + status);
-                            console.log("오류:" + error);
-                        }
-                    })
+                if (data.approved == 0) {
+                    alert("참여 인원은 최소 1명 이상이어야 합니다");
+                } else {
+                    let answer = confirm("도전을 시작하시겠습니까? 도전기간 : " + data.challengeperiod + "일, 참여인원 : " + data.approved + "명 입니다."  )
+                    if (answer) {
+                        $.ajax({
+                            url: "/study/start-study",
+                            method: "post",
+                            data: {
+                                studyboardno: studyboardno,
+                                studystart: studystart,
+                                studyend: studyend,
+                                studyperiod: studyperiod,
+                                leaderId: leaderId,
+                                booktitle: booktitle,
+                                studystatus: 'progress',
+                            },
+                            beforeSend : function (xhr) {
+                                if (header && token) {
+                                    xhr.setRequestHeader(header, token);
+                                }
+                            },
+                            success: function (data) {
+                                if (data == 1) {
+                                    $.ajax({
+                                        url: "/study/create-study-member",
+                                        method: "post",
+                                        data: {
+                                            studyboardno : studyboardno,
+                                            memberIds : memberIds.join(',')
+                                        },
+                                        beforeSend : function (xhr) {
+                                            if (header && token) {
+                                                xhr.setRequestHeader(header, token);
+                                            }
+                                        },
+                                        success: function (data) {
+                                            if (data.status === "error") {
+                                                deleteStudyManagement(studyboardno);
+                                            } else {
+                                                $.ajax({
+                                                    url: "/study/update-challenge-date",
+                                                    method: "post",
+                                                    data: {
+                                                        no: studyboardno,
+                                                        challengestart: studystart,
+                                                        challengeend: studyend,
+                                                    },
+                                                    beforeSend : function (xhr) {
+                                                        if (header && token) {
+                                                            xhr.setRequestHeader(header, token);
+                                                        }
+                                                    },
+                                                    success: function (data) {
+                                                        if (data !== 1) {
+                                                            deleteStudyManagement(studyboardno);
+                                                        } else {
+                                                            $.ajax({
+                                                                url: "/study/update-studyboard-state",
+                                                                method: "post",
+                                                                data: {no: studyboardno},
+                                                                beforeSend: function (xhr) {
+                                                                    if (header && token) {
+                                                                        xhr.setRequestHeader(header, token);
+                                                                    }
+                                                                },
+                                                                success: function (data) {
+                                                                    if (data === 1) {
+                                                                        alert("스터디 도전이 시작되었습니다. 꼭 완독하세요!")
+                                                                        $("#startStudy").text("진행중").attr("disabled", true)
+                                                                        $("#studyApprove").remove()
+                                                                        $("#updateStudy").remove()
+                                                                        $("#deleteStudy").remove()
+                                                                        location.reload();
+                                                                    } else {
+                                                                        deleteStudyManagement(studyboardno);
+                                                                    }
 
-                    $.ajax({
-                        url: "/study/create-study-member",
-                        method: "post",
-                        data: {
-                            studyboardno : studyboardno,
-                            memberIds : memberIds.join(',')
-                        },
-                        beforeSend : function (xhr) {
-                            if (header && token) {
-                                xhr.setRequestHeader(header, token);
-                            }
-                        },
-                        async: false,
-                        success: function (data) {
-                            if (data.status === "error") {
-                                alert("참여 인원이 포함되지 않았습니다. 다시 시도해주세요.")
-                            }
-                        },
-                        error: function (status, error) {
-                            console.log("ajax 요청 실패");
-                            console.log("상태:" + status);
-                            console.log("오류:" + error);
-                        }
-                    })
+                                                                },
+                                                                error: function (status, error) {
+                                                                    console.log("ajax 요청 실패");
+                                                                    console.log("상태:" + status);
+                                                                    console.log("오류:" + error);
+                                                                    deleteStudyManagement(studyboardno);
+                                                                }
+                                                            })
+                                                        }
+                                                    } // success end
+                                                }) // ajax end
+                                            }
+                                        },
+                                        error: function (status, error) {
+                                            console.log("ajax 요청 실패");
+                                            console.log("상태:" + status);
+                                            console.log("오류:" + error);
+                                            deleteStudyManagement(studyboardno);
+                                        }
+                                    }) //ajax end
 
-                }
-            },
+                                } else {
+                                    alert("도전 시작 중 에러가 발생했습니다. 다시 시도해주세요")
+                                }
+                            },
+                            error: function (status, error) {
+                                console.log("ajax 요청 실패");
+                                console.log("상태:" + status);
+                                console.log("오류:" + error);
+                            }
+                        })
+                    }
+                } //else end
+            }, //success end
             error: function (status, error) {
                 console.log("ajax 요청 실패");
                 console.log("상태:" + status);
                 console.log("오류:" + error);
             }
         })
-
-
-    })
+    });
 
     function checkEnddate(studyboardno) {
         $.ajax({

@@ -79,6 +79,7 @@ public class admincontoller {
         List<StudyBoard> list = adminservice.getstudylist();
         return list;
     }
+
     @GetMapping(value = "/adminreport")
     public String adminreport(adminReportListFile adminreportlistfile,
                               @RequestParam(defaultValue = "1") int page,
@@ -109,6 +110,7 @@ public class admincontoller {
         } catch (Exception e) {
             model.addAttribute("message", "목록 불러오는데 실패");
         }
+
         return "admin/adminreport";
     }
     //신고자 신고내용 리스트

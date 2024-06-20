@@ -23,7 +23,7 @@
             </thead>
             <tbody>
             <form th:each="member : ${members}" th:action method="post">
-                <tr>
+                <tr th:if="${member.id} != ${loginId}">
                     <td>
                         <input type="text" name="id" th:value="${member.id}" readonly>
                     </td>

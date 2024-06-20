@@ -31,6 +31,7 @@ public class ChatController {
         //  - 채팅 페이지 클릭 후 로그인 시 바로 채팅 페이지로 Redirect
         List<ChatListDto> chatrooms = service.findChatrooms(loginMember.getId());
         model.addAttribute("chatrooms", chatrooms);
+        model.addAttribute("loginId", loginMember.getId());
         return "chat/chat";
     }
 
@@ -42,6 +43,7 @@ public class ChatController {
         List<ChatListDto> chatrooms = service.findChatrooms(loginMember.getId());
         model.addAttribute("chatrooms", chatrooms);
         model.addAttribute("id", id);
+        model.addAttribute("loginId", loginMember.getId());
         ChatMessageDto messageDto = service.findChatroom(id);
         messageDto.setLoginId(loginMember.getId());
         messageDto.setChatroomId(id);
@@ -64,9 +66,11 @@ public class ChatController {
     }
 
     @GetMapping("/rooms")
-    public String showCreatePage(Model model) {
+    public String showCreatePage(Model model,
+                                 @AuthenticationPrincipal Member loginMember) {
         List<Member> members = memberService.findMembers();
         model.addAttribute("members", members);
+        model.addAttribute("loginId", loginMember.getId());
         return "chat/chat-enter";
     }
 }

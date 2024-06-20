@@ -71,7 +71,7 @@
 
                   <!-- Brand title -->
                   <div class="brand-title">
-                     <a th:if="${#authorization.expression('hasAuthority(''admin'') or hasAuthority(''superadmin'')')}" th:href="@{/main}">BUNGE</a>
+                     <a th:if="${#authorization.expression('hasAuthority(''admin'') or hasAuthority(''superadmin'')')}" th:href="@{/admin/adminmain}">BUNGE</a>
                      <a th:if="${#authorization.expression('hasAuthority(''member'')')}" th:href="@{/user/main}">BUNGE</a>
                      <!-- Anonymous user (not logged in) -->
                      <a th:if="${#authorization.expression('isAnonymous()')}" th:href="@{/member/login}">BUNGE</a>
@@ -101,74 +101,6 @@
                <!-- Content Header - Right Side: -->
                <div class="header__content-end">
 
-                  <!-- Notification Dropdown -->
-                  <div class="dropdown">
-
-                     <!-- Toggler -->
-                     <button class="header__btn btn btn-icon btn-sm" type="button" data-bs-toggle="dropdown" aria-label="Notification dropdown" aria-expanded="false">
-                        <span class="d-block position-relative">
-                           <i class="demo-psi-bell"></i>
-
-                           <span class="badge badge-super rounded-pill bg-danger p-1">
-                              <span class="visually-hidden">unread messages</span>
-                           </span>
-                        </span>
-                     </button>
-
-
-                     <!-- Notification dropdown menu -->
-                     <div class="dropdown-menu dropdown-menu-end w-md-300px" sec:authorize="isAuthenticated()">
-                        <div class="border-bottom px-3 py-2 mb-3">
-                           <h5>알림</h5>
-                        </div>
-
-
-                        <div class="list-group list-group-borderless">
-
-
-                           <!-- List item -->
-                           <div class="list-group-item list-group-item-action d-flex align-items-center mb-3">
-                              <div class="flex-shrink-0 me-3">
-                                 <i class="demo-psi-data-settings text-danger fs-2"></i>
-                              </div>
-                              <div class="flex-grow-1">
-                                 <a href="#" class="h6 fw-normal d-block mb-0 stretched-link text-decoration-none">게시글에 좋아요 +1</a>
-                                 <small class="text-body-secondary">#12 게시글에 좋아요 1개 추가되었습니다</small>
-                              </div>
-                           </div>
-
-
-                           <!-- List item -->
-                           <div class="list-group-item list-group-item-action d-flex align-items-center mb-3">
-                              <div class="flex-shrink-0 me-3">
-                                 <i class="demo-psi-pen-5 text-info fs-2"></i>
-                              </div>
-                              <div class="flex-grow-1">
-                                 <a href="#" class="h6 fw-normal d-block mb-0 stretched-link text-decoration-none">새로운 댓글 +3</a>
-                                 <small class="text-body-secondary">#28 게시글에 댓글 3개가 달렸습니다</small>
-                              </div>
-                           </div>
-
-
-                           <!-- List item -->
-                           <div class="list-group-item list-group-item-action d-flex align-items-start mb-3">
-                              <div class="flex-shrink-0 me-3">
-                                 <i class="demo-psi-speech-bubble-3 text-success fs-2"></i>
-                              </div>
-                              <div class="flex-grow-1">
-                                 <div class="d-flex justify-content-between align-items-start">
-                                    <a href="#" class="h6 fw-normal mb-0 stretched-link text-decoration-none">새로운 채팅 </a>
-                                    <span class="badge bg-info rounded ms-auto">NEW</span>
-                                 </div>
-                                 <small class="text-body-secondary">거래 품목에 새로운 채팅이 연결되었습니다 / 스터디방에 새로운 채팅이 추가되었습니다</small>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-                  <!-- End - Notification dropdown -->
-
-
                   <!-- User dropdown -->
                   <div class="dropdown">
 
@@ -189,7 +121,14 @@
                            <div class="flex-grow-1 ms-3">
                               <span class="fw-bolder fs-5" sec:authentication="name"></span>
                               <span class="text-body-secondary" sec:authentication="principal.email"></span>
-                              <a th:href="@{/mypage/main}" class="list-group-item list-group-item-action mt-2">
+                              <a th:if="${#authorization.expression('hasAuthority(''admin'') or hasAuthority(''superadmin'')')}"
+                                 class="list-group-item list-group-item-action mt-2"
+                                 th:href="@{/admin/adminmain}">
+                                 <i class="demo-pli-male fs-5 me-2"></i> 마이페이지
+                              </a>
+                              <a th:if="${#authorization.expression('hasAuthority(''member'')')}"
+                                 class="list-group-item list-group-item-action mt-2"
+                                 th:href="@{/user/main}">
                                  <i class="demo-pli-male fs-5 me-2"></i> 마이페이지
                               </a>
                               <form th:action="@{/member/logout}" method="post" name="logout" class="mt-2">
@@ -245,9 +184,15 @@
 
                         <!-- Collapsed user menu -->
                         <div id="usernav" class="nav flex-column collapse">
-                           <a th:href="@{/mypage/main}" class="nav-link">
-                              <i class="demo-pli-male fs-5 me-2"></i>
-                              <span class="ms-1">마이페이지</span>
+                           <a th:if="${#authorization.expression('hasAuthority(''admin'') or hasAuthority(''superadmin'')')}"
+                              class="nav-link"
+                              th:href="@{/admin/adminmain}">
+                              <i class="demo-pli-male fs-5 me-2"></i> 마이페이지
+                           </a>
+                           <a th:if="${#authorization.expression('hasAuthority(''member'')')}"
+                              class="nav-link"
+                              th:href="@{/user/main}">
+                              <i class="demo-pli-male fs-5 me-2"></i> 마이페이지
                            </a>
                            <form th:action="@{/member/logout}" method="post" style="margin-bottom:0px" name="logout">
                               <a th:href="@{logout}" class="list-group-item list-group-item-action logout">
