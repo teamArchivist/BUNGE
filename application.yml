@@ -1,0 +1,61 @@
+spring:
+  application:
+    name: Bunge
+  thymeleaf:
+    cache: false
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+  ##db connection(MySQL)
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url:
+    username:
+    password:
+    Database:
+
+  #mail
+  mail:
+    host: smtp.naver.com
+    port: 587
+    username:
+    password:
+    properties:
+      mail.smtp.auth: true
+
+  ##kafka
+  kafka:
+    bootstrap-servers: 43.200.242.85:9092, 43.200.242.85:9093, 43.200.242.85:9094
+
+#my:
+#  savefolder: c:\img\profile-photos
+#  savepath: file:///C:/img/profile-photos/
+
+#aws
+my:
+  savefolder: /home/ubuntu/img/profile-photos
+  savepath: file:///home/ubuntu/img/profile-photos/
+
+##aws path
+review:
+  savefolder: /home/ubuntu/download/review-upload
+
+trade:
+  my.savefolder: /home/ubuntu/download/trade-upload
+
+#mybatis
+mybatis:
+  type-aliases-package: com.bunge.member.domain, com.bunge.inquiry.domain, com.bunge.chat.domain
+  config-location: classpath:/config/mybatis-config.xml
+  mapper-locations: classpath:/mapper/*.xml
+
+logging:
+  level:
+    com.bunge.member.mapper.MemberMapper: TRACE
+    com.bunge.inquiry.mapper.InquiryMapper: TRACE
+
+server:
+  port: 8090
