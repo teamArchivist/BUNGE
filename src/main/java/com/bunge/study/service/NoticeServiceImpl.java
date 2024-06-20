@@ -21,9 +21,10 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public List<Notice> selectNoticesByStudyNo(int studyboardno) {
-        return noticeMapper.selectNoticesByStudyNo(studyboardno);
-    }
+    public List<Notice> selectNoticesByStudyNo(int studyboardno, int page, int size) {
+            int offset = (page - 1) * size;
+            return noticeMapper.selectNoticesByStudyNo(studyboardno, size, offset);
+        }
 
     @Override
     public int countByStudyNo(int studyboardno) {
@@ -41,9 +42,9 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public boolean updateNotice(Notice notice) {
+    public boolean updateNotice(Notice notice,String loginId) {
         System.out.println("Updating notice: " + notice); // 디버깅 로그 추가
-        int result = noticeMapper.updateNotice(notice);
+        int result = noticeMapper.updateNotice(notice,loginId);
         System.out.println("Update result: " + result); // 디버깅 로그 추가
         return result > 0;
     }
@@ -59,5 +60,10 @@ public class NoticeServiceImpl implements NoticeService {
         String role = noticeMapper.selectRoleByStudy(studyboardno, memberId);
         System.out.println("Retrieved role: " + role); // 디버깅 로그 추가
         return role;
+    }
+
+    @Override
+    public String getStudyEndDate(int studyboardno) {
+        return noticeMapper.getStudyEndDate(studyboardno);
     }
 }

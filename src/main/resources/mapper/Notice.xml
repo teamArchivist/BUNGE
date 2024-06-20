@@ -10,11 +10,15 @@
     </insert>
 
     <select id="selectNoticesByStudyNo" parameterType="int" resultType="com.bunge.study.domain.Notice">
-        SELECT * FROM notice WHERE studyboardno = #{studyboardno} ORDER BY createdAt ASC
+        SELECT * FROM notice
+        WHERE studyboardno = #{studyboardno}
+        ORDER BY createdAt DESC
+            LIMIT #{size} OFFSET #{offset}
     </select>
 
     <select id="countByStudyNo" parameterType="int" resultType="int">
-        SELECT count(*) AS total_count FROM notice WHERE studyboardno = #{studyboardno}
+        SELECT COUNT(*) AS total_count FROM notice
+        WHERE studyboardno = #{studyboardno}
     </select>
 
     <select id="getMaxNoticeNoByStudyboardNo" resultType="int">
@@ -25,10 +29,10 @@
         SELECT * FROM notice WHERE noticeId = #{noticeId}
     </select>
 
-    <update id="updateNotice" parameterType="com.bunge.study.domain.Notice">
+    <update id="updateNotice" parameterType="map">
         UPDATE notice
-        SET title = #{title}, content = #{content}
-        WHERE noticeId = #{noticeId}
+        SET title = #{notice.title}, content = #{notice.content}
+        WHERE noticeId = #{notice.noticeId} and authorId = #{loginId}
     </update>
 
     <delete id="deleteNotice">
@@ -42,5 +46,12 @@
         JOIN studyboard sb ON sm.studyboardno = sb.no
         WHERE memberId = #{memberId} and sm.studyboardno = #{studyboardno}
     </select>
+
+    <select id="getStudyEndDate" resultType="String">
+        SELECT studyend
+        FROM studymanagement
+        WHERE studyboardno = #{studyboardno}
+    </select>
+
 
 </mapper>

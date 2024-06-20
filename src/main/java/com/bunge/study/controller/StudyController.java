@@ -730,13 +730,17 @@ public class StudyController {
     }
 
     @GetMapping("/notices/{studyboardno}")
-    public ResponseEntity<Map<String, Object>> getNotices(@PathVariable int studyboardno) {
-        List<Notice> notices = noticeService.selectNoticesByStudyNo(studyboardno);
-        int countNotices = noticeService.countByStudyNo(studyboardno);
+    public ResponseEntity<Map<String, Object>> getNotices(
+            @PathVariable int studyboardno,
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "5") int size) {
+
+        List<Notice> notices = noticeService.selectNoticesByStudyNo(studyboardno, page, size);
+        int count = noticeService.countByStudyNo(studyboardno);
 
         Map<String, Object> response = new HashMap<>();
         response.put("notices", notices);
-        response.put("count", countNotices);
+        response.put("count", count);
 
         return ResponseEntity.ok(response);
     }
@@ -751,9 +755,11 @@ public class StudyController {
         }
     }
 
+    @ResponseBody
     @PutMapping("/edit-notice")
-    public ResponseEntity<Map<String, Object>> editNotice(@RequestBody Notice notice) {
-        boolean success = noticeService.updateNotice(notice);
+    public ResponseEntity<Map<String, Object>> editNotice(@RequestBody Notice notice, Principal principal) {
+        String loginId = principal.getName();
+        boolean success = noticeService.updateNotice(notice,loginId);
         Map<String, Object> response = new HashMap<>();
         if (success) {
             response.put("status", "success");
@@ -775,6 +781,20 @@ public class StudyController {
             response.put("message", "Failed to delete notice");
         }
         return ResponseEntity.ok(response);
+    }
+
+    // 스터디 종료 날짜 가져오기
+    @GetMapping("/end-date/{studyboardno}")
+    public ResponseEntity<Map<String, String>> getStudyEndDate(@PathVariable int studyboardno) {
+        String endDate = noticeService.getStudyEndDate(studyboardno);
+        Map<String, String> response = new HashMap<>();
+        if (endDate != null) {
+            response.put("endDate", endDate);
+            return ResponseEntity.ok(response);
+        } else {
+            response.put("error", "Study not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
     }
 
     @ResponseBody

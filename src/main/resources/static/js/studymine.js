@@ -391,11 +391,44 @@ $(function () {
     }) // $("#deleteEvent").click(function () end
 
 
-    // 공지사항 목록 로드
-        function loadNotices() {
+
+        let currentPage = 1; // 현재 페이지 번호
+        const pageSize = 5;  // 한 페이지에 보여줄 공지사항 수
+
+    // 스터디 종료 날짜 가져오기
+    function checkStudyEndDate() {
+        $.ajax({
+            url: '/study/end-date/' + studyboardno,
+            method: 'GET',
+            beforeSend: function (xhr) {
+                if (header && token) {
+                    xhr.setRequestHeader(header, token);
+                }
+            },
+            success: function(response) {
+                    const endDate = new Date(response.endDate);
+                    const currentDate = new Date();
+
+                    if (currentDate > endDate) {
+                        $('#addNoticeButton').prop('disabled', true);
+                        $('#addNoticeButton').attr('title', '스터디 종료 날짜가 지나서 공지사항을 추가할 수 없습니다.');
+                    } else {
+                        $('#addNoticeButton').prop('disabled', false);
+                        $('#addNoticeButton').removeAttr('title');
+                    }
+                },
+            error: function(error) {
+                    console.error("스터디 종료 날짜를 가져오는데 실패했습니다.", error);
+                }
+            });
+    }
+
+        // 공지사항 목록 로드
+        function loadNotices(page = 1) {
             $.ajax({
                 url: '/study/notices/' + studyboardno,
                 method: 'GET',
+                data: { page: page, size: pageSize },
                 beforeSend: function (xhr) {
                     if (header && token) {
                         xhr.setRequestHeader(header, token);
@@ -407,8 +440,10 @@ $(function () {
 
                     if (response.count === 0) {
                         noticeTable.append('<tr><td colspan="5">공지사항이 없습니다.</td></tr>');
+                        renderPagination(0, 1, pageSize);
                     } else {
                         response.notices.forEach(notice => {
+                            const isAuthor = notice.authorId === $('#loginId').text();
                             const noticeRow = `
                         <tr>
                             <td style="padding-top: 20px;padding-bottom: 0px;">${notice.noticeNo}</td>
@@ -416,11 +451,12 @@ $(function () {
                             <td style="padding-top: 20px;padding-bottom: 0px;">${notice.authorId}</td>
                             <td style="padding-top: 20px;padding-bottom: 0px;">${notice.createdAt}</td>
                             <td>
-                            <button class="btn btn-icon btn-sm btn-hover btn-primary dropdown" data-bs-toggle="dropdown"
-                                    aria-expanded="false" style="float: right">
-                                <i class="demo-pli-dot-horizontal fs-4"></i>
-                                    <span class="visually-hidden">Toggle Dropdown</span>
-                            </button>
+                                ${isAuthor ? `
+                                <button class="btn btn-icon btn-sm btn-hover btn-primary dropdown" data-bs-toggle="dropdown"
+                                        aria-expanded="false" style="float: right">
+                                    <i class="demo-pli-dot-horizontal fs-4"></i>
+                                        <span class="visually-hidden">Toggle Dropdown</span>
+                                </button>
                                 <ul class="dropdown-menu dropdown-menu-end">
                                     <li>
                                         <a href="#" class="dropdown-item editNotice" data-id="${notice.noticeId}">
@@ -436,6 +472,7 @@ $(function () {
                                         <hr class="dropdown-divider">
                                     </li>
                                 </ul>
+                                ` : ''}
                             </td>
                         </tr>
                         <tr id="notice-content-${notice.noticeId}" class="notice-content-row" style="display: none;">
@@ -463,11 +500,46 @@ $(function () {
                             const noticeId = $(this).data('id');
                             deleteNotice(noticeId);
                         });
+
+                        // 페이지네이션 처리
+                        renderPagination(response.count, page, pageSize);
                     }
                 },
                 error: function(error) {
                     console.error("공지사항 로드에 실패했습니다", error);
                 }
+            });
+        }
+
+        // 페이지네이션 렌더링
+        function renderPagination(totalCount, currentPage, pageSize) {
+            const totalPage = Math.max(1, Math.ceil(totalCount / pageSize));
+            const startPage = Math.max(1, currentPage - 2);
+            const endPage = Math.min(totalPage, currentPage + 2);
+
+            $("#pagination").empty();
+
+            if (currentPage > 1) {
+                $("#pagination").append(`<li class="page-item"><a href="#" data-page="${currentPage - 1}" class="page-link">이전</a></li>`);
+            } else {
+                $("#pagination").append(`<li class="page-item disabled"><a class="page-link">이전</a></li>`);
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                $("#pagination").append(`<li class="page-item ${i === currentPage ? 'active' : ''}"><a href="#" data-page="${i}" class="page-link">${i}</a></li>`);
+            }
+
+            if (currentPage < totalPage) {
+                $("#pagination").append(`<li class="page-item"><a href="#" data-page="${currentPage + 1}" class="page-link">다음</a></li>`);
+            } else {
+                $("#pagination").append(`<li class="page-item disabled"><a class="page-link">다음</a></li>`);
+            }
+
+            // 페이지 링크 클릭 이벤트
+            $("#pagination a").click(function(event) {
+                event.preventDefault();
+                let selectedPage = $(this).data("page");
+                loadNotices(selectedPage);
             });
         }
 
@@ -498,46 +570,46 @@ $(function () {
             });
         }
 
-    // 공지사항 수정
-    function editNotice() {
-        const noticeId = $('#addButton').data('id');
-        const notice = {
-            noticeId: noticeId,
-            title: $('#noticeTitle').val(),
-            content: $('#noticeContent').val(),
-            authorId: $('#noticeLeaderId').val()
-        };
+        // 공지사항 수정
+        function editNotice() {
+            const noticeId = $('#addButton').data('id');
+            const notice = {
+                noticeId: noticeId,
+                title: $('#noticeTitle').val(),
+                content: $('#noticeContent').val(),
+                authorId: $('#noticeLeaderId').val()
+            };
 
-        console.log('Sending PUT request to /study/edit-notice with data:', notice);
+            console.log('Sending PUT request to /study/edit-notice with data:', notice);
 
-        $.ajax({
-            url: '/study/edit-notice',
-            method: 'PUT',
-            contentType: 'application/json',
-            data: JSON.stringify(notice),
-            beforeSend: function (xhr) {
-                if (header && token) {
-                    xhr.setRequestHeader(header, token);
+            $.ajax({
+                url: '/study/edit-notice',
+                method: 'PUT',
+                contentType: 'application/json',
+                data: JSON.stringify(notice),
+                beforeSend: function (xhr) {
+                    if (header && token) {
+                        xhr.setRequestHeader(header, token);
+                    }
+                },
+                success: function(response) {
+                    console.log('Response:', response); // 디버깅 로그 추가
+                    if (response.status === 'success') {
+                        alert('공지사항이 수정되었습니다.');
+                        $('#noticeModal').modal('hide');
+                        loadNotices(currentPage); // 현재 페이지 다시 로드
+                    } else {
+                        alert("공지사항 수정에 실패했습니다: " + response.message);
+                    }
+                },
+                error: function(error) {
+                    alert("공지사항 수정에 실패했습니다: " + (error.responseJSON ? error.responseJSON.message : "Unknown error"));
+                    console.error("Error:", error);
                 }
-            },
-            success: function(response) {
-                console.log('Response:', response); // 디버깅 로그 추가
-                if (response.status === 'success') {
-                    alert('공지사항이 수정되었습니다.');
-                    $('#noticeModal').modal('hide');
-                    loadNotices();
-                } else {
-                    alert("공지사항 수정에 실패했습니다: " + response.message);
-                }
-            },
-            error: function(error) {
-                alert("공지사항 수정에 실패했습니다: " + (error.responseJSON ? error.responseJSON.message : "Unknown error"));
-                console.error("Error:", error);
-            }
-        });
-    }
+            });
+        }
 
-    // 공지사항 삭제
+        // 공지사항 삭제
         function deleteNotice(noticeId) {
             if (!confirm("정말로 이 공지사항을 삭제하시겠습니까?")) {
                 return;
@@ -554,7 +626,7 @@ $(function () {
                 success: function(response) {
                     if (response.status === 'success') {
                         alert('공지사항이 삭제되었습니다.');
-                        loadNotices();
+                        loadNotices(currentPage); // 현재 페이지 다시 로드
                     } else {
                         alert("공지사항 삭제에 실패했습니다: " + response.message);
                     }
@@ -618,7 +690,7 @@ $(function () {
                         if (response.status === 'success') {
                             alert('공지사항이 추가되었습니다.');
                             $('#noticeModal').modal('hide'); // 모달창 닫기
-                            loadNotices(); // 공지사항 목록 다시 로드
+                            loadNotices(currentPage); // 현재 페이지 다시 로드
                         } else {
                             alert("공지사항 추가에 실패했습니다: " + response.message);
                         }
@@ -635,7 +707,7 @@ $(function () {
 
         // 페이지 로드 시 공지사항 목록 로드
         loadNotices();
-
+    checkStudyEndDate(); // 스터디 종료 날짜 확인
 
     $("#showAll").click(function () {
         location.href = "/study/mine-list"

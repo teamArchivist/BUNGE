@@ -80,7 +80,7 @@ public class UserMainServiceImpl implements UserMainService {
     }
 
     @Override
-    public List<Notice> getNoticesByStudyBoardNo(int studyboardno, int page, int size) {
+    public List<Notice> selectNoticesByStudyBoardNo(int studyboardno, int page, int size) {
         int offset = (page - 1) * size;
         return userMainMapper.selectNoticesByStudyBoardNo(studyboardno, size, offset);
     }
