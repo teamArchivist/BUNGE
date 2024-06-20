@@ -7,6 +7,7 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ import java.util.Vector;
 public class SftpService {
 
     private static final String USER = "ec2-user";
-    private static final String HOST = "ec2-43-203-221-59.ap-northeast-2.compute.amazonaws.com";
+    private static final String HOST = "ec2-43-203-229-201.ap-northeast-2.compute.amazonaws.com";
     private static final int PORT = 22;
     private static final String PEM_FILE = "/home/ec2-user/bunge.pem";
 
@@ -96,6 +97,5 @@ public class SftpService {
             }
         }
     }
-
 
 }

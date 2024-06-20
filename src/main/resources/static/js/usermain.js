@@ -113,7 +113,7 @@ $(document).ready(function() {
 					let output = '';
 
 					response.studyMyList.forEach(function (study) {
-//						console.log("study object: ", study);
+						console.log("study object: ", study);
 						output += generateMyStudyHtml(study);
 					});
 					$('#studylist').html(output);
