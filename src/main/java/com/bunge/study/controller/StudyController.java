@@ -570,7 +570,7 @@ public class StudyController {
             @RequestParam("remoteFilePath") String remoteFilePath) throws JSchException, SftpException, IOException {
 
         // 로컬에 저장될 파일 경로
-        String localFilePath = "/Users/songjaehyuk/Desktop/" + remoteFilePath.substring(remoteFilePath.lastIndexOf('/') + 1);
+        String localFilePath = "/home/ec2-user/" + remoteFilePath.substring(remoteFilePath.lastIndexOf('/') + 1);
 
         try {
             // 파일 다운로드 메서드 호출
