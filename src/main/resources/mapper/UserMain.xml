@@ -43,7 +43,6 @@
                 sm.studystart ASC
             </when>
             <when test="sort == 'progress'">
-                is_today DESC,
                 progress DESC,
                 sm.studystart ASC
             </when>
