@@ -159,11 +159,13 @@
                n.title AS noticeTitle,
                n.content,
                n.authorId,
-               n.createdAt
+               n.createdAt,
+               sb.challengeend
         FROM studymember sm
                  JOIN studyboard sb ON sm.studyboardno = sb.no
                  JOIN notice n ON sb.no = n.studyboardno
         WHERE sm.memberId = #{memberId}
+          AND sb.challengeend > NOW()
         ORDER BY sb.challengestart;
     </select>
 

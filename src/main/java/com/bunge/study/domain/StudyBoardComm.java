@@ -16,4 +16,5 @@ public class StudyBoardComm {
     private int lev;
     private int seq;
     private String created;
+    private String profile;
 }

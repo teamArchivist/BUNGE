@@ -13,6 +13,6 @@ public interface UserMainService {
         int countByStudyNo(int studyboardno);
         int getMaxNoticeNoByStudyboardNo(int studyboardno);
         List<Notice> selectStudiesByMemberId(String memberId);
-        List<Notice> getNoticesByStudyBoardNo(int studyboardno, int page, int size);
+        List<Notice> selectNoticesByStudyBoardNo(int studyboardno, int page, int size);
         int countNoticesByStudyBoardNo(int studyboardno);
 }

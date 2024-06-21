@@ -53,7 +53,7 @@ $(document).ready(function() {
 	}
 
 	function StudyPagination(totalCount, currentPage, pageSize, sort) {
-		const totalPage = Math.ceil(totalCount / pageSize);
+		const totalPage = Math.max(1, Math.ceil(totalCount / pageSize));
 		const startPage = Math.max(1, currentPage - 5);
 		const endPage = Math.min(totalPage, currentPage + 4);
 
@@ -149,7 +149,7 @@ $(document).ready(function() {
 	loadMyEventList(page, size);
 
 	function EventPagination(totalCount, currentPage, pageSize) {
-		const totalPage = Math.ceil(totalCount / pageSize);
+		const totalPage = Math.max(1, Math.ceil(totalCount / pageSize));
 		const startPage = Math.max(1, currentPage - 5);
 		const endPage = Math.min(totalPage, currentPage + 4);
 

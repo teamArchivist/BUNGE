@@ -1,5 +1,6 @@
 $(function() {
 
+	//
 	/*
 		헤더의 
 		<span id="loginid">${pinfo.username}</span>님(로그아웃)

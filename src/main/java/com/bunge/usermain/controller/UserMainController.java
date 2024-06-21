@@ -39,7 +39,7 @@ public class UserMainController {
 
         Map<Integer, List<Notice>> studyNotices = new HashMap<>();
         for (Notice study : studies) {
-            List<Notice> notices = userMainService.getNoticesByStudyBoardNo(study.getStudyboardno(), 1, 5);
+            List<Notice> notices = userMainService.selectNoticesByStudyBoardNo(study.getStudyboardno(), 1, 5);
             studyNotices.put(study.getStudyboardno(), notices);
         }
         model.addAttribute("studyNotices", studyNotices);

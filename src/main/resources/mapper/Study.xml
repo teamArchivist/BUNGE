@@ -39,7 +39,7 @@
             and s.id like CONCAT('%', #{keyword}, '%')
         </if>
         group by s.no
-        order by s.state, s.challengeend desc
+        order by s.state, s.no desc
         limit #{offset}, #{limit}
     </select>
 
@@ -99,8 +99,9 @@
     </update>
 
     <select id="getStudyCommList" parameterType="int" resultType="com.bunge.study.domain.StudyBoardComm">
-        select *
-        from studyboardcomm
+        select s.*, m.profile
+        from studyboardcomm s
+        join member m on s.id = m.id
         where studyboardno = #{no}
     </select>
 
@@ -124,9 +125,10 @@
     </insert>
 
     <select id="getApplicationsByStudyBoardNo" parameterType="int" resultType="com.bunge.study.domain.StudyApplication">
-        select *
-        from studyapplication
-        where studyboardno = #{studyboardno}
+        select s.*, m.profile
+        from studyapplication s
+        join member m on s.applicationId = m.id
+        where studyboardno = #{studyboardno};
     </select>
 
     <update id="approveApplication" parameterType="com.bunge.study.parameter.ApproveApplicationRequest">
@@ -154,10 +156,11 @@
     </update>
 
     <select id="getStudyMember" parameterType="int" resultType="com.bunge.study.domain.StudyApplication">
-        select *
-        from studyapplication
-        where studyboardno = #{studyboardno}
-        and status = '승인'
+        select s.*, m.profile as profile, m.nick as nick
+        from studyapplication s
+                 join member m on s.applicationId = m.id
+        where s.studyboardno = #{studyboardno}
+          and s.status = '승인';
     </select>
 
     <select id="getMyApplicationList" parameterType="String" resultType="com.bunge.study.domain.StudyApplication">
