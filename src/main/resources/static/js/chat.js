@@ -39,6 +39,15 @@ function parseMessage(frame) {
     }
 
     $(".bg-body-tertiary > .justify-content-end").append(chat);
+
+    // 채팅 리스트에 메세지 업데이트
+    $("a#list-nick").each(function() {
+        const href = $(this).prop("href");
+        const chatroomId = href.slice(href.lastIndexOf("/") + 1);
+        if (chatroomId === message.chatroomId) {
+            $(this).parent().next().children().text(message.data);
+        }
+    });
 }
 
 function send() {
@@ -75,5 +84,18 @@ $(function () {
 
     $(".chat-message-input").keydown(function (e) {
         handleEnterKey(e);
+    });
+
+    // 채팅 리스트 검색
+    $(".search").on("keyup", function () {
+        const value = $(this).val().toLowerCase();
+        $("a#list-nick").filter(function () {
+            var hasContain = $(this).text().toLowerCase().indexOf(value) > -1
+            if (hasContain) {
+                $(this).closest(".list-group-item").removeClass("custom-display");
+            } else {
+                $(this).closest(".list-group-item").addClass("custom-display");
+            }
+        });
     });
 });
