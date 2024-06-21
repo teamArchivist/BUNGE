@@ -76,4 +76,17 @@ $(function () {
     $(".chat-message-input").keydown(function (e) {
         handleEnterKey(e);
     });
+
+    // 채팅 리스트 검색
+    $(".search").on("keyup", function () {
+        const value = $(this).val().toLowerCase();
+        $("a#list-nick").filter(function () {
+            var hasContain = $(this).text().toLowerCase().indexOf(value) > -1
+            if (hasContain) {
+                $(this).closest(".list-group-item").removeClass("custom-display");
+            } else {
+                $(this).closest(".list-group-item").addClass("custom-display");
+            }
+        });
+    });
 });

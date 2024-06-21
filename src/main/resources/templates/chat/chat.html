@@ -18,6 +18,9 @@
             .active a {
                 color: #0280f5 !important;
             }
+            .custom-display {
+                display: none !important;
+            }
         </style>
     </links>
 </head>
@@ -38,7 +41,7 @@
                         <!-- Chat sidebar -->
                         <div class="w-md-250px flex-shrink-0 d-flex flex-column mb-3 mb-md-0">
                             <form class="pb-3 border-bottom">
-                                <input type="text" class="form-control" placeholder="Search or start new chat">
+                                <input type="text" class="form-control search" placeholder="Search chat">
                             </form>
 
                             <div class="list-group list-group-borderless flex-fill min-h-0 mt-3 overflow-scroll scrollable-content">
@@ -53,11 +56,12 @@
                                     <div class="flex-fill overflow-hidden">
                                         <div class="d-flex justify-content-between">
                                             <a th:href="@{/chat/rooms/{id}(id = ${chatroom.chatroomId})}"
+                                               id="list-nick"
                                                class="h6 d-block mb-1 stretched-link text-nowrap text-truncate text-decoration-none pe-2" th:text="${chatroom.nick}"></a>
                                             <small class="text-body-secondary text-nowrap" th:text="${#temporals.format(chatroom.createDate, 'yyyy-MM-dd HH:mm')}"></small>
                                         </div>
                                         <div class="d-flex justify-content-between">
-                                            <small class="text-body-secondary text-truncate pe-2" th:text="${chatroom.data}"></small>
+                                            <small id="list-msg" class="text-body-secondary text-truncate pe-2" th:text="${chatroom.data}"></small>
                                         </div>
                                     </div>
                                 </figure>
