@@ -51,7 +51,7 @@
                                         th:classappend="${chatroom.chatroomId eq id} ? active : ''">
                                     <div class="flex-shrink-0 me-3">
                                         <img class="img-xs rounded-circle"
-                                             th:src="${chatroom.profile != ''} ? '/upload' + chatroom.profile : '/img/profile-photos/default.png'"
+                                             th:src="${chatroom.profile != ''} ? '/upload' + ${chatroom.profile} : '/img/profile-photos/default.png'"
                                              alt="Profile Picture" loading="lazy">
                                     </div>
                                     <div class="flex-fill overflow-hidden">
@@ -96,7 +96,7 @@
                                         <div class="flex-shrink-0 me-3">
                                             <th:block th:each="chatroom : ${chatrooms}">
                                                 <img class="img-sm rounded-circle" th:if="${chatroom.chatroomId eq id}"
-                                                     th:src="${chatroom.profile != ''} ? '/upload' + chatroom.profile : '/img/profile-photos/default.png'"
+                                                     th:src="${chatroom.profile != ''} ? '/upload' + ${chatroom.profile} : '/img/profile-photos/default.png'"
                                                      alt="Profile Picture" loading="lazy">
                                             </th:block>
                                         </div>
