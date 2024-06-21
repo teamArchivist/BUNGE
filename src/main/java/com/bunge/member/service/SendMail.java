@@ -34,7 +34,7 @@ public class SendMail {
                     helper.setFrom(mail.getFrom());
                     helper.setTo(mail.getTo());
                     helper.setSubject("비밀번호 재설정 메일입니다.");
-                    helper.setText("<a href='http://localhost:8080/member/pwdset?random="+random+"&email="+mail.getTo()+"'>비밀번호 재설정 링크입니다.</a>", true);
+                    helper.setText("<a href='http://43.203.229.201:9100/member/pwdset?random="+random+"&email="+mail.getTo()+"'>비밀번호 재설정 링크입니다.</a>", true);
                 }
             };
             mailSender.send(mp);

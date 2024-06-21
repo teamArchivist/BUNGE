@@ -11,9 +11,9 @@
 <body>
 <section sec:authorize="hasAnyAuthority('admin','superadmin')">
     <script th:inline="javascript">
-        let result = [[${message}]];
-        if(result != null)
-            alert(result);
+        let message = [[${Processing}]];
+        if(message != null)
+            alert(message);
     </script>
     <div class="content__header content__boxed overlapping">
         <!-- admin 페이지-->

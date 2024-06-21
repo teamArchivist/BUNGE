@@ -38,8 +38,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         if(username.equals("admin")){
             message = "관리자 로그인했습니다.";
-            String url = request.getContextPath()+"/admin/adminmain";
             session.setAttribute("message",message);
+            String url = request.getContextPath()+"/admin/adminmain";
             response.sendRedirect(url);
         }else{
             message ="환영합니다 "+ username +"회원이 로그인하셨습니다.";

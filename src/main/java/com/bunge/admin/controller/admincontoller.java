@@ -135,7 +135,7 @@ public class admincontoller {
         report.setReportstatus(reportstatus);
 
         adminservice.updateReport(report);
-        redirectAttributes.addFlashAttribute("message","처리완료");
+        redirectAttributes.addFlashAttribute("Processing","처리완료");
         mav.setViewName("redirect:adminmain");
         return mav;
     }
