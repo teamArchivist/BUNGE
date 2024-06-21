@@ -101,7 +101,7 @@ $(function () {
             let commentHtml = `
                 <div class="d-flex mb-2">
                     <div class="flex-shrink-0">
-                        <img class="img-sm rounded-circle" src="/img/profile-photos/10.png" alt="Profile" loading="lazy">
+                        <img class="img-sm rounded-circle" src="/upload/${comment.profile}" alt="Profile" loading="lazy">
                     </div>
                     <div class="flex-grow-1 ms-3">
                         <div class="mb-1">
@@ -172,7 +172,7 @@ $(function () {
                     let row = document.createElement("tr");
 
                     let applicantTd = document.createElement("td");
-                    applicantTd.innerHTML = `<img src="/img/profile-photos/1.png" class="img-sm rounded-circle border">
+                    applicantTd.innerHTML = `<img src="/upload/${application.profile}" class="img-sm rounded-circle border">
                                              <span>${application.applicationId}</span>`;
                     row.appendChild(applicantTd);
 
