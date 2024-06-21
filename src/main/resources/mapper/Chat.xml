@@ -27,6 +27,7 @@
         SELECT
             chatroom.id AS chatroomId,
             member.nick AS nick,
+            member.profile AS profile,
             chatroom.state AS state,
             COALESCE(message.type, '') AS type,
             COALESCE(message.data, '') AS data,

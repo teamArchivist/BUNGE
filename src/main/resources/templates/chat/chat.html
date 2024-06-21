@@ -50,7 +50,8 @@
                                 <figure th:each="chatroom : ${chatrooms}" class="list-group-item list-group-item-action d-flex align-items-start mb-1 py-3"
                                         th:classappend="${chatroom.chatroomId eq id} ? active : ''">
                                     <div class="flex-shrink-0 me-3">
-                                        <img class="img-xs rounded-circle" src="/img/profile-photos/default.png"
+                                        <img class="img-xs rounded-circle"
+                                             th:src="${chatroom.profile != ''} ? '/upload' + chatroom.profile : '/img/profile-photos/default.png'"
                                              alt="Profile Picture" loading="lazy">
                                     </div>
                                     <div class="flex-fill overflow-hidden">
@@ -93,8 +94,11 @@
 
                                     <figure class="d-flex align-items-center position-relative">
                                         <div class="flex-shrink-0 me-3">
-                                            <img class="img-sm rounded-circle" src="/img/profile-photos/default.png"
-                                                 alt="Profile Picture" loading="lazy">
+                                            <th:block th:each="chatroom : ${chatrooms}">
+                                                <img class="img-sm rounded-circle" th:if="${chatroom.chatroomId eq id}"
+                                                     th:src="${chatroom.profile != ''} ? '/upload' + chatroom.profile : '/img/profile-photos/default.png'"
+                                                     alt="Profile Picture" loading="lazy">
+                                            </th:block>
                                         </div>
                                         <div class="flex-fill overflow-hidden">
                                             <th:block th:each="chatroom : ${chatrooms}">
