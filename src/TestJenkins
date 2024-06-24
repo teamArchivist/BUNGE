@@ -1,0 +1,7 @@
+Test Jenkins
+(1)EC2 / Jenkins 종료 후 새로운 public ip 부여받았는데,
+별다른 설정 변경 없이도 잘 작동할까? -> ok (github web-hook ip 주소만 잘 입력하면 됨)
+
+
+(2)main 브랜치에 직접 commit / push 하는 것이 아니라,
+develop 브랜치에서 pr merge 한 경우에도 Jenkins에서 인식할까?

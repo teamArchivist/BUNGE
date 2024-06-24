@@ -255,7 +255,6 @@
                   <div class="row">
                     <div class="col-md-8">
                     <span th:each="memberId : ${#strings.listSplit(studyManagement.memberIds,',')}">
-                      <img class="img-xs rounded-circle" th:src="@{/img/profile-photos/8.png}" alt="Profile Picture" loading="lazy">
                       <span class="btn-group" th:if="!${#strings.equals(studyManagement.leaderId, memberId)}">
                         <button type="button" class="btn btn-link dropdown-toggle hstack gap-2"
                                 data-bs-toggle="dropdown" aria-expanded="false">[[${memberId}]]

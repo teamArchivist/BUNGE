@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 public class ChatListDto {
     private Integer chatroomId;
     private String nick;
+    private String profile;
     private String state;
     private String type;
     private String data;
