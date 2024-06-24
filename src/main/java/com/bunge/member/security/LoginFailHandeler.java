@@ -28,16 +28,13 @@ private static final Logger logger = LoggerFactory.getLogger(LoginFailHandeler.c
         logger.info("로그인실패");
         logger.info(exception.getMessage());
 
-        String username = request.getParameter("id");
-
         String message = null;
 
         try{
-            Member member = (Member) customUserDatilsService.loadUserByUsername(username);
 
-            if(member.getSuspended() == 1) {
+            if(exception.getMessage().equals("유효하지 않은 사용자입니다.")) {
                 message ="계정이 비활성화 되었습니다.";
-            }else {
+            }else if(exception.getMessage().equals("자격 증명에 실패하였습니다.")) {
                 message= "아이디나 비밀번호가 틀렸습니다.";
             }
         } catch (UsernameNotFoundException e) {

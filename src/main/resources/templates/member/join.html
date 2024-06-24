@@ -34,25 +34,25 @@
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                         <div class="w-md-400px d-inline-flex row g-3 mb-4">
                             <div class="col-12 mt-2">
-                                <input type="text" id="id" name="id" class="form-control" placeholder="아이디 입력(5~15자)" maxlength="15">
+                                <input type="text" id="id" name="id" class="form-control" placeholder="아이디 입력(5~15자)" maxlength="16">
                             </div>
                             <div class="col-12 mt-2">
                                 <span id="id_message"></span>
                             </div>
                             <div class="col-12 mt-2">
-                                <input type="password" id="pwd" name="pwd" class="form-control" placeholder="비밀번호 입력" maxlength="15">
+                                <input type="password" id="pwd" name="pwd" class="form-control" placeholder="비밀번호 입력" maxlength="16">
                             </div>
                             <div class="col-12 mt-2">
                                 <span id="pwd_message"></span>
                             </div>
                             <div class="col-12 mt-2">
-                                <input type="text" id="name" name="name" class="form-control" placeholder="이름을 입력" maxlength="4">
+                                <input type="text" id="name" name="name" class="form-control" placeholder="이름을 입력" maxlength="5">
                             </div>
                             <div class="col-12 mt-2">
                                 <span id="name_message"></span>
                             </div>
                             <div class="col-12 mt-2">
-                                <input type="text" id="nick" name="nick" class="form-control" placeholder="닉네임 입력" maxlength="10">
+                                <input type="text" id="nick" name="nick" class="form-control" placeholder="닉네임 입력" maxlength="11">
                             </div>
                             <div class="col-12 mt-2">
                                 <span id="nick_message"></span>
@@ -86,7 +86,7 @@
                                 <span id="addr2_message"></span>
                             </div>
                             <div class="col-12 mt-2">
-                                <input type="text" id="phone" name="phone" class="form-control" placeholder="핸드폰번호를 입력해주세요" maxlength="11">
+                                <input type="text" id="phone" name="phone" class="form-control" placeholder="핸드폰번호를 입력해주세요" maxlength="12">
                             </div>
                             <div class="col-12 mt-2">
                                 <span id="pho_message"></span>
@@ -113,12 +113,13 @@
                                 <span id="birthdate_message"></span>
                             </div>
                         </div>
-
-                        <div class="mt-4 d-grid gap-2">
-                            <button class="btn btn-primary btn-lg" id="submitButton" type="submit" >회원가입</button>
-                            <button class="btn btn-light" onclick="window.history.back()">돌아가기</button>
-                        </div>
+                    <div class="mt-4 d-grid gap-2">
+                         <button class="btn btn-primary btn-lg" id="submitButton" type="submit" >회원가입</button>
+                    </div>
                     </form>
+                    <div class="mt-2 d-grid gap-2">
+                        <button class="btn btn-light" onclick="window.history.back()">돌아가기</button>
+                    </div>
                 </div>
             </div>
 
