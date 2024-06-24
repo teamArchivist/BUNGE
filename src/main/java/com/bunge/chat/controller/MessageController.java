@@ -1,6 +1,7 @@
 package com.bunge.chat.controller;
 
 import com.bunge.chat.constant.KafkaTopic;
+import com.bunge.chat.domain.Message;
 import com.bunge.chat.service.KafkaConsumerService;
 import com.bunge.chat.service.KafkaProducerService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -19,8 +20,8 @@ public class MessageController {
     private final KafkaProducerService producerService;
     private final KafkaConsumerService consumerService;
 
-    @MessageMapping("/hello")
-    public void publishMessage(String message) throws JsonProcessingException {
+    @MessageMapping("/message")
+    public void publishMessage(Message message) throws JsonProcessingException {
         log.info("message={}", message);
         producerService.sendMessage(KafkaTopic.TEMP, message);
     }

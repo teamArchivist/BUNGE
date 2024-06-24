@@ -57,9 +57,8 @@ function send() {
     message.memberId = loginId;
     message.type = "T";
     message.data = $(".chat-message-input").val();
-    message.createDate = moment().format("yyyy-MM-DD HH:mm:ss");
 
-    stompClient.send("/pub/hello", {}, JSON.stringify(message));
+    stompClient.send("/pub/message", {}, JSON.stringify(message));
 }
 
 function handleEnterKey(e) {
