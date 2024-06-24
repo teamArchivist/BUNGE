@@ -1,7 +1,7 @@
 var stompClient = null;
 
 function connect() {
-    var socket = new SockJS('/ws');
+    var socket = new SockJS('/chat');
     stompClient = Stomp.over(socket);
     stompClient.debug = null
     stompClient.connect({}, function () {
