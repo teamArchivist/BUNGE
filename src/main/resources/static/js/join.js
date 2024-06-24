@@ -184,7 +184,6 @@ $(function(){
 			}
 		};//전화번호 유효성 검사 end
 
-
 //이메일 유효성 검사
 	let generatedCode = "";
 	let isValid = false;
