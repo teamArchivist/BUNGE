@@ -39,7 +39,7 @@
             and s.id like CONCAT('%', #{keyword}, '%')
         </if>
         group by s.no
-        order by s.state, s.no desc
+        order by s.state, s.challengeend desc, s.no desc
         limit #{offset}, #{limit}
     </select>
 
