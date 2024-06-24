@@ -27,7 +27,7 @@ import java.util.Vector;
 public class SftpService {
 
     private static final String USER = "ec2-user";
-    private static final String HOST = "ec2-43-203-229-201.ap-northeast-2.compute.amazonaws.com";
+    private static final String HOST = "ec2-43-201-236-54.ap-northeast-2.compute.amazonaws.com";
     private static final int PORT = 22;
     private static final String PEM_FILE = "/home/ec2-user/bunge.pem";
 
