@@ -12,17 +12,17 @@ spring:
   ##db connection(MySQL)
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url:
-    username:
-    password:
-    Database:
+    url: jdbc:mysql://database-2.czg0im8cs8fs.ap-northeast-2.rds.amazonaws.com:3306/bunge?characterEncoding=utf8
+    username: bunge
+    password: bunge2308
+    Database : bunge
 
   #mail
   mail:
     host: smtp.naver.com
     port: 587
-    username:
-    password:
+    username: gksrmf2008@naver.com
+    password: as124578*
     properties:
       mail.smtp.auth: true
 
@@ -32,7 +32,7 @@ spring:
 
 #my:
 #  savefolder: c:\img\profile-photos
-#  savepath: file:///C:/img/profile-photos/
+# savepath: file:///C:/img/profile-photos/
 
 #aws
 my:
@@ -56,6 +56,5 @@ logging:
   level:
     com.bunge.member.mapper.MemberMapper: TRACE
     com.bunge.inquiry.mapper.InquiryMapper: TRACE
-
 server:
   port: 8090
