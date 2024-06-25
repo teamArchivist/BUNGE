@@ -1,5 +1,6 @@
 package com.bunge.chat.service;
 
+import com.bunge.chat.domain.Message;
 import com.bunge.chat.repository.ChatRepository;
 import com.bunge.chat.util.JsonUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -17,9 +18,9 @@ public class KafkaProducerService {
     private final ChatRepository repository;
     private final JsonUtils jsonUtils;
 
-    public void sendMessage(String topic, String data) throws JsonProcessingException {
-        kafkaTemplate.send(topic, data);
-        repository.saveMessage(jsonUtils.getObject(data));
+    public void sendMessage(String topic, Message data) throws JsonProcessingException {
+        kafkaTemplate.send(topic, jsonUtils.getString(data));
+        repository.saveMessage(data);
     }
 }
 
