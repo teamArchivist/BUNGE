@@ -9,7 +9,6 @@ function connect() {
     stompClient.connect({}, function () {
         stompClient.subscribe("/rooms/" + chatroomId, function (frame) {
             parseMessage(frame);
-            $(".bg-body-tertiary").scrollTop($(".bg-body-tertiary")[0].scrollHeight);
         });
     });
 }
@@ -72,6 +71,10 @@ function handleEnterKey(e) {
     }
 }
 
+function scrollDown() {
+    $(".bg-body-tertiary").scrollTop($(".bg-body-tertiary")[0].scrollHeight);
+}
+
 $(function () {
 
     assignChatroom.call(this, "init");
@@ -79,7 +82,7 @@ $(function () {
 
     $(".btn-send").click(function () {
         send();
-        $(".bg-body-tertiary").scrollTop($(".bg-body-tertiary")[0].scrollHeight);
+        scrollDown();
     });
 
     $(".chat-message-input").keydown(function (e) {
