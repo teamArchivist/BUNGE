@@ -4,14 +4,18 @@ import com.bunge.member.security.CustomAccessDeniedHandler;
 import com.bunge.member.security.CustomUserDatilsService;
 import com.bunge.member.security.LoginFailHandeler;
 import com.bunge.member.security.LoginSuccessHandler;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authorization.AuthorizationDecision;
+import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
@@ -21,23 +25,26 @@ import javax.sql.DataSource;
 @EnableWebSecurity //Spring Security 활성화시켜서 모든 요청이 스프링 시큐리티의 제어를 받도록 한다.
 @Configuration //스프링 IOC Container에게 해당 클래스를 Bean 구성 Class임을 알려는 것이다.
 public class SecurityConfig {
-	private LoginFailHandeler   loginFailHandeler;
-	private LoginSuccessHandler loginSuccessHandler;
-	private DataSource          dataSource;
-	private CustomUserDatilsService   customUserDatilsService;
-	private CustomAccessDeniedHandler customAccessDeniedHandler;
+	private final LoginFailHandeler   loginFailHandeler;
+	private final LoginSuccessHandler loginSuccessHandler;
+	private final DataSource          dataSource;
+	private final CustomUserDatilsService   customUserDatilsService;
+	private final CustomAccessDeniedHandler customAccessDeniedHandler;
+	private final WebSecurity webSecurity;
 
 	@Autowired
 	public SecurityConfig(LoginFailHandeler loginFailHandeler,
 						  LoginSuccessHandler loginSuccessHandler,
 						  CustomUserDatilsService customUserDatilsService,
 						  DataSource dataSource,
-						  CustomAccessDeniedHandler customAccessDeniedHandler) {
+						  CustomAccessDeniedHandler customAccessDeniedHandler,
+						  WebSecurity webSecurity) {
 		this.loginFailHandeler=loginFailHandeler;
 		this.loginSuccessHandler=loginSuccessHandler;
 		this.customUserDatilsService = customUserDatilsService;
 		this.dataSource = dataSource;
 		this.customAccessDeniedHandler = customAccessDeniedHandler;
+		this.webSecurity = webSecurity;
 	}
 
 	/*
@@ -59,6 +66,8 @@ public class SecurityConfig {
 							.hasAnyAuthority("member","admin","superadmin")
 						.requestMatchers("/chat/**")
 							.hasAnyAuthority("member","admin","superadmin")
+						.requestMatchers("/inquiry/view/{inquiryId}")
+							.hasAnyAuthority("member", "admin")
 						.requestMatchers("/**").permitAll()
 
 		);

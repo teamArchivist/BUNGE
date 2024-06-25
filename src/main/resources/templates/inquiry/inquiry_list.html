@@ -17,6 +17,15 @@
 
 <body>
 <section>
+   <script th:inline="javascript">
+      /*<![CDATA[*/
+      /* 페이지 로드 시 alertMessage가 설정되어 있으면 알림 표시 */
+      var alertMessage = [[${alertMessage}]];
+      if (alertMessage) {
+         alert(alertMessage);
+      }
+      /*]]>*/
+   </script>
    <section id="content" class="content">
       <div class="content__boxed">
          <div class="content__wrap">
