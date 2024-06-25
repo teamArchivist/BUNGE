@@ -55,7 +55,6 @@ function parseMessage(frame) {
 function send() {
     let message = {};
     message.chatroomId = chatroomId;
-    message.memberId = loginId;
     message.type = "T";
     message.data = $(".chat-message-input").val();
 

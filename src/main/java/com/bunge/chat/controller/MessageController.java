@@ -12,6 +12,8 @@ import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
 
+import java.security.Principal;
+
 @Slf4j
 @Controller
 @RequiredArgsConstructor
@@ -21,8 +23,13 @@ public class MessageController {
     private final KafkaConsumerService consumerService;
 
     @MessageMapping("/message")
-    public void publishMessage(Message message) throws JsonProcessingException {
+    public void publishMessage(Message message, Principal principal) throws JsonProcessingException {
         log.info("message={}", message);
+        if (principal == null) {
+            return;
+        }
+
+        message.setMemberId(principal.getName());
         producerService.sendMessage(KafkaTopic.TEMP, message);
     }
 
