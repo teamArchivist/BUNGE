@@ -1,7 +1,10 @@
 package com.bunge.inquiry.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.sql.Timestamp;
 
+@JsonIgnoreProperties(ignoreUnknown = true) //JSON 데이터에 추가 필드가 있어도 클래스에 정의되지 않은 필드는 무시됩니다.
 public class InquiryComment {
     private Long commentId;
     private Long inquiryId;

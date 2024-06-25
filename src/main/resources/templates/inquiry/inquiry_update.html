@@ -10,7 +10,6 @@
       <script th:src="@{/vendors/quill/quill.min.js}"></script>
       <script th:src="@{/js/addform.js}"></script>
       <!-- Initialize [ SAMPLE ] -->
-      <script th:src="@{/pages/text-editor.js}"></script>
    </links>
 </head>
 <style>
@@ -121,26 +120,38 @@
          </div>
       </div>
    </footer>
-   <script>
-      // Quill 에디터 초기화
-      var quill = new Quill('#_dm-quillCustomToolbar', {
-         theme: 'snow'
+   <script th:inline="javascript">
+      const quillToolbarOptions = [
+
+         [{ "font": [] }],
+         [{ "header": [1, 2, 3, 4, 5, 6, false] }],
+
+         ["bold", "italic", "underline", "strike"],              // toggled buttons
+         [{ "color": [] }, { "background": [] }],                // dropdown with defaults from theme
+
+         [{ "list": "ordered" }, { "list": "bullet" }],
+         [{ "align": [] }]
+      ];
+
+      document.addEventListener('DOMContentLoaded', function () {
+         // Quill 에디터 초기화
+         var quill = new Quill('#_dm-quillCustomToolbar', {
+            modules: {
+               toolbar: quillToolbarOptions
+         },
+            theme: 'snow'
+         });
+
+         // 기존 내용 로드
+         quill.root.innerHTML = document.querySelector('textarea[name=content]').value;
+
+         // 폼 제출 시 내용 갱신
+         $("button[type=submit]").click(function () {
+            document.querySelector('textarea[name=content]').value =
+                    document.querySelector('#_dm-quillCustomToolbar > .ql-editor').innerHTML;
+         });
       });
-
-      // 기존 내용 로드
-      quill.root.innerHTML = document.querySelector('textarea[name=content]').value;
-
-      // 폼 제출 시 내용 갱신
-      $("button[type=submit]").click(function () {
-         submitForm();
-      });
-
-      function submitForm() {
-         document.querySelector('textarea[name=content]').value =
-                 document.querySelector('#_dm-quillCustomToolbar > .ql-editor').innerHTML;
-         console.log("로그" + document.querySelector('#_dm-quillCustomToolbar > .ql-editor').innerHTML);
-      }
-      </script>
+   </script>
 </section>
 </body>
 </html>

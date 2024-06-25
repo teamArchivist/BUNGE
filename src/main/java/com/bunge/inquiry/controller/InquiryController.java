@@ -8,8 +8,12 @@ import com.bunge.member.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -99,25 +104,31 @@ public class InquiryController {
     public ModelAndView viewInquiry(
             Long inquiryId, ModelAndView mv,
             HttpServletRequest request,
-            @RequestHeader(value="referer", required=false)String beforeURL) {
-
-        //log.info("referer :" + beforeURL);
+            @RequestHeader(value = "referer", required = false) String beforeURL,
+            @AuthenticationPrincipal UserDetails userDetails,
+            RedirectAttributes redirectAttributes) {
 
         Inquiry inquiry = inquiryService.getView(inquiryId);
-        //log.info(inquiry.toString());
-        //board = null; //error 페이지 이동 확인하고자 임의로 지정합니다.
-        if(inquiry == null) {
-        //    log.info("상세보기 실패");
+
+        if (inquiry == null) {
             mv.setViewName("error/error");
             mv.addObject("url", request.getRequestURL());
-            mv.addObject("message","상세보기 실패입니다.");
+            mv.addObject("message", "상세보기 실패입니다.");
         } else {
-        //    log.info("상세보기 성공");
-            mv.setViewName("inquiry/inquiry_view");
-            mv.addObject("inquirydata",inquiry);
+            boolean isAdmin = userDetails.getAuthorities().stream()
+                    .anyMatch(a -> a.getAuthority().equals("admin"));
+
+            if (inquiry.isPrivate() && !inquiry.getMemberId().equals(userDetails.getUsername()) && !isAdmin) {
+                redirectAttributes.addFlashAttribute("alertMessage", "접근 권한이 없습니다.");
+                mv.setViewName("redirect:/inquiry/list");
+            } else {
+                mv.setViewName("inquiry/inquiry_view");
+                mv.addObject("inquirydata", inquiry);
+            }
         }
         return mv;
     }
+
 
     @PostMapping("/delete")
     public String InquiryDelete(Long inquiryId) {
@@ -155,6 +166,7 @@ public class InquiryController {
         }
         return url;
     }
+
 }
 
 
