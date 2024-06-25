@@ -131,8 +131,11 @@ public class InquiryController {
 
 
     @PostMapping("/delete")
-    public String InquiryDelete(Long inquiryId) {
-        inquiryService.deleteInquiry(inquiryId);
+    public String InquiryDelete(Long inquiryId,
+                                @AuthenticationPrincipal UserDetails userDetails) {
+        String memberId = userDetails.getUsername(); // 로그인된 사용자 아이디
+
+        inquiryService.deleteInquiry(inquiryId,memberId);
             return "redirect:list";
         }
 
@@ -152,13 +155,16 @@ public class InquiryController {
     public String updateInquiry(Inquiry inquiry,
                                 Model mv,
                                 HttpServletRequest request,
-                                RedirectAttributes rattr) throws Exception {
+                                RedirectAttributes rattr,
+                                @AuthenticationPrincipal UserDetails userDetails) throws Exception {
+        String memberId = userDetails.getUsername(); // 로그인된 사용자 아이디
+
         String url = "";
-        int result = inquiryService.updateInquiry(inquiry);
+        int result = inquiryService.updateInquiry(inquiry,memberId);
 
         if (result == 0) {
             mv.addAttribute("url", request.getRequestURL());
-            mv.addAttribute("message", "게시판 수정 실패");
+            mv.addAttribute("message", "게시판 수정 권한 없음");
             url = "error/error";
         }else {
             url = "redirect:view";

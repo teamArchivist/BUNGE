@@ -105,7 +105,7 @@ $(document).ready(function() {
 				};
 
 				$.ajax({
-					url: '/comments',
+					url: '/comments/'+commentId,
 					type: 'PUT',
 					contentType: 'application/json',
 					data: JSON.stringify(commentData),
@@ -208,15 +208,18 @@ $(document).ready(function() {
 				type: 'DELETE',
 				data: JSON.stringify({
 					"parentCommentId":parentCommentId,
+					"memberId" : memberId
 					}
 				),
 				beforeSend: function(xhr) {
 					xhr.setRequestHeader(header, token);
 				},
 				success: function(response) {
-					console.log("Comment deleted: ", response);
-					if(response == 1){
+					console.log("Response from server:", response);
+					if(response === 1){
 						loadComments();
+					} else {
+						alert('댓글을 삭제할 수 없습니다.');
 					}
 				},
 				error: function(error) {
@@ -256,8 +259,13 @@ $(document).ready(function() {
 			},
 			success: function(response) {
 				// 댓글 목록을 다시 불러와서 새로고침 없이 적용
-				loadComments();
 				$('#_dm-commentTextarea').val('');
+				loadComments();
+
+				// 상태 업데이트를 반영하여 "답변 완료" 상태를 즉시 표시
+				if (response.isAnswered) {
+					$('#isAnswered').val('답변 완료');
+				}
 			},
 			error: function(error) {
 				console.error('Error:', error);
