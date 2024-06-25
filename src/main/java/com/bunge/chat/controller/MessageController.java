@@ -26,8 +26,8 @@ public class MessageController {
         producerService.sendMessage(KafkaTopic.TEMP, message);
     }
 
-    @KafkaListener(topics = KafkaTopic.TEMP, groupId = "kafka-consumer-group3")
-    public void consumeMessage(String message, Acknowledgment ack) {
-        consumerService.handleMessage(KafkaTopic.TEMP, message, ack);
+    @KafkaListener(topics = KafkaTopic.TEMP, groupId = "kafka-consumer-group2")
+    public void consumeMessage(String message, Acknowledgment ack) throws JsonProcessingException {
+        consumerService.handleMessage(message, ack);
     }
 }

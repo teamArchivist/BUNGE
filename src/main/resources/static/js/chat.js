@@ -1,11 +1,13 @@
 var stompClient = null;
+let href = null;
+let chatroomId = null;
 
 function connect() {
     var socket = new SockJS('/chat');
     stompClient = Stomp.over(socket);
     stompClient.debug = null
     stompClient.connect({}, function () {
-        stompClient.subscribe('/topic-test', function (frame) {
+        stompClient.subscribe("/rooms/" + chatroomId, function (frame) {
             parseMessage(frame);
             $(".bg-body-tertiary").scrollTop($(".bg-body-tertiary")[0].scrollHeight);
         });
@@ -52,8 +54,7 @@ function parseMessage(frame) {
 
 function send() {
     let message = {};
-    const href = $(".active a").prop("href");
-    message.chatroomId = href.slice(href.lastIndexOf("/") + 1);
+    message.chatroomId = chatroomId;
     message.memberId = loginId;
     message.type = "T";
     message.data = $(".chat-message-input").val();
@@ -74,7 +75,8 @@ function handleEnterKey(e) {
 
 $(function () {
 
-    connect();
+    assignChatroom.call(this, "init");
+    scrollDown();
 
     $(".btn-send").click(function () {
         send();
@@ -96,5 +98,24 @@ $(function () {
                 $(this).closest(".list-group-item").addClass("custom-display");
             }
         });
+    });
+
+    function assignChatroom(type) {
+        if (type === "init") {
+            href = $(".active a").prop("href");
+        } else {
+            href = this.toString();
+        }
+        chatroomId = href.slice(href.lastIndexOf("/") + 1);
+        if (chatroomId == null || isNaN(chatroomId)) {
+            return;
+        }
+
+        connect();
+    }
+
+    $(".list-group a").click(function () {
+        assignChatroom.call(this);
+        scrollDown();
     });
 });
