@@ -1,9 +1,9 @@
-var stompClient = null;
+let stompClient = null;
 let href = null;
 let chatroomId = null;
 
 function connect() {
-    var socket = new SockJS('/chat');
+    const socket = new SockJS("/chat");
     stompClient = Stomp.over(socket);
     stompClient.debug = null
     stompClient.connect({}, function () {
