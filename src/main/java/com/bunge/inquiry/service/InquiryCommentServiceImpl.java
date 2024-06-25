@@ -18,44 +18,45 @@ public class InquiryCommentServiceImpl implements InquiryCommentService {
         @Autowired
         private InquiryMapper inquiryMapper;
 
-//        @Autowired
-//        private EmailService emailService;
-
         @Override
         public List<InquiryComment> findCommentsByInquiryId(Long inquiryId) {
             return commentMapper.findCommentsByInquiryId(inquiryId);
         }
 
         @Override
+        public InquiryComment findCommentById(Long commentId) {
+            return commentMapper.findCommentById(commentId);
+        }
+
+        @Override
         public int insertComment(InquiryComment comment) {
-    //      notifyComment(comment.getInquiryId(), comment.getContent());
             return commentMapper.insertComment(comment);
         }
 
         @Override
-        public int deleteComment(Long commentId) {
-            return commentMapper.deleteComment(commentId);
+        public boolean deleteComment(Long commentId, String memberId) {
+            InquiryComment comment = commentMapper.findCommentById(commentId);
+            if (comment != null && comment.getMemberId().equals(memberId)) {
+                commentMapper.deleteComment(commentId, memberId);
+                return true;
+            }
+            return false;
         }
 
         @Override
-        public int deleteReplyComment(Long commentId) {
-            return commentMapper.deleteReplyComment(commentId);
+        public boolean deleteReplyComment(Long commentId, String memberId) {
+            InquiryComment comment = commentMapper.findCommentById(commentId);
+            if (comment != null && comment.getMemberId().equals(memberId)) {
+                commentMapper.deleteReplyComment(commentId, memberId);
+                return true;
+            }
+            return false;
         }
 
         @Override
-        public int updateComment(InquiryComment comment) {
-            return commentMapper.updateComment(comment);
+        public int updateComment(InquiryComment comment, String memberId) {
+            return commentMapper.updateComment(comment,comment.getMemberId());
         }
-
-//        @Override
-//        public void notifyComment(Long inquiryId, String commentContent) {
-//            Inquiry inquiry = inquiryMapper.selectInquiry(inquiryId);
-//            String email = inquiry.getEmail(); // 작성자 이메일
-//            String subject = "새 댓글 알림";
-//            String message = "문의글에 새로운 댓글이 달렸습니다: " + commentContent;
-
-//            emailService.sendEmail(email, subject, message); // 이메일 발송
-//        }
     }
 
 

@@ -13,11 +13,10 @@ public interface InquiryMapper {
     List<Inquiry> selectAllInquiries(@Param("limit") int limit, @Param("offset") int offset);
     Inquiry selectInquiry(@Param("inquiryId") Long inquiryId);
     void insertInquiry(Inquiry inquiry);
-    int updateInquiry(Inquiry inquiry);
-    void deleteInquiry(@Param("inquiryId") Long inquiryId);
+    int updateInquiry(@Param("inquiry") Inquiry inquiry,@Param("memberId") String memberId);
+    void deleteInquiry(@Param("inquiryId") Long inquiryId,@Param("memberId") String memberId);
     Inquiry getView(Long inquiryId);
-
     List<Inquiry> selectinquiry(String id);
-
     int getMyinquirtListCount(String id);
+    void updateInquiryStatus(@Param("inquiryId") Long inquiryId, @Param("isAnswered") boolean isAnswered);
 }

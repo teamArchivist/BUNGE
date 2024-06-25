@@ -14,18 +14,18 @@
     <update id="updateInquiry">
     <!-- inquiry 테이블 업데이트 -->
     UPDATE inquiry
-    SET title = #{title},
-    content = #{content},
-    typeId = #{typeId},
+    SET title = #{inquiry.title},
+    content = #{inquiry.content},
+    typeId = #{inquiry.typeId},
     updatedAt = CURRENT_TIMESTAMP,
-    isPrivate = #{isPrivate},
-    isAnswered = #{isAnswered}
-    WHERE inquiryId = #{inquiryId};
+    isPrivate = #{inquiry.isPrivate},
+    isAnswered = #{inquiry.isAnswered}
+    WHERE inquiryId = #{inquiry.inquiryId} AND memberId=#{memberId}
     </update>
 
     <!-- 문의글 삭제 -->
     <delete id="deleteInquiry">
-        DELETE FROM inquiry WHERE inquiryId = #{inquiryId}
+        DELETE FROM inquiry WHERE inquiryId = #{inquiryId} AND memberId=#{memberId}
     </delete>
 
     <!-- 모든 문의글 조회 (페이징 적용) -->
@@ -123,4 +123,8 @@
     <select id="getMyinquirtListCount" resultType="int">
         select count(*) from inquiry where memberId = #{id}
     </select>
+
+    <update id="updateInquiryStatus">
+        UPDATE inquiry SET isAnswered = #{isAnswered} WHERE inquiryId = #{inquiryId}
+    </update>
 </mapper>

@@ -24,15 +24,15 @@ public class InquiryServiceImpl implements InquiryService {
 
     @Transactional
     @Override
-    public int updateInquiry(Inquiry inquiry) {
-       int result =  inquiryMapper.updateInquiry(inquiry);
+    public int updateInquiry(Inquiry inquiry, String memberId) {
+       int result =  inquiryMapper.updateInquiry(inquiry,inquiry.getMemberId());
         return result;
     }
 
     @Transactional
     @Override
-    public void deleteInquiry(Long inquiryId) {
-        inquiryMapper.deleteInquiry(inquiryId);
+    public void deleteInquiry(Long inquiryId,String memberId) {
+        inquiryMapper.deleteInquiry(inquiryId,memberId);
     }
 
     @Override
@@ -67,6 +67,11 @@ public class InquiryServiceImpl implements InquiryService {
     @Override
     public int getMyinquirtListCount(String id) {
         return inquiryMapper.getMyinquirtListCount(id);
+    }
+
+    @Override
+    public void updateInquiryStatus(Long inquiryId, boolean isAnswered) {
+        inquiryMapper.updateInquiryStatus(inquiryId, isAnswered);
     }
 }
 

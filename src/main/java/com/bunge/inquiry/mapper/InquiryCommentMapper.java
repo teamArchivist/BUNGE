@@ -10,12 +10,14 @@ import java.util.List;
 public interface InquiryCommentMapper {
     List<InquiryComment> findCommentsByInquiryId(Long inquiryId);
 
+    InquiryComment findCommentById(@Param("commentId") Long commentId);
+
     int insertComment(InquiryComment comment);
 
-    int deleteComment(Long commentId);
+    void deleteComment(@Param("commentId") Long commentId, @Param("memberId") String memberId);
 
-    int deleteReplyComment(Long commentId);
+    void deleteReplyComment(@Param("commentId") Long commentId, @Param("memberId") String memberId);
 
-    int updateComment(InquiryComment comment);
+    int updateComment(@Param("comment") InquiryComment comment,@Param("memberId") String memberId);
 
 }
