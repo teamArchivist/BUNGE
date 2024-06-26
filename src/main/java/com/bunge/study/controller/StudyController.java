@@ -596,13 +596,19 @@ public class StudyController {
         }
     }
 
-    @PostMapping("/study/item/delete")
-    public String deleteItem(@RequestParam String currentPath, @RequestParam String studyboardno) {
-        // currentPath를 이용하여 파일 또는 폴더를 삭제합니다.
-        // 로직은 파일 시스템 또는 데이터베이스를 업데이트하는 데 필요합니다.
+    @PostMapping("/file/delete")
+    @ResponseBody
+    public Map<String, Boolean> deleteFiles(@RequestBody Map<String, List<String>> requestData) {
+        List<String> filePaths = requestData.get("filePaths");
+        logger.info("Received file paths for deletion: " + filePaths);
+        System.out.println("Received file paths for deletion: " + filePaths);
 
-        // 삭제 후 페이지를 다시 로드하거나 필요한 다른 작업을 수행합니다.
-        return "redirect:/study/mine/filesharing?studyboardno=" + studyboardno + "&directoryPath=" + currentPath.substring(0, currentPath.lastIndexOf('/'));
+        // 여기서 filePaths를 이용하여 파일 삭제 로직을 수행하고 성공 여부를 반환
+        boolean success = sftpService.deleteFiles(filePaths);
+
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("success", success);
+        return response;
     }
 
 
