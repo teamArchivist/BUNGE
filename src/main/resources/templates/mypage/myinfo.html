@@ -63,19 +63,17 @@
                                     <!-- END : Vertical centered modal -->
                                 </div>
                                 <div class="mt-2 col-9">
-                                    <font style="vertical-align: inherit;">아이디</font>
+                                    아이디
                                     <input type="text" name="id" class="form-control" th:value="${memberinfo.id}" required>
                                 </div>
                                 <div class="mt-2 col-9">
-                                    <font style="vertical-align: inherit;">비밀번호</font>
+                                    비밀번호
                                     <input type="password" name="pwd" class="form-control" th:value="${#strings.substring(memberinfo.password, 0,8)}">
                                 </div>
 
                                 <div class="mt-4 col-3">
                                     <!-- Vertical centered modal -->
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changepwd"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
-                                        변경
-                                    </font></font></button>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changepwd">변경</button>
 
                                     <!-- Modal -->
                                     <div class="modal fade" id="changepwd" tabindex="-1" aria-labelledby="changepwdLabel" style="display: none;" aria-hidden="true">
@@ -83,15 +81,18 @@
                                             <div class="modal-content">
                                                 <form th:action="@{/mypage/pwd-update-process}" method="post">
                                                 <div class="modal-header">
-                                                    <h1 class="modal-title fs-5" id="changepwdLabel"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">비밀번호 변경</font></font></h1>
+                                                    <h1 class="modal-title fs-5" id="changepwdLabel">비밀번호 변경</h1>
                                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫다"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <input type="password" name="pwd" class="form-control" placeholder="비밀번호 입력">
+                                                    <input type="password" id="pwdchange" name="pwd" class="form-control" placeholder="비밀번호 입력">
                                                     <input type="hidden" name="id" class="form-control" th:value="${memberinfo.id}">
+                                                    <div class="col-12 mt-2">
+                                                        <span id="pwd_message"></span>
+                                                    </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="submit" class="btn btn-primary">변경하기</button>
+                                                    <button type="submit" class="btn btn-primary submitBtn">변경하기</button>
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">돌아가기</button>
                                                 </div>
                                                 </form>
@@ -110,9 +111,7 @@
                                 </div>
                                 <div class="mt-4 col-3">
                                     <!-- Vertical centered modal -->
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changenick"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
-                                        변경
-                                    </font></font></button>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changenick">변경</button>
 
                                     <!-- Modal -->
                                     <div class="modal fade" id="changenick" tabindex="-1" aria-labelledby="changenickLabel" style="display: none;" aria-hidden="true">
@@ -120,11 +119,11 @@
                                             <div class="modal-content">
                                                 <form th:action="@{/mypage/update-process}" method="post">
                                                     <div class="modal-header">
-                                                        <h1 class="modal-title fs-5" id="changenickLabel"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">닉네임 변경</font></font></h1>
+                                                        <h1 class="modal-title fs-5" id="changenickLabel">닉네임 변경</h1>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫다"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <input type="text" name="nick" class="form-control" placeholder="닉네임을 입력" maxlength="10">
+                                                        <input type="text" id="nickchange" name="nick" class="form-control" placeholder="닉네임을 입력" maxlength="10">
                                                         <input type="hidden" name="id" class="form-control" th:value="${memberinfo.id}">
                                                         <input type="hidden" name="name" class="form-control" th:value="${memberinfo.name}">
                                                         <input type="hidden" name="zipcode" class="form-control" th:value="${memberinfo.zipcode}">
@@ -133,9 +132,12 @@
                                                         <input type="hidden" name="phone" class="form-control" th:value="${memberinfo.phone}">
                                                         <input type="hidden" name="email" class="form-control" th:value="${memberinfo.email}">
                                                         <input type="hidden" name="profile" class="form-control" th:value="${memberinfo.profile}">
+                                                        <div class="col-12 mt-2">
+                                                            <span id="nick_message"></span>
+                                                        </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="submit" class="btn btn-primary">변경하기</button>
+                                                        <button type="submit" class="btn btn-primary submitBtn">변경하기</button>
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">돌아가기</button>
                                                     </div>
                                                 </form>
@@ -145,14 +147,12 @@
                                     <!-- END : Vertical centered modal -->
                                 </div>
                                 <div class="mt-2 col-9">
-                                    <font style="vertical-align: inherit;">우편번호</font>
+                                    우편번호
                                     <input type="text" name="zipcode" class="form-control" th:value="${memberinfo.zipcode}">
                                 </div>
                                 <div class="mt-4 col-3">
                                     <!-- 주소 modal -->
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changeaddr"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
-                                        변경
-                                    </font></font></button>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changeaddr">변경</button>
 
                                     <!-- Modal -->
                                     <div class="modal fade" id="changeaddr" tabindex="-1" aria-labelledby="changeaddrLabel" style="display: none;" aria-hidden="true">
@@ -160,7 +160,7 @@
                                             <div class="modal-content">
                                                 <form th:action="@{/mypage/update-process}" method="post">
                                                     <div class="modal-header">
-                                                        <h1 class="modal-title fs-5" id="changeaddrLabel"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">우편변호 변경</font></font></h1>
+                                                        <h1 class="modal-title fs-5" id="changeaddrLabel">우편변호 변경</h1>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫다"></button>
                                                     </div>
                                                     <div class="modal-body d-inline-flex row">
@@ -174,7 +174,7 @@
                                                             <input type="text" name="addr1" class="form-control" placeholder="주소입력">
                                                         </div>
                                                         <div class="col-12 mt-3">
-                                                            <input type="text" name="addr2" class="form-control" placeholder="상세주소 입력">
+                                                            <input type="text" id="addrchange" name="addr2" class="form-control" placeholder="상세주소 입력">
                                                         </div>
                                                         <input type="hidden" name="id" class="form-control" th:value="${memberinfo.id}">
                                                         <input type="hidden" name="name" class="form-control" th:value="${memberinfo.name}">
@@ -182,9 +182,12 @@
                                                         <input type="hidden" name="phone" class="form-control" th:value="${memberinfo.phone}">
                                                         <input type="hidden" name="email" class="form-control" th:value="${memberinfo.email}">
                                                         <input type="hidden" name="profile" class="form-control" th:value="${memberinfo.profile}">
+                                                        <div class="col-12 mt-1">
+                                                            <span id="addr2_message"></span>
+                                                        </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="submit" class="btn btn-primary">변경하기</button>
+                                                        <button type="submit" class="btn btn-primary submitBtn">변경하기</button>
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">돌아가기</button>
                                                     </div>
                                                 </form>
@@ -194,22 +197,20 @@
                                     <!-- END : Vertical centered modal -->
                                 </div>
                                 <div class="mt-2 col-9">
-                                    <font style="vertical-align: inherit;">주소</font>
+                                   주소
                                     <input type="text" name="addr1" class="form-control" th:value="${memberinfo.addr1}">
                                 </div>
                                 <div class="mt-2 col-9">
-                                    <font style="vertical-align: inherit;">상세주소</font>
+                                   상세주소
                                     <input type="text" name="addr2" class="form-control" required th:value="${memberinfo.addr2}">
                                 </div>
                                 <div class="mt-2 col-9">
-                                    <font style="vertical-align: inherit;">핸드폰</font>
+                                    핸드폰
                                     <input type="text" name="phone" class="form-control"  required th:value="${memberinfo.phone}">
                                 </div>
                                 <div class="mt-4 col-3">
                                     <!-- Vertical centered modal -->
-                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changephone"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
-                                        변경
-                                    </font></font></button>
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changephone">변경</button>
 
                                     <!-- Modal -->
                                     <div class="modal fade" id="changephone" tabindex="-1" aria-labelledby="changephoneLabel" style="display: none;" aria-hidden="true">
@@ -217,11 +218,11 @@
                                             <div class="modal-content">
                                                 <form th:action="@{/mypage/update-process}" method="post">
                                                     <div class="modal-header">
-                                                        <h1 class="modal-title fs-5" id="changephoneLabel"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">핸드폰 변경</font></font></h1>
+                                                        <h1 class="modal-title fs-5" id="changephoneLabel">핸드폰 변경</h1>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫다"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <input type="text" name="phone" class="form-control" placeholder="핸드폰번호 입력">
+                                                        <input type="text" id="phochange" name="phone" class="form-control" placeholder="핸드폰번호 입력">
                                                         <input type="hidden" name="id" class="form-control" th:value="${memberinfo.id}">
                                                         <input type="hidden" name="name" class="form-control" th:value="${memberinfo.name}">
                                                         <input type="hidden" name="nick" class="form-control" th:value="${memberinfo.nick}">
@@ -230,9 +231,12 @@
                                                         <input type="hidden" name="addr2" class="form-control" th:value="${memberinfo.addr2}">
                                                         <input type="hidden" name="email" class="form-control" th:value="${memberinfo.email}">
                                                         <input type="hidden" name="profile" class="form-control" th:value="${memberinfo.profile}">
+                                                        <div class="col-12 mt-2">
+                                                            <span id="pho_message"></span>
+                                                        </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="submit" class="btn btn-primary">변경하기</button>
+                                                        <button type="submit" class="btn btn-primary submitBtn">변경하기</button>
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">돌아가기</button>
                                                     </div>
                                                 </form>
@@ -242,13 +246,13 @@
                                     <!-- END : Vertical centered modal -->
                                 </div>
                                 <div class="mt-2 col-9">
-                                    <font style="vertical-align: inherit;">이메일</font>
+                                    이메일
                                     <input type="email" class="form-control" aria-label="Email" th:value="${memberinfo.email}">
                                 </div>
                                 <div class="mt-4 col-3">
                                     <!-- Vertical centered modal -->
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changeemail">
-                                        <font style="vertical-align: inherit;">변경</font>
+                                        변경
                                     </button>
 
                                     <!-- Modal -->
@@ -258,7 +262,7 @@
                                                 <form th:action="@{/mypage/update-process}" method="post">
                                                     <div class="modal-header">
                                                         <h1 class="modal-title fs-5" id="changeemailLabel">
-                                                            <font style="vertical-align: inherit;">이메일 변경</font>
+                                                           이메일 변경
                                                         </h1>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫다"></button>
                                                     </div>
@@ -270,6 +274,9 @@
                                                             <div class="col-4 mt-2" style="margin-left: 10px;">
                                                                 <button type="button" class="btn btn-primary" id="emailVerifyButton" name="checkemail">이메일 인증</button>
                                                             </div>
+                                                        </div>
+                                                        <div class="col-12 mt-1">
+                                                            <span id="email_message"></span>
                                                         </div>
                                                         <div class="col-10 mt-2">
                                                             <div class="col-6 mt-1">
@@ -287,7 +294,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="submit" class="btn btn-primary">변경하기</button>
+                                                        <button type="submit" class="btn btn-primary submitBtn">변경하기</button>
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">돌아가기</button>
                                                     </div>
                                                 </form>

@@ -1,9 +1,14 @@
 $(function(){
+	let isValid = false;
+	let generatedCode = "";
+
+	$("#submitButton").prop('disabled', true); // submitButton 비활성화
+
 	//회원가입
 	$("form").on('submit', function(event) {
 		event.preventDefault();  // 기본 폼 제출 방지
 
-		let isValid = checkid() && checkpwd() && checkname() && checkcnick() && checkgender() && checkaddr() && checkpho() && checkemail() && emailcodecheck()  && checkemail() && checkBirth();
+		let isValid = checkid() && checkpwd() && checkname() && checkcnick() && checkgender() && checkaddr() && checkpho() && checkemail() && checkBirth();
 
 		if (!isValid) {
 			$("#submitButton").prop('disabled', true); // submitButton 비활성화
@@ -13,16 +18,18 @@ $(function(){
 		}
 	});
 
+
+
 	$("input").on("input" ,function (){
 
-		let isValid = checkid() && checkpwd() && checkname() && checkcnick() && checkgender() && checkaddr() && checkpho() && checkemail() && emailcodecheck() && checkemail() && checkBirth();
+		let isValid = checkid() && checkpwd() && checkname() && checkcnick() && checkgender() && checkaddr() && checkpho() && checkemail() && checkBirth();
 
 		if(!isValid){
 			$("#submitButton").prop("disabled",true);
-			console.log("ture")
+
 		} else {
 			$("#submitButton").prop("disabled", false);
-			console.log("false")
+
 		}
 	})
 
@@ -42,9 +49,11 @@ $(function(){
 
 	$("input[name=email]").on('keyup',checkemail);// 이메일 유효성 검사
 
+	$('#emailVerifyButton').on("click", emailShipment);// 인증번호 발송
+
 	$("input[name=emailcode]").on('keyup',emailcodecheck);//이메일 인증 검사
 
-	$("input[name=birthdate]").on('input',checkBirth);
+	$("input[name=birthdate]").on('input',checkBirth); //생년월일 검사
 
 	//id
 		function checkid(){
@@ -53,7 +62,6 @@ $(function(){
 			//id 유효성 검사
 			if(id === "") {
 				$("#id_message").css('color' , 'red').text('아이디 : 아이디는 필수 입니다.').show();
-				($("input[name=id]")).focus();
 				return false;
 			} else if(!patternid.test(id)) {
 				$("#id_message").css('color' , 'red').text('아이디 : 5~15자의 영문, 소문자, 숫자로만 사용 가능합니다.').show();
@@ -61,7 +69,7 @@ $(function(){
 			}
 			//id 유효성 검사
 			//ajxa 호출 중복 검사
-			let isValid = false;
+
 			$.ajax({
 				url : "checkid" ,
 				data : {"id" : id} ,
@@ -85,15 +93,15 @@ $(function(){
 			const pwd = $("#pwd").val().trim();
 			if(pwd === "") {
 				$("#pwd_message").css('color' , ' red').html("비밀번호: 비밀번호는 필수입니다.").show();
-				($("input[name=pwd]")).focus();
-				return false;
+				isValid = false;
 			} else if (!patternpwd.test(pwd)) {
 				$("#pwd_message").css('color', 'red').html("비밀번호:8~16자의 영문 대/소문자, 특수문자를 사용해 주세요.(/제외) ").show();
-				return false;
+				isValid = false;
 			}else {
 				$("#pwd_message").hide();
-				return true;
+				isValid = true;
 			}
+			return isValid;
 		}
 
 		//name
@@ -102,14 +110,15 @@ $(function(){
 			const name = $("#name").val().trim();
 			if(name === "") {
 				$("#name_message").css('color', 'red').html("이름 : 이름은 필수 입니다.").show();
-				return false;
+				isValid = false;
 			}else if(!patternname.test(name)){
 				$("#name_message").css('color', 'red').text("이름 : 한글 이름 2~4자 이내로 입력하세요.").show();
-				return false;
+				isValid = false;
 			}else {
 				$("#name_message").hide();
-				return true;
+				isValid = true;
 			}
+			return isValid;
 		}// end
 
 		//nick
@@ -118,7 +127,6 @@ $(function(){
 			const nick = $("#nick").val().trim();
 			if(nick === "") {
 				$("#nick_message").css('color', 'red').html("닉네임 : 닉네임은 필수 입니다.").show();
-				($("input[name=nick]")).focus();
 				return false;
 			}else if(!patternick.test(nick)){
 				$("#nick_message").css('color', 'red').html("닉네임: 닉네임은 한글, 영문, 숫자만 가능하며 2-10자리 가능합니다.").show();
@@ -149,24 +157,26 @@ $(function(){
 		const gender = $("input[name=gender]:checked").val();
 		if(!gender) {
 			$("#gender_message").css('color', 'red').text('성별 : 성별을 선택하세요.').show();
-			return false;
+			isValid = false;
 		} else {
 			$("#gender_message").css('color','green').text('성별: 체크완료');
-			return true;
+			isValid = true;
 		}
-	};//성별 유효성 검사 end
+		return isValid;
+	}//성별 유효성 검사 end
 
 		//우편 번호 유효성 검사
 		function checkaddr(){
 			const addr2 = $("#addr2").val();
 			if(addr2 === "") {
 				$("#addr2_message").css('color','red').text("상세주소 : 주소를 입력해주세요.").show();
-				return false;
+				isValid = false;
 			} else {
 				$("#addr2_message").hide();
-				return true;
+				isValid = true;
 			}
-		};
+			return isValid;
+		}
 
 		//전화번호 유효성 검사
 		function checkpho(){
@@ -174,29 +184,27 @@ $(function(){
 			const patterpho = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{5})$/;
 			if(phone === "") {
 				$("#pho_message").css('color', 'red').text("전화번호 : 전화번호는 필수 입니다.").show();
-				return false;
+				isValid = false;
 			} else if(!patterpho.test(phone)) {
-				$("#pho_message").css('color', 'red').text("전화번호 :  전화번호 형식에 맞지 않습니다.").show();
-				return false;
+				$("#pho_message").css('color', 'red').text("전화번호 : 전화번호 형식에 맞지 않습니다.").show();
+				isValid = false;
 			}else {
 				$("#pho_message").hide();
-				return true;
+				isValid = true;
 			}
-		};//전화번호 유효성 검사 end
+			return isValid;
+		}//전화번호 유효성 검사 end
 
-//이메일 유효성 검사
-	let generatedCode = "";
-	let isValid = false;
-	$("#emailVerifyButton").prop("disabled",true);
+		//이메일 유효성 검사
 		 function checkemail() {
 			const email = $("#email").val().trim();
-			const patternEmail = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,4}$/;
-
+			const patternEmail = /[a-z0-9]{2,}@[a-z0-9-]{2,}\.[a-z0-9]{2,}/;
+			$("#emailVerifyButton").prop("disabled",true);
 			if (email === "") {
 				$("#email_message").css('color', 'red').text("이메일 : 이메일은 필수 입니다.").show();
-				$("input[name=email]").focus();
 				$("#emailVerifyButton").prop('disabled', true);
 				return false;
+
 			} else if (!patternEmail.test(email)) {
 				$("#email_message").css('color', 'red').text("이메일 : 이메일 형식에 올바르지 않습니다.").show();
 				$("#emailVerifyButton").prop('disabled', true);
@@ -206,7 +214,8 @@ $(function(){
 			$.ajax({
 				url: "checkemail",
 				data: { "email": email },
-				success: function (emck) {
+				async: false ,
+				success : function (emck) {
 					if (!emck) {
 						$("#email_message").hide();
 						$("#emailVerifyButton").prop('disabled',false);
@@ -219,10 +228,10 @@ $(function(){
 				}
 			});
 			 return isValid;
-		};
+		}
 
 		//이메일 인증코드 발송
-		$('#emailVerifyButton').click(function () {
+	function emailShipment() {
 			const email = $('input[name="email"]').val().trim();
 			if (email !== "") {
 				$.ajax({
@@ -234,31 +243,30 @@ $(function(){
 						generatedCode = response;
 						$("#emailCode").attr('type', 'text').val('');
 						$("#emailcode_message").text("인증코드가 발송되었습니다.");
-						return;
+
 					},
 					error: function () {
 						$('#email_message').text("인증 코드 발송이 실패했습니다. 다시 시도해주세요.");
-						return;
 					}
 				});
 			} else {
 				$('#email_message').text("이메일을 입력해 주세요.");
 				$('#emailCode').hide();
-				return;
-			}
-		});
+				}
+	}
+
 		//이메일인증 코드 비교
-		 function emailcodecheck() {
-			const emailcode = $("#emailCode").val().trim();
-			if (emailcode === generatedCode) {
-				$("#emailcode_message").css('color', 'green').text("인증되었습니다.");
-				isValid = true;
-			} else {
-				$("#emailcode_message").css('color', 'red').text("인증코드가 일치하지 않습니다.");
-				isValid = false;
-			}
-			 return isValid;
-		};
+	function emailcodecheck() {
+		const emailcode = $("#emailCode").val().trim();
+		if (emailcode != '' && emailcode === generatedCode) {
+			$("#emailcode_message").css('color', 'green').text("인증되었습니다.");
+			isValid = true;
+		} else {
+			$("#emailcode_message").css('color', 'red').text("인증코드가 일치하지 않습니다.");
+			isValid = false;
+		}
+		return isValid;
+	}
 
 	function checkBirth() {
 		const birthdate = $("#birthdate").val().trim();
@@ -277,7 +285,7 @@ $(function(){
 	$("input[name=postcode]").click(function() {
 		//window.open('post.html','post','width=500,height=200 ,scrollbars=yes');
 		Postcode();
-	});//$('#postcode').click
+	})//$('#postcode').click
 
 	//본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
 	function Postcode() {

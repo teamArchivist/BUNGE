@@ -103,6 +103,20 @@ public class MypageController {
         }
         return mav;
     }
+    //닉네임 검사
+    @ResponseBody
+    @GetMapping(value = "/checknick")
+    public boolean checknick(@RequestParam("nick") String nick){
+        return memberservice.checknick(nick);
+    }
+
+    //이메일 검사
+    @ResponseBody
+    @GetMapping(value ="/checkemail")
+    public boolean checkemail(@RequestParam("email") String email){
+        return memberservice.checkemail(email);
+    }
+
     //내정보 이메일 수정 인증처리
     @GetMapping(value = "/mymaildelivery")
     public ResponseEntity<String> maildelivery(@RequestParam("email") String email){
