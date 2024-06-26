@@ -1,8 +1,18 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
+
+    <th:block sec:authorize="isAuthenticated()">
+        <meta th:name ="_csrf" th:content = "${_csrf.token}">
+        <meta th:name ="_csrf_header" th:content = "${_csrf.headerName}">
+    </th:block>
+
     <title>Folder List</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,7 +25,7 @@
 
         .create-folder-button,
         .upload-file-button,
-        .confirm-upload-button,
+        .delete-files-button,
         .go-to-parent-button {
             margin-right: 10px;
             padding: 10px 20px;
@@ -109,7 +119,13 @@
             background-repeat: no-repeat;
             background-position: center;
             background-color: #fff; /* 배경색 추가 */
+            flex-direction: column;
         }
+
+        li input[type="checkbox"] {
+            margin-bottom: 10px; /* 체크박스와 링크 사이의 간격 설정 */
+        }
+
 
         /* 폴더 아이콘 */
         .folder-link {
@@ -186,12 +202,12 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        
+
         .folder-link img,
         .file-link img {
             margin-bottom: 10px; /* 이미지와 텍스트 사이에 간격 추가 */
         }
-        
+
         .clickable-box {
             display: block;
             padding: 10px;
@@ -325,47 +341,64 @@
         });
     </script>
     <script th:inline="javascript">
-        function showContextMenu(event, type, name) {
-            event.preventDefault();
-
-            var contextMenu = document.getElementById('contextMenu');
-            contextMenu.innerHTML = ''; // 기존의 메뉴 초기화
-
-            var deleteAction = document.createElement('div');
-            deleteAction.textContent = (type === 'folder') ? '폴더 삭제' : '파일 삭제';
-            deleteAction.classList.add('context-menu-item');
-            deleteAction.addEventListener('click', function() {
-                // 삭제 로직을 여기에 구현
-                if (type === 'folder') {
-                    alert('폴더 ' + name + ' 삭제');
-                } else {
-                    alert('파일 ' + name + ' 삭제');
-                }
+        function deleteSelectedItems() {
+            var selectedItems = document.querySelectorAll('input[name="deleteCheckbox"]:checked');
+            var filePaths = Array.from(selectedItems).map(function(checkbox) {
+                return $(checkbox).val(); // checkbox.value 대신 $(checkbox).val() 사용
             });
-            contextMenu.appendChild(deleteAction);
 
-            // 컨텍스트 메뉴의 위치 조정
-            contextMenu.style.top = event.clientY + 'px';
-            contextMenu.style.left = event.clientX + 'px';
-            contextMenu.style.display = 'block';
+            if (filePaths.length > 0) {
+                var senddata = JSON.stringify({ filePaths: filePaths }); // filePaths를 객체로 감싸고 JSON 문자열로 변환
+                let token = $("meta[name='_csrf']").attr("content");
+                let header = $("meta[name='_csrf_header']").attr("content");
 
-            // 다른 곳을 클릭하면 컨텍스트 메뉴를 숨김
-            document.addEventListener('click', function() {
-                contextMenu.style.display = 'none';
-            });
+                $.ajax({
+                    url: '/study/file/delete',
+                    type: 'POST',
+                    contentType: 'application/json', // 데이터 타입을 JSON으로 지정
+                    data: senddata,
+                    beforeSend: function (xhr) {
+                        if (header && token) {
+                            xhr.setRequestHeader(header, token);
+                        }
+                    },
+
+
+
+                    success: function(data) { // success 함수의 매개변수로 data를 선언
+                        if (data.success) {
+                            alert('삭제 성공');
+                            location.reload(); // 삭제 후 페이지 새로고침
+                        } else {
+                            alert('삭제 실패');
+                        }
+                    },
+                    error: function(error) { // error 함수의 매개변수로 error를 선언
+                        console.error('에러:', error);
+                        alert('삭제 중 오류 발생');
+                    }
+                });
+            } else {
+                alert('삭제할 항목을 선택하세요.');
+            }
         }
+
     </script>
 
 </head>
 <body>
 <div class="button-container">
+    <button class="upload-file-button" onclick="location.href='/main'">홈으로</button>
     <button class="go-to-parent-button" id="goToParentButton" onclick="goToParentDirectory()">상위 폴더로 이동</button>
     <button class="create-folder-button" onclick="toggleCreateFolderForm()">새 폴더 생성</button>
     <button class="upload-file-button" onclick="toggleUploadFileForm()">파일 업로드</button>
+    <button class="delete-files-button" onclick="deleteSelectedItems()">선택된 파일 삭제</button>
+
+
 </div>
 <div class="home-button">
     <a th:if="${not #lists.isEmpty(myStudyList)}"
-       th:href="@{/study/mine(studyboardno=${studyboardno})}" class="home-link">🔙메인으로</a>
+       th:href="@{/study/mine(studyboardno=${studyboardno})}" class="home-link">🔙스터디 페이지로</a>
 </div>
 
 <div class="create-folder-form">
@@ -407,9 +440,11 @@
     <h1>목록 보기</h1>
     <ul>
         <li th:each="folder : ${folders}">
+            <input type="checkbox" name="deleteCheckbox" th:value="|${currentPath}/${folder.name}|">
             <a th:if="${folder.directory}"
                th:href="@{|/study/mine/filesharing?studyboardno=${studyboardno}&directoryPath=${currentPath}/${folder.name}|}"
-               class="folder-link">
+               class="folder-link"
+               oncontextmenu="showContextMenu(event, 'folder', '${folder.name}')">
                 <div class="link-content">
                     <img src="https://i.ibb.co/XLG39JD/free-icon-folder-5613750.png" alt="folder-icon" />
                     <span th:text="${folder.name}"></span>
@@ -459,11 +494,6 @@
         </li>
     </ul>
 </div>
-
-<div id="contextMenu" class="context-menu">
-    <button id="deleteButton" class="context-menu-item" onclick="deleteItem()">삭제</button>
-</div>
-
 
 </body>
 </html>
