@@ -39,6 +39,43 @@ public class MypageServicelmpi implements MypageService {
     }
 
     @Override
+    public boolean nickupdate(Member member) {
+        int result = membermapper.nickupdate(member);
+        if (result ==1){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean addrupdate(Member member) {
+        int result = membermapper.addrupdate(member);
+        if (result ==1){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean phoupdate(Member member) {
+        int result = membermapper.phoupdate(member);
+        if (result ==1){
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean emailupdate(Member member) {
+        int result = membermapper.emailupdate(member);
+        if (result ==1){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public boolean update(Member member) {
         int result = membermapper.update(member);
         if (result == 1) {

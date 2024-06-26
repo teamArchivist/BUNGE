@@ -28,13 +28,27 @@
     <update id="pwdupdate">
         update member set pwd = #{pwd} where id = #{id};
     </update>
+
+    <update id="nickupdate">
+        update member set nick = #{nick} where id =#{id};
+    </update>
+
+    <update id="addrupdate">
+        update member set zipcode = #{zipcode}, addr1 = #{addr1},
+                          addr2 = #{addr2} where id =#{id};
+    </update>
+
+    <update id="phoupdate">
+        update member set  phone = #{phone} where id =#{id};
+    </update>
+
+    <update id="emailupdate">
+        update member set  email = #{email} where id =#{id};
+    </update>
+
     <update id="update">
         update member
-        set name = #{name}, nick = #{nick},
-            zipcode = #{zipcode}, addr1 = #{addr1},
-            addr2 = #{addr2}, phone = #{phone},
-            email = #{email}, profile = #{profile},
-            profile_original = #{profile_original}
+        set profile = #{profile}, profile_original = #{profile_original}
         where id = #{id};
     </update>
 

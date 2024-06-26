@@ -44,13 +44,6 @@
                                                     <div class="modal-body">
                                                         <input type="file" name="uploadfile" class="form-control" accept="image/*">
                                                         <input type="hidden" name="id" class="form-control" th:value="${memberinfo.id}">
-                                                        <input type="hidden" name="nick" class="form-control" th:value="${memberinfo.nick}">
-                                                        <input type="hidden" name="name" class="form-control" th:value="${memberinfo.name}">
-                                                        <input type="hidden" name="zipcode" class="form-control" th:value="${memberinfo.zipcode}">
-                                                        <input type="hidden" name="addr1" class="form-control" th:value="${memberinfo.addr1}">
-                                                        <input type="hidden" name="addr2" class="form-control" th:value="${memberinfo.addr2}">
-                                                        <input type="hidden" name="phone" class="form-control" th:value="${memberinfo.phone}">
-                                                        <input type="hidden" name="email" class="form-control" th:value="${memberinfo.email}">
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="submit" class="btn btn-primary">변경하기</button>
@@ -117,7 +110,7 @@
                                     <div class="modal fade" id="changenick" tabindex="-1" aria-labelledby="changenickLabel" style="display: none;" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content">
-                                                <form th:action="@{/mypage/update-process}" method="post">
+                                                <form th:action="@{/mypage/nick-update-process}" method="post">
                                                     <div class="modal-header">
                                                         <h1 class="modal-title fs-5" id="changenickLabel">닉네임 변경</h1>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫다"></button>
@@ -125,13 +118,6 @@
                                                     <div class="modal-body">
                                                         <input type="text" id="nickchange" name="nick" class="form-control" placeholder="닉네임을 입력" maxlength="10">
                                                         <input type="hidden" name="id" class="form-control" th:value="${memberinfo.id}">
-                                                        <input type="hidden" name="name" class="form-control" th:value="${memberinfo.name}">
-                                                        <input type="hidden" name="zipcode" class="form-control" th:value="${memberinfo.zipcode}">
-                                                        <input type="hidden" name="addr1" class="form-control" th:value="${memberinfo.addr1}">
-                                                        <input type="hidden" name="addr2" class="form-control" th:value="${memberinfo.addr2}">
-                                                        <input type="hidden" name="phone" class="form-control" th:value="${memberinfo.phone}">
-                                                        <input type="hidden" name="email" class="form-control" th:value="${memberinfo.email}">
-                                                        <input type="hidden" name="profile" class="form-control" th:value="${memberinfo.profile}">
                                                         <div class="col-12 mt-2">
                                                             <span id="nick_message"></span>
                                                         </div>
@@ -158,7 +144,7 @@
                                     <div class="modal fade" id="changeaddr" tabindex="-1" aria-labelledby="changeaddrLabel" style="display: none;" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content">
-                                                <form th:action="@{/mypage/update-process}" method="post">
+                                                <form th:action="@{/mypage/addr-update-process}" method="post">
                                                     <div class="modal-header">
                                                         <h1 class="modal-title fs-5" id="changeaddrLabel">우편변호 변경</h1>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫다"></button>
@@ -177,11 +163,6 @@
                                                             <input type="text" id="addrchange" name="addr2" class="form-control" placeholder="상세주소 입력">
                                                         </div>
                                                         <input type="hidden" name="id" class="form-control" th:value="${memberinfo.id}">
-                                                        <input type="hidden" name="name" class="form-control" th:value="${memberinfo.name}">
-                                                        <input type="hidden" name="nick" class="form-control" th:value="${memberinfo.nick}">
-                                                        <input type="hidden" name="phone" class="form-control" th:value="${memberinfo.phone}">
-                                                        <input type="hidden" name="email" class="form-control" th:value="${memberinfo.email}">
-                                                        <input type="hidden" name="profile" class="form-control" th:value="${memberinfo.profile}">
                                                         <div class="col-12 mt-1">
                                                             <span id="addr2_message"></span>
                                                         </div>
@@ -216,7 +197,7 @@
                                     <div class="modal fade" id="changephone" tabindex="-1" aria-labelledby="changephoneLabel" style="display: none;" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content">
-                                                <form th:action="@{/mypage/update-process}" method="post">
+                                                <form th:action="@{/mypage/pho-update-process}" method="post">
                                                     <div class="modal-header">
                                                         <h1 class="modal-title fs-5" id="changephoneLabel">핸드폰 변경</h1>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫다"></button>
@@ -224,13 +205,6 @@
                                                     <div class="modal-body">
                                                         <input type="text" id="phochange" name="phone" class="form-control" placeholder="핸드폰번호 입력">
                                                         <input type="hidden" name="id" class="form-control" th:value="${memberinfo.id}">
-                                                        <input type="hidden" name="name" class="form-control" th:value="${memberinfo.name}">
-                                                        <input type="hidden" name="nick" class="form-control" th:value="${memberinfo.nick}">
-                                                        <input type="hidden" name="zipcode" class="form-control" th:value="${memberinfo.zipcode}">
-                                                        <input type="hidden" name="addr1" class="form-control" th:value="${memberinfo.addr1}">
-                                                        <input type="hidden" name="addr2" class="form-control" th:value="${memberinfo.addr2}">
-                                                        <input type="hidden" name="email" class="form-control" th:value="${memberinfo.email}">
-                                                        <input type="hidden" name="profile" class="form-control" th:value="${memberinfo.profile}">
                                                         <div class="col-12 mt-2">
                                                             <span id="pho_message"></span>
                                                         </div>
@@ -259,7 +233,7 @@
                                     <div class="modal fade" id="changeemail" tabindex="-1" aria-labelledby="changeemailLabel" style="display: none;" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered">
                                             <div class="modal-content">
-                                                <form th:action="@{/mypage/update-process}" method="post">
+                                                <form th:action="@{/mypage/email-update-process}" method="post">
                                                     <div class="modal-header">
                                                         <h1 class="modal-title fs-5" id="changeemailLabel">
                                                            이메일 변경
@@ -284,13 +258,6 @@
                                                                 <span id="emailcode_message"></span>
                                                             </div>
                                                             <input type="hidden" name="id" class="form-control" th:value="${memberinfo.id}">
-                                                            <input type="hidden" name="name" class="form-control" th:value="${memberinfo.name}">
-                                                            <input type="hidden" name="nick" class="form-control" th:value="${memberinfo.nick}">
-                                                            <input type="hidden" name="zipcode" class="form-control" th:value="${memberinfo.zipcode}">
-                                                            <input type="hidden" name="addr1" class="form-control" th:value="${memberinfo.addr1}">
-                                                            <input type="hidden" name="addr2" class="form-control" th:value="${memberinfo.addr2}">
-                                                            <input type="hidden" name="phone" class="form-control" th:value="${memberinfo.phone}">
-                                                            <input type="hidden" name="profile" class="form-control" th:value="${memberinfo.profile}">
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">

@@ -12,7 +12,17 @@ public interface MypageService {
 
     boolean pwdupdate(Member member);
 
+    boolean nickupdate(Member member);
+
+    boolean addrupdate(Member member);
+
+    boolean phoupdate(Member member);
+
+    boolean emailupdate(Member member);
+
     boolean update(Member member);
 
     List<Review> getMyReviewList(String id);
+
+
 }

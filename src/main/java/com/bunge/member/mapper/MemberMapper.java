@@ -23,17 +23,28 @@ public interface MemberMapper {
 
     public int findpwd(HashMap<String, String> map);
 
-    List<Member> findAll();
+    public List<Member> findAll();
 
     public int pwdset(HashMap<String, String> map);
 
     public int pwdupdate(Member member);
 
+    public int nickupdate(Member member);
+
+    public int addrupdate(Member member);
+
+    public int phoupdate(Member member);
+
+    public int emailupdate(Member member);
+
     public int update(Member member);
 
     public List<Review> getMyReviewList(String id);
 
-    void updateDeletedMember(int memberId, String deletemember);
+    public void updateDeletedMember(int memberId, String deletemember);
 
-    void deleteMember(int memberId);
+    public void deleteMember(int memberId);
+
+
+
 }

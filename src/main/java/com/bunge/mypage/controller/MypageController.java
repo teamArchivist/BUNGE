@@ -51,20 +51,6 @@ public class MypageController {
         this.inquiryService=inquiryService;
     }
 
-    //마이 페이지 폼 이동
-    @PreAuthorize("isAuthenticated()")
-    @GetMapping(value = "/main")
-    public ModelAndView  mypage(ModelAndView mav ,  Principal principal) {
-
-        String id = principal.getName();
-        if(id == null) {
-            mav.addObject("message", "로그인 후 이용 가능합니다.");
-            mav.setViewName("redirect:/login");
-        }else {
-            mav.setViewName("mypage/mypage");
-        }
-        return mav;
-    }
 
     //내 정보 수정폼
     @PreAuthorize("isAuthenticated()")
@@ -84,25 +70,7 @@ public class MypageController {
         }
         return mav;
     }
-    //내 정보 수정 비밀번호 처리
-    @PostMapping(value = "/pwd-update-process")
-    public ModelAndView pwdUpdateProcess(Member member , ModelAndView mav, String id) {
-        String encPassword = passwordEncoder.encode(member.getPwd());
-        Member infomember= mypageservice.memberinfo(id);
-        member.setPwd(encPassword);
-        member.setId(id);
 
-        boolean result = mypageservice.pwdupdate(member);
-        if(result) {
-            mav.addObject("message", "회원정보 수정이 완료되었습니다.");
-            mav.addObject("infomember",infomember);
-            mav.setViewName("redirect:myinfo");
-        }else {
-            mav.addObject("message","회원정보 수정이 실패했습니다.");
-            mav.setViewName("error/403");
-        }
-        return mav;
-    }
     //닉네임 검사
     @ResponseBody
     @GetMapping(value = "/checknick")
@@ -126,7 +94,112 @@ public class MypageController {
         return ResponseEntity.ok(mail.getRandom());
     }
 
-    //내 정보 수정 처리
+    //내 정보 수정 비밀번호 처리
+    @PostMapping(value = "/pwd-update-process")
+    public ModelAndView pwdUpdateProcess(Member member , ModelAndView mav, String id) {
+        String encPassword = passwordEncoder.encode(member.getPwd());
+        Member infomember= mypageservice.memberinfo(id);
+        member.setPwd(encPassword);
+        member.setId(id);
+
+        boolean result = mypageservice.pwdupdate(member);
+        if(result) {
+            mav.addObject("message", "회원정보 수정이 완료되었습니다.");
+            mav.addObject("infomember",infomember);
+            mav.setViewName("redirect:myinfo");
+        }else {
+            mav.addObject("message","회원정보 수정이 실패했습니다.");
+            mav.setViewName("error/403");
+        }
+        return mav;
+    }
+
+    //닉네임 정보 수정 처리
+    @PostMapping(value = "/nick-update-process")
+    public ModelAndView nickUpdateProcess(Member member, ModelAndView mav, String id , RedirectAttributes redirectAttributes) {
+
+        Member infomember = mypageservice.memberinfo(id);
+     boolean result = mypageservice.nickupdate(member);
+        UsernamePasswordAuthenticationToken authentication =
+                new UsernamePasswordAuthenticationToken(infomember, infomember.getPassword(), infomember.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        if (result) {
+            redirectAttributes.addFlashAttribute("message", "회원정보 수정이 완료되었습니다.");
+            redirectAttributes.addFlashAttribute("infomember", infomember);
+            mav.setViewName("redirect:myinfo");
+        } else {
+            redirectAttributes.addFlashAttribute("message", "회원정보 수정이 실패했습니다.");
+            mav.setViewName("error/403");
+
+        }
+        return mav;
+    }
+    //주소 정보 수정 처리
+    @PostMapping(value = "/addr-update-process")
+    public ModelAndView addrUpdateProcess(Member member, ModelAndView mav, String id , RedirectAttributes redirectAttributes) {
+
+        Member infomember = mypageservice.memberinfo(id);
+        boolean result = mypageservice.addrupdate(member);
+        UsernamePasswordAuthenticationToken authentication =
+                new UsernamePasswordAuthenticationToken(infomember, infomember.getPassword(), infomember.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        if (result) {
+            redirectAttributes.addFlashAttribute("message", "회원정보 수정이 완료되었습니다.");
+            redirectAttributes.addFlashAttribute("infomember", infomember);
+            mav.setViewName("redirect:myinfo");
+        } else {
+            redirectAttributes.addFlashAttribute("message", "회원정보 수정이 실패했습니다.");
+            mav.setViewName("error/403");
+
+        }
+        return mav;
+    }
+
+    //전화번호 정보 수정 처리
+    @PostMapping(value = "/pho-update-process")
+    public ModelAndView phoUpdateProcess(Member member, ModelAndView mav, String id , RedirectAttributes redirectAttributes) {
+
+        Member infomember = mypageservice.memberinfo(id);
+        boolean result = mypageservice.phoupdate(member);
+        UsernamePasswordAuthenticationToken authentication =
+                new UsernamePasswordAuthenticationToken(infomember, infomember.getPassword(), infomember.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        if (result) {
+            redirectAttributes.addFlashAttribute("message", "회원정보 수정이 완료되었습니다.");
+            redirectAttributes.addFlashAttribute("infomember", infomember);
+            mav.setViewName("redirect:myinfo");
+        } else {
+            redirectAttributes.addFlashAttribute("message", "회원정보 수정이 실패했습니다.");
+            mav.setViewName("error/403");
+
+        }
+        return mav;
+    }
+    //이메일 정보 수정 처리
+    @PostMapping(value = "/email-update-process")
+    public ModelAndView emailUpdateProcess(Member member, ModelAndView mav, String id , RedirectAttributes redirectAttributes) {
+
+        Member infomember = mypageservice.memberinfo(id);
+        boolean result = mypageservice.emailupdate(member);
+        UsernamePasswordAuthenticationToken authentication =
+                new UsernamePasswordAuthenticationToken(infomember, infomember.getPassword(), infomember.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        if (result) {
+            redirectAttributes.addFlashAttribute("message", "회원정보 수정이 완료되었습니다.");
+            redirectAttributes.addFlashAttribute("infomember", infomember);
+            mav.setViewName("redirect:myinfo");
+        } else {
+            redirectAttributes.addFlashAttribute("message", "회원정보 수정이 실패했습니다.");
+            mav.setViewName("error/403");
+
+        }
+        return mav;
+    }
+    //프로필이미지 정보 수정 처리
     @PostMapping(value = "/update-process")
     public ModelAndView updateProcess(Member member, ModelAndView mav,
                                       MultipartFile uploadfile,
