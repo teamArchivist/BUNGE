@@ -186,7 +186,12 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
-
+        
+        .folder-link img,
+        .file-link img {
+            margin-bottom: 10px; /* 이미지와 텍스트 사이에 간격 추가 */
+        }
+        
         .clickable-box {
             display: block;
             padding: 10px;
@@ -399,7 +404,7 @@
     </ul>
 </div>
 <div class="main-content">
-<h1>목록 보기</h1>
+    <h1>목록 보기</h1>
     <ul>
         <li th:each="folder : ${folders}">
             <a th:if="${folder.directory}"
@@ -416,7 +421,21 @@
                class="file-link"
                oncontextmenu="showContextMenu(event, 'file', '${folder.name}')">
                 <div class="link-content">
-                    <img src="https://i.ibb.co/HgRjhK9/file-icon.png" alt="file-icon" />
+                    <img th:if="${#strings.endsWith(folder.name, '.png')}"
+                         src="https://i.ibb.co/LCSw7VV/free-icon-png-file-2786921.png"
+                         alt="png-icon" />
+                    <img th:if="${#strings.endsWith(folder.name, '.jpg')}"
+                         src="https://i.ibb.co/s9Ptf56/free-icon-jpg-file-4861303.png"
+                         alt="jpg-icon" />
+                    <img th:if="${#strings.endsWith(folder.name, '.hwp')}"
+                         src="https://example.com/file-icons/hwp-icon.png"
+                         alt="hwp-icon" />
+                    <img th:if="${#strings.endsWith(folder.name, '.avi')}"
+                         src="https://example.com/file-icons/avi-icon.png"
+                         alt="avi-icon" />
+                    <img th:if="${#strings.endsWith(folder.name, '.mp4')}"
+                         src="https://example.com/file-icons/mp4-icon.png"
+                         alt="mp4-icon" />
                     <span th:text="${folder.name}"></span>
                 </div>
             </a>

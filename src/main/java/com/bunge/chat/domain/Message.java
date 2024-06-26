@@ -13,5 +13,5 @@ public class Message {
     private String memberId;
     private String type;
     private String data;
-    private LocalDateTime createDate;
+    private LocalDateTime createDate = LocalDateTime.now();
 }
