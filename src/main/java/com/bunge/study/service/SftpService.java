@@ -98,4 +98,24 @@ public class SftpService {
         }
     }
 
+    public boolean deleteFiles(List<String> filePaths) {
+        ChannelSftp channelSftp = null;
+        try {
+            channelSftp = setupJsch();
+            channelSftp.connect();
+            for (String filePath : filePaths) {
+                System.out.println("Deleting file: " + filePath); // 디버그용 출력
+                channelSftp.rm(filePath);
+            }
+            return true;
+        } catch (JSchException | SftpException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (channelSftp != null && channelSftp.isConnected()) {
+                channelSftp.disconnect();
+            }
+        }
+    }
+
 }
