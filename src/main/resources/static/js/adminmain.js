@@ -96,7 +96,7 @@ $(function() {
                     + "<td><span class='text-nowrap text-body-secondary'>" + this.name + "</span></td>"
                     + "<td>" + this.nick + "</td>"
                     + "<td><p class='btn-link text-nowrap'>" + this.addr1 + "</p></td>"
-                    + "<td></td>"
+                    + "<td>"+this.cnt+"</td>"
                     + "<td>"+this.role+"</td>"
                     + "<td>"
                     + "<div class='text-nowrap text-center'>"

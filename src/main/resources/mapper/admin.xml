@@ -36,12 +36,17 @@
     </select>
 
     <select id="getmemberlist" parameterType="java.util.Map" resultType="com.bunge.member.domain.Member">
-       select * from member
+        select m.*, r.reporttargetid , ifnull(r.cnt, 0) cnt
+        from member m left join (select reporttargetid,count(reporttargetid) cnt
+                                 from reportmanagement
+                                 where reportprocessing = 0
+                                 group by reporttargetid) r
+                        on m.id = r.reporttargetid
        LIMIT #{limit} OFFSET #{offset}
     </select>
 
     <select id="memberreportlist" resultType="com.bunge.admin.domain.reportmanagement">
-        select * from reportmanagement where reporttargetid = #{reporttargetid}
+        select * from reportmanagement where reporttargetid = #{reporttargetid} and reportprocessing = 0
     </select>
 
     <select id="getstudylist" parameterType="String" resultType="com.bunge.study.domain.StudyBoard">

@@ -83,6 +83,7 @@ public class admincontoller {
         return list;
     }
 
+    //신고관리 페이지 목록
     @GetMapping(value = "/adminreport")
     public String adminreport(adminReportListFile adminreportlistfile,
                               @RequestParam(defaultValue = "1") int page,

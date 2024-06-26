@@ -31,6 +31,7 @@ public class Member implements UserDetails {
     private String profile; //첨부될 파일의 이름
     private String role;
     private int readpoint;
+    private int cnt;
     private String profile_original; //첨부될 파일의 이름
 
     private MultipartFile uploadfile;
