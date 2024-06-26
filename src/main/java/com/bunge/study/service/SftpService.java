@@ -104,7 +104,6 @@ public class SftpService {
             channelSftp = setupJsch();
             channelSftp.connect();
             for (String filePath : filePaths) {
-                System.out.println("Deleting file: " + filePath); // 디버그용 출력
                 channelSftp.rm(filePath);
             }
             return true;
