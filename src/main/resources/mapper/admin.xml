@@ -59,8 +59,7 @@
     </select>
 
     <select id="getreportlist" resultType="com.bunge.admin.domain.reportmanagement">
-
-        select * from reportmanagement
+        select * from reportmanagement where reportprocessing = 1
         LIMIT #{limit} OFFSET #{offset}
     </select>
 

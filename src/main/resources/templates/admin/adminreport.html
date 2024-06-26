@@ -51,7 +51,9 @@
     <div class="content__boxed">
         <div class="content__wrap">
             <div th:if="${reportList.size() == 0}">
-                <p class="fs-1 text-decoration-underline text-white fw-bold">조회할 신고 내용이없습니다.</p>
+                <div class="card-body">
+                    <p class="fs-1 text-decoration-underline text-white fw-bold">조회할 신고 내용이없습니다.</p>
+                </div>
             </div>
             <div class="card" th:if="${reportList.size() > 0}">
                 <div class="card-body">
