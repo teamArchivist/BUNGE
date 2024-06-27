@@ -113,13 +113,22 @@ $(document).ready(function() {
 						xhr.setRequestHeader(header, token); // CSRF 토큰을 헤더에 추가
 					},
 					success: function(response) {
-						let newContentElement = $('<p class="comment-content" id="content-' + commentId + '"></p>').text(newContent);
-						textarea.replaceWith(newContentElement);
-						saveButton.remove();
-						cancelButton.remove();
+						if (response === "Comment updated successfully") {
+							let newContentElement = $('<p class="comment-content" id="content-' + commentId + '"></p>').text(newContent);
+							textarea.replaceWith(newContentElement);
+							saveButton.remove();
+							cancelButton.remove();
+						} else {
+							alert(response); // 서버에서 받은 메시지를 알림으로 표시
+						}
 					},
 					error: function(error) {
 						console.error('Error:', error);
+						if (error.status === 403) {
+							alert('접근 권한이 없습니다.');
+						} else {
+							alert('댓글 수정 중 오류가 발생했습니다.');
+						}
 						let originalContentElement = $('<p class="comment-content" id="content-' + commentId + '"></p>').text(originalContent);
 						textarea.replaceWith(originalContentElement);
 						saveButton.remove();
@@ -216,14 +225,19 @@ $(document).ready(function() {
 				},
 				success: function(response) {
 					console.log("Response from server:", response);
-					if(response === 1){
+					if(response === "Comment deleted successfully"){
 						loadComments();
 					} else {
-						alert('댓글을 삭제할 수 없습니다.');
+						alert(response); // 서버에서 받은 메시지를 알림으로 표시
 					}
 				},
 				error: function(error) {
 					console.error('Error:', error);
+					if (error.status === 403) {
+						alert('접근 권한이 없습니다.');
+					} else {
+						alert('댓글 삭제 중 오류가 발생했습니다.');
+					}
 				}
 			});
 		}
