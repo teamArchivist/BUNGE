@@ -20,6 +20,8 @@ public class KafkaConsumerConfig {
 
     @Value("${spring.kafka.bootstrap-servers}")
     private String BOOTSTRAP_SERVERS;
+    @Value("${spring.kafka.consumer.group-id}")
+    private String GROUP_ID;
     public static final String EARLIEST = "earliest";
 
     @Bean
@@ -43,6 +45,7 @@ public class KafkaConsumerConfig {
                 .put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class)
                 .put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class)
                 .put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, EARLIEST)
+                .put(ConsumerConfig.GROUP_ID_CONFIG, GROUP_ID)
                 .build();
     }
 }
