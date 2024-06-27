@@ -72,7 +72,11 @@ function handleEnterKey(e) {
 }
 
 function scrollDown() {
-    $(".bg-body-tertiary").scrollTop($(".bg-body-tertiary")[0].scrollHeight);
+    if ($(".bg-body-tertiary")[0].scrollTop < 0) {
+        return;
+    }
+
+    $(".bg-body-tertiary").scrollTop(0);
 }
 
 $(function () {
