@@ -57,7 +57,8 @@
                i.isPrivate AS isPrivate,
                i.isAnswered AS isAnswered,
                i.createdAt AS createdAt,
-               i.updatedAt AS updatedAt
+               i.updatedAt AS updatedAt,
+               i.email AS email
         FROM inquiry i
                  JOIN inquiry_type t ON i.typeId = t.typeId
         WHERE i.inquiryId = #{inquiryId}
