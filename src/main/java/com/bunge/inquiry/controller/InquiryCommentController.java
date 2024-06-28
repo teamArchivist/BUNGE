@@ -1,12 +1,15 @@
 package com.bunge.inquiry.controller;
 
+import com.bunge.inquiry.domain.Inquiry;
 import com.bunge.inquiry.domain.InquiryComment;
 import com.bunge.inquiry.service.InquiryCommentService;
 import com.bunge.inquiry.service.InquiryService;
+import com.bunge.member.service.SendMail;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -20,13 +23,19 @@ import java.util.Map;
 @RequestMapping( "/comments")
 public class InquiryCommentController {
 
+    private final SendMail sendMail;
+    private SendMail sendmail;
     private final InquiryCommentService commentService;
     private final InquiryService inquiryService;
 
     @Autowired
-    public InquiryCommentController(InquiryCommentService commentService, InquiryService inquiryService) {
+    public InquiryCommentController(InquiryCommentService commentService,
+                                    InquiryService inquiryService,
+                                    SendMail sendmail, SendMail sendMail) {
         this.commentService = commentService;
         this.inquiryService = inquiryService;
+        this.sendmail = sendmail;
+        this.sendMail = sendMail;
     }
 
     @GetMapping("/{inquiryId}")
@@ -44,6 +53,15 @@ public class InquiryCommentController {
             if (isAdmin) {
                 inquiryService.updateInquiryStatus(comment.getInquiryId(), true);
                 isAnswered = true;
+
+                // 메일 전송 로직 추가
+                Inquiry inquiry = inquiryService.getInquiryById(comment.getInquiryId());
+                if (inquiry != null && inquiry.getEmail() != null) {
+                    System.out.println("메일 전송 준비 중: " + inquiry.getEmail()); // 디버그 로그 추가
+                    sendMail.inquiryMail(inquiry.getEmail());
+                } else {
+                    System.out.println("이메일 정보를 찾을 수 없습니다."); // 디버그 로그 추가
+                }
             }
         } else {
             throw new RuntimeException("Failed to add comment");
@@ -55,32 +73,33 @@ public class InquiryCommentController {
         return response;
     }
 
+
     @DeleteMapping("/{commentId}")
-    public ResponseEntity<Integer> deleteComment(@PathVariable Long commentId,
-                                                 @RequestParam(required = false) Long parentCommentId,
-                                                 @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<String> deleteComment(@PathVariable Long commentId,
+                                                @RequestParam(required = false) Long parentCommentId,
+                                                @AuthenticationPrincipal UserDetails userDetails) {
         String memberId = userDetails.getUsername(); // 로그인된 사용자 아이디
+
+        InquiryComment existingComment = commentService.findCommentById(commentId);
+        if (existingComment == null || !existingComment.getMemberId().equals(memberId)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("접근 권한이 없습니다.");
+        }
 
         try {
             if (parentCommentId == null) {
                 // 댓글 삭제
-                boolean success = commentService.deleteComment(commentId, memberId);
-                if (!success) {
-                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(0); // 실패 시 0 반환
-                }
+                commentService.deleteComment(commentId, memberId);
             } else {
                 // 대댓글 삭제
-                boolean success = commentService.deleteReplyComment(commentId, memberId);
-                if (!success) {
-                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(0); // 실패 시 0 반환
-                }
+                commentService.deleteReplyComment(commentId, memberId);
             }
-            return ResponseEntity.ok(1); // 성공 시 1 반환
+            return ResponseEntity.ok("Comment deleted successfully");
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(0); // 실패 시 0 반환
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete comment");
         }
     }
+
 
     @PutMapping("/{commentId}")
     public ResponseEntity<String> updateComment(@PathVariable Long commentId,

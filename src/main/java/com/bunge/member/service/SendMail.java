@@ -40,6 +40,30 @@ public class SendMail {
             mailSender.send(mp);
             log.info("메일 전송되었습니다.");
         }
+
+    public void inquiryMail(String recipientEmail) {
+        MimeMessagePreparator mp = new MimeMessagePreparator() {
+            @Override
+            public void prepare(MimeMessage mimeMessage) throws Exception {
+                Mail mail = new Mail();
+                MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+                helper.setFrom(mail.getFrom()); // 발신자 이메일 주소
+                helper.setTo(recipientEmail);
+                helper.setSubject("작성하신 문의글에 답변이 완료되었습니다.");
+                helper.setText("작성하신 문의글에 답변이 완료되었습니다.");
+            }
+        };
+        try {
+            System.out.println("메일 전송 중: " + recipientEmail); // 디버그 로그 추가
+            mailSender.send(mp);
+            System.out.println("메일 전송되었습니다.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("메일 전송에 실패했습니다. 에러 메시지: " + e.getMessage());
+        }
+    }
+
+
         //랜덤 토큰생성
         public String randomchar(int length, Mail mail){
             String text = "";

@@ -33,7 +33,7 @@ public class MessageController {
         producerService.sendMessage(KafkaTopic.TEMP, message);
     }
 
-    @KafkaListener(topics = KafkaTopic.TEMP, groupId = "kafka-consumer-group2")
+    @KafkaListener(topics = KafkaTopic.TEMP)
     public void consumeMessage(String message, Acknowledgment ack) throws JsonProcessingException {
         consumerService.handleMessage(message, ack);
     }

@@ -32,39 +32,14 @@
 
             <div class="card">
                <div class="card-header">
-                  <h3 class="h4 card-title">Q&A</h3>
+                  <h3 class="h4 card-title">문의</h3>
 
                   <!-- Toolbar -->
-                  <div class="d-flex gap-2 py-3" style="max-width:800px">
-                     <select id="_dm-filterField" class="form-select">
-                        <option value="none">Select field</option>
-                        <option value="name">Name</option>
-                        <option value="gender">Gender</option>
-                        <option value="rating">Rating</option>
-                        <option value="col">Favourite Colour</option>
-                        <option value="dob">Date Of Birth</option>
-                        <option value="car">Drives</option>
-                        <option value="function">Drives & Rating < 3</option>
-                     </select>
-
-                     <select id="_dm-filterType" class="form-select">
-                        <option value="like">Like</option>
-                        <option value="=">=</option>
-                        <option value="<">
-                           << /option>
-                        <option value="<=">
-                           <=< /option>
-                        <option value=">">></option>
-                        <option value=">=">>=</option>
-                        <option value="!=">!=</option>
-                     </select>
-
-                     <input id="_dm-filterValue" class="form-control" type="text" placeholder="value to filter">
-                     <button id="_dm-filterClear" class="btn btn-primary text-nowrap">Clear Filter</button>
+                  <div class="d-flex gap-2 py-3" style="max-width:800px; float:right">
                         <button class="btn btn-primary text-nowrap" id="inquiry_add">
                            <i class="demo-psi-add fs-5"></i>
                            <span class="vr"></span>
-                           Add New
+                           문의 작성
                         </button>
                   </div>
                   <!-- END : Toolbar -->
@@ -108,20 +83,28 @@
 
                   <nav class="text-align-center mt-5" aria-label="Table navigation">
                      <ul class="pagination justify-content-center">
+                        <!-- 이전 버튼 -->
                         <li class="page-item" th:classappend="${page <= 1} ? ' disabled' : ''">
                            <a class="page-link" th:href="${page > 1} ? '/inquiry/list?page=' + ${previousPage} : ''" th:if="${page > 1}">Previous</a>
                            <a class="page-link" th:if="${page <= 1}">이전</a>
                         </li>
-                        <li th:each="a : ${#numbers.sequence(startpage, endpage)}"
-                            th:classappend="${a == page} ? ' active' : ''">
+
+                        <!-- 페이지 번호 -->
+                        <li th:each="a : ${#numbers.sequence(startpage, endpage)}" th:classappend="${a == page} ? ' active' : ''" th:if="${maxpage > 0}">
                            <a class="page-link" th:href="'/inquiry/list?page=' + ${a}" th:text="${a}"></a>
                         </li>
+                        <li th:if="${maxpage == 0}">
+                           <a class="page-link" th:href="'/inquiry/list?page=1'" th:text="1"></a>
+                        </li>
+
+                        <!-- 다음 버튼 -->
                         <li class="page-item" th:classappend="${page >= maxpage} ? ' disabled' : ''">
                            <a class="page-link" th:href="${page < maxpage} ? '/inquiry/list?page=' + ${nextPage} : ''" th:if="${page < maxpage}">Next</a>
                            <a class="page-link" th:if="${page >= maxpage}">다음</a>
                         </li>
                      </ul>
                   </nav>
+
                </div>
 
 

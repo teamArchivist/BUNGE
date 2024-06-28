@@ -29,7 +29,8 @@ spring:
   ##kafka
   kafka:
     bootstrap-servers: 43.200.242.85:9092, 43.200.242.85:9093, 43.200.242.85:9094
-
+    consumer:
+      group-id: local-consumer-group
 #my:
 #  savefolder: c:\img\profile-photos
 #  savepath: file:///C:/img/profile-photos/
@@ -56,6 +57,14 @@ logging:
   level:
     com.bunge.member.mapper.MemberMapper: TRACE
     com.bunge.inquiry.mapper.InquiryMapper: TRACE
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+  kafka:
+    consumer:
+      group-id: prod-consumer-group
 
 server:
   port: 8090
