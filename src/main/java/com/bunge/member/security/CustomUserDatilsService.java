@@ -1,20 +1,15 @@
 package com.bunge.member.security;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 
-import com.bunge.admin.service.AdminService;
 import com.bunge.member.domain.Member;
 import com.bunge.member.mapper.MemberMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+
+import java.util.Collections;
 
 /*
   	1. UserDetails 인터페이스는 Securiy애소 사용자 정보를 담는 인터페이스
@@ -30,7 +25,6 @@ public class CustomUserDatilsService implements UserDetailsService{
 	@Autowired
 	MemberMapper membermapper;
 
-	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
@@ -41,6 +35,19 @@ public class CustomUserDatilsService implements UserDetailsService{
 			throw new UsernameNotFoundException("User not found with username: " + username);
 		}
 		return member;
+	}
+
+	public void increaseFailedAttempts(Member member){
+		int newFailAttempts = member.getFailedAttempts() + 1;
+		member.setFailedAttempts(newFailAttempts);
+		membermapper.updateFailedAttempts(newFailAttempts,member.getId());
+	}
+	public void lockAccount(Member member) {
+		member.setAccuntNonLocked(false);
+		membermapper.lockAccount(member.getId());
+	}
+	public void resetFailedAttempts(String username) {
+		membermapper.resetFailedAttempts(username);
 	}
 
 }

@@ -180,8 +180,9 @@ $(function(){
 
 		//전화번호 유효성 검사
 		function checkpho(){
-			const phone = $("#phone").val().trim();
-			const patterpho = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{5})$/;
+			const phoInput = $("#phone");
+			const phone = phoInput.val().trim();
+			const patterpho = /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/;
 			if(phone === "") {
 				$("#pho_message").css('color', 'red').text("전화번호 : 전화번호는 필수 입니다.").show();
 				isValid = false;
@@ -195,7 +196,16 @@ $(function(){
 			return isValid;
 		}//전화번호 유효성 검사 end
 
-		//이메일 유효성 검사
+		//전화번호 자동하이픈
+		function autoHyphen(target) {
+			target.value = target.value.replace(/[^0-9]/g, '')
+				.replace(/^(\d{0,3})(\d{0,4})(\d{0,4})$/g, "$1-$2-$3").replace(/(\-{1,2})$/g, "");
+		}
+
+			$("#phone").on("input", function() {
+				autoHyphen(this);
+			});
+	//이메일 유효성 검사
 		 function checkemail() {
 			const email = $("#email").val().trim();
 			const patternEmail = /[a-z0-9]{2,}@[a-z0-9-]{2,}\.[a-z0-9]{2,}/;

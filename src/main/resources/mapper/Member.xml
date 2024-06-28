@@ -73,6 +73,27 @@
         SELECT *
         FROM member;
     </select>
+
+    <!-- 로그인 실패 횟수 업데이트 -->
+    <update id="updateFailedAttempts">
+        update member
+        set failedAttempts = #{failAttempts}
+        where id = #{id}
+    </update>
+    
+    <!-- 계정 잠금 -->
+    <update id="lockAccount">
+        update member
+        set accountNonLock = false
+        where id = #{id};
+    </update>
+
+    <!-- 로그인 실패 횟수 초기화 -->
+    <update id="resetFailedAttempts">
+        update member
+        set failedAttempts = 0
+        where id = #{username};
+    </update>
     <update id="updateDeletedMember">
 
     </update>

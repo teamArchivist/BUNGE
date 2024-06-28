@@ -1,10 +1,7 @@
 package com.bunge.member.security;
 
+
 import com.bunge.member.domain.Member;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,6 +9,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.security.core.AuthenticationException;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 @Component
 public class LoginFailHandeler implements AuthenticationFailureHandler {
@@ -28,7 +31,8 @@ private static final Logger logger = LoggerFactory.getLogger(LoginFailHandeler.c
         logger.info("로그인실패");
         logger.info(exception.getMessage());
 
-        String message = null;
+        String message = "아이디나 비밀번호가 틀렸습니다.";
+        String username = request.getParameter("username");
 
         try{
 
@@ -37,8 +41,9 @@ private static final Logger logger = LoggerFactory.getLogger(LoginFailHandeler.c
             }else if(exception.getMessage().equals("자격 증명에 실패하였습니다.")) {
                 message= "아이디나 비밀번호가 틀렸습니다.";
             }
+
         } catch (UsernameNotFoundException e) {
-                message ="아이디나 비밀번호가 틀렸습니다.";
+               logger.error("유효하지 않은 사용자입니다. " +   username, e);
         }
         session.setAttribute("message",message);
         String url = request.getContextPath()+"/member/login";

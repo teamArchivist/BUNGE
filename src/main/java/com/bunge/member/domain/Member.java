@@ -41,6 +41,9 @@ public class Member implements UserDetails {
     private int   suspended; // 정지 여부를 나타내는 필드
     private LocalDate suspensionEndDate; // 정지 종료 일자를 나타내는 필드
 
+    private int failedAttempts;     //로그인 실패 횟수를 나타내는 필드
+    private boolean accuntNonLocked;//계정 장금 상태를 나타내는 필드
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<SimpleGrantedAuthority> role = new ArrayList<SimpleGrantedAuthority>();
@@ -64,9 +67,7 @@ public class Member implements UserDetails {
     }
 
     @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
+    public boolean isAccountNonLocked() {return true;}
 
     @Override
     public boolean isCredentialsNonExpired() {return true;}

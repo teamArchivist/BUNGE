@@ -45,6 +45,10 @@ public interface MemberMapper {
 
     public void deleteMember(int memberId);
 
+    public void updateFailedAttempts(int failedAttempts,String id);
 
+    public void lockAccount(String id);
+
+    public void resetFailedAttempts(String id);
 
 }
