@@ -5,11 +5,16 @@
 <mapper namespace="com.bunge.inquiry.mapper.InquiryCommentMapper">
 
     <select id="findCommentsByInquiryId" resultType="InquiryComment">
-        SELECT * FROM inquiry_comment WHERE inquiryId = #{inquiryId} ORDER BY createdAt ASC
+        SELECT ic.*, m.profile
+        FROM inquiry_comment ic
+                 JOIN member m ON ic.memberId = m.id
+        WHERE ic.inquiryId = #{inquiryId}
+        ORDER BY ic.createdAt ASC
     </select>
 
+
     <select id="findCommentById" resultType="InquiryComment">
-        SELECT * FROM inquiry_comment WHERE commentId = #{commentId}
+        SELECT * FROM inquiry_comment  WHERE commentId = #{commentId}
     </select>
 
     <insert id="insertComment" parameterType="InquiryComment" useGeneratedKeys="true" keyProperty="commentId">

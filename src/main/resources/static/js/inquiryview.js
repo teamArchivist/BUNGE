@@ -43,7 +43,7 @@ $(document).ready(function() {
 		return `<div class="${replyClass} mb-4" id="comment-${comment.commentId}">
             <div class="d-flex" style="padding-top: 10px;">
                 <div class="flex-shrink-0">
-                    <img class="img-sm rounded-circle" src="/img/profile-photos/default.png" alt="Profile Picture" loading="lazy">
+                    <img class="img-sm rounded-circle" src="/upload${comment.profile}" alt="Profile Picture" loading="lazy">
                 </div>
                 <div class="flex-grow-1 ms-3">
                     <div class="mb-2">

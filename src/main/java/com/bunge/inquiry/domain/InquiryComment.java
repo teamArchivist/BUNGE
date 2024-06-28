@@ -14,6 +14,17 @@ public class InquiryComment {
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private boolean isNotified;
+    private String profile;
+
+
+    public String getProfile() {
+        return profile;
+    }
+
+    public void setProfile(String profile) {
+        this.profile = profile;
+    }
+
 
     // Getters and Setters
     public Long getCommentId() {
@@ -91,6 +102,8 @@ public class InquiryComment {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", isNotified=" + isNotified +
+                ", isNotified=" + isNotified +
+                ", profile=" + profile +
                 '}';
     }
 }
